@@ -17,8 +17,15 @@ ActiveRecord::Schema.define(version: 20160929093655) do
   enable_extension "plpgsql"
 
   create_table "schools", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",               null: false
+    t.text     "address",            null: false
+    t.string   "zip_code",           null: false
+    t.string   "phone1",             null: false
+    t.string   "phone2"
+    t.string   "website",            null: false
+    t.integer  "school_director_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   create_table "users", force: :cascade do |t|
