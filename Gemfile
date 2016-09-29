@@ -21,6 +21,8 @@ gem 'jbuilder', '~> 2.6.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.1', group: :doc
 
+gem 'devise'
+
 
 group :development do
   # Using mina for deployment

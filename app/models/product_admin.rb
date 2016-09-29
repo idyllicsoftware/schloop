@@ -1,0 +1,2 @@
+class ProductAdmin < User
+end
