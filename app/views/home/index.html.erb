@@ -1,27 +1,19 @@
 <div class="sign-up-main-section">
-	<div class="sign-up-header-section">
-		<div class="schools">
-		  <img class="cloud1-img" src="<%= asset_path('home/cloud_2.png') %>">
-		  <img class="cloud2-img" src="<%= asset_path('home/cloud_1.png') %>">
-		</div>
-		<div class="teachers">
-			<div class="teachers-subsection">
-				<img src="<%= asset_path('home/schloop.png') %>">
-				<p>Lorem Ipsum is dummy text</p>
-			</div>			
-			<img class="cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
-		</div>
-		<div class="parents">
-		  <img class="cloud4-img" src="<%= asset_path('home/cloud_4.png') %>">
-		  <img class="star1-img" src="<%= asset_path('home/star.png') %>">		  	
-		  <img class="balloon-img" src="<%= asset_path('home/air_balloon.png') %>">
-		</div>
-	</div>
-	<div class="sign-up-middle-section">
-		<div class="schools-sign-up-section">
+		<div class="col-xs-6 teachers">
+					<div class="teachers-subsection">
+						<img class="img-responsive schloop-img" src="<%= asset_path('home/schloop.png') %>">
+						<p>Lorem Ipsum is dummy text</p>
+					    <img class="cloud3-img img-responsive" src="<%= asset_path('home/cloud_3.png') %>">
+					</div>			
+				</div>
+		<div class="col-md-4 col-xs-6 schools-sign-up-section">
+ 			<div class="schools">
+		  		<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
+		  		<img class="cloud2-img img-responsive" src="<%= asset_path('home/cloud_1.png') %>">
+			</div>
 			<div class="schools-sign-up-subsection">
 				<div class="bg-img-school">
-				<img src="<%= asset_path('home/school.png') %>">
+				<img class="img-responsive" src="<%= asset_path('home/school.png') %>">
 				</div>
 				<div class="school-section">
 					<h3>Schools</h3>				
@@ -32,14 +24,16 @@
 				<div class="sign-up-btn-section">
 					<button class="btn sign-up-btn">Sign Up</button>
 				</div>
-			</div>	
-		  <img class="tree6-img" src="<%= asset_path('home/tree_green1.png') %>">
-		  <img class="tree7-img" src="<%= asset_path('home/tree_green3.png') %>">		
+			</div>
+			<img class="tree6-img img-responsive" src="<%= asset_path('home/tree_green1.png') %>">
+			<img class="tree7-img img-responsive" src="<%= asset_path('home/tree_green3.png') %>">			
+			<img class="bag-img img-responsive" src="<%= asset_path('home/bag.png') %>">			
+			<img class="school-img img-responsive" src="<%= asset_path('home/school1.png') %>">			
 		</div>
-		<div class="teachers-sign-up-section">
+		<div class="col-md-4 col-xs-6 teachers-sign-up-section">
 			<div class="teachers-sign-up-subsection">
 				<div class="bg-img-school">
-					<img src="<%= asset_path('home/teachers.png') %>">
+					<img class="img-responsive" src="<%= asset_path('home/teachers.png') %>">
 				</div>
 				<div class="teachers-section">
 					<h3>Teachers</h3>
@@ -51,14 +45,19 @@
 					<a href="#"><img src="<%= asset_path('home/app_store.png') %>"></a>
 					<a href="#"><img src="<%= asset_path('home/play_store.png') %>"></a>
 				</div>
-			</div>					
-	      	<img class="scloopy-img" src="<%= asset_path('home/schloopy.png') %>">		
+			</div>
+			<img class="tree10-img img-responsive" src="<%= asset_path('home/tree_green2.png') %>">		
+	      	<img class="scloopy-img img-responsive" src="<%= asset_path('home/schloopy.png') %>">		
+	      	<img class="bench-img img-responsive" src="<%= asset_path('home/bench.png') %>">		
 		</div>		
-		<div class="parents-sign-up-section">
-		  <img class="star2-img" src="<%= asset_path('home/star.png') %>">		  		
+		<div class="col-md-4 col-xs-6 parents-sign-up-section">
+		  <img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
+		  <img class="star1-img img-responsive" src="<%= asset_path('home/star.png') %>">		  	
+		  <img class="balloon-img img-responsive" src="<%= asset_path('home/air_balloon.png') %>">	
+		  <img class="star2-img img-responsive" src="<%= asset_path('home/star.png') %>">		  		
 		   <div class="parents-main-section">	
 				<div class="bg-img-school">
-				<img src="<%= asset_path('home/parents.png') %>">
+				<img class="img-responsive" src="<%= asset_path('home/parents.png') %>">
 				</div>
 				<div class="parents-section">
 					<h3>Parents</h3>
@@ -71,40 +70,46 @@
 					<a href="#"><img src="<%= asset_path('home/play_store.png') %>"></a>
 				</div>
 		   </div>
-		  <img class="tree8-img" src="<%= asset_path('home/tree_green2.png') %>">		
-		  <img class="tree9-img" src="<%= asset_path('home/tree_green.png') %>">		
+		  <img class="tree8-img img-responsive" src="<%= asset_path('home/tree_green2.png') %>">		
+		  <img class="tree9-img img-responsive" src="<%= asset_path('home/tree_green.png') %>">
+	      <img class="globe-img img-responsive" src="<%= asset_path('home/globe.png') %>">				
+	      <img class="books-img img-responsive" src="<%= asset_path('home/books.png') %>">
+	      <img class="cup-img img-responsive" src="<%= asset_path('home/cup.png') %>">		
+		</div>
+</div>	
+<div class="sign-up-registration-section">
+	<div>
+		<img class="tree2-img img-responsive" src="<%= asset_path('home/tree_green2.png') %>">
+		<img class="tree1-img img-responsive" src="<%= asset_path('home/tree_green.png') %>">
+		<img class="grass2-img img-responsive" src="<%= asset_path('home/grass2.png') %>">	
+		<img class="tree3-img img-responsive" src="<%= asset_path('home/tree_green.png') %>">
+	</div>
+	<div class="schools-sign-up">
+		<h3>Schools Sign Up</h3>
+		<div class="form-group">
+			<input type="text" class="form-control input-field" required name="name" placeholder="Your School Name">
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control input-field" required name="name" placeholder="Contact Person Name">
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control input-field" required name="name" placeholder="Contact Number">
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control input-field" required name="name" placeholder="Email">
+		</div>
+		<div class="form-group">
+			<button class="btn form-send">SEND</button>
 		</div>
 	</div>
-	<div class="sign-up-registration-section">
-		<div class="schools-sign-up">
-			<h3>Schools Sign Up</h3>
-			<div class="form-group">
-				<input type="text" class="form-control input-field" required name="name" placeholder="Your School Name">
-			</div>
-			<div class="form-group">
-				<input type="text" class="form-control input-field" required name="name" placeholder="Contact Person Name">
-			</div>
-			<div class="form-group">
-				<input type="text" class="form-control input-field" required name="name" placeholder="Contact Number">
-			</div>
-			<div class="form-group">
-				<input type="text" class="form-control input-field" required name="name" placeholder="Email">
-			</div>
-			<div class="form-group">
-				<button class="btn form-send">SEND</button>
-			</div>
-		</div>
-		<img class="tree2-img" src="<%= asset_path('home/tree_green2.png') %>">
-		<img class="tree1-img" src="<%= asset_path('home/tree_green.png') %>">		  						 
-		<img class="grass2-img" src="<%= asset_path('home/grass2.png') %>">	
-		<img class="tree3-img" src="<%= asset_path('home/tree_green.png') %>">	
-		<img class="grass3-img" src="<%= asset_path('home/grass1.png') %>">
-		<img class="tree4-img" src="<%= asset_path('home/tree_green2.png') %>">
-		<img class="tree5-img" src="<%= asset_path('home/tree_green.png') %>">	
-		<img class="bulb-img" src="<%= asset_path('home/bulb.png') %>">		  			  		
-	</div>
-	<div class="footer-section">
-		<p>Write to us on</p>
-		<a href="mailto:contact@schloop.com">contact@schloop.com</a>
-	</div>
+	<img class="grass3-img img-responsive" src="<%= asset_path('home/grass1.png') %>">
+	<img class="tree4-img img-responsive" src="<%= asset_path('home/tree_green2.png') %>">
+	<img class="tree5-img img-responsive" src="<%= asset_path('home/tree_green.png') %>">	
+	<img class="bulb-img img-responsive" src="<%= asset_path('home/bulb.png') %>">
+	<img class="grass4-img img-responsive" src="<%= asset_path('home/grass2.png') %>">	
+</div>
+
+<div class="footer-section">
+	<p>Write to us on</p>
+	<a href="mailto:contact@schloop.com">contact@schloop.com</a>
 </div>
