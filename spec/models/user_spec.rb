@@ -15,6 +15,17 @@
 #  last_sign_in_ip        :inet
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  type                   :string           not null
+#  first_name             :string
+#  middle_name            :string
+#  last_name              :string
+#  work_number            :string
+#  cell_number            :string
+#
+# Indexes
+#
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
 require 'rails_helper'
