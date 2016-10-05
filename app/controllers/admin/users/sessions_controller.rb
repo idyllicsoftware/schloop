@@ -1,14 +1,17 @@
 class Admin::Users::SessionsController < Devise::SessionsController
 # before_action :configure_sign_in_params, only: [:create]
   def after_sign_in_path_for(user)
-    '/admin/users/dashboards/index'
+    if user.type == "ProductAdmin"
+      '/admin/users/dashboards/admin_dashboard'
+    else
+      '/admin/users/dashboards/school_admin_dashboard'
+    end
   end
-
 
   # GET /resource/sign_in
   # def new
   #   super 
-  #end
+  # end
 
   # POST /resource/sign_in
   # def create

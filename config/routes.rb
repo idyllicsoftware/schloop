@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resource :users do
       get "/dashboards/index" => 'users/dashboards#index'
+      get "/dashboards/admin_dashboard" => 'users/dashboards#admin_dashboard'
+      get "/dashboards/school_admin_dashboard" => 'users/dashboards#school_admin_dashboard'
     end
   end
 
