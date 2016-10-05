@@ -1,4 +1,4 @@
-class Teachers::ConfirmationsController < Devise::ConfirmationsController
+class Admin::Parents::ConfirmationsController < Devise::ConfirmationsController
   # GET /resource/confirmation/new
   # def new
   #   super

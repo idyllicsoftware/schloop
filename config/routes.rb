@@ -15,18 +15,18 @@ Rails.application.routes.draw do
 
 
   devise_for :teachers, controllers:{
-                         sessions: 'teachers/sessions',
-                         registrations: 'teachers/registrations',
-                         passwords: 'teachers/passwords',
-                         invitations: 'teachers/invitations'
+                         sessions: 'admin/teachers/sessions',
+                         registrations: 'admin/teachers/registrations',
+                         passwords: 'admin/teachers/passwords',
+                         invitations: 'admin/teachers/invitations'
   }
 
 
   devise_for :parents, controllers:{
-                         sessions: 'teachers/sessions',
-                         registrations: 'teachers/registrations',
-                         passwords: 'teachers/passwords',
-                         invitations: 'teachers/invitations'
+                         sessions: 'admin/parents/sessions',
+                         registrations: 'admin/parents/registrations',
+                         passwords: 'admin/parents/passwords',
+                         invitations: 'admin/parents/invitations'
   }
 
   namespace :admin do
