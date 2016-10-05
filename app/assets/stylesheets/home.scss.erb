@@ -1,0 +1,958 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.sign-up-main-section {  
+	  background-color: #b0e2e8;
+	  display: flex;
+	  justify-content: center;
+	  height: 800px;
+	  position: relative;
+	  .teachers {
+	  	    position: absolute;
+    		left: 0px;
+    		top: 15px;
+    		width: 100%;
+    		z-index: 1;
+    		text-align: center;
+    		.teachers-subsection {
+    			display: inline-block;
+   				width: 33.33%;
+    			position: relative;
+    			margin: 0px auto;
+    			p {
+    			    color: #fff;
+    				font-size: 24px;
+    				margin-top: 20px;
+    				font-weight: bold;
+    			}
+    			.schloop-img {
+    				margin: 0px auto;
+    			}
+    		}
+    		.cloud3-img {
+    			position: absolute;
+    			right: 16px;
+    			bottom: 48px;
+    		}
+	  }
+	  .schools-sign-up-section {
+	  	width: 33.33%;
+	  	background-color: #9bd1e6;
+	  	position: relative;
+	  	.schools-sign-up-subsection {
+		  	display: flex;
+		    justify-content: center;
+		    flex-direction: column;
+	    	align-items: center;
+		    height: 100%;
+	    	.bg-img-school	{    	
+    			border-radius: 100%;
+    			padding: 10px;
+    			background-color: #6ea8eb;
+    			height: 120px;
+    			width: 120px;
+    			display: flex;
+    			align-items: center;
+    			justify-content: center;
+    			img {
+    				height: 100px;
+    			}		
+	    	}
+	    	.school-section {
+	    		text-align: center;
+	    		color: #fff;
+	    		font-size: 16px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		}
+	    		span {
+	    		        background: #fff;
+	    				border-radius: 100%;
+	    				padding: 4px;
+	    				display: inline-block;
+	    				position: relative;
+	    				top: -1px;
+	    				margin-right: 3px;	
+	    		}
+	    	}
+	    	.sign-up-btn-section {
+	    		margin-top:30px;
+	    		.sign-up-btn {
+	    			background-color: #fff;
+	    			width: 160px;
+	    			height: 40px;
+	    			color: #27a9e0;
+	    			border: 2px solid #27a9e0;
+	    		}	
+	    	}
+	    }
+	    .cloud1-img {
+	    	position: absolute;
+ 			top: 16px;
+    	    right: 50px;	
+	    }
+	    .cloud2-img {
+	    	position: absolute;
+ 			top: 165px;
+    		right: 266px;
+    	    z-index: 1;
+	    }
+	    .tree6-img {
+	    	position: absolute;
+ 			bottom: 0px;
+    	    left: 45px;
+	    }
+	    .tree7-img {
+	    	position: absolute;
+ 			bottom: 0px;
+    	    left: 90px;
+	    }
+	    .bag-img {
+	    	position: absolute;
+ 			bottom: 0px;
+    	    left: 160px;	
+	    }
+	    .school-img {
+	    	position: absolute;
+ 			bottom: -4px;
+    	    left: 270px;
+    	    z-index: 1;
+	    }
+	  }
+	  .teachers-sign-up-section {
+	    width: 33.33%;
+		background-color: #90d8e5;
+		position: relative;
+		.teachers-sign-up-subsection {
+			display: flex;
+		    justify-content: center;
+		    flex-direction: column;
+	    	align-items: center;
+	    	height: 100%;
+	    	.bg-img-school	{    	
+	    		border-radius: 100%;
+	    		padding: 10px;
+	    		background-color: #fbdc7d;
+	  			height: 120px;
+	    		width: 120px;
+	   		    display: flex;
+	    		align-items: center;
+	    		justify-content: center;
+	    	}
+	    	.teachers-section {
+	    		text-align: center;
+	    		color: #fff;
+	    		font-size: 16px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		}
+	    		span {
+	    		        background: #fff;
+	    				border-radius: 100%;
+	    				padding: 4px;
+	    				display: inline-block;
+	    				position: relative;
+	    				top: -1px;
+	    				margin-right: 3px;	
+	    		}
+	    	}
+	    	.store-btn-section {
+	    		margin-top: 30px;
+	    		a {
+	    		 margin-left: 5px;
+	    		}
+	    	}
+	      }
+	      .scloopy-img {
+	      	position: absolute;
+ 			bottom: 0px;
+    	    right: 160px;
+	      }
+	      .bench-img {
+	      	position: absolute;
+ 			bottom: 0px;
+    	    right: 205px;
+	      }
+	      .tree10-img {
+	      	position: absolute;
+ 			bottom: 0px;
+    	    right: -8px;
+    	    z-index: 1;	
+	      }	
+	    } 
+	  .parents-sign-up-section {
+	    width: 33.33%;
+	    background-color: #a9cbd0;
+	    position: relative;
+	    .parents-main-section {
+		    display: flex;
+		    justify-content: center;
+		    flex-direction: column;
+	    	align-items: center;
+	    	height: 100%;
+	    	.bg-img-school	{
+	    		border-radius: 100%;
+	    		padding: 10px;
+	    		background-color: #fff;
+	  		    height: 120px;
+	    		width: 120px;
+	    		display: flex;
+	    		align-items: center;
+	    		justify-content: center;	
+	    	}
+	    	.parents-section {
+	    		text-align: center;
+	    		color: #fff;
+	    		font-size: 16px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		}
+	    		span {
+    		        background: #fff;
+    				border-radius: 100%;
+    				padding: 4px;
+    				display: inline-block;
+    				position: relative;
+    				top: -1px;
+    				margin-right: 3px;	
+    		}
+	    	}
+	    	.store-btn-section {
+	    		margin-top: 30px;
+	    		a {
+	    		 margin-left: 5px;
+	    		}
+	    	}
+	     }
+	     .cloud4-img {
+	  		position: absolute;
+ 			top: 67px;
+    	    right: 200px;	       
+	    }
+	    .star1-img {
+	    	position: absolute;
+ 			top: 54px;
+    	    right: 150px;
+	    }
+	    .balloon-img{
+	    	position: absolute;
+ 			top: 160px;
+    	    right: 60px;	
+	    }
+	     .star2-img {
+	    	position: absolute;
+    	    top: 235px;
+    		left: 86px;
+	     }
+	     .tree8-img {
+	     	position: absolute;
+ 			bottom: 0px;
+    	    right: 40px;
+    	    height: 110px;	
+	     }
+	     .tree9-img {
+	     	position: absolute;
+ 			bottom: 0px;
+    	    right: 95px;			
+	     }
+	     .globe-img {
+	     	position: absolute;
+ 			bottom: 0px;
+    	    left: 145px;
+	     }
+	     .cup-img {
+	     	position: absolute;
+ 			bottom: 0px;
+    	    left: 90px;
+	     }
+	     .books-img {
+	     	position: absolute;
+ 			bottom: 0px;
+    	    left: 40px;
+	     }
+	   }    
+}	
+.sign-up-registration-section {
+   padding: 20px 10px;
+   background-color: #00a255;
+   position: relative;
+   .schools-sign-up {
+   	display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin: 0px auto;
+    h3 {    
+        color: #fff;
+		font-size: 30px;
+		margin-bottom: 30px;
+	}
+	.schools-sign-up-form {	
+		max-width:370px;
+		min-width:150px;
+	    .form-group {
+	        margin-bottom: 30px;
+			height: auto;
+			.form-control {
+				border-radius: 8px;
+				padding: 18px 18px;
+			}
+	    }
+	    .form-send {  
+	        	margin-bottom: 30px;
+				width: 370px;
+				height: auto;
+				background-color: #fff;
+				color: #27a9e0;
+				border: 2px solid #27a9e0;
+				border-radius: 8px;
+				padding: 9px 9px;
+			}
+	   	}
+	}   	
+   .tree1-img {
+	position: absolute;
+	bottom: 90px;
+    left: 215px;  	   	
+   }
+   .tree2-img {
+	position: absolute;
+	bottom: 90px;
+    left: 255px;
+    height: 120px;  	   	
+   }.grass2-img {
+	position: absolute;
+		bottom: 90px;
+    left: 300px;  	   	
+   }
+   .tree3-img {
+	position: absolute;
+		top: 60px;
+    left: 145px;
+   }
+   .grass3-img {
+   		position: absolute;
+		bottom: 90px;
+    right: 235px;
+   }
+   .tree4-img {
+   		position: absolute;
+		bottom: 90px;
+    right: 135px;
+    height: 120px;
+   }
+   .tree5-img {
+	position: absolute;
+		bottom: 90px;
+    right: 200px;  	   
+   }
+   .bulb-img {
+   		position: absolute;
+		bottom: 95px;
+    	right: 70px;
+   }
+   .grass4-img {
+   		position: absolute;
+		top: 129px;
+    	left: 130px;	
+   }		
+}
+
+.footer-section {
+	padding: 20px 0px;
+	background-color: #25aae1;
+	display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    p { 
+   	   margin-bottom: 0px;
+   	}
+    a {
+   	 font-weight: bold;
+   	 text-decoration: none;
+   	 color: #fff;
+   	 font-size: 22px;
+   }
+}		   
+
+@media screen and (min-device-width: 320px) and (max-device-width: 480px) {
+.sign-up-main-section {  
+	  flex-wrap: wrap;
+	  height: auto;
+	  .teachers {
+	  		padding-bottom: 20px;
+    		.teachers-subsection {
+    			width: 75%;
+    			p {
+    				font-size: 16px;
+    				margin-top: 15px;
+    			}
+    			.schloop-img {
+    				max-width: 33.33%;
+    			}
+    		}
+    		.cloud3-img {
+    			right: 28px;
+    			bottom: 34px;
+    			max-height: 33.33%;
+    		}
+	  }
+	  .schools-sign-up-section {
+	  	width: 100%;
+	  	margin-top: 150px;
+	  	.schools-sign-up-subsection {
+		    height: 550px;
+	    	.bg-img-school	{
+    			height: 90px;
+    			width: 90px;
+    			img {
+    				height: 70px;
+    			}		
+	    	}
+	    	.school-section {
+	    		font-size: 14px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		  font-size: 20px;
+	    		}
+	    	}
+	    	.sign-up-btn-section {
+	    		margin-top:30px;
+	    		.sign-up-btn {
+	    			width: 140px;
+	    		}	
+	    	}
+	    }
+	    .cloud1-img {
+	    	position: absolute;
+ 			top: 16px;
+    	    right: 50px;
+    	    max-height: 25px;	
+	    }
+	    .cloud2-img {
+	    	position: absolute;
+ 			top: 70px;
+    		right: 210px;
+    	    z-index: 1;
+    	    max-height: 25px;
+	    }
+	  }
+	  .teachers-sign-up-section {
+	  	width: 100%;		
+		.teachers-sign-up-subsection {
+	    	height: 550px;
+	    	.bg-img-school	{    	
+	  			height: 90px;
+	    		width: 90px;
+	    		img {
+    				height: 70px;
+    			}
+	    	}
+	    	.teachers-section {
+	    		font-size: 14px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		  font-size: 20px;
+	    		}
+	    	}
+	      }	
+	    } 
+	  .parents-sign-up-section {
+	    width: 100%;
+	    .parents-main-section {
+	    	height: 550px;
+	    	.bg-img-school	{
+	  		    height: 90px;
+	    		width: 90px;	
+	    	}
+	    	.parents-section {
+	    		font-size: 14px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		  font-size: 20px;
+	    		}
+	    	}
+	     }
+	     .cloud4-img {
+	  		position: absolute;
+ 			top: 67px;
+    	    right: 200px;	       
+	    }
+	    .star1-img {
+	    	position: absolute;
+ 			top: 54px;
+    	    right: 150px;
+	    }
+	    .balloon-img{
+	    	position: absolute;
+ 			top: 160px;
+    	    right: 35px;	
+	    }
+	     .star2-img {
+	    	position: absolute;
+    	    top: 235px;
+    		left: 86px;
+	     }
+	     .books-img {
+	     	position: absolute;
+ 			bottom: 0px;
+    	    left: 40px;
+	     }
+	   }    
+}
+.sign-up-registration-section {
+	padding: 0px 20px;
+   .schools-sign-up {
+   	width: 100%;
+    h3 {    
+		font-size: 22px;
+		margin-bottom: 22px;
+		text-align: center;
+	}
+	.schools-sign-up-form {	
+	    .form-group {
+	        margin-bottom: 22px;
+			height: auto;
+			.form-control {
+				padding: 18px 18px;
+			}
+	    }
+	    .form-send {  
+				width: 100%;
+				height: auto;
+				border-radius: 8px;
+			}
+	   	}
+	}   			
+}
+.footer-section {
+	padding: 12px 0px;
+    font-size: 16px;
+    a {
+   	 font-size: 20px;
+   }
+}		   
+}
+@media only screen and (min-device-width: 320px) and (max-device-width: 380px) {
+.sign-up-main-section {
+	.teachers {
+    		.teachers-subsection {
+    			width: 100%;
+			}
+	}			
+}
+}
+
+@media screen and (min-device-width: 481px) and (max-device-width: 767px) {
+.sign-up-main-section {  
+	  height: 650px;
+	  .teachers {
+    		.teachers-subsection {
+    			p {
+    				font-size: 18px;
+    				margin-top: 15px;
+    			}
+    			.schloop-img {
+    				max-width: 45%;
+    			}
+    		}
+    		.cloud3-img {
+    			top: 50px;
+   				height: 30px;
+   				right: 4px;
+    		}
+	  }
+	  .schools-sign-up-section {
+	  	width: 100%;
+	  	.schools-sign-up-subsection {
+		    height: 100%;
+	    	.bg-img-school	{
+    			height: 90px;
+    			width: 90px;
+    			img {
+    				height: 70px;
+    			}		
+	    	}
+	    	.school-section {
+	    		padding: 0px 10px;
+	    		font-size: 14px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		  font-size: 20px;
+	    		}
+	    	}
+	    	.sign-up-btn-section {
+	    		margin-top:30px;
+	    		.sign-up-btn {
+	    			width: 140px;
+	    		}	
+	    	}
+	    }
+	    .cloud1-img {
+    	    height: 45px;	
+	    }
+	    .cloud2-img {
+	    	position: absolute;
+ 			top: 120px;
+    		left: 20px;
+    	    z-index: 1;
+    	    height: 30px;
+	    }
+	    .tree6-img {
+    	 	height: 80px;
+    	 	left: 15px;
+	    }
+	    .tree7-img {
+	    	left: 55px;
+    		height: 55px;
+	    }
+	    .bag-img {
+	    	left: 100px;
+    		height: 35px;	
+	    }
+	    .school-img {
+    	    left: 150px;
+    	    height: 90px;
+	    }
+	  }
+	  .teachers-sign-up-section {
+	  	width: 100%;		
+		.teachers-sign-up-subsection {
+	    	height: 100%;
+	    	.bg-img-school	{    	
+	  			height: 90px;
+	    		width: 90px;
+	    		img {
+    				height: 70px;
+    			}
+	    	}
+	    	.teachers-section {
+	    		padding: 0px 10px;
+	    		font-size: 14px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		  font-size: 20px;
+	    		}
+	    	}
+	      }
+	      .scloopy-img {
+    	    right: 75px;
+	      }
+	      .bench-img { 
+	        right: 110px;
+    		height: 40px;
+	      }
+	      .tree10-img {
+    	    height: 75px;
+	      }	
+	    } 
+	  .parents-sign-up-section {
+	    width: 100%;
+	    .parents-main-section {
+	    	height: 100%;
+	    	.bg-img-school	{
+	  		    height: 90px;
+	    		width: 90px;	
+	    	}
+	    	.parents-section {
+	    		font-size: 14px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		  font-size: 20px;
+	    		}
+	    	}
+	     }
+	     .cloud4-img {
+ 			top: 60px;
+    	    left: 55px;
+    	    height: 30px;	       
+	    }
+	    .star1-img {
+    	    left: 150px;
+	    }
+	    .balloon-img{
+	    	height: 50px;
+	    	right: 5px;	
+	    }
+	     .star2-img {
+    	    top: 190px;
+    		left: 15px;
+	     }
+	     .tree8-img {
+    	    height: 90px;	
+	     }
+	     .tree9-img {
+    	    right: 86px;
+    	    height:	70px;		
+	     }
+	     .cup-img {
+    	    left: 75px;
+	     }
+	     .books-img {
+	     	position: absolute;
+ 			bottom: 0px;
+    	    left: 30px;
+    		height: 60px;
+	     }
+	   }    
+  }
+.sign-up-registration-section {
+	padding: 0px 20px;
+   .schools-sign-up {
+   	width: 100%;
+    h3 {    
+		font-size: 26px;
+		margin-bottom: 26px;
+	}
+	.schools-sign-up-form {	
+	    .form-group {
+	        margin-bottom: 26px;
+	        width: 300px;
+			height: auto;
+	    }
+	    .form-send {  
+				width: 100%;
+			}
+	   	}
+	}
+	.tree1-img {
+		left: 50px;
+    	height: 70px;  	   	
+   	 }
+   .tree2-img {
+		left: 80px;
+    	height: 100px;  	   	
+   	 }
+   .grass2-img {
+    	left: 120px;
+    	height: 25px;  	   	
+   }
+   .grass3-img {
+    	right: 135px;
+    	height: 30px;
+   }
+   .tree4-img {
+   		right: 52px;
+    	height: 100px;
+   }
+   .tree5-img {
+    	right: 100px;
+    	height: 80px; 	   
+   }
+   .bulb-img {
+   		display: none;
+   } 			
+}
+.footer-section {
+	padding: 15px 0px;
+    font-size: 18px;
+}		     
+}
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+.sign-up-main-section {  
+	  height: 650px;
+	  .teachers {
+    		.teachers-subsection {
+    			p {
+    				font-size: 18px;
+    				margin-top: 15px;
+    			}
+    			.schloop-img {
+    				max-width: 45%;
+    			}
+    		}
+    		.cloud3-img {
+    			right: 5px;
+    			bottom: 40px;
+    			height: 38px;
+    		}
+	  }
+	  .schools-sign-up-section {
+	  	width: 100%;
+	  	.schools-sign-up-subsection {
+		    height: 100%;
+	    	.bg-img-school	{
+    			height: 90px;
+    			width: 90px;
+    			img {
+    				height: 70px;
+    			}		
+	    	}
+	    	.school-section {
+	    		font-size: 14px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		  font-size: 20px;
+	    		}
+	    	}
+	    	.sign-up-btn-section {
+	    		margin-top:30px;
+	    		.sign-up-btn {
+	    			width: 140px;
+	    		}	
+	    	}
+	    }
+	    .cloud1-img {
+    	    height: 45px;	
+	    }
+	    .cloud2-img {
+	    	position: absolute;
+ 			top: 120px;
+    		left: 20px;
+    	    z-index: 1;
+    	    height: 30px;
+	    }
+	    .tree6-img {
+    	 	height: 80px;
+    	 	left: 15px;
+	    }
+	    .tree7-img {
+	    	left: 55px;
+    		height: 55px;
+	    }
+	    .bag-img {
+	    	left: 100px;
+    		height: 35px;	
+	    }
+	    .school-img {
+    	    left: 150px;
+    	    height: 90px;
+	    }
+	  }
+	  .teachers-sign-up-section {
+	  	width: 100%;		
+		.teachers-sign-up-subsection {
+	    	height: 100%;
+	    	.bg-img-school	{    	
+	  			height: 90px;
+	    		width: 90px;
+	    		img {
+    				height: 70px;
+    			}
+	    	}
+	    	.teachers-section {
+	    		font-size: 14px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		  font-size: 20px;
+	    		}
+	    	}
+	      }
+	      .scloopy-img {
+    	    right: 75px;
+	      }
+	      .bench-img { 
+	        right: 110px;
+    		height: 40px;
+	      }
+	      .tree10-img {
+    	    height: 75px;
+	      }	
+	    } 
+	  .parents-sign-up-section {
+	    width: 100%;
+	    .parents-main-section {
+	    	height: 100%;
+	    	.bg-img-school	{
+	  		    height: 90px;
+	    		width: 90px;	
+	    	}
+	    	.parents-section {
+	    		font-size: 14px;
+	    		h3 {
+	    		  font-weight: bold;
+	    		  font-size: 20px;
+	    		}
+	    	}
+	     }
+	     .cloud4-img {
+ 			top: 60px;
+    	    left: 55px;
+    	    height: 30px;	       
+	    }
+	    .star1-img {
+    	    left: 150px;
+	    }
+	    .balloon-img{
+	    	height: 50px;	
+	    }
+	     .star2-img {
+    	    top: 190px;
+    		left: 42px;
+	     }
+	     .tree8-img {
+    	    height: 90px;	
+	     }
+	     .tree9-img {
+    	    right: 86px;
+    	    height:	70px;		
+	     }
+	     .cup-img {
+    	    left: 75px;
+	     }
+	     .books-img {
+	     	position: absolute;
+ 			bottom: 0px;
+    	    left: 30px;
+    		height: 60px;
+	     }
+	   }    
+  }
+.sign-up-registration-section {
+	padding: 0px 20px;
+   .schools-sign-up {
+   	width: 100%;
+    h3 {    
+		font-size: 26px;
+		margin-bottom: 26px;
+	}
+	.schools-sign-up-form {	
+	    .form-group {
+	        margin-bottom: 26px;
+	        width: 300px;
+			height: auto;
+	    }
+	    .form-send {  
+				width: 100%;
+			}
+	   	}
+	}
+	.tree1-img {
+		left: 50px;
+    	height: 70px;  	   	
+   	 }
+   .tree2-img {
+		left: 80px;
+    	height: 100px;  	   	
+   	 }
+   .grass2-img {
+    	left: 120px;
+    	height: 25px;  	   	
+   }
+   .grass3-img {
+    	right: 135px;
+    	height: 30px;
+   }
+   .tree4-img {
+   		right: 52px;
+    	height: 100px;
+   }
+   .tree5-img {
+    	right: 100px;
+    	height: 80px; 	   
+   }
+   .bulb-img {
+   		display: none;
+   } 			
+}
+.footer-section {
+	padding: 15px 0px;
+    font-size: 18px;
+}		     
+}

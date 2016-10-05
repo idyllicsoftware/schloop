@@ -1,7 +1,6 @@
 require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
-# require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 require 'mina/rvm'    # for rvm support. (http://rvm.io)
 
 user = %x(git config user.name).delete("\n")
@@ -10,9 +9,7 @@ branch = (ENV['branch'].nil? ? %x(git symbolic-ref --short -q HEAD).delete("\n")
 branch = "master" if branch == ""
 
 server = '52.23.232.204' # this is staging instance
-server_uri = '52.23.232.204'
 env = 'staging' # the dev server is in test env
-branch = "master"
 
 
 # Basic settings:

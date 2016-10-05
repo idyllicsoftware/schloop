@@ -1,0 +1,2 @@
+module Admin::ParentsHelper
+end
