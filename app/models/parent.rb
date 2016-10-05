@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: users
+# Table name: parents
 #
 #  id                     :integer          not null, primary key
 #  email                  :string           default(""), not null
@@ -15,18 +15,16 @@
 #  last_sign_in_ip        :inet
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  type                   :string           not null
-#  first_name             :string
-#  middle_name            :string
-#  last_name              :string
-#  work_number            :string
-#  cell_number            :string
 #
 # Indexes
 #
-#  index_users_on_email                 (email) UNIQUE
-#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_parents_on_email                 (email) UNIQUE
+#  index_parents_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
-class Parent < User
+class Parent < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
 end

@@ -15,7 +15,7 @@
 #  last_sign_in_ip        :inet
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  type                   :string           not null
+#  type                   :string           default("SchoolAdmin"), not null
 #  first_name             :string
 #  middle_name            :string
 #  last_name              :string
