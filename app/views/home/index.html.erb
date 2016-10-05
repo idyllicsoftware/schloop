@@ -24,7 +24,11 @@
 				<div class="sign-up-btn-section">
 					<button class="btn sign-up-btn">Sign Up</button>
 				</div>
-			</div>			
+			</div>
+			<img class="tree6-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green1.png') %>">
+			<img class="tree7-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green3.png') %>">			
+			<img class="bag-img img-responsive hidden-xs" src="<%= asset_path('home/bag.png') %>">			
+			<img class="school-img img-responsive hidden-xs" src="<%= asset_path('home/school1.png') %>">			
 		</div>
 		<div class="teachers-sign-up-section">
 			<div class="teachers-sign-up-subsection">
@@ -41,7 +45,10 @@
 					<a href="#"><img src="<%= asset_path('home/app_store.png') %>"></a>
 					<a href="#"><img src="<%= asset_path('home/play_store.png') %>"></a>
 				</div>
-			</div>		
+			</div>
+			<img class="tree10-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green2.png') %>">		
+	    	<img class="scloopy-img img-responsive hidden-xs" src="<%= asset_path('home/schloopy.png') %>">		
+	    	<img class="bench-img img-responsive hidden-xs" src="<%= asset_path('home/bench.png') %>">		
 		</div>		
 		<div class="parents-sign-up-section">
 		  <img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
@@ -66,16 +73,9 @@
 		  <img class="tree8-img img-responsive" src="<%= asset_path('home/tree_green2.png') %>">		
 		  <img class="tree9-img img-responsive" src="<%= asset_path('home/tree_green.png') %>">
 	      <img class="globe-img img-responsive hidden-xs hidden-sm" src="<%= asset_path('home/globe.png') %>">				
-	      <img class="books-img img-responsive" src="<%= asset_path('home/books.png') %>">
-	      <img class="cup-img img-responsive" src="<%= asset_path('home/cup.png') %>">		
-		</div>
-		<img class="tree6-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green1.png') %>">
-		<img class="tree7-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green3.png') %>">			
-		<img class="bag-img img-responsive hidden-xs" src="<%= asset_path('home/bag.png') %>">			
-		<img class="school-img img-responsive hidden-xs" src="<%= asset_path('home/school1.png') %>">
-		<img class="tree10-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green2.png') %>">		
-	    <img class="scloopy-img img-responsive hidden-xs" src="<%= asset_path('home/schloopy.png') %>">		
-	    <img class="bench-img img-responsive hidden-xs" src="<%= asset_path('home/bench.png') %>">		
+	      <img class="books-img img-responsive hidden-xs" src="<%= asset_path('home/books.png') %>">
+	      <img class="cup-img img-responsive hidden-xs" src="<%= asset_path('home/cup.png') %>">		
+		</div>		
 </div>	
 <div class="sign-up-registration-section">
 	<div>
@@ -86,30 +86,30 @@
 	</div>
 	<div class="schools-sign-up">
 		<h3>Schools Sign Up</h3>
-		<form class="schools-sign-up-form">
+		<form class="schools-sign-up-form" action="/">
 		<div class="form-group">
-			<input type="text" class="form-control input-field" required name="name" placeholder="Your School Name">
+			<input type="text" class="form-control input-field" required name="school_name" placeholder="Your School Name">
 		</div>
 		<div class="form-group">
-			<input type="text" class="form-control input-field" required name="name" placeholder="Contact Person Name">
+			<input type="text" class="form-control input-field" required name="person_name" placeholder="Contact Person Name">
 		</div>
 		<div class="form-group">
-			<input type="text" class="form-control input-field" required name="name" placeholder="Contact Number">
+			<input type="text" class="form-control input-field" required name="contact_number" placeholder="Contact Number">
 		</div>
 		<div class="form-group">
-			<input type="text" class="form-control input-field" required name="name" placeholder="Email">
+			<input type="text" class="form-control input-field" required name="email" placeholder="Email">
 		</div>
-			<button class="btn primary-button form-send">SEND</button>
+			<button type="submit" class="btn primary-button form-send">SEND</button>
 		</form>
 	</div>
 	<img class="grass3-img img-responsive hidden-xs" src="<%= asset_path('home/grass1.png') %>">
 	<img class="tree4-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green2.png') %>">
 	<img class="tree5-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green.png') %>">	
-	<img class="bulb-img img-responsive hidden-xs" src="<%= asset_path('home/bulb.png') %>">
+	<img class="bulb-img img-responsive hidden-xs hidden-sm" src="<%= asset_path('home/bulb.png') %>">
 	<img class="grass4-img img-responsive hidden-xs" src="<%= asset_path('home/grass2.png') %>">	
 </div>
 
 <div class="footer-section">
 	<p>Write to us on</p>
-	<a href="mailto:contact@schloop.com">contact@schloop.co</a>
-</div>
+	<a href="mailto:contact@schloop.co">contact@schloop.co</a>
+</div
