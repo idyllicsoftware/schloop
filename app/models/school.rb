@@ -18,4 +18,10 @@ class School < ActiveRecord::Base
   belongs_to :school_director, class_name: 'Teacher'
 
   #TODO::muktesh add field validations
+
+
+    private
+    def update_school_unique_code
+      
+    end
 end
