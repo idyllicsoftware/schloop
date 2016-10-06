@@ -23,10 +23,10 @@ Rails.application.routes.draw do
 
 
   devise_for :parents, controllers:{
-                         sessions: 'parents/sessions',
-                         registrations: 'parents/registrations',
-                         passwords: 'parents/passwords',
-                         invitations: 'parents/invitations'
+                         sessions: 'admin/parents/sessions',
+                         registrations: 'admin/parents/registrations',
+                         passwords: 'admin/parents/passwords',
+                         invitations: 'admin/parents/invitations'
   }
 
   namespace :admin do
@@ -40,10 +40,11 @@ Rails.application.routes.draw do
       get "new" => 'schools#new'
       post "new" => 'schools#create'
     end
-  end
 
-  resource :parents do
-    get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
+    resource :parents do
+      get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
+    end
+
   end
 
   namespace :api do
