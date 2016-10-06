@@ -5,3 +5,7 @@ ROLES["Admin"] = [
     {name: 'School-Admin'}
 ]
 
+ROLES["USER"] = [
+    {name: 'Teacher'},
+    {name: 'Parent'}
+]
