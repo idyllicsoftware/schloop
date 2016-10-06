@@ -1,4 +1,4 @@
-class Parents::UnlocksController < Devise::UnlocksController
+class Admin::Parents::UnlocksController < Devise::UnlocksController
   # GET /resource/unlock/new
   # def new
   #   super

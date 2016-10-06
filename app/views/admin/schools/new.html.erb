@@ -1,0 +1,38 @@
+<h2>Sign up</h2>
+
+<%= form_tag(controller: "schools", action: "create", method: "post") do %> 
+
+  <div class="field">
+    <%= label_tag :name %><br />
+    <%= text_field_tag '[school]name' %>
+  </div>
+  
+  <div class="field">
+    <%= label_tag :address %><br />
+    <%= text_area_tag '[school]address' %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :zip_code %><br />
+    <%= text_field_tag '[school]zip_code' %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :phone1 %><br />
+    <%= text_field_tag '[school]phone1' %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :phone2 %><br />
+    <%= text_field_tag '[school]phone2' %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :website %><br />
+    <%= text_field_tag '[school]website' %>
+  </div>
+
+   <%= submit_tag("create account") %>
+  
+
+<% end %>

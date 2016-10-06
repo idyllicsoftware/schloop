@@ -1,4 +1,4 @@
-class Teachers::RegistrationsController < Devise::RegistrationsController
+class Admin::Teachers::RegistrationsController < Devise::RegistrationsController
 # before_action :configure_sign_up_params, only: [:create]
 # before_action :configure_account_update_params, only: [:update]
 
@@ -9,7 +9,7 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   # def create
-  #   super
+  #  super
   # end
 
   # GET /resource/edit
@@ -48,7 +48,11 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
   #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
   # end
 
-  # The path used after sign up.
+   def after_sign_in_path_for(parent)
+     '/parents/dashboards/parents_dashboard'
+   end
+
+# The path used after sign up.
   # def after_sign_up_path_for(resource)
   #   super(resource)
   # end
