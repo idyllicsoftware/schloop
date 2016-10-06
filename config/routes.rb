@@ -23,10 +23,10 @@ Rails.application.routes.draw do
 
 
   devise_for :parents, controllers:{
-                         sessions: 'teachers/sessions',
-                         registrations: 'teachers/registrations',
-                         passwords: 'teachers/passwords',
-                         invitations: 'teachers/invitations'
+                         sessions: 'parents/sessions',
+                         registrations: 'parents/registrations',
+                         passwords: 'parents/passwords',
+                         invitations: 'parents/invitations'
   }
 
   namespace :admin do
@@ -35,6 +35,10 @@ Rails.application.routes.draw do
       get "/dashboards/admin_dashboard" => 'users/dashboards#admin_dashboard'
       get "/dashboards/school_admin_dashboard" => 'users/dashboards#school_admin_dashboard'
     end
+  end
+
+  resource :parents do
+    get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
   end
 
   namespace :api do
