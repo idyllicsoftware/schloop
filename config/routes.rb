@@ -45,6 +45,11 @@ Rails.application.routes.draw do
       get "new" => 'school_admins#new'
       post "new" => 'school_admins#create'
     end
+
+    resource :parents do
+      get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
+    end
+
   end
 
   namespace :api do
