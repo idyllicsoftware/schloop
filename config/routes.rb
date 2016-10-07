@@ -40,6 +40,11 @@ Rails.application.routes.draw do
       get "new" => 'schools#new'
       post "new" => 'schools#create'
     end
+
+    resource :school_admins do
+      get "new" => 'school_admins#new'
+      post "new" => 'school_admins#create'
+    end
   end
 
   namespace :api do
