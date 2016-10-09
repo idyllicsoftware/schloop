@@ -21,11 +21,18 @@
 #  last_name              :string
 #  work_number            :string
 #  cell_number            :string
+#  provider               :string           default("email"), not null
+#  uid                    :string           default(""), not null
+#  tokens                 :json
+#  user_token             :string
+#  school_id              :integer
 #
 # Indexes
 #
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_uid_and_provider      (uid,provider) UNIQUE
+#  index_users_on_user_token            (user_token)
 #
 
 class SchoolAdmin < User

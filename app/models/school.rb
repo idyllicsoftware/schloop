@@ -17,6 +17,8 @@
 
 class School < ActiveRecord::Base
   belongs_to :school_director, class_name: 'Teacher'
+  has_many :school_admins
+  has_many :teachers
 
   before_save :update_school_unique_code
   #TODO::muktesh add field validations
