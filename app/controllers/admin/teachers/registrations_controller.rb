@@ -48,8 +48,8 @@ class Admin::Teachers::RegistrationsController < Devise::RegistrationsController
   #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
   # end
 
-   def after_sign_in_path_for(parent)
-     '/parents/dashboards/parents_dashboard'
+   def after_sign_in_path_for(teacher)
+     '/teachers/dashboards/index'
    end
 
 # The path used after sign up.
