@@ -1,7 +1,7 @@
 class Admin::Teachers::SessionsController < Devise::SessionsController
 # before_action :configure_sign_in_params, only: [:create]
-  def after_sign_in_path_for(parent)
-      '/parents/dashboards/parents_dashboard'
+  def after_sign_in_path_for(teacher)
+      '/teachers/dashboards/index'
   end
 
   # GET /resource/sign_in

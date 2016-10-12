@@ -16,13 +16,24 @@
 #
 
 class School < ActiveRecord::Base
+
+  has_many :school_admins
+  has_many :teachers
   belongs_to :school_director, class_name: 'Teacher'
 
   before_save :update_school_unique_code
-  #TODO::muktesh add field validations
 
+  validates :name, :presence => true, :length => { :maximum => 100 }
+  validates :address, :presence =>true, :length => { :maximum => 300 }
+  validates :zip_code, :presence => true, numericality: { only_integer: true }, :length => { :is => 6 }
+  validates :phone1, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
+  validates :phone2, numericality: { only_integer: true }
+  validates :website, :presence => true, :length => { :maximum => 100 }
 
-    private
+  #validates :code, :presence => true, :uniqueness => true, :length => { :is => 6}
+
+  private
+
     def update_school_unique_code
       counter = (last_school_id + 1).to_s.rjust(4, '0')
       school_letters = (name.gsub(/\W+/, '').first(2) rescue 'AB')
@@ -30,6 +41,6 @@ class School < ActiveRecord::Base
     end
 
     def last_school_id
-      self.last.id rescue 0
+      School.last.id rescue 0
     end
 end

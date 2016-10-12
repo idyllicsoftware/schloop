@@ -8,8 +8,9 @@ class Api::ApiController < ApplicationController
   end
 
   def authenticate_token
-    authenticate_with_http_token do |api_token, _options|
-      @current_user = Devise.secure_compare(u.api_token, api_token)
+    authenticate_with_http_token do |token, _options|
+      @current_user = User.find_by(user_token: token)
+      @current_user = Teacher.find_by(token: token) if @current_user.nil?
     end
   end
 
