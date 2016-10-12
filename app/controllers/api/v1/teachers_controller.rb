@@ -10,7 +10,7 @@ class Api::V1::TeachersController < Api::V1::BaseController
       create_teacher_params = teacher_params.merge!(school_id: school.id)
       teacher = Teacher.create(create_teacher_params)
     end
-    if teacher && errors.blank?
+    if teacher && teacher.errors.blank? && errors.blank?
       register_response = {
         success: true,
         error: nil,
