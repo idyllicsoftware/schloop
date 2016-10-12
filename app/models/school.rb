@@ -41,6 +41,6 @@ class School < ActiveRecord::Base
     end
 
     def last_school_id
-      self.last.id rescue 0
+      School.last.id rescue 0
     end
 end

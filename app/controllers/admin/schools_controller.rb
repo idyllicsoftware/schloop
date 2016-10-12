@@ -4,8 +4,11 @@ class Admin::SchoolsController < ApplicationController
 
 	def create
     new_school = School.new(school_params)
-    new_school.save!
-    redirect_to admin_school_admins_path
+    if new_school.save
+    	redirect_to admin_school_admins_path
+    else
+    	render 'new'
+    end
 	end
 
   private
