@@ -1,5 +1,7 @@
 class Admin::Users::DashboardsController < ApplicationController
+	include ApplicationHelper
 	before_action :authenticate_user!
+	before_filter :authorize_permission
 	def index
 	end
 

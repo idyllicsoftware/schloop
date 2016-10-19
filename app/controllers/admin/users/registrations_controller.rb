@@ -8,9 +8,11 @@ class Admin::Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create 
-  # super    
-  # end
+   def create 
+    super    
+    role = Role.find_by_name("School Admin")
+    UserRole.create(:user_id => current_user.id,:role_id => role.id)
+    end
 
   # GET /resource/edit
   # def edit

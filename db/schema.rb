@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161004074053) do
+ActiveRecord::Schema.define(version: 20161012124202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attachments", force: :cascade do |t|
+    t.string   "attachable_type"
+    t.integer  "attachable_id"
+    t.string   "name"
+    t.integer  "sub_type"
+    t.string   "original_filename"
+    t.integer  "file_size"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "parents", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -29,10 +40,40 @@ ActiveRecord::Schema.define(version: 20161004074053) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.text     "first_name",                          null: false
+    t.text     "last_name",                           null: false
+    t.text     "guardian_type",                       null: false
   end
 
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
+
+  create_table "permissions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "controller"
+    t.string   "action"
+    t.text     "flags"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "role_permissions", force: :cascade do |t|
+    t.integer  "role_id"
+    t.integer  "permission_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "role_permissions", ["permission_id"], name: "index_role_permissions_on_permission_id", using: :btree
+  add_index "role_permissions", ["role_id"], name: "index_role_permissions_on_role_id", using: :btree
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.string   "role_map"
+    t.boolean  "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "schools", force: :cascade do |t|
     t.string   "name",               null: false
@@ -44,6 +85,7 @@ ActiveRecord::Schema.define(version: 20161004074053) do
     t.integer  "school_director_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.string   "code",               null: false
   end
 
   create_table "teachers", force: :cascade do |t|
@@ -59,10 +101,26 @@ ActiveRecord::Schema.define(version: 20161004074053) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.integer  "school_id"
+    t.string   "token"
+    t.string   "first_name"
+    t.string   "middle_name"
+    t.string   "last_name"
   end
 
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
+  add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
+
+  create_table "user_roles", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "user_roles", ["user_id", "role_id"], name: "index_user_roles_on_user_id_and_role_id", unique: true, using: :btree
+  add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",            null: false
@@ -83,9 +141,16 @@ ActiveRecord::Schema.define(version: 20161004074053) do
     t.string   "last_name"
     t.string   "work_number"
     t.string   "cell_number"
+    t.string   "user_token"
+    t.integer  "school_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
+  add_foreign_key "role_permissions", "permissions"
+  add_foreign_key "role_permissions", "roles"
+  add_foreign_key "user_roles", "roles"
+  add_foreign_key "user_roles", "users"
 end

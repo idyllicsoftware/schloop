@@ -1,12 +1,13 @@
 role_maps: &role_maps
   - product-admin
   - school-admin
-  - teacher
-  - student
-
 
 # NOTE: BY DEFAULT FLAG IS ASSUMED TO BE {}
 :PERMISSIONS:
-  example/:                                            #On this line put controller name
+  admin/users/dashboards:                                            #On this line put controller name
   - :actions: index
     :role_maps:
+    -product-admin 
+      
+      
+

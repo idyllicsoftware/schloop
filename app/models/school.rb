@@ -12,6 +12,7 @@
 #  school_director_id :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  code               :string           not null
 #
 
 class School < ActiveRecord::Base
