@@ -1,3 +1,36 @@
 // Place all the styles related to the admin/users/dashboards controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.schools-input-form {
+  .schools-registraion-form {
+  	label {
+  	  	color: #666666;
+  	  	margin-bottom: 10px;
+  	}
+  	.form-group {
+  	  margin-bottom: 30px;
+  	  .input-field {
+  	  	background: transparent;
+    	box-shadow: none;
+    	border: 0;
+    	border-bottom: 1px solid #ccc;
+    	border-radius: 0;
+    	font-size: 14px;
+    	outline: 0;
+    	padding: 0;
+    	margin-bottom: 10px;
+    	&:focus {
+  	  	 border-color: #66afe9;
+  	    }
+  	  }
+  	}
+  	.sub-input-field {
+  		display: flex;
+    	justify-content: space-between;
+  	  	.line-fix {
+  	  	  width: 120px;
+  	  	}
+  	}
+  }	
+}
