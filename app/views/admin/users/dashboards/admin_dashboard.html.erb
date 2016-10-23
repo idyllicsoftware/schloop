@@ -1,54 +1,144 @@
-<h1>Admin Dashboard</h1>
+<div class="product-admin-dashborad">
+	<div class="cloud-banner">
+		<img src="<%= asset_path('admin/cloud_bannr1.svg') %>">
+		<img class="cloud-bannr" src="<%= asset_path('admin/cloud_bannr22.png') %>">
+	</div>
+	<div class="admin-header-section">
+		<div class="schloop-logo-align">
+			<img class="img-responsive schloop-img" src="<%= asset_path('home/schloop.png') %>">
+		</div>
+		<div class="admin-profile-header">
+			<div class="admin-profile">
+			</div>
+			<p>Shivam Sahai</p>
+			<p>Sign Out</p>
+		</div>
+	</div>
+	<div class="schools-profile-section">
+		<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="schools-profile">
+					<div class="school-profile-logo">
+						<div class="school-logo"></div>
+					</div>
+					<h4>Dalmiya Public School</h4>
+					<p>DMP0001</p>
+					<div>
+						<p><span><img src="<%= asset_path('admin/contact.svg') %>"></span> 020-6632 492/9836729974</p>
+						<p><span><img src="<%= asset_path('admin/user.svg') %>"></span>Mrs.Suma Das(Principal)</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="schools-profile">
+					<div class="school-profile-logo">
+						<div class="school-logo"></div>
+					</div>
+					<h4>Dalmiya Public School</h4>
+					<p>DMP0001</p>
+					<div>
+						<p><span><img src="<%= asset_path('admin/contact.svg') %>"></span> 020-6632 492/9836729974</p>
+						<p><span><img src="<%= asset_path('admin/user.svg') %>"></span>Mrs.Suma Das(Principal)</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="schools-profile">
+					<div class="school-profile-logo">
+						<div class="school-logo"></div>
+					</div>
+					<h4>Dalmiya Public School</h4>
+					<p>DMP0001</p>
+					<div>
+						<p><span><img src="<%= asset_path('admin/contact.svg') %>"></span> 020-6632 492/9836729974</p>
+						<p><span><img src="<%= asset_path('admin/user.svg') %>"></span>Mrs.Suma Das(Principal)</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="footer-section">
+		<div>
+			<h1>Admin Dashboard</h1>
 &nbsp&nbsp&nbsp<button class="btn btn-primary" id="create-school-btn">Create School</button><br><br>
 &nbsp&nbsp&nbsp<a href='/users/sign_out'>sign out</a>
-
+		</div>
+	</div>
+</div>
 <div class="modal fade" id="create-school-modal">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-body">
 				<div class="schools-input-form">
 					<form class="schools-registraion-form">
-						<div class="form-group">
-						  <label>School name</label>	
-				          <input type="text" class="form-control input-field" required name="name" autocomplete="off">
+						<div class="upload-group col-md-3">
+							<label for="upload-photo">
+								<input type="file" name="photo" id="upload-photo"/>
+							<div class="upload-logo">	
+								<img src="<%= asset_path('admin/plus_icon.svg') %>">
+							</div>	
+							<p>Upload School Photo/ Logo</p>
+							</label>
+						</div>
+						<div class="group-first col-md-9">	
+							<div class="form-group col-md-8">
+							  <label>School name</label>	
+					          <input type="text" class="form-control input-field" required name="name" autocomplete="off">
+					        </div>
+							<div class="form-group col-md-4">
+							  <label>Board</label>	
+					          <input type="text" class="form-control input-field" required name="board_name" placeholder="CBSE,ICSC,IB,SSC" autocomplete="off">
+					        </div>
 				        </div>
-
-				        <div class="form-group">
-				          <label>Address</label>	
-				          <input type="text" class="form-control input-field" required name="address1" autocomplete="off">
-				          <input type="text" class="form-control input-field" name="address2" autocomplete="off">
-				        </div>
-						<div class="sub-input-field">
-				        <div class="form-group">
-				          <label>Zip code</label>	
-				          <input type="text" class="form-control input-field line-fix" required name="zip_code" autocomplete="off">
-			        	</div>
-
-			    	    <div class="form-group">
-			    	      <label>Phone</label>	
-			        	  <input type="text" class="form-control input-field line-fix" required name="phone_number" autocomplete="off">
-			        	</div>
-
-			        	<div class="form-group">
-			        	  <label>Phone(Alternate)</label>	
-			        	  <input type="text" class="form-control input-field line-fix" name="alternate_number" placeholder="Optional" autocomplete="off">
-			            </div>
-			            </div>
-
-				        <label>Contact Person(Optional)</label>
-			            <div class="sub-input-field">		
-				        	<div class="form-group">			        	  	
-				        	  <input type="text" class="form-control input-field line-fix" required name="first_name" placeholder="First name" autocomplete="off">
-				        	</div>  
-				        	<div class="form-group">			        	  	
-				        	  <input type="text" class="form-control input-field line-fix" required name="last_name" placeholder="Last name" autocomplete="off">
+				        <div class="col-md-9">
+							<div class="form-group col-md-6">
+								<label>Principal/ Authority</label>	
+								<input type="text" class="form-control input-field" required name="authority_name" autocomplete="off">
+							</div>
+							<div class="form-group col-md-6">
+								<label>Website</label>	
+								<input type="text" class="form-control input-field" required name="website" autocomplete="off">
+							</div>
+						</div>
+						<div class="col-md-12">
+					        <div class="form-group col-md-9">
+					          <label>Address</label>	
+					          <input type="text" class="form-control input-field" required name="address" autocomplete="off">
+					        </div>
+					        <div class="form-group col-md-3">
+					          <label>Zip code</label>	
+					          <input type="text" class="form-control input-field" required name="zip_code" autocomplete="off">
 				        	</div>
-				        	<div class="form-group">			        	  	  
-				        	  <input type="text" class="form-control input-field line-fix" required name="role" placeholder="Role" autocomplete="off">
+			        	</div>
+			        	<div class="col-md-12">
+				    	    <div class="form-group col-md-4">
+				    	      <label>Phone</label>	
+				        	  <input type="text" class="form-control input-field" required name="phone_number" autocomplete="off">
+				        	</div>
+				        	<div class="form-group col-md-4">
+				        	  <label>Phone(Alternate)</label>	
+				        	  <input type="text" class="form-control input-field" name="alternate_number" placeholder="Optional" autocomplete="off">
 				            </div>
 			            </div>
-			            <div></div>
-			            <div>
+
+				        <label>School Administrators</label>
+			            <div class="col-md-12 administrators-info">		
+				        	<div class="form-group col-md-4">			        	  	
+				        	  <input type="text" class="form-control input-field" required name="administrator_name" placeholder="Name" autocomplete="off">
+				        	</div>  
+				        	<div class="form-group col-md-4">			        	  	
+				        	  <input type="text" class="form-control input-field" required name="phone" placeholder="Phone" autocomplete="off">
+				        	</div>
+				        	<div class="form-group col-md-4">			        	  	  
+				        	  <input type="email" class="form-control input-field" required name="email" placeholder="Email" autocomplete="off">
+				            </div>
+			            </div>
+			            <div class="another-administrator"></div>
+			            <div class="action-btn">
+			            	<p class="add-adiministrator">+ Add another administrator</p>
+			            	<h4 class="hide">Something's not right. We've highlighted the problems in the form above.</h4>
 			            	<button type="submit" class="btn btn-primary">ADD SCHOOL</button>
 			            	<button class="btn btn-primary cancel-creation">CANCEL</button>
 			            </div>			            

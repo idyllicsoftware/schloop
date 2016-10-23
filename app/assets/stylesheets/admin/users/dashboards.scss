@@ -2,11 +2,45 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.product-admin-dashborad {
+  background-color: #caecf0;
+  .cloud-banner {
+    img {
+      height: 68px;
+    }
+    .cloud-bannr {
+      margin-left: -35px;
+    }
+  }
+  .admin-header-section {
+    .schloop-logo-align {
+      display: flex;
+      align-items: center;
+      justify-content: center;     
+    }
+    .admin-profile-header {
+        position: absolute;
+        right: 40px;
+        top: 100px;
+    }
+  }
+  .schools-profile-section {
+    .schools-profile {
+      background-image: url('images/admin/school_profile.svg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  } 
+  .footer-section {
+
+  }
+}
+
 .schools-input-form {
   .schools-registraion-form {
   	label {
   	  	color: #666666;
-  	  	margin-bottom: 10px;
+  	  	margin-bottom: 5px;
   	}
   	.form-group {
   	  margin-bottom: 30px;
@@ -24,13 +58,48 @@
   	  	 border-color: #66afe9;
   	    }
   	  }
-  	}
-  	.sub-input-field {
-  		display: flex;
-    	justify-content: space-between;
-  	  	.line-fix {
-  	  	  width: 120px;
-  	  	}
-  	}
+    }  
+    input::-ms-input-placeholder {
+      color: #cacaca;
+      font-size: 12px;  
+    }    
+    .upload-logo {
+        width: 120px;
+        height: 120px;
+        border-radius: 100%;
+        border: 1px solid #25aae1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .upload-group {
+      padding-left: 26px;
+      #upload-photo {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+      }
+      p {
+          color: #25aae1;
+          font-size: 12px;
+      }
+      label {
+        cursor: pointer;
+      }
+    }
+    > label ,.action-btn {
+      margin-left: 26px;
+    }
+    .action-btn {
+      .add-adiministrator{ 
+        color: #25aae1;
+        cursor: pointer; 
+      }
+      h4{   
+        font-size: 14px;
+        color: #f17676;
+      }
+    }  
   }	
 }
