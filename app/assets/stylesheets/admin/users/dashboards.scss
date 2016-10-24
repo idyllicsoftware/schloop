@@ -16,23 +16,135 @@
     .schloop-logo-align {
       display: flex;
       align-items: center;
-      justify-content: center;     
+      justify-content: center;
+      position: relative;
+      top: -20px;     
     }
     .admin-profile-header {
         position: absolute;
         right: 40px;
-        top: 100px;
+        top: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 14%;
+        .admin-profile {
+          .profile-photo {
+                width: 76px;
+                height: 76px;
+                background-color: #ece1dd;
+                border-radius: 100%;
+                border: 1px solid #25aae1;
+          }
+        }
+        .admin-profile-manu {
+          p{
+            color: #666666;
+            margin: 0px;
+            &:last-child {
+              color: #25aae1; 
+            }
+          }
+        }  
     }
   }
   .schools-profile-section {
-    .schools-profile {
-      background-image: url('images/admin/school_profile.svg');
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
+    margin-bottom: 50px;
+    .container {
+      position: relative;
+      top: 60px;
+      .schools-profile {
+        background: url(admin/school_profile.svg);
+        background-repeat: no-repeat;
+        background-size: 300px 260px;
+        height: 260px;
+        width: 300px;
+        margin: 0 auto;
+          .schools-profile-active {
+            position: absolute;
+            right: 65px;
+            top: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 100%;
+            background-color: #25aae1;
+            img {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 20px;
+            }
+          }
+          .school-profile-logo {
+            position: absolute;
+            top: 35px;
+            right: 65px;
+            .school-logo {
+              width: 110px;
+              height: 110px;
+              background-color: rgba(37, 169, 225, 0.26);
+              border-radius: 100%;
+            }
+          }
+          .school-name-code {
+                position: absolute;
+                top: 54px;
+                width: 32%;
+                left: 88px;
+                h4 {
+                  color: #27a9e0;
+                  font-weight: 600;
+                  margin-bottom: 2px;
+                }
+                p {
+                    color: #666666;
+                    font-size: 16px;
+                    font-weight: 300;
+                }
+          }
+          .school-contact-info {
+              position: absolute;
+              top: 154px;
+              left: 78px;
+              font-size: 14px;
+              color: #666666;
+              span {
+                display: flex;
+                width: 210px;
+                img {
+                  margin-right: 5px;
+                  margin-bottom: 5px;
+                  width: 25px;
+                  height: 25px;
+                }
+                p {
+                  margin: 0px;
+                  padding: 5px;
+                }
+              }
+          }
+      }
+      .add_profile {
+        background: url(admin/school_profile_blank.svg);
+        background-repeat: no-repeat;
+        background-size: 300px 260px;
+        height: 260px;
+        width: 300px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 50px;
+        }
+      }
+    }  
+  }
+  .bottom-img-section {
+    height: 250px;
   } 
   .footer-section {
-
+    background-color: #00a255;
   }
 }
 

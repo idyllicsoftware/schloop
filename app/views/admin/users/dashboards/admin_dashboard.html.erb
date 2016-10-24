@@ -9,9 +9,12 @@
 		</div>
 		<div class="admin-profile-header">
 			<div class="admin-profile">
+				<div class="profile-photo"></div>
 			</div>
-			<p>Shivam Sahai</p>
-			<p>Sign Out</p>
+			<div class="admin-profile-manu">
+				<p>Shivam Sahai</p>
+				<p>Sign Out</p>
+			</div>
 		</div>
 	</div>
 	<div class="schools-profile-section">
@@ -19,52 +22,57 @@
 		<div class="row">
 			<div class="col-md-4">
 				<div class="schools-profile">
+					<div class="schools-profile-active">
+						<img src="<%= asset_path('home/star.png') %>">
+					</div>
 					<div class="school-profile-logo">
 						<div class="school-logo"></div>
 					</div>
+					<div class="school-name-code">
 					<h4>Dalmiya Public School</h4>
 					<p>DMP0001</p>
-					<div>
-						<p><span><img src="<%= asset_path('admin/contact.svg') %>"></span> 020-6632 492/9836729974</p>
-						<p><span><img src="<%= asset_path('admin/user.svg') %>"></span>Mrs.Suma Das(Principal)</p>
+					</div>
+					<div class="school-contact-info">
+						<span><img src="<%= asset_path('admin/contact.svg') %>">
+						<p>020-6632 492/9836729974</p></span>
+						<span><img src="<%= asset_path('admin/user.svg') %>">
+						<p>Mrs.Suma Das (Principal)</p></span>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
 				<div class="schools-profile">
+					<div class="schools-profile-active">
+						<img src="<%= asset_path('home/star.png') %>">
+					</div>
 					<div class="school-profile-logo">
 						<div class="school-logo"></div>
 					</div>
-					<h4>Dalmiya Public School</h4>
-					<p>DMP0001</p>
-					<div>
-						<p><span><img src="<%= asset_path('admin/contact.svg') %>"></span> 020-6632 492/9836729974</p>
-						<p><span><img src="<%= asset_path('admin/user.svg') %>"></span>Mrs.Suma Das(Principal)</p>
+					<div class="school-name-code">
+						<h4>Pawar Public School</h4>
+						<p>DMP00657</p>
+					</div>
+					<div class="school-contact-info">
+						<span><img src="<%= asset_path('admin/contact.svg') %>">
+						<p>020-6632 492/9836729974</p></span>
+						<span><img src="<%= asset_path('admin/user.svg') %>">
+						<p>Mr.Nagendra Pandey (Principal)</p></span>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="schools-profile">
-					<div class="school-profile-logo">
-						<div class="school-logo"></div>
-					</div>
-					<h4>Dalmiya Public School</h4>
-					<p>DMP0001</p>
-					<div>
-						<p><span><img src="<%= asset_path('admin/contact.svg') %>"></span> 020-6632 492/9836729974</p>
-						<p><span><img src="<%= asset_path('admin/user.svg') %>"></span>Mrs.Suma Das(Principal)</p>
-					</div>
+				<div class="add_profile">
+					<img src="<%= asset_path('admin/plus_icon.svg') %>">
 				</div>
 			</div>
 		</div>
 		</div>
 	</div>
-	<div class="footer-section">
-		<div>
-			<h1>Admin Dashboard</h1>
-&nbsp&nbsp&nbsp<button class="btn btn-primary" id="create-school-btn">Create School</button><br><br>
-&nbsp&nbsp&nbsp<a href='/users/sign_out'>sign out</a>
+	<div class="bottom-img-section">
+		<button class="btn btn-primary" id="create-school-btn">Create School</button>
+		<a href='/users/sign_out'>sign out</a>
 		</div>
+	<div class="footer-section">
 	</div>
 </div>
 <div class="modal fade" id="create-school-modal">
