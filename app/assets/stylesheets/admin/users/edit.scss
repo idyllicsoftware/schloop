@@ -1,0 +1,223 @@
+$background-color: #c8ecf0;
+$heading-color:#dbca17;
+$container-background: #fffef4;
+$heading-color: #e3d568;
+$text-color: #666666;
+$link-color: #25aae1;
+$tab-border: #f0efe8;
+
+.mt-40{
+	margin-top: 40px;
+}
+.mt-30{
+	margin-top: 30px;
+}
+.mt-10{
+	margin-top: 10px;
+}
+.plr-20{
+	padding: 0 20px;
+}
+.plr-10{
+	padding: 0 10px;
+}
+a{
+	color: $link-color !important;
+	&:hover{
+		text-decoration: none;
+		color: rgba(43, 191, 231, 0.9) !important;
+	}
+}
+.school-profile-main-section {
+	.container{
+		width: 1020px;
+		margin: 50px auto;
+		background: $container-background;
+		padding: 40px 90px;
+		border-radius: 10px;
+		-webkit-box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35);
+	  	-moz-box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35);
+	  	box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35);
+	  	.data-title{
+			font-weight: bold;
+			line-height: 1;
+		}
+		.data-attr{
+			display: block;
+			margin-top: 8px;
+		}
+	}
+	.content-wrapper{
+		.header-wrapper{
+			border-bottom: 1px solid #979797;
+			padding: 5px 5px 15px;
+			display: flex;
+			.home-logo{
+				width: 120px;
+    			height: 120px;
+    			border-radius: 100%;
+    			background: url(https://dummyimage.com/110x110/f4c441/000000.png&text=DPS);
+			}
+			.heading-wrapper{
+				display: inline-block;
+				padding: 10px 40px;
+				margin-bottom: 40px;
+				h2{
+					color: $heading-color!important;
+				}
+				p{
+			    line-height: 0.3;
+					font-size: 16px;
+				}
+			}
+		}
+		.data-attr address{
+			color: $link-color;
+			font-weight: 600px;
+		}
+		.data-wrapper{
+			.last-col {
+				padding-right: 0;
+			}
+			.overflow{
+				overflow: auto;
+			}
+			table{
+				margin-top: 8px;
+				tr td{
+					padding: 5px 14px;
+					&:first-child{
+						padding-left: 0;
+					}
+				}
+			}
+			#add-admin{
+				font-weight: 700;
+				a{
+					text-decoration: none;
+				}
+			}
+		}
+		.tab-wrapper{
+			.nav-tabs{
+				border-bottom: 2px solid $tab-border;
+				li{
+					margin-bottom: 0 !important;
+					&:hover{
+						background: transparent;
+					}
+					a{
+					  color: $heading-color !important;
+					  font-weight: 600;
+					  font-size: 16px;
+					  padding: 10px 7px !important;
+						margin-right: 17px !important;
+						border: none;
+						&:hover{
+							background: transparent;
+							border: none;
+						}
+					}
+				}
+			}
+			.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+				background: transparent;
+				border: none;
+				border-bottom: 3px solid $link-color;
+				cursor: default;
+			}
+		}
+		.subject-wrapper{
+			padding: 30px 0 40px;
+	    background: #fff;
+	    .data-title{
+				font-weight: 700;
+			}
+			.data-attr{
+				#add-sub{
+					float: right;
+					font-weight: 700;
+				}
+				ul{
+					padding: 10px 0 0;
+					margin: 0;
+					li{
+						list-style: none;
+						float: left;
+						padding-left: 55px;
+						&:first-child{
+							padding-left: 0;
+						}
+					}
+				}
+			}
+		}
+		.inner-tabs{
+			background: #f9f8ec;
+			padding: 20px 0 30px;
+			.data-title{
+				text-transform: uppercase;
+				.fa{
+					padding-right: 20px;
+				}
+			}
+			.nav-tabs{
+				border-bottom: 2px dotted $tab-border;
+				li{
+					margin-bottom: 0 !important;
+					&:hover{
+						background: transparent;
+					}
+					a{
+					  color: $text-color !important;
+					  font-size: 13px;
+					  font-weight: normal;
+						margin-right: 17px !important;
+						border: none;
+						padding: 10px !important;
+						/*&:hover{
+							background: transparent;
+							border: none;
+						}*/
+					}
+				}
+			}
+			.div-operation{
+				float: right;
+				padding-right: 0 !important;
+				span{
+					padding-right: 12px;
+					&:last-child{
+						padding-right: 0 !important;
+					}
+					a{
+						font-weight: 700;
+					}
+				}
+			}
+			.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+				background: transparent;
+				border: none;
+				font-weight: 700;
+				cursor: default;
+			}
+			.teachers-wrapper ul{
+				margin: 0px 0;
+				li{
+					list-style: none;
+					float: left;
+					margin-right: 30px;
+					img{
+						border-radius: 50%;
+					}
+					.img-caption{
+						display: block;
+						width: 60px;
+						font-size: 13px;
+						line-height: 1.5;
+					}
+				}
+			}
+		}
+	}
+}	
