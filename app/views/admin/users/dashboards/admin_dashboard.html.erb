@@ -13,13 +13,20 @@
 			</div>
 			<div class="admin-profile-manu">
 				<p>Shivam Sahai</p>
-				<p>Sign Out</p>
+				<p><a href='/users/sign_out'>Sign Out</a></p>
 			</div>
 		</div>
 	</div>
 	<% @schools.each do |school| %>
 	<div class="schools-profile-section">
+		<div class="cloud_image">
+		<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
+		</div>
 		<div class="container">
+		<div>
+			<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
+		  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
+		</div>
 		<div class="row">
 			<div class="col-md-4">
 				<div class="schools-profile">
@@ -57,7 +64,7 @@
 		</div>
 		</div>
 	</div>
-	<div class="bottom-img-section">	
+	<div class="bottom-img-section">
 	</div>
 	<div class="footer-section">
 	</div>
