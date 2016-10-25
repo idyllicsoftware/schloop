@@ -1,57 +1,84 @@
 
-	<div class="schools-profile-section">
-		<div class="cloud_image">
-			<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
+<div class="schools-profile-section">
+	<div class="cloud_image">
+		<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
+	</div>
+	<div class="container">
+		<div>
+			<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
+		  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
 		</div>
-		<div class="container">
-			<div>
-				<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
-			  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
+		<div class="row">
+  			<% @schools.each do |school| %>
+		    <div class="col-md-4">
+		        <div class="schools-profile">
+		        	<div class="schools-profile-active">
+						<img src="<%= asset_path('home/star.png') %>">
+					</div>
+					<div class="school-profile-logo">
+						<div class="school-logo">
+						<img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > 
+						</div>
+					</div>
+					<div class="school-name-code">
+						<h4><%= school.name %></h4>
+						<p><%= school.code %></p>
+					</div>
+					<div class="school-contact-info">
+						<span><img src="<%= asset_path('admin/contact.svg') %>">
+						<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
+						<span><img src="<%= asset_path('admin/user.svg') %>">
+							<% id = school.school_director_id %>
+							<% a = User.find_by_id(id) %>
+							<% if a.present? %>
+							<%= a.first_name %>
+							<% end %>
+					    </span>
+					</div>
+				</div>
 			</div>
-			<div class="row">
-      				<% @schools.each do |school| %>
-			    <div class="col-md-4">
-			        <div class="schools-profile">
-			        	<div class="schools-profile-active">
-							<img src="<%= asset_path('home/star.png') %>">
-						</div>
-						<div class="school-profile-logo">
-							<div class="school-logo">
-							<img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > 
-							</div>
-						</div>
-						<div class="school-name-code">
-							<h4><%= school.name %></h4>
-							<p><%= school.code %></p>
-						</div>
-						<div class="school-contact-info">
-							<span><img src="<%= asset_path('admin/contact.svg') %>">
-							<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
-							<span><img src="<%= asset_path('admin/user.svg') %>">
-								<% id = school.school_director_id %>
-								<% a = User.find_by_id(id) %>
-								<% if a.present? %>
-								<%= a.first_name %>
-								<% end %>
-						    </span>
+			<div class="col-md-4">
+		        <div class="schools-profile">
+		        	<div class="schools-profile-active">
+						<img src="<%= asset_path('home/star.png') %>">
+					</div>
+					<div class="school-profile-logo">
+						<div class="school-logo">
+						<img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > 
 						</div>
 					</div>
-				</div>
-				<% end %>
-				<div class="col-md-4">
-					<div class="add_profile" id="create-school-btn">
-						<img src="<%= asset_path('admin/plus_icon.svg') %>">
+					<div class="school-name-code">
+						<h4><%= school.name %></h4>
+						<p><%= school.code %></p>
+					</div>
+					<div class="school-contact-info">
+						<span><img src="<%= asset_path('admin/contact.svg') %>">
+						<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
+						<span><img src="<%= asset_path('admin/user.svg') %>">
+							<% id = school.school_director_id %>
+							<% a = User.find_by_id(id) %>
+							<% if a.present? %>
+							<%= a.first_name %>
+							<% end %>
+					    </span>
 					</div>
 				</div>
-		    </div>
-		</div>
-	</div>	    
+			</div>
+			<% end %>				
+			<div class="col-md-4">
+				<div class="add_profile" id="create-school-btn">
+					<img src="<%= asset_path('admin/plus_icon.svg') %>">
+				</div>
+			</div>
+	    </div>
+	</div>
+</div>	    
 <div class="modal fade" id="create-school-modal">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-body">
 				<div class="schools-input-form">
-            <%= form_tag admin_schools_path,class:"schools-registraion-form"	  do %>
+           			<%= form_tag admin_schools_path,class:"schools-registraion-form" do %>
 						<div class="upload-group col-md-3">
 							<label for="upload-photo">
 								<input type="file" name="school[:photo]" id="upload-photo"/>
@@ -121,8 +148,7 @@
 			            	<button type="submit" class="btn btn-primary">ADD SCHOOL</button>
 			            	<button class="btn btn-primary cancel-creation">CANCEL</button>
 			            </div>			            
-					<!--/form-->
-      <% end %>
+      				<% end %>
 				</div>				
 			</div>
 		</div>
