@@ -13,12 +13,19 @@
 			</div>
 			<div class="admin-profile-manu">
 				<p>Shivam Sahai</p>
-				<p>Sign Out</p>
+				<p><a href='/users/sign_out'>Sign Out</a></p>
 			</div>
 		</div>
 	</div>
 	<div class="schools-profile-section">
+		<div class="cloud_image">
+		<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
+		</div>
 		<div class="container">
+		<div>
+			<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
+		  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
+		</div>
 		<div class="row">
 			<div class="col-md-4">
 				<div class="schools-profile">
@@ -61,7 +68,27 @@
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="add_profile">
+				<div class="schools-profile">
+					<div class="schools-profile-active">
+						<img src="<%= asset_path('home/star.png') %>">
+					</div>
+					<div class="school-profile-logo">
+						<div class="school-logo"></div>
+					</div>
+					<div class="school-name-code">
+						<h4>Pawar Public School</h4>
+						<p>DMP00657</p>
+					</div>
+					<div class="school-contact-info">
+						<span><img src="<%= asset_path('admin/contact.svg') %>">
+						<p>020-6632 492/9836729974</p></span>
+						<span><img src="<%= asset_path('admin/user.svg') %>">
+						<p>Mr.Nagendra Pandey (Principal)</p></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="add_profile" id="create-school-btn">
 					<img src="<%= asset_path('admin/plus_icon.svg') %>">
 				</div>
 			</div>
@@ -69,9 +96,9 @@
 		</div>
 	</div>
 	<div class="bottom-img-section">
-		<button class="btn btn-primary" id="create-school-btn">Create School</button>
-		<a href='/users/sign_out'>sign out</a>
-		</div>
+		
+		
+	</div>
 	<div class="footer-section">
 	</div>
 </div>

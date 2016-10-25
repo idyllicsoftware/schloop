@@ -60,6 +60,7 @@
         height: 260px;
         width: 300px;
         margin: 0 auto;
+        margin-bottom: 30px;
           .schools-profile-active {
             position: absolute;
             right: 65px;
@@ -134,10 +135,29 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
         img {
           width: 50px;
         }
       }
+      .cloud1-img {
+        position: absolute;
+        bottom: 0;
+        left: 310px;
+      }
+      .cloud4-img {
+        position: absolute;
+        top: 280px;
+        right: 80px;
+      }
+    }
+    .cloud_image {
+        margin: 0px 62%;
+        position: relative;
+        width: 20%;
+        .cloud3-img {
+          position: absolute;
+        }
     }  
   }
   .bottom-img-section {
