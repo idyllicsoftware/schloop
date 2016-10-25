@@ -17,6 +17,7 @@
 			</div>
 		</div>
 	</div>
+	<% @schools.each do |school| %>
 	<div class="schools-profile-section">
 		<div class="container">
 		<div class="row">
@@ -26,52 +27,38 @@
 						<img src="<%= asset_path('home/star.png') %>">
 					</div>
 					<div class="school-profile-logo">
-						<div class="school-logo"></div>
+						<div class="school-logo"> <img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > </div>
 					</div>
 					<div class="school-name-code">
-					<h4>Dalmiya Public School</h4>
-					<p>DMP0001</p>
+					<h4><%= school.name %></h4>
+					<p><%= school.code %></p>
 					</div>
 					<div class="school-contact-info">
 						<span><img src="<%= asset_path('admin/contact.svg') %>">
-						<p>020-6632 492/9836729974</p></span>
+						<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
 						<span><img src="<%= asset_path('admin/user.svg') %>">
-						<p>Mrs.Suma Das (Principal)</p></span>
+							<% id = school.school_director_id %>
+							<% a = User.find_by_id(id) %>
+							<% if a.present? %>
+							<%= a.first_name %>
+							<% end %>
+					    </span>
 					</div>
 				</div>
 			</div>
+		<% end %>
+
+			
 			<div class="col-md-4">
-				<div class="schools-profile">
-					<div class="schools-profile-active">
-						<img src="<%= asset_path('home/star.png') %>">
-					</div>
-					<div class="school-profile-logo">
-						<div class="school-logo"></div>
-					</div>
-					<div class="school-name-code">
-						<h4>Pawar Public School</h4>
-						<p>DMP00657</p>
-					</div>
-					<div class="school-contact-info">
-						<span><img src="<%= asset_path('admin/contact.svg') %>">
-						<p>020-6632 492/9836729974</p></span>
-						<span><img src="<%= asset_path('admin/user.svg') %>">
-						<p>Mr.Nagendra Pandey (Principal)</p></span>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="add_profile">
+				<div class="add_profile" id="create-school-btn">
 					<img src="<%= asset_path('admin/plus_icon.svg') %>">
 				</div>
 			</div>
 		</div>
 		</div>
 	</div>
-	<div class="bottom-img-section">
-		<button class="btn btn-primary" id="create-school-btn">Create School</button>
-		<a href='/users/sign_out'>sign out</a>
-		</div>
+	<div class="bottom-img-section">	
+	</div>
 	<div class="footer-section">
 	</div>
 </div>
