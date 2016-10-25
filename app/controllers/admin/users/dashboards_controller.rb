@@ -1,5 +1,8 @@
 class Admin::Users::DashboardsController < ApplicationController
 	before_action :authenticate_user!
+
+	layout "admin"
+	
 	def index
 	end
 
@@ -8,4 +11,5 @@ class Admin::Users::DashboardsController < ApplicationController
 
 	def admin_dashboard
 	end
+
 end

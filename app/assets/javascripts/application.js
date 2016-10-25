@@ -16,3 +16,4 @@
 //= require_tree .
 //= require bootstrap-sprockets
 //= require admin/users/dashboards
+//= require admin/admin
