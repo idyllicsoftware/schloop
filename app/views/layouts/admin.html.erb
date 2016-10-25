@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Schloop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<% if notice %>
+  <p class="alert alert-success"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="alert alert-danger"><%= alert %></p>
+<% end %>
+
+
+<div class="product-admin-dashborad">
+	<div class="cloud-banner">
+		<img src="<%= asset_path('admin/cloud_bannr1.svg') %>">
+		<img class="cloud-bannr" src="<%= asset_path('admin/cloud_bannr22.png') %>">
+	</div>
+	<div class="admin-header-section">
+		<div class="schloop-logo-align">
+			<img class="img-responsive schloop-img" src="<%= asset_path('home/schloop.png') %>">
+		</div>
+		<div class="admin-profile-header">
+			<div class="admin-profile">
+				<div class="profile-photo"></div>
+			</div>
+			<div class="admin-profile-manu">
+				<p>Shivam Sahai</p>
+				<p><a href='/users/sign_out'>Sign Out</a></p>
+			</div>
+		</div>
+	</div>
+	<%= yield %> 
+	<div class="bottom-img-section">	
+	</div>
+	<div class="footer-section">
+	</div>
+</div>
+
+
+</body>
+</html>
