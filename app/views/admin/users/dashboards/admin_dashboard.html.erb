@@ -1,84 +1,60 @@
-<div class="schools-profile-section">
-	<div class="cloud_image">
-	<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
-	</div>
-	<div class="container">
-	<div>
-		<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
-	  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
-	</div>
 
-	<div class="row">
-		<div class="col-md-4">
-			<div class="schools-profile">
-				<a href="/admin/schools/edit">
 	<div class="schools-profile-section">
 		<div class="cloud_image">
-		<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
+			<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
 		</div>
 		<div class="container">
-		<div>
-			<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
-		  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
-		</div>
-		<div class="row">
-			<% @schools.each do |school| %>
-
-			<div class="col-md-4">
-				<div class="schools-profile">
-					<div class="schools-profile-active">
-						<img src="<%= asset_path('home/star.png') %>">
-					</div>
-					<div class="school-profile-logo">
-						<div class="school-logo"> <img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > </div>
-					</div>
-					<div class="school-name-code">
-					<h4><%= school.name %></h4>
-					<p><%= school.code %></p>
-					</div>
-					<div class="school-contact-info">
-						<span><img src="<%= asset_path('admin/contact.svg') %>">
-						<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
-						<span><img src="<%= asset_path('admin/user.svg') %>">
-
-							<% id = school.school_director_id %>
-							<% a = User.find_by_id(id) %>
-							<% if a.present? %>
-							<%= a.first_name %>
-							<% end %>
-					    </span>
+			<div>
+				<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
+			  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
+			</div>
+			<div class="row">
+      				<% @schools.each do |school| %>
+			    <div class="col-md-4">
+			        <div class="schools-profile">
+			        	<div class="schools-profile-active">
+							<img src="<%= asset_path('home/star.png') %>">
+						</div>
+						<div class="school-profile-logo">
+							<div class="school-logo">
+							<img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > 
+							</div>
+						</div>
+						<div class="school-name-code">
+							<h4><%= school.name %></h4>
+							<p><%= school.code %></p>
+						</div>
+						<div class="school-contact-info">
+							<span><img src="<%= asset_path('admin/contact.svg') %>">
+							<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
+							<span><img src="<%= asset_path('admin/user.svg') %>">
+								<% id = school.school_director_id %>
+								<% a = User.find_by_id(id) %>
+								<% if a.present? %>
+								<%= a.first_name %>
+								<% end %>
+						    </span>
+						</div>
 					</div>
 				</div>
-			</div>
-		<% end %>
-
-			
-			<div class="col-md-4">
-				<div class="add_profile" id="create-school-btn">
-					<img src="<%= asset_path('admin/plus_icon.svg') %>">
+				<% end %>
+				<div class="col-md-4">
+					<div class="add_profile" id="create-school-btn">
+						<img src="<%= asset_path('admin/plus_icon.svg') %>">
+					</div>
 				</div>
-			</div>
+		    </div>
 		</div>
-		<div class="col-md-4">
-			<div class="add_profile" id="create-school-btn">
-				<img src="<%= asset_path('admin/plus_icon.svg') %>">
-			</div>
-		</div>
-	</div>
-	<div class="bottom-img-section">
-	</div>
-	<div class="footer-section">
-	</div>
-</div>
+	</div>	    
 <div class="modal fade" id="create-school-modal">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-body">
 				<div class="schools-input-form">
-					<form class="schools-registraion-form" >
+            <%= form_tag admin_schools_path,class:"schools-registraion-form"	  do %>
 						<div class="upload-group col-md-3">
 							<label for="upload-photo">
-								<input type="file" name="photo" id="upload-photo"/>
+								<input type="file" name="school[:photo]" id="upload-photo"/>
 							<div class="upload-logo">	
 								<img src="<%= asset_path('admin/plus_icon.svg') %>">
 							</div>	
@@ -88,41 +64,41 @@
 						<div class="group-first col-md-9">	
 							<div class="form-group col-md-8">
 							  <label>School name</label>	
-					          <input type="text" class="form-control input-field" required name="name" autocomplete="off">
+					          <input type="text" class="form-control input-field" required name="school[:name]" autocomplete="off">
 					        </div>
 							<div class="form-group col-md-4">
 							  <label>Board</label>	
-					          <input type="text" class="form-control input-field" required name="board_name" placeholder="CBSE,ICSC,IB,SSC" autocomplete="off">
+					          <input type="text" class="form-control input-field" required name="school[:board]" placeholder="CBSE,ICSC,IB,SSC" autocomplete="off">
 					        </div>
 				        </div>
 				        <div class="col-md-9">
 							<div class="form-group col-md-6">
 								<label>Principal/ Authority</label>	
-								<input type="text" class="form-control input-field" required name="authority_name" autocomplete="off">
+								<input type="text" class="form-control input-field" required name="school[:authority_name]" autocomplete="off">
 							</div>
 							<div class="form-group col-md-6">
 								<label>Website</label>	
-								<input type="text" class="form-control input-field" required name="website" autocomplete="off">
+								<input type="text" class="form-control input-field" required name="school[:website]" autocomplete="off">
 							</div>
 						</div>
 						<div class="col-md-12">
 					        <div class="form-group col-md-9">
 					          <label>Address</label>	
-					          <input type="text" class="form-control input-field" required name="address" autocomplete="off">
+					          <input type="text" class="form-control input-field" required name="school[:address]" autocomplete="off">
 					        </div>
 					        <div class="form-group col-md-3">
 					          <label>Zip code</label>	
-					          <input type="text" class="form-control input-field" required name="zip_code" autocomplete="off">
+					          <input type="text" class="form-control input-field" required name="school[:zip_code]" autocomplete="off">
 				        	</div>
 			        	</div>
 			        	<div class="col-md-12">
 				    	    <div class="form-group col-md-4">
-				    	      <label>Phone</label>	
-				        	  <input type="text" class="form-control input-field" required name="phone_number" autocomplete="off">
+				    	      <label>Phone</label>
+				        	  <input type="text" class="form-control input-field" required name="school[:phone1]" autocomplete="off">
 				        	</div>
 				        	<div class="form-group col-md-4">
 				        	  <label>Phone(Alternate)</label>	
-				        	  <input type="text" class="form-control input-field" name="alternate_number" placeholder="Optional" autocomplete="off">
+				        	  <input type="text" class="form-control input-field" name="school[:phone2]" placeholder="Optional" autocomplete="off">
 				            </div>
 			            </div>
 
@@ -145,9 +121,10 @@
 			            	<button type="submit" class="btn btn-primary">ADD SCHOOL</button>
 			            	<button class="btn btn-primary cancel-creation">CANCEL</button>
 			            </div>			            
-					</form>
+					<!--/form-->
+      <% end %>
 				</div>				
 			</div>
 		</div>
 	</div>
-</div>
+</div> 
