@@ -51,11 +51,11 @@ class Admin::Users::RegistrationsController < Devise::RegistrationsController
    private
 
    def sign_up_params
-      params.require(:user).permit(:first_name, :middle_name, :last_name, :cell_number , :work_number, :email, :password,:password_confirmation)
+      params.require(:user).permit(:first_name, :middle_name, :last_name, :cell_number , :work_number, :email, :school_id, :password,:password_confirmation)
    end
 
    def account_update_params
-     params.require(:user).permit.(:first_name, :middle_name, :last_name, :cell_number , :work_number, :email, :password, :password_confirmation)
+     params.require(:user).permit.(:first_name, :middle_name, :last_name, :cell_number , :work_number, :email, :school_id, :password, :password_confirmation)
    end
 
   # The path used after sign up.
