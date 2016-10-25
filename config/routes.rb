@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resource :schools do
       get "new" => 'schools#new'
       post "new" => 'schools#create'
+      post "create" => 'schools#create'
     end
 
     resource :school_admins do

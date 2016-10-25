@@ -13,6 +13,7 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  code               :string           not null
+#  board              :string
 #
 
 class School < ActiveRecord::Base
