@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
 #  validates :work_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
 #  validates :cell_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
 
+
   before_save :set_user_token
 
   def set_user_token

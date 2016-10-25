@@ -10,6 +10,7 @@ class Admin::Users::DashboardsController < ApplicationController
 	end
 
 	def admin_dashboard
+		@schools = School.all
 	end
 
 end
