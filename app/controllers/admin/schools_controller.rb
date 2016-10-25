@@ -1,5 +1,8 @@
 class Admin::SchoolsController < ApplicationController
-	def new
+	
+  layout "admin"
+  
+  def new
 	end
 
 	def create
@@ -24,11 +27,8 @@ class Admin::SchoolsController < ApplicationController
 
   def edit
 
-    authority_user = User.create #Create new School-Admin
-    school_admin = User.create
-
   end
-
+    
   private
 
   def school_params

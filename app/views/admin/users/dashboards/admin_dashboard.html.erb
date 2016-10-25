@@ -1,23 +1,12 @@
-<div class="product-admin-dashborad">
-	<div class="cloud-banner">
-		<img src="<%= asset_path('admin/cloud_bannr1.svg') %>">
-		<img class="cloud-bannr" src="<%= asset_path('admin/cloud_bannr22.png') %>">
+<div class="schools-profile-section">
+	<div class="cloud_image">
+	<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
 	</div>
-	<div class="admin-header-section">
-		<div class="schloop-logo-align">
-			<img class="img-responsive schloop-img" src="<%= asset_path('home/schloop.png') %>">
-		</div>
-		<div class="admin-profile-header">
-			<div class="admin-profile">
-				<div class="profile-photo"></div>
-			</div>
-			<div class="admin-profile-manu">
-				<p>Shivam Sahai</p>
-				<p><a href='/users/sign_out'>Sign Out</a></p>
-			</div>
-		</div>
+	<div class="container">
+	<div>
+		<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
+	  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
 	</div>
-	<% @schools.each do |school| %>
 	<div class="schools-profile-section">
 		<div class="cloud_image">
 		<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
@@ -28,9 +17,11 @@
 		  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
 		</div>
 		<div class="row">
-			<div class="col-md-4">
-				<div class="schools-profile">
-					<div class="schools-profile-active">
+      <% @schools.each do |school| %>
+
+    <div class="col-md-4">
+        <div class="schools-profile">
+          <div class="schools-profile-active">
 						<img src="<%= asset_path('home/star.png') %>">
 					</div>
 					<div class="school-profile-logo">
@@ -56,12 +47,10 @@
 		<% end %>
 
 			
-			<div class="col-md-4">
-				<div class="add_profile" id="create-school-btn">
-					<img src="<%= asset_path('admin/plus_icon.svg') %>">
-				</div>
+		<div class="col-md-4">
+			<div class="add_profile" id="create-school-btn">
+				<img src="<%= asset_path('admin/plus_icon.svg') %>">
 			</div>
-		</div>
 		</div>
 	</div>
 	<div class="bottom-img-section">
@@ -152,3 +141,5 @@
 		</div>
 	</div>
 </div>
+    </div>
+    </div> </div>
