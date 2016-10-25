@@ -17,7 +17,6 @@
 			</div>
 		</div>
 	</div>
-	<% @schools.each do |school| %>
 	<div class="schools-profile-section">
 		<div class="cloud_image">
 		<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
@@ -28,6 +27,8 @@
 		  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
 		</div>
 		<div class="row">
+			<% @schools.each do |school| %>
+
 			<div class="col-md-4">
 				<div class="schools-profile">
 					<div class="schools-profile-active">
@@ -74,7 +75,7 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<div class="schools-input-form">
-					<form class="schools-registraion-form">
+					<form class="schools-registraion-form" >
 						<div class="upload-group col-md-3">
 							<label for="upload-photo">
 								<input type="file" name="photo" id="upload-photo"/>
