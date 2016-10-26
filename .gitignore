@@ -40,4 +40,8 @@
 database.yml
 tags
 dump.rdb
+
+node_modules
+npm-debug.log
+
 /coverage/*
