@@ -1,1 +1,5 @@
-# schloop
+# Schloop
+
+ ```
+     bundle install
+ ```
