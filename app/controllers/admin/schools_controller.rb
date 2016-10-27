@@ -11,6 +11,12 @@ class Admin::SchoolsController < ApplicationController
     end
 	end
 
+  def edit
+    @user = current_user
+    @school = School.where(id: @user.school_id).take
+    @school_admins = User.where(school_id: @school.id)
+  end
+
   private
 
   def school_params

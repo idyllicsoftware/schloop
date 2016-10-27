@@ -1,0 +1,23 @@
+<%= @user.id  %>
+<%= @school.id %>
+<br><br>
+
+
+<%= @school.name %><br>
+<%= @school.code %><br>
+<br>
+Board:  <%= @school.board %><br>
+Website: <%=  @school.website %><br>
+address: <%= @school.address %><br>
+zip clde: <%= @school.zip_code %><br>
+phone: <% @school.phone1 %><br>
+phone(Alternate): <% @school.phone2 %><br>
+<br><br>
+School Administrators<br>
+<% @school_admins.each do |school_admin| %>
+<%= school_admin.first_name %>
+<%= school_admin.last_name %>
+<%= school_admin.cell_number %>
+<%= school_admin.work_number %>
+<%= school_admin.email %>
+<% end %>

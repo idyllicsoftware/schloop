@@ -4,8 +4,8 @@ class Admin::Users::SessionsController < Devise::SessionsController
     if user.type == "ProductAdmin"
       '/admin/users/dashboards/admin_dashboard'
     else
-      '/admin/users/dashboards/school_admin_dashboard'
-    end
+      '/admin/schools/edit'
+     end
   end
 
   # GET /resource/sign_in
