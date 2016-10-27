@@ -9,6 +9,7 @@
 			  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
 			</div>
 			<div class="row">
+        <% if @schools.present? %>
       				<% @schools.each do |school| %>
 			    <div class="col-md-4">
 			        <div class="schools-profile">
@@ -38,6 +39,7 @@
 					</div>
 				</div>
 				<% end %>
+        <% end%>
 				<div class="col-md-4">
 					<div class="add_profile" id="create-school-btn">
 						<img src="<%= asset_path('admin/plus_icon.svg') %>">
