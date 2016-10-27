@@ -28,7 +28,7 @@ class Admin::SchoolsController < ApplicationController
     new_school.principal_name = params[:school][":authority_name"]
 
     if new_school.save!
-      Admin::AdminMailer.welcome_message(new_school_admin.email, new_school_admin.first_name, new_school_admin.password).deliver
+      Admin::AdminMailer.welcome_message(new_school_admin.email, new_school_admin.first_name, new_school_admin.password).deliver_now
     	redirect_to admin_school_admins_path
     else
     	render dashboards_admin_dashboard_admin_users_path
