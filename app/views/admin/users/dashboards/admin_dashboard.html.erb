@@ -9,32 +9,10 @@
 		  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
 		</div>
 		<div class="row">
-			<div class="col-md-4">
-		        <div class="schools-profile">
-		    	<a href="/admin/schools/edit">
-		        	<div class="schools-profile-active">
-						<img src="<%= asset_path('home/star.png') %>">
-					</div>
-					<div class="school-profile-logo">
-						<div class="school-logo">
-						<img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > 
-						</div>
-					</div>
-					<div class="school-name-code">
-						<h4>kjdhfbk</h4>
-						<p>fjfndkjffn</p>
-					</div>
-					<div class="school-contact-info">
-						<span><img src="<%= asset_path('admin/contact.svg') %>">
-						<p>jj</p></span>
-						<span><img src="<%= asset_path('admin/user.svg') %>"></span>
-					</div>
-				</a>	
-				</div>
-			</div>
+		<% if @schools.present? %>
   			<% @schools.each do |school| %>
-		    <div class="col-md-4">
-		        <div class="schools-profile">
+			    <div class="col-md-4">
+			        <div class="schools-profile">
 			        	<div class="schools-profile-active">
 							<img src="<%= asset_path('home/star.png') %>">
 						</div>
@@ -58,15 +36,16 @@
 								<% end %>
 						    </span>
 						</div>
+					</div>
 				</div>
-			</div>
-			<% end %>				
+			<% end %>	
+			<% end %>
 			<div class="col-md-4">
 				<div class="add_profile" id="create-school-btn">
 					<img src="<%= asset_path('admin/plus_icon.svg') %>">
 				</div>
 			</div>
-	    </div>
+		</div>
 	</div>
 </div>	    
 <div class="modal fade" id="create-school-modal">
