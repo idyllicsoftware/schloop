@@ -9,59 +9,55 @@
 		  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
 		</div>
 		<div class="row">
+			<div class="col-md-4">
+		        <div class="schools-profile">
+		    	<a href="/admin/schools/edit">
+		        	<div class="schools-profile-active">
+						<img src="<%= asset_path('home/star.png') %>">
+					</div>
+					<div class="school-profile-logo">
+						<div class="school-logo">
+						<img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > 
+						</div>
+					</div>
+					<div class="school-name-code">
+						<h4>kjdhfbk</h4>
+						<p>fjfndkjffn</p>
+					</div>
+					<div class="school-contact-info">
+						<span><img src="<%= asset_path('admin/contact.svg') %>">
+						<p>jj</p></span>
+						<span><img src="<%= asset_path('admin/user.svg') %>"></span>
+					</div>
+				</a>	
+				</div>
+			</div>
   			<% @schools.each do |school| %>
 		    <div class="col-md-4">
 		        <div class="schools-profile">
-		        	<div class="schools-profile-active">
-						<img src="<%= asset_path('home/star.png') %>">
-					</div>
-					<div class="school-profile-logo">
-						<div class="school-logo">
-						<img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > 
+			        	<div class="schools-profile-active">
+							<img src="<%= asset_path('home/star.png') %>">
 						</div>
-					</div>
-					<div class="school-name-code">
-						<h4><%= school.name %></h4>
-						<p><%= school.code %></p>
-					</div>
-					<div class="school-contact-info">
-						<span><img src="<%= asset_path('admin/contact.svg') %>">
-						<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
-						<span><img src="<%= asset_path('admin/user.svg') %>">
-							<% id = school.school_director_id %>
-							<% a = User.find_by_id(id) %>
-							<% if a.present? %>
-							<%= a.first_name %>
-							<% end %>
-					    </span>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4">
-		        <div class="schools-profile">
-		        	<div class="schools-profile-active">
-						<img src="<%= asset_path('home/star.png') %>">
-					</div>
-					<div class="school-profile-logo">
-						<div class="school-logo">
-						<img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > 
+						<div class="school-profile-logo">
+							<div class="school-logo">
+							<img src="<%= asset_path('school_admin.png') %>" height='100px' width= '100px' > 
+							</div>
 						</div>
-					</div>
-					<div class="school-name-code">
-						<h4><%= school.name %></h4>
-						<p><%= school.code %></p>
-					</div>
-					<div class="school-contact-info">
-						<span><img src="<%= asset_path('admin/contact.svg') %>">
-						<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
-						<span><img src="<%= asset_path('admin/user.svg') %>">
-							<% id = school.school_director_id %>
-							<% a = User.find_by_id(id) %>
-							<% if a.present? %>
-							<%= a.first_name %>
-							<% end %>
-					    </span>
-					</div>
+						<div class="school-name-code">
+							<h4><%= school.name %></h4>
+							<p><%= school.code %></p>
+						</div>
+						<div class="school-contact-info">
+							<span><img src="<%= asset_path('admin/contact.svg') %>">
+							<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
+							<span><img src="<%= asset_path('admin/user.svg') %>">
+								<% id = school.school_director_id %>
+								<% a = User.find_by_id(id) %>
+								<% if a.present? %>
+								<%= a.first_name %>
+								<% end %>
+						    </span>
+						</div>
 				</div>
 			</div>
 			<% end %>				
@@ -91,7 +87,7 @@
 						<div class="group-first col-md-9">	
 							<div class="form-group col-md-8">
 							  <label>School name</label>	
-					          <input type="text" class="form-control input-field" required name="school[:name]" autocomplete="off">
+					          <input type="text" class="form-control input-field" required name="school[:name]" autocomplete="off" maxlength="30">
 					        </div>
 							<div class="form-group col-md-4">
 							  <label>Board</label>	
@@ -131,13 +127,16 @@
 
 				        <label>School Administrators</label>
 			            <div class="col-md-12 administrators-info">		
-				        	<div class="form-group col-md-4">			        	  	
-				        	  <input type="text" class="form-control input-field" required name="administrator_name" placeholder="Name" autocomplete="off">
+				        	<div class="form-group col-md-3">			        	  	
+				        	  <input type="text" class="form-control input-field" required name="administrator_fname" placeholder="First Name" autocomplete="off">
+				        	</div>
+				        	<div class="form-group col-md-3">			        	  	
+				        	  <input type="text" class="form-control input-field" required name="administrator_lname" placeholder="Last Name" autocomplete="off">
 				        	</div>  
-				        	<div class="form-group col-md-4">			        	  	
+				        	<div class="form-group col-md-3">			        	  	
 				        	  <input type="text" class="form-control input-field" required name="phone" placeholder="Phone" autocomplete="off">
 				        	</div>
-				        	<div class="form-group col-md-4">			        	  	  
+				        	<div class="form-group col-md-3">			        	  	  
 				        	  <input type="email" class="form-control input-field" required name="email" placeholder="Email" autocomplete="off">
 				            </div>
 			            </div>

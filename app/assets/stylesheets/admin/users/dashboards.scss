@@ -55,7 +55,7 @@
       position: relative;
       top: 60px;
       .schools-profile {
-        background: url(admin/school_profile.svg);
+        background: url(school_profile.svg);
         background-repeat: no-repeat;
         background-size: 300px 260px;
         height: 260px;
@@ -166,6 +166,7 @@
   } 
   .footer-section {
     background-color: #00a255;
+    height: 50px;
   }
 }
 
