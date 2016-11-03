@@ -7,7 +7,7 @@ class Schools extends SchloopBase {
         if(action == 'index'){
             this.initDashboard();
         }else if(action == 'show'){
-            this._schoolProfile = new SchoolProfiles().init();
+            this._schoolProfile = new SchoolProfiles();
         }
         return this;
     };

@@ -7,7 +7,7 @@ class Schloop extends SchloopBase {
             subController = controller.split("/").join('_');
 
         if(['home'].includes(subController)){
-            this._main = new Main({action: action}).init();
+            this._main = new Main({action: action});
         }
         return this;
     }
