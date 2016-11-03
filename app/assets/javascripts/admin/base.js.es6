@@ -13,6 +13,15 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
 //= require bootstrap-sprockets
 //= require admin/users/dashboards
+
+
+class Base {
+    constructor (config) {
+        this._config = config;
+    };
+    init (){
+        console.log("called");
+    }
+}

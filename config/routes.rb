@@ -39,6 +39,9 @@ Rails.application.routes.draw do
     resource :schools do
       get "new" => 'schools#new'
       post "new" => 'schools#create'
+      post "create" => 'schools#create'
+      get "edit/:id" => 'schools#edit'
+      post "add_grade" => 'schools#add_grade'
     end
 
     resource :school_admins do

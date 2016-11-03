@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 20161102071541) do
     t.datetime "updated_at",         null: false
     t.string   "code",               null: false
     t.string   "board"
+    t.string   "principal_name"
   end
 
   create_table "subjects", force: :cascade do |t|
