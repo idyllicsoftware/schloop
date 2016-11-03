@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     resource :users do
     end
 
-    resource :schools do
+    resources :schools do
     end
 
     resource :school_admins do
