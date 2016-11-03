@@ -1,7 +1,6 @@
 //= require base
 //= require admin/schools
 
-
 class SchloopAdmin extends SchloopBase {
     init (){
         let {controller, action} = this._config,
