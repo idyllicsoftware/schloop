@@ -56,4 +56,8 @@ class User < ActiveRecord::Base
     SecureRandom.uuid.gsub(/\-/,'')
   end
 
+  def name
+    "#{first_name} #{last_name}"
+  end
+
 end
