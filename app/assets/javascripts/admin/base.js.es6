@@ -15,3 +15,13 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require admin/users/dashboards
+
+
+class Base {
+    constructor (config) {
+        this._config = config;
+    };
+    init (){
+        console.log("called");
+    }
+}
