@@ -7,8 +7,8 @@ class Admin::SchoolsController < ApplicationController
 
 	def create
     new_school_admin = SchoolAdmin.new
-    new_school_admin.first_name = params[:administrator_name]
-    new_school_admin.last_name = "Temporary"
+    new_school_admin.first_name = params[:administrator][:first_name]
+    new_school_admin.last_name = params[:administrator][:last_name]
     new_school_admin.email = params[:email]
     new_school_admin.cell_number = params[:phone]
     new_school_admin.password = "12345678"
