@@ -30,7 +30,7 @@ gem 'devise'
 
 group :development do
   # Using mina for deployment
-  gem 'mina'
+  gem 'mina', '~> 0.3.8'
   # Use thin as the app server
   gem 'sextant'
   gem 'better_errors'
