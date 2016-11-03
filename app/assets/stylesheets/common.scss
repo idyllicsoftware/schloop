@@ -53,6 +53,11 @@ a{
 		color: rgba(43, 191, 231, 0.9) !important;
 		cursor: pointer;
 	}
+	&:focus {
+		outline: none;
+		text-decoration: none;
+		color: rgba(43, 191, 231, 0.9) !important;
+	}
 }
 
 input::-ms-input-placeholder {
