@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161026081117) do
+ActiveRecord::Schema.define(version: 20161102071541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,21 @@ ActiveRecord::Schema.define(version: 20161026081117) do
     t.integer  "file_size"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+  end
+
+  create_table "divisions", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "grade_id"
+  end
+
+  add_index "divisions", ["grade_id"], name: "index_divisions_on_grade_id", using: :btree
+
+  create_table "grades", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "parents", force: :cascade do |t|
@@ -90,6 +105,16 @@ ActiveRecord::Schema.define(version: 20161026081117) do
     t.string   "principal_name"
   end
 
+  create_table "subjects", force: :cascade do |t|
+    t.string   "name"
+    t.string   "subject_code"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "grade_id"
+  end
+
+  add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
+
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -151,8 +176,10 @@ ActiveRecord::Schema.define(version: 20161026081117) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
+  add_foreign_key "divisions", "grades"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "subjects", "grades"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end
