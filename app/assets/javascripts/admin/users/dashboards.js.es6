@@ -1,45 +1,46 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+class Users extends SchloopBase {
+
+    init (){
+        let {action} = this._config;
+        this._global = this.globals();
+        if(action == 'admin_dashboard'){
+            this.initUserDashboard();
+        }
+    };
+
+    initUserDashboard(){
+        let self = this,
+            createModalEl = $("#create-school-modal"),
+            { new_school_path } = self.globals();
+
+        self.popoverInit();
+
+        $(document).on('click','#create-school-btn', function () {
+            createModalEl.modal('show');
+        });
+
+        $(".schools-registraion-form").submit(function () {
+            var jForm = $(this),
+                formData = jForm.serializeObject();
+
+            $.ajax({
+                url: new_school_path,
+                method: 'POST',
+                data: formData,
+                success: function() {
+                    createModalEl.modal('hide');
+                }
+            });
+        });
+        $(document).on('click','.cancel-creation', function () {
+            createModalEl.modal('hide');
+        });
+
+    }
+}
+
 
 $(document).ready(function () {
-	
-	$('body').on('click', function (e) {
-    $('[data-toggle="popover"]').each(function () {
-        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-            $(this).popover('hide');
-        }
-    });
-	});
-
-	$(document).on('click','#create-school-btn', function () {
-		
-		$("#create-school-modal").modal('show');
-		$(".schools-registraion-form").submit(function () {
-			var jForm = $(this),
-				formData = jForm.serializeObject();
-
-			$.ajax({
-				url: '/admin/schools/new',
-				method: 'POST',
-				data: formData,
-				success: function() {
-					$("#create-school-modal").modal('hide');
-				}
-			});	
-		});
-		$(document).on('click','.cancel-creation', function () {		
-			$("#create-school-modal").modal('hide');
-		});
-	});
-	
-	$("[data-toggle=popover]").popover({
-        html : true, 
-        content: function() {
-        	var data_content = $(this).data("value");	
-          return $("#" + data_content).html();
-        }
-    });
-
     $(document).on('click','.upload-sheet', function () {
     	$("#upload-teachers-modal").modal('show');
   
