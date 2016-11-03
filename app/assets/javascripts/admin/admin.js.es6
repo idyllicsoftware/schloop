@@ -9,5 +9,6 @@ class SchloopAdmin extends SchloopBase {
         if(['admin_schools'].includes(subController)){
             this._schools = new Schools({action: action}).init();
         }
+        return this;
     }
 }
