@@ -1,14 +1,14 @@
-class Users extends SchloopBase {
+class Schools extends SchloopBase {
 
     init (){
         let {action} = this._config;
         this._global = this.globals();
-        if(action == 'admin_dashboard'){
-            this.initUserDashboard();
+        if(action == 'index'){
+            this.initDashboard();
         }
     };
 
-    initUserDashboard(){
+    initDashboard(){
         let self = this,
             createModalEl = $("#create-school-modal"),
             { new_school_path } = self.globals();
@@ -36,6 +36,7 @@ class Users extends SchloopBase {
                 }
             });
         });
+
         $(document).on('click','.cancel-creation', function () {
             createModalEl.modal('hide');
         });
