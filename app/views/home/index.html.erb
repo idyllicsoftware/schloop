@@ -24,6 +24,11 @@
 				<div class="sign-up-btn-section">
 					<button class="btn sign-up-btn">Sign Up</button>
 				</div>
+
+        <div class="sign-in-lnk-section">
+          <button class="btn btn-link sign-in-link" data-toggle="modal" data-target="#signInModal" >Sign In</button>
+        </div>
+
 			</div>
 			<img class="tree6-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green1.png') %>">
 			<img class="tree7-img img-responsive hidden-xs" src="<%= asset_path('home/tree_green3.png') %>">			
@@ -109,7 +114,63 @@
 	<img class="grass4-img img-responsive hidden-xs" src="<%= asset_path('home/grass2.png') %>">	
 </div>
 
+<div class="modal fade" id="signInModal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="login-input-form">
+          <form class="login-registraion-form">
+
+            <img class="img-responsive centre-content" src="<%= asset_path('home/schloop.png') %>">
+
+            <div id="loginDiv" class="form-group" style="margin-top: 30px" >
+              <input type="email" class="form-control input-field" required name="name" autocomplete="off" placeholder="Email Address">
+              <input type="password" class="form-control input-field" required name="name" autocomplete="off" placeholder="Password">
+              <div>
+                <label id="labelForgotPassword" class="text-color btn btn-link">
+                  Forgot Password
+                </label>
+
+                <label class="pull-right text-color btn btn-link">
+                  Show
+                </label>
+              </div>
+
+              <div class="form-group" style="margin-top: 20px">
+                <button type="submit" class="btn btn-primary btn-full-width text-uppercase"> sign in </button>
+              </div>
+
+            </div>
+
+            <div id="forgotPasswordDiv" class="form-group hidden" style="margin-top: 30px">
+              <input type="email" class="form-control input-field" required name="name" autocomplete="off" placeholder="Email Address">
+
+              <div class="form-group" style="margin-top: 50px">
+                <button type="submit" class="btn btn-primary btn-full-width text-uppercase"> send a rest password link </button>
+              </div>
+
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="footer-section">
 	<p>Write to us on</p>
 	<a href="mailto:contact@schloop.co">contact@schloop.co</a>
 </div>
+
+<script>
+  $("#labelForgotPassword").click(function (){
+    $("#loginDiv").addClass('hidden');
+    $("#forgotPasswordDiv").removeClass('hidden');
+  });
+
+  $(".sign-in-link").click(function() {
+    $("#loginDiv").removeClass('hidden');
+    $("#forgotPasswordDiv").addClass('hidden');
+  })
+</script>
