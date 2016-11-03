@@ -23,7 +23,6 @@
 #  cell_number            :string
 #  user_token             :string
 #  school_id              :integer
-#  principal_name         :string
 #
 # Indexes
 #
@@ -55,6 +54,10 @@ class User < ActiveRecord::Base
 
   def generated_user_token
     SecureRandom.uuid.gsub(/\-/,'')
+  end
+
+  def name
+    "#{first_name} #{last_name}"
   end
 
 end
