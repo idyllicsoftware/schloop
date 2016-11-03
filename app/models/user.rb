@@ -42,8 +42,9 @@ class User < ActiveRecord::Base
   validates :first_name, :presence => true, :length => { :maximum => 30 }
   validates :middle_name,  :length => { :maximum => 30 }
   validates :last_name, :presence => true, :length => { :maximum => 30 }
-  # validates :work_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
-  # validates :cell_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
+#  validates :work_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
+#  validates :cell_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
+
 
   before_save :set_user_token
 
