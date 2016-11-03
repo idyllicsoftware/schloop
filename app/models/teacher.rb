@@ -20,8 +20,6 @@
 #  first_name             :string
 #  middle_name            :string
 #  last_name              :string
-#  grades                 :string
-#  subjects               :string
 #  phone                  :string
 #
 # Indexes

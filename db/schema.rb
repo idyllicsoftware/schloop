@@ -68,8 +68,6 @@ ActiveRecord::Schema.define(version: 20161014105508) do
     t.string   "first_name"
     t.string   "middle_name"
     t.string   "last_name"
-    t.string   "grades"
-    t.string   "subjects"
     t.string   "phone"
   end
 

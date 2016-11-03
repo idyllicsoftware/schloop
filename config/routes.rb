@@ -33,7 +33,6 @@ Rails.application.routes.draw do
   namespace :admin do
 
     resource :teachers do
-      # resources :teacher_imports
       get "imports/new" => 'teachers/teacher_imports#new'
       post "imports" => 'teachers/teacher_imports#create'
     end

@@ -1,4 +1,7 @@
 <h1>Admin Dashboard</h1>
+<%  @schools.each do |school|%>
+<%= school.name%>
+<%end%>
 &nbsp&nbsp&nbsp<button class="btn btn-primary" id="create-school-btn">Create School</button><br><br>
 &nbsp&nbsp&nbsp<a href='/users/sign_out'>sign out</a>
 
