@@ -173,13 +173,22 @@
 									<li>Maths</li>
 									<li>Science</li>
 								</ul>
-								<span id="add-sub"><a href="#">+Add Subject</a></span>
+								<span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left">+Add Subject</a></span>
+								<div id="add-subject-popover-content" class="hidden" >
+									<div class="form-group">
+										<input type="text" class="form-control input-field" required name="subject_name" placeholder="subjects Maths,English etc." autocomplete="off">
+										<div class="add-subject-btn">
+			            					<button  class="btn btn-primary">ADD</button>
+			            					<button  class="btn btn-primary">CANCEL</button>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="division-wrapper inner-tabs">
 						<div class="plr-20">
-								<span class="data-title"><a href="#" class="fa fa-chevron-circle-down"></a>5 Divisions</span>
+								<span class="data-title"><a href="#" class="fa fa-chevron-down"></a>5 Divisions</span>
 								<ul id="myTab" class="nav nav-tabs">
 									<li class="active"><a href="#div-a" data-toggle="tab">A</a></li>
 									<li><a href="#div-b" data-toggle="tab">B</a></li>
@@ -205,9 +214,9 @@
 							<div class="tab-pane fade in active" id="div-a">
 								<div class="teachers-wrapper">
 									<ul>
-										<li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>English</span></div></a></li>
-										<li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>sagar P.</p>Maths</span></div></a></li>
-										<li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>ravi P.</p>Science</span></div></a></li>
+										<li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>English</span></div></a></li>
+										<li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>sagar P.</p>Maths</span></div></a></li>
+										<li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>ravi P.</p>Science</span></div></a></li>
 									</ul>
 									<div id="teachers-info-popover-content" class="hidden">
 										<div>

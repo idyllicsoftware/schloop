@@ -214,6 +214,21 @@ $tab-border: #f0efe8;
 						}
 					}
 				}
+				.popover-content {
+					.form-group {
+						width: 260px;
+						margin: 0px;
+						.input-field {
+							margin-bottom: 30px;
+						}
+						.add-subject-btn {
+							display: flex;
+							.btn-primary {
+								width: 120px;
+							}
+						}
+					}
+				}
 			}
 		}
 		.inner-tabs{
@@ -221,7 +236,7 @@ $tab-border: #f0efe8;
 			padding: 20px 0 30px;
 			.data-title{
 				text-transform: uppercase;
-				.fa{
+				a{
 					padding-right: 20px;
 				}
 			}
