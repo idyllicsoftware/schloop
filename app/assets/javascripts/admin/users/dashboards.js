@@ -40,6 +40,10 @@ $(document).ready(function () {
         }
     });
 
+	$(".data-title").click( function () {
+		$(".slide-division-wrapper").slideToggle();
+	});
+
     $(document).on('click','.upload-sheet', function () {
     	$("#upload-teachers-modal").modal('show');
   
