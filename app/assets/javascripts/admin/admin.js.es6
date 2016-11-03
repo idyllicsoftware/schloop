@@ -1,5 +1,5 @@
 //= require base
-//= require admin/users/dashboards
+//= require admin/schools
 
 
 class SchloopAdmin extends SchloopBase {
@@ -7,8 +7,8 @@ class SchloopAdmin extends SchloopBase {
         let {controller, action} = this._config,
             subController = controller.split("/").join('_');
 
-        if(['admin_users_dashboards'].includes(subController)){
-            this._users = new Users({action: action}).init();
+        if(['admin_schools'].includes(subController)){
+            this._schools = new Schools({action: action}).init();
         }
     }
 }
