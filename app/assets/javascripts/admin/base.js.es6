@@ -10,18 +10,18 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
+//= require jquery2
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap-sprockets
 //= require admin/users/dashboards
 
 
-class Base {
+class SchloopAdmin {
     constructor (config) {
         this._config = config;
+        return this;
     };
     init (){
-        console.log("called");
+        console.log("called base");
     }
 }
