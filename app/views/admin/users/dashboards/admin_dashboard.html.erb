@@ -1,16 +1,16 @@
 
-	<div class="schools-profile-section">
-		<div class="cloud_image">
-			<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
+<div class="schools-profile-section">
+	<div class="cloud_image">
+		<img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
+	</div>
+	<div class="container">
+		<div>
+			<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
+		  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
 		</div>
-		<div class="container">
-			<div>
-				<img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
-			  	<img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
-			</div>
-			<div class="row">
-        <% if @schools.present? %>
-      				<% @schools.each do |school| %>
+		<div class="row">
+		<% if @schools.present? %>
+  			<% @schools.each do |school| %>
 			    <div class="col-md-4">
 			        <div class="schools-profile">
 			        	<div class="schools-profile-active">
@@ -38,22 +38,22 @@
 						</div>
 					</div>
 				</div>
-				<% end %>
-        <% end%>
-				<div class="col-md-4">
-					<div class="add_profile" id="create-school-btn">
-						<img src="<%= asset_path('admin/plus_icon.svg') %>">
-					</div>
+			<% end %>	
+			<% end %>
+			<div class="col-md-4">
+				<div class="add_profile" id="create-school-btn">
+					<img src="<%= asset_path('admin/plus_icon.svg') %>">
 				</div>
-		    </div>
+			</div>
 		</div>
-	</div>	    
+	</div>
+</div>	    
 <div class="modal fade" id="create-school-modal">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-body">
 				<div class="schools-input-form">
-            <%= form_tag admin_schools_path,class:"schools-registraion-form"	  do %>
+           			<%= form_tag admin_schools_path,class:"schools-registraion-form" do %>
 						<div class="upload-group col-md-3">
 							<label for="upload-photo">
 								<input type="file" name="school[:photo]" id="upload-photo"/>
@@ -66,7 +66,7 @@
 						<div class="group-first col-md-9">	
 							<div class="form-group col-md-8">
 							  <label>School name</label>	
-					          <input type="text" class="form-control input-field" required name="school[:name]" autocomplete="off">
+					          <input type="text" class="form-control input-field" required name="school[:name]" autocomplete="off" maxlength="30">
 					        </div>
 							<div class="form-group col-md-4">
 							  <label>Board</label>	
@@ -106,13 +106,16 @@
 
 				        <label>School Administrators</label>
 			            <div class="col-md-12 administrators-info">		
-				        	<div class="form-group col-md-4">			        	  	
-				        	  <input type="text" class="form-control input-field" required name="administrator_name" placeholder="Name" autocomplete="off">
+				        	<div class="form-group col-md-3">			        	  	
+				        	  <input type="text" class="form-control input-field" required name="administrator_fname" placeholder="First Name" autocomplete="off">
+				        	</div>
+				        	<div class="form-group col-md-3">			        	  	
+				        	  <input type="text" class="form-control input-field" required name="administrator_lname" placeholder="Last Name" autocomplete="off">
 				        	</div>  
-				        	<div class="form-group col-md-4">			        	  	
+				        	<div class="form-group col-md-3">			        	  	
 				        	  <input type="text" class="form-control input-field" required name="phone" placeholder="Phone" autocomplete="off">
 				        	</div>
-				        	<div class="form-group col-md-4">			        	  	  
+				        	<div class="form-group col-md-3">			        	  	  
 				        	  <input type="email" class="form-control input-field" required name="email" placeholder="Email" autocomplete="off">
 				            </div>
 			            </div>
@@ -123,8 +126,7 @@
 			            	<button type="submit" class="btn btn-primary">ADD SCHOOL</button>
 			            	<button class="btn btn-primary cancel-creation">CANCEL</button>
 			            </div>			            
-					<!--/form-->
-      <% end %>
+      				<% end %>
 				</div>				
 			</div>
 		</div>
