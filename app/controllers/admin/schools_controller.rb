@@ -38,11 +38,14 @@ class Admin::SchoolsController < ApplicationController
   def edit
     @user = User.where(school_id:params[:id])
     @school = School.find(params[:id])
+    @school_id = params[:id]
     @school_admins = User.where(school_id: @school.id)
   end
 
-  def add_grade 
+  def add_grade
     binding.pry
+    new_grade = Grade.create(:name => params[:grade_name], :school_id => params[:school_id])
+    redirect_to controller:'admin/schools',action: 'edit',id: params[:school_id]
   end
 
   private

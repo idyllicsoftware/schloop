@@ -109,6 +109,8 @@
 					</div>
 					<div id="add-grade-popover-content" class="hidden">
 						<form class="form-inline" role="form" action="<%=add_grade_admin_schools_path %>" method="post">
+							<input type="text" hidden name="school_id" value="<%= @school.id %>">
+
 							<div class="form-group col-md-12 ">	
 						          <input type="text" class="form-control input-field" required name="grade_name" placeholder="Name, ex.grade I,grade II" autocomplete="off">
 						    </div>
@@ -153,7 +155,7 @@
 						    <div class="col-md-12 form-group add-subject">
 						         <div class="col-md-6">
 						         	<h4>Add custome subject</h4>
-						         	<input type="text" class="form-control input-field" required name="grade_name" placeholder="subject name,ex.maths,english" autocomplete="off">
+						         	<input type="text" class="form-control input-field" required name="#" placeholder="subject name,ex.maths,english" autocomplete="off">
 						         </div>
 						         <div class="col-md-6">
 						         	<button type="button" class="btn btn-primary">ADD SUBJECT</button>
