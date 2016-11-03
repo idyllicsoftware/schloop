@@ -10,7 +10,7 @@ product_admin = ProductAdmin.first_or_create!(
   first_name: 'Schloop',
   last_name:  'Admin',
   email: 'admin@schloop.co',
-  password: 'Test123',
-  work_number: '+91-1235 987 123',
-  cell_number: '+91-1235 987 123'
+  password: 'Test1234',
+  work_number: '1235987123',
+  cell_number: '1235987123'
 )

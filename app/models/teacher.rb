@@ -20,6 +20,9 @@
 #  first_name             :string
 #  middle_name            :string
 #  last_name              :string
+#  grades                 :string
+#  subjects               :string
+#  phone                  :string
 #
 # Indexes
 #
@@ -33,6 +36,9 @@ class Teacher < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  validates :phone,:presence => true,
+                 :numericality => true,
+                 :length => { :minimum => 10, :maximum => 10}
 
   belongs_to :school
 
