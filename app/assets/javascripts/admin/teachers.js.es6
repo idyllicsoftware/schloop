@@ -4,6 +4,7 @@ class SchoolTeachers extends SchloopBase {
     init (){
         var self = this;
         self.initEventListeners();
+        return this;
     };
 
     globals (){

@@ -9,7 +9,9 @@ class SchloopBase {
         return this;
     };
 
-    init (){};
+    init (){
+        return this;
+    };
 
     popoverInit (){
         $('body').on('click', function (e) {
@@ -19,6 +21,7 @@ class SchloopBase {
                 }
             });
         });
+        debugger;
 
         $("[data-toggle=popover]").popover({
             html : true,

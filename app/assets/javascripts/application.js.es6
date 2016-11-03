@@ -4,5 +4,6 @@
 class Schloop extends SchloopBase{
     init (){
         console.log("called");
+        return this;
     }
 }
