@@ -8,30 +8,23 @@
 </head>
 <body>
 
-<% if notice %>
-  <p class="alert alert-success"><%= notice %></p>
-<% end %>
-<% if alert %>
-  <p class="alert alert-danger"><%= alert %></p>
-<% end %>
+  <%= yield %>
 
-<%= yield %>
-
-<%= javascript_include_tag 'application' %>
-<script type="text/javascript">
-  $(document).on('ready', function() {
-    <%
-      js_obj = {
-        :controller => params[:controller],
-        :action => params[:action]
-      }
-      if Rails.env != 'production'
-        js_obj[:env] = Rails.env
-      end
-    %>
-    schloop = new Schloop(<%= raw(js_obj.to_json) %>).init();
-  });
-</script>
+  <%= javascript_include_tag 'application' %>
+  <script type="text/javascript">
+    $(document).on('ready', function() {
+      <%
+        js_obj = {
+          :controller => params[:controller],
+          :action => params[:action]
+        }
+        if Rails.env != 'production'
+          js_obj[:env] = Rails.env
+        end
+      %>
+      schloop = new Schloop(<%= raw(js_obj.to_json) %>).init();
+    });
+  </script>
 
 </body>
 </html>

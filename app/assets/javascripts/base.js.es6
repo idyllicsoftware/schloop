@@ -1,6 +1,7 @@
 //= require jquery2
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require sweetalert
 //= require_self
 
 class SchloopBase {
@@ -13,6 +14,10 @@ class SchloopBase {
         return this;
     };
 
+    scrollTopTo ($top, $duration=400){
+        $("html, body").animate({scrollTop: $top}, $duration);
+    };
+
     popoverInit (){
         $('body').on('click', function (e) {
             $('[data-toggle="popover"]').each(function () {
@@ -21,7 +26,6 @@ class SchloopBase {
                 }
             });
         });
-        debugger;
 
         $("[data-toggle=popover]").popover({
             html : true,

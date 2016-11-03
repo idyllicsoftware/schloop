@@ -1,3 +1,9 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import "sweetalert";
+
 .modal {
  .modal-lg{
   width: 800px;
