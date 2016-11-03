@@ -18,6 +18,28 @@ class Main extends SchloopBase {
         $(".sign-in-link").click(function() {
             $("#loginDiv").removeClass('hidden');
             $("#forgotPasswordDiv").addClass('hidden');
-        })
+        });
+
+        self.initLoginPoup();
+    };
+
+    initLoginPoup (){
+        $(".schools-registraion-form").submit(function () {
+            var jForm = $(this),
+                formData = jForm.serializeObject();
+
+            $(".data-title").click( function () {
+                $(".slide-division-wrapper").slideToggle();
+            });
+
+            $.ajax({
+                url: new_school_path,
+                method: 'POST',
+                data: formData,
+                success: function() {
+                    createModalEl.modal('hide');
+                }
+            });
+        });
     }
 }

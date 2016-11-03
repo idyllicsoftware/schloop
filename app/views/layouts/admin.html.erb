@@ -54,7 +54,7 @@
        js_obj[:env] = Rails.env
      end
    %>
-    schloopAdmin = new SchloopAdmin(<%= raw(js_obj.to_json) %>).init();
+    schloopAdmin = new SchloopAdmin(<%= raw(js_obj.to_json) %>);
   });
 </script>
 
