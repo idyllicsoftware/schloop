@@ -1,7 +1,15 @@
 class Admin::SchoolsController < ApplicationController
-	
+  before_action :authenticate_user!
   layout "admin"
-  
+
+  def index
+    @schools = School.all
+  end
+
+  def show
+    
+  end
+
   def new
 	end
 
@@ -31,7 +39,7 @@ class Admin::SchoolsController < ApplicationController
       Admin::AdminMailer.welcome_message(new_school_admin.email, new_school_admin.first_name, new_school_admin.password).deliver_now
     	redirect_to admin_school_admins_path
     else
-    	render dashboards_admin_dashboard_admin_users_path
+    	render admin_schools_path
     end
 	end
 
