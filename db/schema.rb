@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161102071541) do
+ActiveRecord::Schema.define(version: 20161103093209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,10 @@ ActiveRecord::Schema.define(version: 20161102071541) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "school_id"
   end
+
+  add_index "grades", ["school_id"], name: "index_grades_on_school_id", using: :btree
 
   create_table "parents", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -170,7 +173,6 @@ ActiveRecord::Schema.define(version: 20161102071541) do
     t.string   "cell_number"
     t.string   "user_token"
     t.integer  "school_id"
-    t.string   "principal_name"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -178,6 +180,7 @@ ActiveRecord::Schema.define(version: 20161102071541) do
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
   add_foreign_key "divisions", "grades"
+  add_foreign_key "grades", "schools"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "subjects", "grades"
