@@ -12,10 +12,14 @@ gem 'uglifier', '>= 3.0.2'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
+gem 'font-awesome-sass'
+
+# Use Javascript ES6 Feature
+gem 'sprockets'
+gem 'sprockets-es6'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.6.0'
 gem 'roo'
@@ -27,7 +31,7 @@ gem 'devise'
 
 group :development do
   # Using mina for deployment
-  gem 'mina'
+  gem 'mina', '~> 0.3.8'
   # Use thin as the app server
   gem 'sextant'
   gem 'better_errors'

@@ -37,12 +37,15 @@ class Api::V1::TeachersController < Api::V1::BaseController
   def login
     teacher = Teacher.find_by_email(params[:teacher][:email])
     if teacher.present? && teacher.valid_password?(params[:teacher][:password])
+      teacher.sign_in_count += 1
+      teacher.save
       login_response = {
         success: true,
         error: nil,
         data: {
           id: teacher.id,
-          token: teacher.token
+          token: teacher.token,
+          first_sign_in: (teacher.sign_in_count <= 1)
         }
       }
     else
@@ -57,6 +60,28 @@ class Api::V1::TeachersController < Api::V1::BaseController
     end
 
     render json: login_response
+  end
+
+  def reset_password
+    @current_user.password = params[:new_password]
+    if @current_user.save
+      render json: {
+        success: true,
+        error: nil,
+        data: {
+          message: "Password changed successfully."
+        }
+      }
+    else
+      render json: {
+        success: false,
+        error:  {
+          code: 0,
+          message: @current_user.errors.full_messages.join(', ')
+        },
+        data: nil
+      }
+    end
   end
 
   def dashboard
