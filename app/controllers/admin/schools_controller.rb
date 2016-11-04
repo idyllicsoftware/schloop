@@ -7,13 +7,17 @@ class Admin::SchoolsController < ApplicationController
   end
 
   def show
-    
+    @user = User.where(school_id: params[:id])
+    @school = School.find(params[:id])
+    @school_id = params[:id]
+    @school_admins = User.where(school_id: @school.id)
   end
 
   def new
 	end
 
 	def create
+    school_params
     new_school_admin = SchoolAdmin.new
     new_school_admin.first_name = params[:administrator_fname]
     new_school_admin.last_name = params[:administrator_lname]
@@ -44,12 +48,21 @@ class Admin::SchoolsController < ApplicationController
 	end
 
   def edit
-
+    @user = User.where(school_id: params[:id])
+    @school = School.find(params[:id])
+    @school_id = params[:id]
+    @school_admins = User.where(school_id: @school.id)
   end
-    
+
+  def add_grade
+    binding.pry
+    new_grade = Grade.create(:name => params[:grade_name], :school_id => params[:school_id])
+    redirect_to controller:'admin/schools',action: 'edit',id: params[:school_id]
+  end
+
   private
 
   def school_params
-    params.permit(:name, :address, :zip_code, :phone1, :phone2, :website)
+    params.require(:school).permit(:name, :address, :zip_code, :phone1, :phone2, :website)
   end     
 end

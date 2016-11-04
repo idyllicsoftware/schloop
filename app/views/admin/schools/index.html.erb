@@ -11,7 +11,7 @@
       <% if @schools.present? %>
           <% @schools.each do |school| %>
             <div class="col-md-4">
-              <a href="/admin/schools/<%= school.id %>">
+              <a href="/admin/schools/show/<%= school.id %>">
                 <div class="schools-profile">
                   <div class="schools-profile-active">
                     <img src="<%= asset_path('home/star.png') %>">
@@ -81,7 +81,7 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label>Website</label>
-                  <input type="text" class="form-control input-field" required name="school[:website]" autocomplete="off">
+                  <input type="text" class="form-control input-field" required name="school[:website" autocomplete="off">
                 </div>
               </div>
               <div class="col-md-12">
