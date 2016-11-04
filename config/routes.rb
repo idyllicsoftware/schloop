@@ -31,9 +31,17 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resource :users do
+      get "/dashboards/index" => 'users/dashboards#index'
+      get "/dashboards/admin_dashboard" => 'users/dashboards#admin_dashboard'
+      get "/dashboards/school_admin_dashboard" => 'users/dashboards#school_admin_dashboard'
     end
-
-    resources :schools do
+    
+    resource :schools do
+      get "new" => 'schools#new'
+      post "new" => 'schools#create'
+      post "create" => 'schools#create'
+      get "edit/:id" => 'schools#edit'
+      post "add_grade" => 'schools#add_grade'
     end
 
     resource :school_admins do
@@ -52,7 +60,6 @@ Rails.application.routes.draw do
       post "/school_admin/register" => 'school_admin#register'
       post "/teacher/register" => 'teachers#register'
       post "/teacher/login" => 'teachers#login'
-      post "/teacher/reset_password" => 'teachers#reset_password'
       post "/teacher/dashboard" => 'teachers#dashboard'
     end
   end
