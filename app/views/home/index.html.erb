@@ -126,13 +126,16 @@
       <div class="modal-body">
           <img class="img-responsive centre-content" src="<%= asset_path('home/schloop.png') %>">
 
-          <div id="loginDiv" class="form-group mt30">
-            <%= form_tag '/users/sign_in', id:"login-form" do %>
-                <input type="email" class="form-control input-field" required name="user[email]" autocomplete="off" placeholder="Email Address">
-                <input type="password" class="form-control input-field" required name="user[password]" autocomplete="off" placeholder="Password">
+          <div id="loginDiv" class="mt30" >
+            <%= form_tag '/users/sign_in', id:"login-form", novalidate:true do %>
+                <div class="form-group">
+                  <input type="email" class="form-control input-field" required name="user[email]" autocomplete="off" placeholder="Email Address" maxlength="40" />
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control input-field" required name="user[password]" autocomplete="off" placeholder="Password"  maxlength="12" />
+                </div>
                 <div>
                   <label id="labelForgotPassword" class="text-color btn btn-link pl0" >Forgot Password</label>
-                  <label class="pull-right text-color btn btn-link pr0">Show</label>
                 </div>
 
                 <div class="form-group mt20">
@@ -141,9 +144,11 @@
             <% end %>
           </div>
 
-          <div id="forgotPasswordDiv" class="form-group hidden mt30">
-            <%= form_tag '/users/password', class:"forgot-password-form" do %>
-                <input type="email" class="form-control input-field" required name="user[email]" autocomplete="off" placeholder="Email Address">
+          <div id="forgotPasswordDiv" class="hidden mt30" >
+            <%= form_tag '/users/password', id:"forgot-password-form", novalidate:true do %>
+                <div class="form-group">
+                  <input type="email" class="form-control input-field" required name="user[email]" autocomplete="off" placeholder="Email Address"  maxlength="40" />
+                </div>
                 <div class="form-group mt50">
                   <button type="submit" class="btn btn-primary btn-full-width text-uppercase"> send a rest password link </button>
                 </div>

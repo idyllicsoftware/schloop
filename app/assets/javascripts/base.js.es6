@@ -66,6 +66,65 @@ class SchloopBase {
         $.ajax(params);
     };
 
+    getValidationRules () {
+        return {
+            rules: {
+                password: {
+                    required: true,
+                    minlength: 6
+                },
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            messages: {
+                password: {
+                    required: "Please enter correct password",
+                    minlength: jQuery.validator.format("At least {0} characters password required!")
+                },
+                email: {
+                    required: "Please specify email address",
+                    email: "Your email address must be in the format of name@domain.com"
+                }
+            }
+        }
+    };
+
+    formValidatorInit (jForm, fieldsMapping){
+        let {rules: all_rules, messages:all_messages} = this.getValidationRules(),
+            rules = {}, messages = {}, key;
+
+            for(key in fieldsMapping){
+                if(all_rules.hasOwnProperty(key)){
+                    rules[fieldsMapping[key]] = all_rules[key];
+                }
+                if(all_messages.hasOwnProperty(key)){
+                    messages[fieldsMapping[key]] = all_messages[key];
+                }
+            }
+
+        jForm.validate({
+            rules: rules,
+            messages: messages
+        });
+    };
+
+    initFormSubmit (jForm, fieldsMapping, cb){
+        let self = this;
+
+        self.formValidatorInit(jForm, fieldsMapping);
+
+        jForm.submit(function (e) {
+            e.preventDefault();
+            let jForm = $(this), formData;
+            if(jForm.valid()) {
+                formData = jForm.serialize();
+                self.submitData(jForm.attr('action'), jForm, formData, cb);
+            }
+        });
+    };
+
     popoverInit (){
         $('body').on('click', function (e) {
             $('[data-toggle="popover"]').each(function () {
