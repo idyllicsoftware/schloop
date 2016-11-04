@@ -37,7 +37,7 @@ Rails.application.routes.draw do
     end
     
     resource :schools do
-      get "new" => 'schools#new'
+      
       get "index" => 'schools#index'
       post "new" => 'schools#create'
       post "create" => 'schools#create'
