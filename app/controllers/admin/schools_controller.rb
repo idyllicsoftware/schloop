@@ -41,7 +41,7 @@ class Admin::SchoolsController < ApplicationController
 
     if new_school.save!
       Admin::AdminMailer.welcome_message(new_school_admin.email, new_school_admin.first_name, new_school_admin.password).deliver_now
-    	redirect_to admin_school_admins_path
+    	redirect_to admin_schools_path
     else
     	render admin_schools_path
     end
