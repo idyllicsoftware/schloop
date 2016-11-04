@@ -10,7 +10,8 @@
     <div class="row">
       <% if @schools.present? %>
           <% @schools.each do |school| %>
-              <div class="col-md-4">
+            <div class="col-md-4">
+              <a href="/admin/schools/<%= school.id %>">
                 <div class="schools-profile">
                   <div class="schools-profile-active">
                     <img src="<%= asset_path('home/star.png') %>">
@@ -25,18 +26,19 @@
                     <p><%= school.code %></p>
                   </div>
                   <div class="school-contact-info">
-							<span><img src="<%= asset_path('admin/contact.svg') %>">
-							<p><%= school.phone1 %> / <%= school.phone1 %></p></span>
+      							<span><img src="<%= asset_path('admin/contact.svg') %>">
+      							   <p><%= school.phone1 %> / <%= school.phone2 %></p></span>
                     <span><img src="<%= asset_path('admin/user.svg') %>">
-                      <% id = school.school_director_id %>
-                      <% a = User.find_by_id(id) %>
-                      <% if a.present? %>
-								<%= a.first_name %>
-								<% end %>
-						    </span>
+                            <% id = school.school_director_id %>
+                            <% a = User.find_by_id(id) %>
+                            <% if a.present? %>
+      								<%= a.first_name %>
+      								<% end %>
+      						  </span>
                   </div>
                 </div>
-              </div>
+              </a>  
+            </div>
           <% end %>
       <% end %>
       <div class="col-md-4">
@@ -47,7 +49,6 @@
     </div>
   </div>
 </div>
-
 <div class="modal fade" id="create-school-modal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
