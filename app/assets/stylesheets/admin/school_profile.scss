@@ -218,8 +218,14 @@
 						  border: none;
 						  padding: 10px !important;
 						}
-					}
+					}	
 				}
+				.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+						background: transparent;
+						border: none;
+						font-weight: 700;
+						cursor: default;
+					}
 				.popover-content {
 					.form-group {
 						width: 260px;
