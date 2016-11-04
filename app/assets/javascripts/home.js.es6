@@ -10,6 +10,11 @@ class Main extends SchloopBase {
             self.scrollTopTo($(".sign-up-registration-section").offset().top);
         });
 
+        self.initLoginPopup();
+    };
+
+    initLoginPopup (){
+        var self = this;
         $("#labelForgotPassword").click(function (){
             $("#loginDiv").addClass('hidden');
             $("#forgotPasswordDiv").removeClass('hidden');
@@ -20,26 +25,17 @@ class Main extends SchloopBase {
             $("#forgotPasswordDiv").addClass('hidden');
         });
 
-        self.initLoginPoup();
-    };
+        this.initFormSubmit($("#login-form"), {
+            email: 'user[email]',
+            password: 'user[password]'
+        }, function () {
+            debugger;
+        });
 
-    initLoginPoup (){
-        $(".schools-registraion-form").submit(function () {
-            var jForm = $(this),
-                formData = jForm.serializeObject();
-
-            $(".data-title").click( function () {
-                $(".slide-division-wrapper").slideToggle();
-            });
-
-            $.ajax({
-                url: new_school_path,
-                method: 'POST',
-                data: formData,
-                success: function() {
-                    createModalEl.modal('hide');
-                }
-            });
+        this.initFormSubmit($("#forgot-password-form"), {
+            email: 'user[email]'
+        }, function () {
+            debugger;
         });
     }
 }
