@@ -15,8 +15,8 @@ class Admin::SchoolsController < ApplicationController
 
 	def create
     new_school_admin = SchoolAdmin.new
-    new_school_admin.first_name = params[:administrator_name]
-    new_school_admin.last_name = "Temporary"
+    new_school_admin.first_name = params[:administrator_fname]
+    new_school_admin.last_name = params[:administrator_lname]
     new_school_admin.email = params[:email]
     new_school_admin.cell_number = params[:phone]
     new_school_admin.password = "12345678"
@@ -37,7 +37,7 @@ class Admin::SchoolsController < ApplicationController
 
     if new_school.save!
       Admin::AdminMailer.welcome_message(new_school_admin.email, new_school_admin.first_name, new_school_admin.password).deliver_now
-    	redirect_to admin_school_admins_path
+    	redirect_to admin_schools_path
     else
     	render admin_schools_path
     end
