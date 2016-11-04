@@ -38,9 +38,10 @@ Rails.application.routes.draw do
     
     resource :schools do
       get "new" => 'schools#new'
+      get "index" => 'schools#index'
       post "new" => 'schools#create'
       post "create" => 'schools#create'
-      get "edit/:id" => 'schools#edit'
+      get "show/:id" => 'schools#show'
       post "add_grade" => 'schools#add_grade'
     end
 

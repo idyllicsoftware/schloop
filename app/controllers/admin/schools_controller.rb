@@ -7,16 +7,20 @@ class Admin::SchoolsController < ApplicationController
   end
 
   def show
-    
+    @user = User.where(school_id: params[:id])
+    @school = School.find(params[:id])
+    @school_id = params[:id]
+    @school_admins = User.where(school_id: @school.id)
   end
 
   def new
 	end
 
 	def create
+    school_params
     new_school_admin = SchoolAdmin.new
-    new_school_admin.first_name = params[:administrator][:first_name]
-    new_school_admin.last_name = params[:administrator][:last_name]
+    new_school_admin.first_name = params[:administrator_fname]
+    new_school_admin.last_name = params[:administrator_lname]
     new_school_admin.email = params[:email]
     new_school_admin.cell_number = params[:phone]
     new_school_admin.password = "12345678"
@@ -59,6 +63,6 @@ class Admin::SchoolsController < ApplicationController
   private
 
   def school_params
-    params.permit(:name, :address, :zip_code, :phone1, :phone2, :website)
+    params.require(:school).permit(:name, :address, :zip_code, :phone1, :phone2, :website)
   end     
 end
