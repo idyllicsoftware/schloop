@@ -44,7 +44,7 @@ class Admin::SchoolsController < ApplicationController
 	end
 
   def edit
-    @user = User.where(school_id:params[:id])
+    @user = User.where(school_id: params[:id])
     @school = School.find(params[:id])
     @school_id = params[:id]
     @school_admins = User.where(school_id: @school.id)
