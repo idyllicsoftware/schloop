@@ -22,6 +22,9 @@ class Main extends SchloopBase {
 
         $(".sign-in-link").click(function() {
             $("#loginDiv").removeClass('hidden');
+            $("#login-form")[0].reset();
+            $("#forgot-password-form")[0].reset();
+            $('#signInModal .form-group label.error').remove();
             $("#forgotPasswordDiv").addClass('hidden');
         });
 
