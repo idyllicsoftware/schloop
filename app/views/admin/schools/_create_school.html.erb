@@ -7,11 +7,11 @@
               <div class="row">
                 <div class="upload-group col-md-3">
                   <label for="upload-photo">
-                    <input type="file" name="school[photo]" id="upload-photo"/>
+                    <!-- <input type="file" name="school[photo]" id="upload-photo"/> -->
                     <div class="upload-logo">
                       <img src="<%= asset_path('admin/plus_icon.svg') %>">
                     </div>
-                    <p>Upload School Photo/ Logo</p>
+                    <!-- <p>Upload School Photo/ Logo</p> --->
                   </label>
                 </div>
                 <div class="col-md-9">
@@ -31,8 +31,8 @@
                       <input type="text" class="form-control input-field" name="school[authority_name]" autocomplete="off"  maxlength="30" />
                     </div>
                     <div class="form-group col-md-6">
-                      <label>Website</label>
-                      <input type="text" class="form-control input-field" name="school[website]" autocomplete="off"  maxlength="30" />
+                      <label class="mandatory">Website</label>
+                      <input type="url" required class="form-control input-field" name="school[website]" autocomplete="off"  maxlength="30" />
                     </div>
                   </div>
                 </div>

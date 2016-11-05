@@ -4,6 +4,7 @@
 //= require sweetalert
 //= require jquery.validate
 //= require toastr.min
+//= require mustache
 //= require common
 //= require_self
 
@@ -84,6 +85,10 @@ class SchloopBase {
                     digits: true,
                     minlength: 10
                 },
+                website: {
+                    required: true,
+                    url: true,
+                },
                 name: {
                     required: true,
                 },
@@ -99,6 +104,10 @@ class SchloopBase {
                 password: {
                     required: "Please enter correct password",
                     minlength: jQuery.validator.format("At least {0} characters password required!")
+                },
+                website: {
+                    required: 'Please enter Website URL',
+                    url: 'Please enter valid Website URL eg: http://www.schloop.co',
                 },
                 zip_code: {
                     required: "Please enter valid zipcode",
