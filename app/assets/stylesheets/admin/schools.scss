@@ -86,6 +86,8 @@
               height: 110px;
               background-color: rgba(37, 169, 225, 0.26);
               border-radius: 100%;
+              background-repeat: no-repeat;
+              background-size: 100% 100%;
             }
           }
           .school-name-code {
@@ -171,32 +173,10 @@
 }
 
 .schools-input-form {
-  .schools-registraion-form {
-  	label {
-  	  	color: #666666;
-  	  	margin-bottom: 5px;
-  	}
+  .schools-registration-form {
   	.form-group {
   	  margin-bottom: 30px;
-  	  .input-field {
-  	  	background: transparent;
-    	box-shadow: none;
-    	border: 0;
-    	border-bottom: 1px solid #ccc;
-    	border-radius: 0;
-    	font-size: 14px;
-    	outline: 0;
-    	padding: 0;
-    	margin-bottom: 10px;
-    	&:focus {
-  	  	 border-color: #66afe9;
-  	    }
-  	  }
-    }  
-    input::-ms-input-placeholder {
-      color: #cacaca;
-      font-size: 12px;  
-    }    
+    }
     .upload-logo {
         width: 120px;
         height: 120px;
@@ -221,9 +201,6 @@
       label {
         cursor: pointer;
       }
-    }
-    > label ,.action-btn {
-      margin-left: 26px;
     }
     .action-btn {
       .add-adiministrator{ 

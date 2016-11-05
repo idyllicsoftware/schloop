@@ -22,6 +22,19 @@ class SchoolTeachers extends SchloopBase {
             uploadTeacherModalEl.modal('show');
         });
 
+        $('#upload-csv-file').change(function(){
+            var res=$('#upload-csv-file').val();
+            var arr = res.split("\\");
+            var filename = arr.slice(-1)[0];
+            var filextension = filename.split(".");
+            var filext ="."+filextension.slice(-1)[0];
+            var valid=[".csv",".jpg"];
+
+            if (valid.indexOf(filext.toLowerCase())==1){      
+                $('#namefile').css({"color":"green","font-weight":700,"padding":"20px"});
+                $('#namefile').html("You select " + filename + " file.");
+            }
+        });
         $(".upload-teachers-form").submit(function () {
             var jForm = $(this);
 
@@ -34,7 +47,6 @@ class SchoolTeachers extends SchloopBase {
                 }
             });
         });
-
         $(document).on('click','.upload-cancel', function () {
             uploadTeacherModalEl.modal('hide');
         });

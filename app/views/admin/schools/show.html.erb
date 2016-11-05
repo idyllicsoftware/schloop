@@ -5,43 +5,48 @@
         <div class="home-logo">
         </div>
         <div class="heading-wrapper">
-          <h2>Dalmiya Public School</h2>
-          <p>DMP001</p>
+          <h2><%= @school.name %></h2>
+          <p><%= @school.code %></p>
         </div>
       </div>
       <div class="data-wrapper">
         <div class="row mt-40">
           <div class="col-md-3">
             <span class="data-title">Board</span>
-            <span class="data-attr">CBSE</span>
+            <span class="data-attr"><%= @school.board %></span>
 
           </div>
           <div class="col-md-4 ">
             <span class="data-title">Principle/Director/Authority</span>
-            <span class="data-attr">Mrs. Suma Das (Principal)</span>
-
+            <span class="data-attr"><%= @school.principal_name %></span>
+            
           </div>
           <div class="col-md-4">
             <span class="data-title">Website</span>
-            <span class="data-attr"><a href="#">www.dalimyabhadup.com</a></span>
+            <span class="data-attr"><a href="#"><%= @school.website %></a></span>
+            
           </div>
         </div>
         <div class="row mt-40">
           <div class="col-md-6">
             <span class="data-title">Address</span>
-            <span class="data-attr"><address>Bhaktivedanta Swami Marg,Srishti Sector 1, Mira road, East Thane</address></span>
+            <span class="data-attr"><address><%= @school.address %></address></span>
+
           </div>
           <div class="col-md-2 ">
             <span class="data-title">Zip Code</span>
-            <span class="data-attr">411004</span>
+            <span class="data-attr"><%= @school.zip_code %></span>
+            
           </div>
           <div class="col-md-2">
             <span class="data-title">Phone</span>
-            <span class="data-attr">022 6543 736</span>
+            <span class="data-attr"> <%= @school.phone1 %></span>
+            
           </div>
           <div class="col-md-2 last-col">
             <span class="data-title">Phone (Alternate)</span>
-            <span class="data-attr">0987654321</span>
+            <span class="data-attr"> <%= @school.phone2 %></span>
+            
           </div>
         </div>
         <div class="row mt-30">
@@ -49,54 +54,56 @@
             <span class="data-title">School Admin (will get credentials to log into system)</span><br>
             <div class="overflow">
               <table class="admin-data">
+              <% @school_admins.each do |school_admin| %>
                 <tr>
-                  <td>Chetan</td>
-                  <td>Sawai</td>
-                  <td>022647738</td>
-                  <td>0987654321</td>
-                  <td>chetansawai@dalmiya.com</td>
-                </tr>
+                  <td><%= school_admin.first_name %></td>
+                  <td><%= school_admin.last_name %></td>
+                  <td><%= school_admin.cell_number %></td>
+                  <td><%= school_admin.work_number %></td>
+                  <td><%= school_admin.email %></td>
+                </tr> 
+              <% end %>     
               </table>
             </div>
             <div class="mt-10"><span id="add-admin"><a id="add-school-administrator-popover" data-toggle="popover" data-value="add-school-administrator-popover-content">+Add Another Administrator</a></span></div>
             <div id="add-school-administrator-popover-content" class="hidden">
               <form class="add-admin-form">
                 <div class="form-group col-md-12">
-                  <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Name" maxlength="30">
-                </div>
+                      <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Name" maxlength="30">
+                    </div>
                 <div class="form-group col-md-12">
-                  <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Phone 1">
-                </div>
+                      <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Phone 1">
+                    </div>
                 <div class="form-group col-md-12">
-                  <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Phone 2">
-                </div>
+                      <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Phone 2">
+                    </div>                                
                 <div class="form-group col-md-12">
-                  <input type="email" class="form-control input-field" required name="name" autocomplete="off" placeholder="Email">
-                </div>
-                <div class="add-action-btn col-md-12">
-                  <button  class="btn btn-primary">SAVE</button>
-                  <button  class="btn btn-primary">CANCEL</button>
-                  <button  class="btn btn-primary">REMOVE</button>
-                </div>
+                      <input type="email" class="form-control input-field" required name="name" autocomplete="off" placeholder="Email">
+                    </div>
+                    <div class="add-action-btn col-md-12">
+                        <button  class="btn btn-primary">SAVE</button>
+                        <button  class="btn btn-primary">CANCEL</button>
+                        <button  class="btn btn-primary">REMOVE</button>
+                  </div>            
               </form>
-            </div>
+              </div>
           </div>
           <div class="col-md-4 "></div>
         </div>
       </div>
     </div>
-  </div>
+  </div>  
   <div class="container">
     <div class="content-wrapper">
       <div class="tab-wrapper">
         <ul id="myTab" class="nav nav-tabs">
-          <li class="active"><a href="#grade-sub-tab" data-toggle="tab">Grades & Subjects</a></li>
-          <li><a href="#teachers-tab" data-toggle="tab">Teachers</a></li>
+          <li class="active"><a href="#grade-sub-tab" aria-controls="grade-sub-tab" role="grade-sub-tab" data-toggle="tab">Grades & Subjects</a></li>
+          <li><a href="#teachers-tab" aria-controls="teachers-tab" role="teachers-tab"  data-toggle="tab">Teachers</a></li>
         </ul>
         <div id="myTabContent" class="tab-content">
           <div class="tab-pane fade in active" id="grade-sub-tab">
             <div>
-              <div class="add_grade" >
+              <div class="add_grade">
                 <a id="add-grade-popover" tabindex="0" data-toggle="popover" role="button" data-value="add-grade-popover-content" >+ Add grade</a>
               </div>
               <div id="add-grade-popover-content" class="hidden">
@@ -131,25 +138,25 @@
                       <li class="col-md-4"><input type="checkbox" name="subject3" value="Biology" id="check8">
                         <label for="check8">Biology</label>
                       </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="History">
-                        <label for="check3">History</label>
+                      <li class="col-md-4"><input type="checkbox" name="subject3" value="History" id="check9" >
+                        <label for="check9">History</label>
                       </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="Social Science">
-                        <label for="check3">Social Science</label>
+                      <li class="col-md-4"><input type="checkbox" name="subject3" value="Social Science" id="check10">
+                        <label for="check10">Social Science</label>
                       </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="General knowledge">
-                        <label for="check3">General knowledge</label>
+                      <li class="col-md-4"><input type="checkbox" name="subject3" value="General knowledge" id="check11">
+                        <label for="check11">General knowledge</label>
                       </li>
                     </ul>
                   </div>
                   <div class="col-md-12 form-group add-subject">
-                    <div class="col-md-6">
-                      <h4>Add custome subject</h4>
-                      <input type="text" class="form-control input-field" required name="grade_name" placeholder="subject name,ex.maths,english" autocomplete="off">
-                    </div>
-                    <div class="col-md-6">
-                      <button type="button" class="btn btn-primary">ADD SUBJECT</button>
-                    </div>
+                       <div class="col-md-6">
+                        <h4>Add custome subject</h4>
+                        <input type="text" class="form-control input-field" required name="#" placeholder="subject name,ex.maths,english" autocomplete="off">
+                       </div>
+                       <div class="col-md-6">
+                        <button type="button" class="btn btn-primary">ADD SUBJECT</button>
+                       </div>   
                   </div>
                   <div class="grade-action-btn col-md-12">
                     <button  class="btn btn-primary">SAVE</button>
@@ -160,73 +167,173 @@
               </div>
             </div>
             <div class="subject-wrapper">
-              <div class="plr-20">
-                <span class="data-title">Grade 1</span>
-                <div class="data-attr">
-                  <ul>
-                    <li>English</li>
-                    <li>Maths</li>
-                    <li>Science</li>
+              <span class="data-title plr-20">Grade 1</span>
+              <div class="data-attr">
+                <div class="subject-tab-wrapper">
+                  <ul id="subject-tab" class="nav nav-tabs">
+                    <li class="active"><a href="#subject1-tab" data-toggle="tab">English</a></li>
+                    <li><a href="#subject2-tab" data-toggle="tab">Maths</a></li>
+                    <li><a href="#subject3-tab" data-toggle="tab">Science</a></li>
                   </ul>
                   <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left">+Add Subject</a></span>
-                  <div id="add-subject-popover-content" class="hidden" >
-                    <div class="form-group">
-                      <input type="text" class="form-control input-field" required name="subject_name" placeholder="subjects Maths,English etc." autocomplete="off">
-                      <div class="add-subject-btn">
-                        <button  class="btn btn-primary">ADD</button>
-                        <button  class="btn btn-primary">CANCEL</button>
-                      </div>
-                    </div>
+                </div>
+                <div id="add-subject-popover-content" class="hidden">
+                  <div class="form-group">
+                    <input type="text" class="form-control input-field" required name="subject_name" placeholder="subjects Maths,English etc." autocomplete="off">
+                    <div class="add-subject-btn">
+                      <button  class="btn btn-primary">ADD</button>
+                      <button  class="btn btn-primary">CANCEL</button>
+                    </div>                        
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="division-wrapper inner-tabs">
-              <div class="plr-20"><span class="data-title"><a class="fa fa-chevron-down"></a>5 Divisions</span></div>
-              <div class="slide-division-wrapper">
-                <div class="plr-20">
-                  <ul id="myTab" class="nav nav-tabs">
-                    <li class="active"><a href="#div-a" data-toggle="tab">A</a></li>
-                    <li><a href="#div-b" data-toggle="tab">B</a></li>
-                    <li><a href="#div-c" data-toggle="tab">C</a></li>
-                    <li><a href="#div-d" data-toggle="tab">D</a></li>
-                    <li><a href="#div-e" data-toggle="tab">E</a></li>
-                  </ul>
-                  <div class="div-operation">
-                    <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
-                    <div id="add-division-popover-content" class="hidden" >
-                      <div class="form-group">
-                        <input type="text" class="form-control input-field" required name="grade_name" placeholder="division A,B,C etc." autocomplete="off">
-                        <div class="add-division-btn">
-                          <button  class="btn btn-primary">ADD</button>
-                          <button  class="btn btn-primary">CANCEL</button>
+                <div class="tab-content">
+                  <div class="tab-pane fade in active division-wrapper inner-tabs" id="subject1-tab">
+                    <div class="plr-20"><span class="data-title"><a class="fa fa-chevron-down no-of-div"></a>5 Divisions</span></div>
+                    <div class="slide-division-wrapper">
+                      <div class="plr-20">
+                        <ul id="myTab" class="nav nav-tabs">
+                          <li class="active"><a href="#div-a" data-toggle="tab">A</a></li>
+                          <li><a href="#div-b" data-toggle="tab">B</a></li>
+                          <li><a href="#div-c" data-toggle="tab">C</a></li>
+                          <li><a href="#div-d" data-toggle="tab">D</a></li>
+                          <li><a href="#div-e" data-toggle="tab">E</a></li>
+                        </ul>
+                        <div class="div-operation">
+                          <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
+                          <span><a href="#">+Delete Division A</a></span>
+                          <div id="add-division-popover-content" class="hidden" >
+                            <div class="form-group">
+                              <input type="text" class="form-control input-field" required name="grade_name" placeholder="division A,B,C etc." autocomplete="off">
+                              <div class="add-division-btn">
+                                <button  class="btn btn-primary">ADD</button>
+                                <button  class="btn btn-primary">CANCEL</button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <span><a href="#">+Delete Division A</a></span>
-                  </div>
-                </div>
-                <div id="myTabContent" class="tab-content">
-                  <div class="tab-pane fade in active" id="div-a">
-                    <div class="teachers-wrapper">
-                      <ul>
-                        <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>English</span></div></a></li>
-                        <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>sagar P.</p>Maths</span></div></a></li>
-                        <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>ravi P.</p>Science</span></div></a></li>
-                      </ul>
-                      <div id="teachers-info-popover-content" class="hidden">
-                        <div>
-                          <p>Ruchi Patil</p>
-                          <p>8234769386</p>
-                          <p>ruchi@gmail</p>
+                      <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="div-a">
+                          <div class="teachers-wrapper">
+                            <ul>
+                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>English</span></div></a></li>
+                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>sagar P.</p>Maths</span></div></a></li>
+                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>ravi P.</p>Science</span></div></a></li>
+                            </ul>
+                            <div id="teachers-info-popover-content" class="hidden">
+                              <div>
+                                <p>Ruchi Patil</p>
+                                <p>8234769386</p>
+                                <p>ruchi@gmail</p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                        <div class="tab-pane fade" id="div-b"><h1>khjbjhdkhjbjhd</h1></div>
+                        <div class="tab-pane fade" id="div-c"><h1>khjbjhdkhjbjhdkhjbjhd</h1></div>
+                        <div class="tab-pane fade" id="div-d"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
+                        <div class="tab-pane fade" id="div-e"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
+                      </div>
+                    </div>
+                  </div>  
+                  <div class="tab-pane fade division-wrapper inner-tabs" id="subject2-tab">
+                    <div class="plr-20"><span class="data-title"><a class="fa fa-chevron-down no-of-div"></a>5 Divisions</span></div>
+                    <div class="slide-division-wrapper">
+                      <div class="plr-20">
+                        <ul id="myTab" class="nav nav-tabs">
+                          <li class="active"><a href="#div-a" data-toggle="tab">A</a></li>
+                          <li><a href="#div-b" data-toggle="tab">B</a></li>
+                          <li><a href="#div-c" data-toggle="tab">C</a></li>
+                          <li><a href="#div-d" data-toggle="tab">D</a></li>
+                          <li><a href="#div-e" data-toggle="tab">E</a></li>
+                        </ul>
+                        <div class="div-operation">
+                          <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
+                          <div id="add-division-popover-content" class="hidden" >
+                            <div class="form-group">
+                              <input type="text" class="form-control input-field" required name="grade_name" placeholder="division A,B,C etc." autocomplete="off">
+                              <div class="add-division-btn">
+                                <button  class="btn btn-primary">ADD</button>
+                                <button  class="btn btn-primary">CANCEL</button>
+                              </div>
+                            </div>
+                          </div>
+                          <span><a href="#">+Delete Division A</a></span>
+                        </div>
+                      </div>
+                      <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="div-a">
+                          <div class="teachers-wrapper">
+                            <ul>
+                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>English</span></div></a></li>
+                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>sagar P.</p>Maths</span></div></a></li>
+                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>ravi P.</p>Science</span></div></a></li>
+                            </ul>
+                            <div id="teachers-info-popover-content" class="hidden">
+                              <div>
+                                <p>Ruchi Patil</p>
+                                <p>8234769386</p>
+                                <p>ruchi@gmail</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane fade" id="div-b"><h1>khjbjhdkhjbjhd</h1></div>
+                        <div class="tab-pane fade" id="div-c"><h1>khjbjhdkhjbjhdkhjbjhd</h1></div>
+                        <div class="tab-pane fade" id="div-d"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
+                        <div class="tab-pane fade" id="div-e"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="div-b"><h1>khjbjhdkhjbjhd</h1></div>
-                  <div class="tab-pane fade" id="div-c"><h1>khjbjhdkhjbjhdkhjbjhd</h1></div>
-                  <div class="tab-pane fade" id="div-d"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
-                  <div class="tab-pane fade" id="div-e"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
+                  <div class="tab-pane fade division-wrapper inner-tabs" id="subject3-tab">
+                    <div class="plr-20"><span class="data-title"><a class="fa fa-chevron-down no-of-div"></a>5 Divisions</span></div>
+                    <div class="slide-division-wrapper">
+                      <div class="plr-20">
+                        <ul id="myTab" class="nav nav-tabs">
+                          <li class="active"><a href="#div-a" data-toggle="tab">A</a></li>
+                          <li><a href="#div-b" data-toggle="tab">B</a></li>
+                          <li><a href="#div-c" data-toggle="tab">C</a></li>
+                          <li><a href="#div-d" data-toggle="tab">D</a></li>
+                          <li><a href="#div-e" data-toggle="tab">E</a></li>
+                        </ul>
+                        <div class="div-operation">
+                          <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
+                          <div id="add-division-popover-content" class="hidden" >
+                            <div class="form-group">
+                              <input type="text" class="form-control input-field" required name="grade_name" placeholder="division A,B,C etc." autocomplete="off">
+                              <div class="add-division-btn">
+                                <button  class="btn btn-primary">ADD</button>
+                                <button  class="btn btn-primary">CANCEL</button>
+                              </div>
+                            </div>
+                          </div>
+                          <span><a href="#">+Delete Division A</a></span>
+                        </div>
+                      </div>
+                      <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="div-a">
+                          <div class="teachers-wrapper">
+                            <ul>
+                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>English</span></div></a></li>
+                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>sagar P.</p>Maths</span></div></a></li>
+                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>ravi P.</p>Science</span></div></a></li>
+                            </ul>
+                            <div id="teachers-info-popover-content" class="hidden">
+                              <div>
+                                <p>Ruchi Patil</p>
+                                <p>8234769386</p>
+                                <p>ruchi@gmail</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane fade" id="div-b"><h1>khjbjhdkhjbjhd</h1></div>
+                        <div class="tab-pane fade" id="div-c"><h1>khjbjhdkhjbjhdkhjbjhd</h1></div>
+                        <div class="tab-pane fade" id="div-d"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
+                        <div class="tab-pane fade" id="div-e"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -249,93 +356,94 @@
                   <div class="form-group col-md-12 ">
                     <input type="text" class="form-control input-field" required name="grade_name" placeholder="Name" autocomplete="off">
                   </div>
-                  <div class="form-group col-md-12 ">
-                    <input type="text" class="form-control input-field" required name="grade_name" placeholder="Phone" autocomplete="off">
+                  <div class="form-group col-md-12 "> 
+                      <input type="text" class="form-control input-field" required name="grade_name" placeholder="Phone" autocomplete="off">
                   </div>
-                  <div class="form-group col-md-12 ">
-                    <input type="text" class="form-control input-field" required name="grade_name" placeholder="Email" autocomplete="off">
-                  </div>
-                  <label>Assign Grades & Subjects </label>
-                  <div class="col-md-12 form-group assign-grade">
-                    <div>
-                      <label>Grade 1</label>
-                      <ul class="checkbox_customized">
-                        <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" checked="checked" >
-                          <label for="check1">Science</label>
-                        </li>
-                        <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" >
-                          <label for="check1">Science</label>
-                        </li>
-                        <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" checked="checked" >
-                          <label for="check1">Science</label>
-                        </li>
-                      </ul>
+                  <div class="form-group col-md-12 "> 
+                      <input type="text" class="form-control input-field" required name="grade_name" placeholder="Email" autocomplete="off">
                     </div>
-                    <div>
-                      <label>DIVISIONS</label>
-                      <ul class="checkbox_customized">
-                        <li class="col-md-2"><input type="checkbox" name="subject1" value="A" checked="checked" >
-                          <label for="check1">A</label>
-                        </li>
-                        <li class="col-md-2"><input type="checkbox" name="subject1" value="B" >
-                          <label for="check1">B</label>
-                        </li>
-                        <li class="col-md-2"><input type="checkbox" name="subject1" value="C" >
-                          <label for="check1">C</label>
-                        </li>
-                        <li class="col-md-2"><input type="checkbox" name="subject1" value="D" checked="checked" >
-                          <label for="check1">D</label>
-                        </li>
-                      </ul>
+                    <label>Assign Grades & Subjects </label>
+                    <div class="col-md-12 form-group assign-grade">
+                      <div>
+                        <label>Grade 1</label>
+                        <ul class="checkbox_customized">
+                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="check12">
+                            <label for="check12">Science</label>
+                          </li>
+                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="check13">
+                            <label for="check13">Science</label>
+                          </li>
+                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="check14">
+                            <label for="check14">Science</label>
+                          </li>
+                        </ul>
+                      </div>
+                      <div>
+                        <label>DIVISIONS</label>
+                        <ul class="checkbox_customized">
+                          <li class="col-md-2"><input type="checkbox" name="subject1" value="A" id="check15">
+                            <label for="check15">A</label>
+                          </li>
+                          <li class="col-md-2"><input type="checkbox" name="subject1" value="B" id="check16">
+                            <label for="check16">B</label>
+                          </li>
+                          <li class="col-md-2"><input type="checkbox" name="subject1" value="C" id="check17">
+                            <label for="check17">C</label>
+                          </li>
+                          <li class="col-md-2"><input type="checkbox" name="subject1" value="D" id="check18">
+                            <label for="check18">D</label>
+                          </li>
+                          </ul>                   
                     </div>
-                  </div>
-                  <div class="col-md-12 form-group assign-grade">
-                    <div>
-                      <label>Grade 1</label>
-                      <ul class="checkbox_customized">
-                        <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" checked="checked" >
-                          <label for="check1">Science</label>
-                        </li>
-                        <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" >
-                          <label for="check1">Science</label>
-                        </li>
-                        <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" checked="checked" >
-                          <label for="check1">Science</label>
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <label>DIVISIONS</label>
-                      <ul class="checkbox_customized">
-                        <li class="col-md-2"><input type="checkbox" name="subject1" value="A" checked="checked" >
-                          <label for="check1">A</label>
-                        </li>
-                        <li class="col-md-2"><input type="checkbox" name="subject1" value="B" >
-                          <label for="check1">B</label>
-                        </li>
-                        <li class="col-md-2"><input type="checkbox" name="subject1" value="C" >
-                          <label for="check1">C</label>
-                        </li>
-                        <li class="col-md-2"><input type="checkbox" name="subject1" value="D" checked="checked" >
-                          <label for="check1">D</label>
-                        </li>
-                      </ul>
+                    <div class="col-md-12 form-group assign-grade">
+                      <div>
+                        <label>Grade 1</label>
+                        <ul class="checkbox_customized">
+                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="sub11">
+                            <label for="sub11">Science</label>
+                          </li>
+                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="sub12">
+                            <label for="sub12">Science</label>
+                          </li>
+                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="sub13">
+                            <label for="sub13">Science</label>
+                          </li>
+                        </ul>
+                      </div>
+                      <div>
+                        <label>DIVISIONS</label>
+                        <ul class="checkbox_customized">
+                          <li class="col-md-2"><input type="checkbox" name="subject1" value="A" id="div11" >
+                            <label for="div11">A</label>
+                          </li>
+                          <li class="col-md-2"><input type="checkbox" name="subject1" value="B" id="div12">
+                            <label for="div12">B</label>
+                          </li>
+                          <li class="col-md-2"><input type="checkbox" name="subject1" value="C" id="div13">
+                            <label for="div13">C</label>
+                          </li>
+                          <li class="col-md-2"><input type="checkbox" name="subject1" value="D" id="div14" >
+                            <label for="div14">D</label>
+                          </li>
+                          </ul>                   
                     </div>
                   </div>
                   <div class="assign-grade-btn col-md-12">
-                    <button  class="btn btn-primary">SAVE</button>
-                    <button  class="btn btn-primary">CANCEL</button>
-                    <button  class="btn btn-primary">REMOVE</button>
+                        <button  class="btn btn-primary">SAVE</button>
+                        <button  class="btn btn-primary">CANCEL</button>
+                        <button  class="btn btn-primary">REMOVE</button>
                   </div>
                 </div>
-              </div>
+              </div>  
             </div>
           </div>
-        </div>
-      </div>
+        </div>           
+      </div>  
     </div>
   </div>
+  </div>
 </div>
+
 <div class="modal fade" id="upload-teachers-modal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -367,4 +475,4 @@
       </div>
     </div>
   </div>
-</div>
+</div>      

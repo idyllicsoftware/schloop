@@ -38,8 +38,14 @@ Rails.application.routes.draw do
     end
     resource :users do
     end
-
-    resources :schools do
+    
+    resources :schools, only: [:show, :create, :index] do
+      member do
+        post :add_grade
+      end
+      collection do
+        get :all
+      end
     end
 
     resource :school_admins do
@@ -58,7 +64,6 @@ Rails.application.routes.draw do
       post "/school_admin/register" => 'school_admin#register'
       post "/teacher/register" => 'teachers#register'
       post "/teacher/login" => 'teachers#login'
-      post "/teacher/reset_password" => 'teachers#reset_password'
       post "/teacher/dashboard" => 'teachers#dashboard'
     end
   end
