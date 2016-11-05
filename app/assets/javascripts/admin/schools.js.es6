@@ -21,6 +21,8 @@ class Schools extends SchloopBase {
             createModalEl.modal('show');
         });
 
+        self.loadSchools();
+
         $(".data-title").click( function () {
             $(".slide-division-wrapper").slideToggle();
         });
@@ -31,6 +33,7 @@ class Schools extends SchloopBase {
             'school[address]': 'name',
             'school[zip_code]': 'zip_code',
             'school[phone1]': 'phone',
+            'school[website]': 'website',
             'administrator[first_name]': 'name',
             'administrator[last_name]': 'name',
             'administrator[phone]': 'phone',
@@ -39,6 +42,7 @@ class Schools extends SchloopBase {
             if(res.success) {
                 createSchoolFormEl[0].reset();
                 createModalEl.modal('hide');
+                self.loadSchools();
                 toastr.success('School created successfully');
             }else {
                 let msg = res.errors.join("<br/> ") || "Something went wrong. Please try later."
@@ -46,10 +50,27 @@ class Schools extends SchloopBase {
             }
         });
 
-
         $(document).on('click','.cancel-creation', function () {
             createModalEl.modal('hide');
         });
 
+    };
+
+    get schoolListTpl (){
+        return $('#schools_list_tpl').html();
+    }
+
+    loadSchools (){
+        let self = this, html = '',
+            schoolsContainerEl = $("#schoolsContainer");
+        $.ajax({
+            url: '/admin/schools/all',
+            success: function (res) {
+                if(res.success) {
+                    html = Mustache.to_html(self.schoolListTpl, res);
+                }
+                schoolsContainerEl.html(html);
+            }
+        });
     }
 }

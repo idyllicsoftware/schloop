@@ -3,10 +3,17 @@ class Admin::SchoolsController < ApplicationController
   layout "admin"
 
   def index
-    @schools = School.all
+    ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
+  end
+
+  def all
+    ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
+    schools = School.select(:id, :name, :code, :board, :principal_name, :website, :address, :zip_code, :phone1, :phone2).order('created_at').all
+    render :json => {success: true, schools: schools}
   end
 
   def show
+    ### TODO KAPIL CHECK PRODUCT ADMIN & SCHLOOP ADMIN ROLE FOR THIS ACTION
     @user = User.where(school_id: params[:id])
     @school = School.find(params[:id])
     @school_id = params[:id]

@@ -37,6 +37,9 @@ Rails.application.routes.draw do
       member do
         post :add_grade
       end
+      collection do
+        get :all
+      end
     end
 
     resource :school_admins do
