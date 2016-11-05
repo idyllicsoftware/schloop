@@ -28,7 +28,6 @@ class Admin::TeachersController < ApplicationController
   end
 
   def update
-  	binding.pry
     @teacher = Teacher.find(params[:id])
 
     respond_to do |format|

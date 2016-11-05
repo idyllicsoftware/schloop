@@ -235,15 +235,13 @@
             <div class="pull-right upload-sheet">Upload spreadsheet</div>
             <div class="teachers-wrapper">
               <ul>
+              <% @school.teachers.each do |teacher|%>
                 <li>
                   <div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps">
-                    <span class="img-caption"><p>Ruchi P.</p>9888889890 <br> ruchi@gmail.com</span>
+                    <span class="img-caption"><p><%= teacher.name%></p><%= teacher.phone%> <br> <%= teacher.email%></span>
                   </div>
                 </li>
-                <li>
-                  <div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>9888889890 <br> ruchi@gmail.com</span>
-                  </div>
-                </li>
+              <%end%>
                 <li><a id="add-teachers-popover" data-toggle="popover" data-value="add-teachers-popover-content"><div class="add-teacher"><img src="<%= asset_path('admin/plus_icon.svg') %>"></div></a></li>
               </ul>
               <div id="add-teachers-popover-content" class="hidden">
@@ -342,16 +340,30 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
-        <form class="upload-teachers-form">
+      <%= form_for @teacher_import,  :url => imports_admin_teachers_path do |f| %>
+        <!-- <form class="upload-teachers-form"> -->
           <h3>Do you want upload school teachers CSV file</h3>
+          <% if @teacher_import.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@teacher_import.errors.count, "error") %> prohibited this import from completing:</h2>
+              <ul>
+                <% @teacher_import.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
           <div class="browse-file">
             <button type="button" id="btnup" class="btn btn-primary">Browse...</button>
-            <input type="file" value="" name="teachers-file" id="upload-csv-file"/>
+            <%= hidden_field_tag :school_id,  @school.id%>
+            <%= f.file_field :file, :id => "upload-csv-file" %>
+            <!-- <input type="file" value="" name="teachers-file" id="upload-csv-file"/> -->
             <p id="namefile"></p>
           </div>
           <button  type="submit" class="btn btn-primary ">UPLOAD</button>
           <button  class="btn btn-primary upload-cancel">CANCEL</button>
-        </form>
+        <!-- </form> -->
+        <% end %>
       </div>
     </div>
   </div>

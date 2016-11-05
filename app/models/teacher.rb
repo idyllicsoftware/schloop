@@ -47,6 +47,10 @@ class Teacher < ActiveRecord::Base
     self.token = generated_token
   end
 
+  def name
+    "#{first_name} #{last_name} #{middle_name}"
+  end
+
   def generated_token
     loop do
       token = SecureRandom.uuid.gsub(/\-/,'')

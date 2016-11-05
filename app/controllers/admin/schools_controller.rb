@@ -7,7 +7,8 @@ class Admin::SchoolsController < ApplicationController
   end
 
   def show
-    
+    @school = School.find(params[:id])
+    @teacher_import = TeacherImport.new({}, @school.id)
   end
 
   def new

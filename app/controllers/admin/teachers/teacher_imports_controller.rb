@@ -5,9 +5,10 @@ class Admin::Teachers::TeacherImportsController < ApplicationController
   end
 
   def create
-    @teacher_import = TeacherImport.new(params[:teacher_import])
+    @school = School.find(params[:school_id])
+    @teacher_import = TeacherImport.new(params[:teacher_import], params[:school_id])
     if @teacher_import.save
-      redirect_to root_url, notice: "Imported teachers successfully."
+      redirect_to :back, notice: "Imported teachers successfully."
     else
       render :new
     end

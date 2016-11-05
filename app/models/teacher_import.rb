@@ -1,8 +1,11 @@
 class TeacherImport
   include ActiveModel::Model
   attr_accessor :file
+  attr_reader :school_id
 
-  def initialize(attributes = {})
+  def initialize(attributes = {}, school_id)
+    
+    @@school_id = school_id
     attributes.each { |name, value| send("#{name}=", value) }
   end
 
@@ -16,7 +19,6 @@ class TeacherImport
       true
     else
       imported_teachers.each_with_index do |teacher, index|
-        binding.pry
         teacher.errors.full_messages.each do |message|
           errors.add :base, "Row #{index+2}: #{message}"
         end
@@ -36,6 +38,8 @@ class TeacherImport
       row = Hash[[header, spreadsheet.row(i)].transpose]
       password = generated_password = Devise.friendly_token.first(8)
       row["password"] = password
+      row["school_id"] = @@school_id
+
       
       teacher = Teacher.find_by(id: row["id"]) || Teacher.new
       teacher.attributes = row.to_hash
