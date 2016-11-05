@@ -13,9 +13,6 @@ class Admin::SchoolsController < ApplicationController
     @school_admins = User.where(school_id: @school.id)
   end
 
-  def new
-	end
-
 	def create
     ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
     response = create_school(school_params, school_admin_params)
@@ -49,13 +46,6 @@ class Admin::SchoolsController < ApplicationController
     # 	render admin_schools_path
     # end
 	end
-
-  def edit
-    @user = User.where(school_id: params[:id])
-    @school = School.find(params[:id])
-    @school_id = params[:id]
-    @school_admins = User.where(school_id: @school.id)
-  end
 
   def add_grade
     new_grade = Grade.create(:name => params[:grade_name], :school_id => params[:school_id])
