@@ -14,7 +14,7 @@ class Schools extends SchloopBase {
 
     initDashboard () {
         let self = this,
-            createSchoolFormEl = $(".schools-registraion-form"),
+            createSchoolFormEl = $(".schools-registration-form"),
             createModalEl = $("#create-school-modal");
 
         $(document).on('click','#create-school-btn', function () {
