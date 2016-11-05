@@ -36,13 +36,10 @@ Rails.application.routes.draw do
       get "/dashboards/school_admin_dashboard" => 'users/dashboards#school_admin_dashboard'
     end
     
-    resource :schools do
-      
-      get "index" => 'schools#index'
-      post "new" => 'schools#create'
-      post "create" => 'schools#create'
-      get "show/:id" => 'schools#show'
-      post "add_grade" => 'schools#add_grade'
+    resources :schools do
+      member do
+        post :add_grade
+      end
     end
 
     resource :school_admins do
