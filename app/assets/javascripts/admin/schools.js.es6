@@ -7,7 +7,7 @@ class Schools extends SchloopBase {
         if(action == 'index'){
             this.initDashboard();
         }else if(action == 'show'){
-            this._schoolProfile = new SchoolProfiles();
+            this._schoolProfile = new SchoolProfiles(this._config);
         }
         return this;
     };
@@ -22,10 +22,6 @@ class Schools extends SchloopBase {
         });
 
         self.loadSchools();
-
-        $(".data-title").click( function () {
-            $(".slide-division-wrapper").slideToggle();
-        });
 
         this.initFormSubmit(createSchoolFormEl, {
             'school[name]': 'name',

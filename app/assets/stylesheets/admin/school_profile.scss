@@ -1,20 +1,6 @@
 @import "includes/variables";
+@import "includes/mixins";
 
-.mt-40{
-	margin-top: 40px;
-}
-.mt-30{
-	margin-top: 30px;
-}
-.mt-10{
-	margin-top: 10px;
-}
-.plr-20{
-	padding: 0 20px;
-}
-.plr-10{
-	padding: 0 10px;
-}
 .school-profile-main-section {
 	.container{
 		width: 1020px;
@@ -40,10 +26,11 @@
 			padding: 5px 5px 15px;
 			display: flex;
 			.home-logo{
-				width: 120px;
-    			height: 120px;
-    			border-radius: 100%;
-    			background: url(https://dummyimage.com/110x110/f4c441/000000.png&text=DPS);
+                @include widthHeight(120px, 120px);
+				border-radius: 100%;
+                background-color: rgba(37, 169, 225, 0.26);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
 			}
 			.heading-wrapper{
 				display: inline-block;

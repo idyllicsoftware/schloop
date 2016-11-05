@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     resources :schools, only: [:show, :create, :index] do
       member do
         post :add_grade
+        get :school_admins
       end
       collection do
         get :all
