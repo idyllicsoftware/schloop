@@ -3,6 +3,7 @@
 //= require bootstrap-sprockets
 //= require sweetalert
 //= require jquery.validate
+//= require toastr.min
 //= require common
 //= require_self
 
@@ -73,15 +74,41 @@ class SchloopBase {
                     required: true,
                     minlength: 6
                 },
+                zip_code: {
+                    required: true,
+                    digits: true,
+                    minlength: 6
+                },
+                phone: {
+                    required: true,
+                    digits: true,
+                    minlength: 10
+                },
+                name: {
+                    required: true,
+                },
                 email: {
                     required: true,
                     email: true
                 }
             },
             messages: {
+                name: {
+                    required: "This field is required",
+                },
                 password: {
                     required: "Please enter correct password",
                     minlength: jQuery.validator.format("At least {0} characters password required!")
+                },
+                zip_code: {
+                    required: "Please enter valid zipcode",
+                    digits: "Please enter valid zipcode",
+                    minlength: jQuery.validator.format("At least {0} characters zipcode required!")
+                },
+                mobile: {
+                    required: "Please enter valid phone number",
+                    digits: "Please enter valid phone number",
+                    minlength: jQuery.validator.format("At least {0} characters phone number required!")
                 },
                 email: {
                     required: "Please specify email address",
@@ -93,14 +120,15 @@ class SchloopBase {
 
     formValidatorInit (jForm, fieldsMapping){
         let {rules: all_rules, messages:all_messages} = this.getValidationRules(),
-            rules = {}, messages = {}, key;
+            rules = {}, messages = {}, key, mapping_key;
 
             for(key in fieldsMapping){
-                if(all_rules.hasOwnProperty(key)){
-                    rules[fieldsMapping[key]] = all_rules[key];
+                mapping_key = fieldsMapping[key]
+                if(all_rules.hasOwnProperty(mapping_key)){
+                    rules[key] = all_rules[mapping_key];
                 }
-                if(all_messages.hasOwnProperty(key)){
-                    messages[fieldsMapping[key]] = all_messages[key];
+                if(all_messages.hasOwnProperty(mapping_key)){
+                    messages[key] = all_messages[mapping_key];
                 }
             }
 

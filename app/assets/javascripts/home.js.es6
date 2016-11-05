@@ -29,14 +29,14 @@ class Main extends SchloopBase {
         });
 
         this.initFormSubmit($("#login-form"), {
-            email: 'user[email]',
-            password: 'user[password]'
+            'user[email]': 'email' ,
+            'user[password]': 'password'
         }, function () {
             debugger;
         });
 
         this.initFormSubmit($("#forgot-password-form"), {
-            email: 'user[email]'
+            'user[email]': 'email'
         }, function () {
             debugger;
         });
