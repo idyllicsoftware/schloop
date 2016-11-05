@@ -1,5 +1,6 @@
 class Admin::SchoolsController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_school, only: [:show, :school_admins]
   layout "admin"
 
   def index
@@ -13,11 +14,16 @@ class Admin::SchoolsController < ApplicationController
   end
 
   def show
-    ### TODO KAPIL CHECK PRODUCT ADMIN & SCHLOOP ADMIN ROLE FOR THIS ACTION
-    @user = User.where(school_id: params[:id])
-    @school = School.find(params[:id])
-    @school_id = params[:id]
-    @school_admins = User.where(school_id: @school.id)
+    @js_data = {
+        school_id: params[:id]
+    }
+    redirect_to admin_schools_path and return if @school.blank?
+  end
+
+  def school_admins
+    render json: {success: false, errors: ['School not found']} and return if @school.blank?
+    school_admins = @school.school_admins.select(:id, :first_name, :last_name, :cell_number, :email).order('created_at').all
+    render json: {success: true, school_admins: school_admins}
   end
 
 	def create
@@ -60,6 +66,10 @@ class Admin::SchoolsController < ApplicationController
   end
 
   private
+
+  def find_school
+      @school = School.find_by(id: params[:id])
+  end
 
   def create_school(school_datum, school_admin_datum)
     errors = []

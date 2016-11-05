@@ -50,6 +50,9 @@
        :controller => params[:controller],
        :action => params[:action]
      }
+     if @js_data.present?
+        js_obj.merge!(@js_data);
+     end
      if Rails.env != 'production'
        js_obj[:env] = Rails.env
      end

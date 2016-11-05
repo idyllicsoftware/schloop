@@ -1,0 +1,32 @@
+<script type="text/html" id="school_admin_tpl">
+  {{#school_admins}}
+      <tr data-id="{{ id }}">
+        <td>{{ first_name }}</td>
+        <td>{{ last_name }}</td>
+        <td>{{ cell_number }}</td>
+        <td>{{ email }}</td>
+      </tr>
+  {{/school_admins}}
+</script>
+
+<div id="add-school-administrator-popover-content" class="hidden">
+  <form class="add-admin-form">
+    <div class="form-group col-md-12">
+      <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Name" maxlength="30">
+    </div>
+    <div class="form-group col-md-12">
+      <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Phone 1">
+    </div>
+    <div class="form-group col-md-12">
+      <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Phone 2">
+    </div>
+    <div class="form-group col-md-12">
+      <input type="email" class="form-control input-field" required name="name" autocomplete="off" placeholder="Email">
+    </div>
+    <div class="add-action-btn col-md-12">
+      <button  class="btn btn-primary">SAVE</button>
+      <button  class="btn btn-primary">CANCEL</button>
+      <button  class="btn btn-primary">REMOVE</button>
+    </div>
+  </form>
+</div>
