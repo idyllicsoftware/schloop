@@ -1,5 +1,6 @@
 class Admin::Teachers::TeacherImportsController < ApplicationController
 	before_action :authenticate_user!
+  layout "admin"
 	def new
     @teacher_import = TeacherImport.new
   end
@@ -10,7 +11,7 @@ class Admin::Teachers::TeacherImportsController < ApplicationController
     if @teacher_import.save
       redirect_to :back, notice: "Imported teachers successfully."
     else
-      render :new
+      render :template => 'admin/schools/show'
     end
   end
 end

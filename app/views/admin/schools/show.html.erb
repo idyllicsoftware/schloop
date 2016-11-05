@@ -54,7 +54,7 @@
             <span class="data-title">School Admin (will get credentials to log into system)</span><br>
             <div class="overflow">
               <table class="admin-data">
-              <% @school_admins.each do |school_admin| %>
+              <% @school.school_admins.each do |school_admin| %>
                 <tr>
                   <td><%= school_admin.first_name %></td>
                   <td><%= school_admin.last_name %></td>
