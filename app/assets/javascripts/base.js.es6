@@ -68,6 +68,11 @@ class SchloopBase {
         $.ajax(params);
     };
 
+    showErrors (errors){
+        let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
+        swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+    };
+
     deleteRequest (url, btnEl, data, cb){
         let self = this;
         self.addAjaxLoader(btnEl);

@@ -41,8 +41,7 @@ class Schools extends SchloopBase {
                 self.loadSchools();
                 toastr.success('School created successfully');
             }else {
-                let msg = res.errors.join("<br/> ") || "Something went wrong. Please try later."
-                swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+                self.showErrors(res.errors);
             }
         });
 
