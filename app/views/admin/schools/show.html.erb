@@ -58,8 +58,12 @@
     <div class="content-wrapper">
       <div class="tab-wrapper">
         <ul id="myTab" class="nav nav-tabs">
-          <li class="active"><a href="#grade-sub-tab" aria-controls="grade-sub-tab" role="grade-sub-tab" data-toggle="tab">Grades & Subjects</a></li>
-          <li><a href="#teachers-tab" aria-controls="teachers-tab" role="teachers-tab"  data-toggle="tab">Teachers</a></li>
+          <li class="active">
+            <a href="#grade-sub-tab" aria-controls="grade-sub-tab" role="grade-sub-tab" data-toggle="tab">Grades & Subjects</a>
+          </li>
+          <li>
+            <a href="#teachers-tab" aria-controls="teachers-tab" role="teachers-tab"  data-toggle="tab">Teachers</a>
+          </li>
         </ul>
         <div id="myTabContent" class="tab-content">
           <div class="tab-pane fade in active" id="grade-sub-tab">
@@ -67,66 +71,10 @@
               <div class="add_grade">
                 <a id="add-grade-popover" tabindex="0" data-toggle="popover" role="button" data-value="add-grade-popover-content" >+ Add grade</a>
               </div>
-              <div id="add-grade-popover-content" class="hidden">
-                <form class="form-inline" role="form">
-                  <div class="form-group col-md-12 ">
-                    <input type="text" class="form-control input-field" required name="grade_name" placeholder="Name, ex.grade I,grade II" autocomplete="off">
-                  </div>
-                  <div class="form-group col-md-12 ">
-                    <h4>Assign subjects</h4>
-                    <ul class="checkbox_customized">
-                      <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="check1" >
-                        <label for="check1">Science</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject2" value="English" id="check2">
-                        <label for="check2">English</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="Marathi" id="check3">
-                        <label for="check3">Marathi</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="Geo" id="check4">
-                        <label for="check4">Geo</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="Hindi" id="check5">
-                        <label for="check5">Hindi</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="Maths" id="check6">
-                        <label for="check6">Maths</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="Art" id="check7">
-                        <label for="check7">Art</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="Biology" id="check8">
-                        <label for="check8">Biology</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="History" id="check9" >
-                        <label for="check9">History</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="Social Science" id="check10">
-                        <label for="check10">Social Science</label>
-                      </li>
-                      <li class="col-md-4"><input type="checkbox" name="subject3" value="General knowledge" id="check11">
-                        <label for="check11">General knowledge</label>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-md-12 form-group add-subject">
-                       <div class="col-md-6">
-                        <h4>Add custome subject</h4>
-                        <input type="text" class="form-control input-field" required name="#" placeholder="subject name,ex.maths,english" autocomplete="off">
-                       </div>
-                       <div class="col-md-6">
-                        <button type="button" class="btn btn-primary">ADD SUBJECT</button>
-                       </div>   
-                  </div>
-                  <div class="grade-action-btn col-md-12">
-                    <button  class="btn btn-primary">SAVE</button>
-                    <button  class="btn btn-primary">CANCEL</button>
-                    <button  class="btn btn-primary">REMOVE</button>
-                  </div>
-                </form>
-              </div>
             </div>
+
+            <!--
+
             <div class="subject-wrapper">
               <span class="data-title plr20">Grade 1</span>
               <div class="data-attr">
@@ -298,6 +246,8 @@
                 </div>
               </div>
             </div>
+
+            -->
           </div>
           <div id="teachers-tab" class="tab-pane fade">
             <div class="pull-right upload-sheet">Upload spreadsheet</div>
@@ -314,6 +264,8 @@
   </div>
   </div>
 </div>
+
+<%= render :partial => "admin/schools/grades" %>
 
 <%= render :partial => "admin/schools/school_teacher" %>
 

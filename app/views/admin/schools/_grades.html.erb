@@ -1,0 +1,42 @@
+<%
+    default_subjects = ['Science', 'English', 'Marathi', 'Geography', 'Hindi',
+     'Maths', 'Art', 'Biology', 'History', 'Social Science', 'General Knowledge']
+%>
+
+<div id="add-grade-popover-content" class="hidden">
+  <form class="form-inline" role="form">
+    <div class="form-group col-md-12 ">
+      <input type="text" class="form-control input-field" required name="grade_name" placeholder="Name, ex.grade I,grade II" autocomplete="off">
+    </div>
+    <div class="form-group col-md-12 ">
+      <h4>Assign subjects</h4>
+      <ul class="checkbox_customized">
+        <% default_subjects.each_with_index do |subject, index|%>
+          <li class="col-md-4">
+            <input type="checkbox" name="subjects[]" value="<%= subject %>" id="<%= "default_subject_#{index}" %>" >
+            <label for=""<%= "default_subject_#{index}" %>""><%= subject %></label>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <!--
+
+    <div class="col-md-12 form-group add-subject">
+      <div class="col-md-6">
+        <h4>Add custom subject</h4>
+        <input type="text" class="form-control input-field" required name="#" placeholder="subject name,ex.maths,english" autocomplete="off">
+      </div>
+      <div class="col-md-6">
+        <button type="button" class="btn btn-primary">ADD SUBJECT</button>
+      </div>
+    </div>
+
+    -->
+    <div class="grade-action-btn col-md-12">
+      <button type="submit" class="btn btn-primary">SAVE</button>
+      <button type="button" class="btn btn-primary cancelPopoverBtn">CANCEL</button>
+      <!--<button type="button" class="removeGradeBtn btn btn-primary">REMOVE</button>-->
+    </div>
+  </form>
+</div>
