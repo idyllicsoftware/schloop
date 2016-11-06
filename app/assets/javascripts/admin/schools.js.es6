@@ -32,7 +32,7 @@ class Schools extends SchloopBase {
             'school[website]': 'website',
             'administrator[first_name]': 'name',
             'administrator[last_name]': 'name',
-            'administrator[phone]': 'phone',
+            'administrator[cell_number]': 'phone',
             'administrator[email]': 'email',
         }, function (res) {
             if(res.success) {

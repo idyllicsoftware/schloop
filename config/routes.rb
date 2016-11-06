@@ -41,7 +41,7 @@ Rails.application.routes.draw do
         get :all
       end
 
-      resources :school_admins, only: [:index, :create, :update, :destroy] do
+      resources :school_admins, only: [:index, :create, :update, :destroy], shallow: true do
       end
 
     end
