@@ -13,7 +13,7 @@ class SchoolAdmins extends SchloopBase {
         _self.loadSchoolsAdmins();
 
         $("#add-school-administrator-popover").on('show.bs.popover', function () {
-            $(".removeAdminBtn").hide();
+            $(".removeUserBtn").hide();
         });
 
         $("#add-school-administrator-popover").on('shown.bs.popover', function () {
@@ -51,7 +51,7 @@ class SchoolAdmins extends SchloopBase {
             popoverEl.popover('hide');
         });
 
-        jForm.find('.removeAdminBtn').off('click').on('click', function () {
+        jForm.find('.removeUserBtn').off('click').on('click', function () {
             _self.deleteRequest(delete_admin_url, $(this), null, function (res) {
                 if(res.success) {
                     _self.loadSchoolsAdmins();
@@ -78,27 +78,28 @@ class SchoolAdmins extends SchloopBase {
                 if(res.success) {
                     html = Mustache.to_html(_self.schoolAdminTpl, res);
                     _self.schoolAdmins = res.school_admins.toHash('id');
+
+                    schoolAdminContainerEl.html(html);
+                    _self.popoverInit(false, schoolAdminContainerEl);
+
+                    schoolAdminContainerEl.find("[data-toggle=popover]").on('show.bs.popover', function () {
+                        $(".removeUserBtn").show();
+                    });
+
+                    schoolAdminContainerEl.find("[data-toggle=popover]").on('shown.bs.popover', function () {
+                        let popupEl = $('#' + $(this).attr('aria-describedby')),
+                            school_admin_id = $(this).data('school_admin_id'),
+                            jForm = popupEl.find('form');
+
+                        if(_self.schoolAdmins.hasOwnProperty(school_admin_id)){
+                            jForm.fillForm(_self.schoolAdmins[school_admin_id], 'administrator');
+                            jForm.attr('action', `/admin/school_admins/${school_admin_id}`);
+                            jForm.attr('method', 'PUT');
+                            jForm.find('input[name="administrator[email]"]').attr('disabled', 'disabled');
+                            _self.initForm(jForm, $(this), school_admin_id);
+                        }
+                    });
                 }
-                schoolAdminContainerEl.html(html);
-                _self.popoverInit(false, schoolAdminContainerEl);
-
-                schoolAdminContainerEl.find("[data-toggle=popover]").on('show.bs.popover', function () {
-                    $(".removeAdminBtn").show();
-                });
-
-                schoolAdminContainerEl.find("[data-toggle=popover]").on('shown.bs.popover', function () {
-                    let popupEl = $('#' + $(this).attr('aria-describedby')),
-                        school_admin_id = $(this).data('school_admin_id'),
-                        jForm = popupEl.find('form');
-
-                    if(_self.schoolAdmins.hasOwnProperty(school_admin_id)){
-                        jForm.fillForm(_self.schoolAdmins[school_admin_id], 'administrator');
-                        jForm.attr('action', `/admin/school_admins/${school_admin_id}`);
-                        jForm.attr('method', 'PUT');
-                        jForm.find('input[name="administrator[email]"]').attr('disabled', 'disabled');
-                        _self.initForm(jForm, $(this), school_admin_id);
-                    }
-                });
             }
         });
     }

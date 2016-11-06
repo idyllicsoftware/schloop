@@ -45,7 +45,6 @@
           <span class="data-title">School Admin (will get credentials to log into system)</span><br>
           <div class="overflow">
             <table id="schoolAdminContainer" class="admin-data">
-
             </table>
           </div>
           <div class="mt10">
@@ -303,103 +302,11 @@
           <div id="teachers-tab" class="tab-pane fade">
             <div class="pull-right upload-sheet">Upload spreadsheet</div>
             <div class="teachers-wrapper">
-              <ul>
-                <li>
-                  <div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps">
-                    <span class="img-caption"><p>Ruchi P.</p>9888889890 <br> ruchi@gmail.com</span>
-                  </div>
+              <ul id="schoolTeacherContainer">
+                <li id="add-teachers-popover" class="curP" data-toggle="popover" data-value="add-teachers-popover-content">
+                    <div class="add-teacher"><img src="<%= asset_path('admin/plus_icon.svg') %>"></div>
                 </li>
-                <li>
-                  <div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>9888889890 <br> ruchi@gmail.com</span>
-                  </div>
-                </li>
-                <li><a id="add-teachers-popover" data-toggle="popover" data-value="add-teachers-popover-content"><div class="add-teacher"><img src="<%= asset_path('admin/plus_icon.svg') %>"></div></a></li>
               </ul>
-              <div id="add-teachers-popover-content" class="hidden">
-                <div class="add-teachers-form">
-                  <div class="form-group col-md-12 ">
-                    <input type="text" class="form-control input-field" required name="grade_name" placeholder="Name" autocomplete="off">
-                  </div>
-                  <div class="form-group col-md-12 "> 
-                      <input type="text" class="form-control input-field" required name="grade_name" placeholder="Phone" autocomplete="off">
-                  </div>
-                  <div class="form-group col-md-12 "> 
-                      <input type="text" class="form-control input-field" required name="grade_name" placeholder="Email" autocomplete="off">
-                    </div>
-                    <label>Assign Grades & Subjects </label>
-                    <div class="col-md-12 form-group assign-grade">
-                      <div>
-                        <label>Grade 1</label>
-                        <ul class="checkbox_customized">
-                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="check12">
-                            <label for="check12">Science</label>
-                          </li>
-                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="check13">
-                            <label for="check13">Science</label>
-                          </li>
-                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="check14">
-                            <label for="check14">Science</label>
-                          </li>
-                        </ul>
-                      </div>
-                      <div>
-                        <label>DIVISIONS</label>
-                        <ul class="checkbox_customized">
-                          <li class="col-md-2"><input type="checkbox" name="subject1" value="A" id="check15">
-                            <label for="check15">A</label>
-                          </li>
-                          <li class="col-md-2"><input type="checkbox" name="subject1" value="B" id="check16">
-                            <label for="check16">B</label>
-                          </li>
-                          <li class="col-md-2"><input type="checkbox" name="subject1" value="C" id="check17">
-                            <label for="check17">C</label>
-                          </li>
-                          <li class="col-md-2"><input type="checkbox" name="subject1" value="D" id="check18">
-                            <label for="check18">D</label>
-                          </li>
-                          </ul>                   
-                    </div>
-                    <div class="col-md-12 form-group assign-grade">
-                      <div>
-                        <label>Grade 1</label>
-                        <ul class="checkbox_customized">
-                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="sub11">
-                            <label for="sub11">Science</label>
-                          </li>
-                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="sub12">
-                            <label for="sub12">Science</label>
-                          </li>
-                          <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="sub13">
-                            <label for="sub13">Science</label>
-                          </li>
-                        </ul>
-                      </div>
-                      <div>
-                        <label>DIVISIONS</label>
-                        <ul class="checkbox_customized">
-                          <li class="col-md-2"><input type="checkbox" name="subject1" value="A" id="div11" >
-                            <label for="div11">A</label>
-                          </li>
-                          <li class="col-md-2"><input type="checkbox" name="subject1" value="B" id="div12">
-                            <label for="div12">B</label>
-                          </li>
-                          <li class="col-md-2"><input type="checkbox" name="subject1" value="C" id="div13">
-                            <label for="div13">C</label>
-                          </li>
-                          <li class="col-md-2"><input type="checkbox" name="subject1" value="D" id="div14" >
-                            <label for="div14">D</label>
-                          </li>
-                          </ul>                   
-                    </div>
-                  </div>
-                  <div class="assign-grade-btn col-md-12">
-                        <button  class="btn btn-primary">SAVE</button>
-                        <button  class="btn btn-primary">CANCEL</button>
-                        <button  class="btn btn-primary">REMOVE</button>
-                  </div>
-                </div>
-              </div>  
-            </div>
           </div>
         </div>           
       </div>  
@@ -408,23 +315,6 @@
   </div>
 </div>
 
-<div class="modal fade" id="upload-teachers-modal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-body">
-        <form class="upload-teachers-form">
-        <h3>Do you want upload school teachers CSV file</h3>
-        <div class="browse-file">
-        <button type="button" id="btnup" class="btn btn-primary">Browse...</button>
-        <input type="file" value="" name="teachers-file" id="upload-csv-file"/>
-        <p id="namefile"></p>
-        </div>
-        <button  type="submit" class="btn btn-primary ">UPLOAD</button>
-        <button  class="btn btn-primary upload-cancel">CANCEL</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render :partial => "admin/schools/school_teacher" %>
 
 <%= render :partial => "admin/schools/school_admin" %>
