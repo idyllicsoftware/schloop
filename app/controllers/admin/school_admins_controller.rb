@@ -93,7 +93,7 @@ class Admin::SchoolAdminsController < ApplicationController
 			rescue Exception => ex
 				if ex.message != 'custom_errors'
 					errors << 'Something went wrong. Please contact dev team.'
-					Rails.logger.debug("Exception in creating school: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
+					Rails.logger.debug("Exception in creating admins: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
 				end
 				raise ActiveRecord::Rollback
 			end
