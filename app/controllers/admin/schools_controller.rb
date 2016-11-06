@@ -119,14 +119,14 @@ class Admin::SchoolsController < ApplicationController
         first_name: datum[:first_name],
         last_name: datum[:last_name],
         email: datum[:email],
-        cell_number: datum[:phone],
+        cell_number: datum[:cell_number],
         password: '12345678'
     }
     return school.school_admins.create(create_params)
   end
 
   def school_admin_params
-    params.require(:administrator).permit(:first_name, :last_name, :phone, :email)
+    params.require(:administrator).permit(:first_name, :last_name, :cell_number, :email)
   end
 
   def school_params

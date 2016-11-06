@@ -1,6 +1,6 @@
 <script type="text/html" id="school_admin_tpl">
   {{#school_admins}}
-      <tr data-id="{{ id }}">
+      <tr data-id="{{ id }}" class="curP" data-toggle="popover" data-value="add-school-administrator-popover-content">
         <td>{{ first_name }}</td>
         <td>{{ last_name }}</td>
         <td>{{ cell_number }}</td>
@@ -9,24 +9,24 @@
   {{/school_admins}}
 </script>
 
-<div id="add-school-administrator-popover-content" class="hidden">
+<div id="add-school-administrator-popover-content">
   <form class="add-admin-form">
-    <div class="form-group col-md-12">
-      <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Name" maxlength="30">
+    <div class="form-group">
+      <input type="text" class="form-control input-field" required name="administrator[first_name]" placeholder="First Name" autocomplete="off"  maxlength="20" />
     </div>
-    <div class="form-group col-md-12">
-      <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Phone 1">
+    <div class="form-group">
+      <input type="text" class="form-control input-field" required name="administrator[last_name]" placeholder="Last Name" autocomplete="off" maxlength="20" />
     </div>
-    <div class="form-group col-md-12">
-      <input type="text" class="form-control input-field" required name="name" autocomplete="off" placeholder="Phone 2">
+    <div class="form-group">
+      <input type="text" class="form-control input-field" required name="administrator[cell_number]" placeholder="Phone" autocomplete="off"  maxlength="15" />
     </div>
-    <div class="form-group col-md-12">
-      <input type="email" class="form-control input-field" required name="name" autocomplete="off" placeholder="Email">
+    <div class="form-group">
+      <input type="email" class="form-control input-field" required name="administrator[email]" placeholder="Email" autocomplete="off"  maxlength="30" />
     </div>
-    <div class="add-action-btn col-md-12">
-      <button  class="btn btn-primary">SAVE</button>
-      <button  class="btn btn-primary">CANCEL</button>
-      <button  class="btn btn-primary">REMOVE</button>
+    <div class="add-action-btn">
+      <button type="submit" class="btn btn-primary">SAVE</button>
+      <button type="button" class="btn btn-primary">CANCEL</button>
+      <button type="button" class="removeAdminBtn btn btn-primary">REMOVE</button>
     </div>
   </form>
 </div>

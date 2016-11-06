@@ -45,9 +45,25 @@
 				}
 			}
 		}
+        .admin-detail-section {
+          .popover {
+            padding: 10px;
+          }
+          .popover-content {
+            .add-admin-form {
+              width: 295px;
+              .form-group {
+                margin-bottom: 0px;
+              }
+              .btn-primary {
+                margin-top: 20px;
+                width: 120px;
+              }
+            }
+          }
+        }
 		.data-attr address{
 			color: $link-color;
-			font-weight: 600px;
 		}
 		.data-wrapper{
 			.last-col {
@@ -69,24 +85,7 @@
 				font-weight: 700;
 				a{
 					text-decoration: none;
-				}
-				.popover {
-					padding: 10px;
-				}
-				.popover-content {
-					.add-admin-form {
-						width: 295px;
-						.form-group {
-							margin-bottom: 0px;
-						}
-						.btn-primary {
-							margin-top: 20px;
-							width: 120px;
-						}
-						.add-action-btn {
-							margin-bottom: 20px;
-						}
-					}
+                    padding-right: 5px;
 				}
 			}
 		}
