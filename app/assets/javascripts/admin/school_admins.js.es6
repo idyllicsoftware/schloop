@@ -8,13 +8,61 @@ class SchoolAdmins extends SchloopBase {
     };
 
     initEventListeners (){
-        let _self = this;
+        let _self = this,
+        { school_id } = _self._config;
         _self.loadSchoolsAdmins();
 
+        $("#add-school-administrator-popover").on('show.bs.popover', function () {
+            $(".removeAdminBtn").hide();
+        });
+
         $("#add-school-administrator-popover").on('shown.bs.popover', function () {
-            var popupEl = $('#' + $(this).attr('aria-describedby'));
-            popupEl.find(".removeAdminBtn").hide();
-            popupEl.find('form')[0].reset();
+            var popupEl = $('#' + $(this).attr('aria-describedby')),
+                jForm = popupEl.find('form');
+            jForm[0].reset();
+            jForm.attr('action', `/admin/schools/${school_id}/school_admins`);
+            jForm.attr('method', 'POST');
+            jForm.find('input[name="administrator[email]"]').removeAttr('disabled');
+            _self.initForm(jForm, $(this));
+        });
+    };
+
+    initForm (jForm, popoverEl, school_admin_id){
+        let _self = this,
+            delete_admin_url = `/admin/school_admins/${school_admin_id}`,
+            msg = school_admin_id ? 'School admin updated successfully' : 'School admin added successfully';
+
+        this.initFormSubmit(jForm, {
+            'administrator[first_name]': 'name',
+            'administrator[last_name]': 'name',
+            'administrator[cell_number]': 'phone',
+            'administrator[email]': 'email'
+        }, function (res) {
+            if(res.success) {
+                _self.loadSchoolsAdmins();
+                toastr.success(msg);
+                popoverEl.popover('hide');
+            }else {
+                let msg = res.errors.join("<br/> ") || "Something went wrong. Please try later."
+                swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+            }
+        });
+
+        jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
+            popoverEl.popover('hide');
+        });
+
+        jForm.find('.removeAdminBtn').off('click').on('click', function () {
+            _self.deleteRequest(delete_admin_url, $(this), null, function (res) {
+                if(res.success) {
+                    _self.loadSchoolsAdmins();
+                    toastr.success('School admin removed successfully');
+                    popoverEl.popover('hide');
+                }else {
+                    let msg = res.errors.join("<br/> ") || "Something went wrong. Please try later."
+                    swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+                }
+            })
         });
     };
 
@@ -36,14 +84,21 @@ class SchoolAdmins extends SchloopBase {
                 schoolAdminContainerEl.html(html);
                 _self.popoverInit(false, schoolAdminContainerEl);
 
+                schoolAdminContainerEl.find("[data-toggle=popover]").on('show.bs.popover', function () {
+                    $(".removeAdminBtn").show();
+                });
+
                 schoolAdminContainerEl.find("[data-toggle=popover]").on('shown.bs.popover', function () {
                     let popupEl = $('#' + $(this).attr('aria-describedby')),
-                        id = $(this).data('id'),
+                        school_admin_id = $(this).data('school_admin_id'),
                         jForm = popupEl.find('form');
-                        popupEl.find(".removeAdminBtn").show();
 
-                    if(_self.schoolAdmins.hasOwnProperty(id)){
-                        jForm.fillForm(_self.schoolAdmins[id], 'administrator');
+                    if(_self.schoolAdmins.hasOwnProperty(school_admin_id)){
+                        jForm.fillForm(_self.schoolAdmins[school_admin_id], 'administrator');
+                        jForm.attr('action', `/admin/school_admins/${school_admin_id}`);
+                        jForm.attr('method', 'PUT');
+                        jForm.find('input[name="administrator[email]"]').attr('disabled', 'disabled');
+                        _self.initForm(jForm, $(this), school_admin_id);
                     }
                 });
             }

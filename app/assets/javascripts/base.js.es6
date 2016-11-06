@@ -48,7 +48,7 @@ class SchloopBase {
 
         params = {
             url: url,
-            method: 'POST',
+            method: jFrom.attr('method') || 'POST',
             cache: false,
             dataType: 'json',
             data: data,
@@ -66,6 +66,29 @@ class SchloopBase {
 
         $.extend(params, extraParams || {});
         $.ajax(params);
+    };
+
+    deleteRequest (url, btnEl, data, cb){
+        let self = this;
+        self.addAjaxLoader(btnEl);
+
+        $.ajax({
+            url: url,
+            method: 'DELETE',
+            cache: false,
+            dataType: 'json',
+            data: data || {},
+            success: function (res) {
+                self.removeAjaxLoader(btnEl);
+                if(cb) {
+                    cb(res);
+                }
+            },
+            error: function () {
+                self.removeAjaxLoader(btnEl);
+                swal({title: "Oops!",   text: "Something went wrong. Please try later.",   type: "error",   confirmButtonText: "OK" });
+            }
+        });
     };
 
     getValidationRules () {
@@ -114,7 +137,7 @@ class SchloopBase {
                     digits: "Please enter valid zipcode",
                     minlength: jQuery.validator.format("At least {0} characters zipcode required!")
                 },
-                mobile: {
+                phone: {
                     required: "Please enter valid phone number",
                     digits: "Please enter valid phone number",
                     minlength: jQuery.validator.format("At least {0} characters phone number required!")
