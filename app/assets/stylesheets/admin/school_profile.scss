@@ -170,7 +170,7 @@
 			}	
 			.teachers-wrapper {
 				.popover {
-					min-width: 250px;
+					width: 350px;
 				}			
 			}
 		}
@@ -295,82 +295,86 @@
 		}
 		.teachers-wrapper { 
 			ul{	
-				list-style: none;
-				padding: 0px;
-				display: flex;
-				li{
-					text-align: center;
-					a {
-					 cursor: pointer;
-					}
-					display: inline-block;
-					padding: 30px 0px 30px 30px;
-					img{
-						border-radius: 50%;
-						width: 70px;
-						margin-bottom: 10px;
-						border: 1px solid #25aae1;
-					}
-					.img-caption{
-						font-size: 14px;
-						color: #666666;
-						font-weight: normal;
-						p {
-							margin: 0px;
-							font-weight: 600;
-						}
-					}
-					.add-teacher {
-					    width: 70px;
-					    height: 70px;
-					    border-radius: 50%;
-					    border: 1px solid #25aae1;
-					    display: flex;
-					    justify-content: center;
-						img {
-							width: 30px;
-							border: none;
-							margin: 0px;
-						}				
-					}
- 					.popover-content {
-		 			    padding: 0px;
-		 			    .add-teachers-form {
-		 			    	.col-md-12 { 
-								padding-left: 0px;
-								padding-right: 0px;				
-							}
-							>label {
-								margin-top: 20px;
-							}
-		 			    	.assign-grade {
-		 			    		padding: 20px 0px;
-							    border-top-style: dotted;
-							    border-top-color: #cacaca;
-							    border-top-width: 2px;
-		 			    		ul {    
-			 			    		margin-left: 15px;
-			 			    		li {
-			 			    			padding: 0px;
-			 			    			text-align: left;
-			 			    		}
-			 			    	}	
-		 			    	}
- 			    		}
- 			    		.assign-grade-btn {
- 			    			padding: 30px 0px 0px;
-						    border-top-style: dotted;
-						    border-top-color: #cacaca;
-						    border-top-width: 2px;
-			 			    .btn-primary {
-								width: 120px;
-							}
-						}
-	 			    	.form-group {
- 			    			margin: 0px;
- 			    		}					
- 					}
-				}
+              list-style: none;
+              padding: 0px;
+              display: flex;
+              flex-flow: row wrap;
+              li{
+                  text-align: center;
+                  display: inline-block;
+                  padding: 30px 0px 30px 30px;
+
+                  img{
+                      border-radius: 50%;
+                      @include widthHeight(70px, 70px);
+                      margin-bottom: 10px;
+                      border: 1px solid #25aae1;
+                  }
+
+                  .img-caption{
+                      font-size: 14px;
+                      color: #666666;
+                      font-weight: normal;
+                      p {
+                          margin: 0px;
+                          font-weight: 600;
+                      }
+                  }
+
+                  .add-teacher {
+                      width: 70px;
+                      height: 70px;
+                      border-radius: 50%;
+                      border: 1px solid #25aae1;
+                      display: flex;
+                      justify-content: center;
+                      img {
+                          width: 30px;
+                          border: none;
+                          margin: 0px;
+                      }
+                  }
+              }
+              .popover.right > .arrow {
+                top: 43% !important;
+              }
+
+              .popover-content {
+                padding: 0px;
+                .add-teachers-form {
+                  >label {
+                    margin-top: 20px;
+                  }
+                  .assign-grade {
+                    padding: 20px 0px;
+                    border-top-style: dotted;
+                    border-top-color: #cacaca;
+                    border-top-width: 2px;
+                    ul {
+                      margin-left: 15px;
+                      li {
+                        padding: 0px;
+                        text-align: left;
+                      }
+                    }
+                  }
+                }
+
+                .assign-grade-btn {
+                  padding: 20px 0px 0px;
+                  .btn-primary {
+                    width: 120px;
+                    margin-top: 10px;
+                  }
+                }
+
+                .form-group {
+                  margin: 0px;
+                  .input-field {
+                    margin-bottom: 10px;
+                  }
+                }
+              }
 			}							
 		}
 		.upload-sheet {

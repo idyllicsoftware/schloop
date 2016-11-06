@@ -12,6 +12,21 @@ class SchoolTeachers extends SchloopBase {
             { school_id } = _self._config;
 
         _self.loadSchoolsTeachers();
+
+        $("#add-teachers-popover").on('show.bs.popover', function () {
+            $(".removeTeacherBtn").hide();
+        });
+
+        $("#add-teachers-popover").on('shown.bs.popover', function () {
+            var popupEl = $('#' + $(this).attr('aria-describedby')),
+                jForm = popupEl.find('form');
+            jForm[0].reset();
+            jForm.attr('action', `/admin/schools/${school_id}/teachers`);
+            jForm.attr('method', 'POST');
+            jForm.find('input[name="teacher[email]"]').removeAttr('disabled');
+            _self.initForm(jForm, $(this));
+        });
+
         _self.initCsvUpload();
     };
 
@@ -36,7 +51,7 @@ class SchoolTeachers extends SchloopBase {
                 $('#namefile').html("You select " + filename + " file.");
             }
         });
-        
+
         $(".upload-teachers-form").submit(function () {
             var jForm = $(this);
 
@@ -106,27 +121,28 @@ class SchoolTeachers extends SchloopBase {
                 if(res.success) {
                     html = Mustache.to_html(_self.schoolTeachersTpl, res);
                     _self.schoolTeachers = res.school_teachers.toHash('id');
+                    schoolTeacherContainerEl.find('li.saved_teacher').remove();
+                    schoolTeacherContainerEl.prepend(html);
+                    _self.popoverInit(false, schoolTeacherContainerEl);
+
+                    schoolTeacherContainerEl.find("li.saved_teacher").on('show.bs.popover', function () {
+                        $(".removeTeacherBtn").show();
+                    });
+
+                    schoolTeacherContainerEl.find("li.saved_teacher").on('shown.bs.popover', function () {
+                        let popupEl = $('#' + $(this).attr('aria-describedby')),
+                            school_teacher_id = $(this).data('school_teacher_id'),
+                            jForm = popupEl.find('form');
+
+                        if(_self.schoolTeachers.hasOwnProperty(school_teacher_id)){
+                            jForm.fillForm(_self.schoolTeachers[school_teacher_id], 'teacher');
+                            jForm.attr('action', `/admin/teachers/${school_teacher_id}`);
+                            jForm.attr('method', 'PUT');
+                            jForm.find('input[name="teacher[email]"]').attr('disabled', 'disabled');
+                            _self.initForm(jForm, $(this), school_teacher_id);
+                        }
+                    });
                 }
-                schoolTeacherContainerEl.html(html);
-                _self.popoverInit(false, schoolTeacherContainerEl);
-
-                schoolTeacherContainerEl.find("[data-toggle=popover]").on('show.bs.popover', function () {
-                    $(".removeTeacherBtn").show();
-                });
-
-                schoolTeacherContainerEl.find("[data-toggle=popover]").on('shown.bs.popover', function () {
-                    let popupEl = $('#' + $(this).attr('aria-describedby')),
-                        school_teacher_id = $(this).data('school_teacher_id'),
-                        jForm = popupEl.find('form');
-
-                    if(_self.schoolTeachers.hasOwnProperty(school_teacher_id)){
-                        jForm.fillForm(_self.schoolAdmins[school_teacher_id], 'teacher');
-                        jForm.attr('action', `/admin/teachers/${school_teacher_id}`);
-                        jForm.attr('method', 'PUT');
-                        jForm.find('input[name="teacher[email]"]').attr('disabled', 'disabled');
-                        _self.initForm(jForm, $(this), school_teacher_id);
-                    }
-                });
             }
         });
     }
