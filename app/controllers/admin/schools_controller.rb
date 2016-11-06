@@ -1,6 +1,6 @@
 class Admin::SchoolsController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_school, only: [:show, :school_admins]
+  before_action :find_school, only: [:show]
   layout "admin"
 
   def index
@@ -18,12 +18,6 @@ class Admin::SchoolsController < ApplicationController
         school_id: params[:id]
     }
     redirect_to admin_schools_path and return if @school.blank?
-  end
-
-  def school_admins
-    render json: {success: false, errors: ['School not found']} and return if @school.blank?
-    school_admins = @school.school_admins.select(:id, :first_name, :last_name, :cell_number, :email).order('created_at').all
-    render json: {success: true, school_admins: school_admins}
   end
 
 	def create
