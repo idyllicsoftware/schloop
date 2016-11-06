@@ -43,8 +43,7 @@ class SchoolAdmins extends SchloopBase {
                 toastr.success(msg);
                 popoverEl.popover('hide');
             }else {
-                let msg = res.errors.join("<br/> ") || "Something went wrong. Please try later."
-                swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+                _self.showErrors(res.errors);
             }
         });
 
@@ -59,8 +58,7 @@ class SchoolAdmins extends SchloopBase {
                     toastr.success('School admin removed successfully');
                     popoverEl.popover('hide');
                 }else {
-                    let msg = res.errors.join("<br/> ") || "Something went wrong. Please try later."
-                    swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+                    _self.showErrors(res.errors);
                 }
             })
         });

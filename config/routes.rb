@@ -44,6 +44,9 @@ Rails.application.routes.draw do
       resources :school_admins, only: [:index, :create, :update, :destroy], shallow: true do
       end
 
+      resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
+      end
+
     end
 
     resource :parents do
