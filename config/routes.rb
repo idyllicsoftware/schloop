@@ -47,6 +47,12 @@ Rails.application.routes.draw do
       resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
       end
 
+      resources :grades, only: [:index, :create], shallow: true do
+        resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do
+
+        end
+      end
+
     end
 
     resource :parents do
