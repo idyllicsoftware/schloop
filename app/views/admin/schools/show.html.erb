@@ -72,7 +72,7 @@
                 <a id="add-grade-popover" tabindex="0" data-toggle="popover" role="button" data-value="add-grade-popover-content" >+ Add grade</a>
               </div>
             </div>
-            <% @grades.each do |grade| %>
+          <% @grades.each do |grade| %>
             <div class="subject-wrapper">
               <span class="data-title plr20"><%= grade.name %></span>
               <div class="data-attr">
@@ -85,15 +85,15 @@
                   <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left">+Add Subject</a></span>
                 </div>
                 <%= form_tag "/admin/grades/#{grade.id}/add_subject", class: 'form-inline', method: 'post' do %>
-                <div id="add-subject-popover-content" class="hidden">
-                  <div class="form-group">
-                    <input type="text" class="form-control input-field" required name="subject_name" placeholder="subjects Maths,English etc." autocomplete="off">
-                    <div class="add-subject-btn">
-                      <button  type="submit"  class="btn btn-primary">ADD
-                      <button  class="btn btn-primary">CANCEL</button>
-                    </div>                        
+                  <div id="add-subject-popover-content" class="hidden">
+                    <div class="form-group">
+                      <input type="text" class="form-control input-field" required name="subject_name" placeholder="subjects Maths,English etc." autocomplete="off">
+                      <div class="add-subject-btn">
+                        <button  class="btn btn-primary" type="submit">ADD</button>
+                        <button  class="btn btn-primary">CANCEL</button>
+                      </div>                        
+                    </div>
                   </div>
-                </div>
                 <% end %> 
                 <div class="tab-content">
                   <div class="tab-pane fade in active division-wrapper inner-tabs" id="subject1-tab">
@@ -101,28 +101,44 @@
                     <div class="slide-division-wrapper">
                       <div class="plr20">
                         <ul id="myTab" class="nav nav-tabs">
-                          <li class="active"><a href="#div-a" data-toggle="tab">A</a></li>
-                          <li><a href="#div-b" data-toggle="tab">B</a></li>
-                          <li><a href="#div-c" data-toggle="tab">C</a></li>
-                          <li><a href="#div-d" data-toggle="tab">D</a></li>
-                          <li><a href="#div-e" data-toggle="tab">E</a></li>
+                          <% grade.division.each do |current_division| %>
+                            <!--li class="active"><a href="#div-a" data-toggle="tab">A</a></li-->
+                            <li><a href="#div-b" data-toggle="tab"><%= current_division.name %></a></li>
+                          <% end %>
+              
                         </ul>
-                        <%= form_tag "/admin/grades/#{grade.id}/divisions", class: 'form-inline', method: 'post' do %>
-                        <div class="div-operation">
-                          <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
-                          <span><a href="#">+Delete Division A</a></span>
-                          <div id="add-division-popover-content" class="hidden" >
-                            <div class="form-group">
-                              <input type="text" class="form-control input-field" name="selected_grade_name" placeholder="division A,B,C etc." autocomplete="off">
-                              <div class="add-division-btn">_
-                                <button  class="btn btn-primary">ADD</button>
+                      </div>
+                      <br><br>
+                      <%= form_tag "/admin/grades/#{grade.id}/divisions", class: 'form-inline add-division-form', method: 'post' do %> 
+
+                      <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
+                        <div class="form-group">
+                        <input type="text" name="div_name">
+                        <input type="text" name="grade_id" value="<%= grade.id %>" hidden %>
+                              <div class="add-division-btn">
+                                <button  class="btn btn-primary" type="submit">ADD</button>
                                 <button  class="btn btn-primary">CANCEL</button>
                               </div>
+                        </div>
+                      <% end %>
+
+                      <!-- <div class="div-operation">
+                        <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
+                        <span><a href="#">+Delete Division A</a></span>
+                        <div id="add-division-popover-content" class="hidden" >
+                          <div class="form-group">
+                            <input type="text" class="form-control input-field" name="division_name" placeholder="division A,B,C etc." autocomplete="off">
+                            <div class="add-division-btn">
+                              <button  class="btn btn-primary" type="submit">ADD</button>
+                              <button  class="btn btn-primary">CANCEL</button>
                             </div>
                           </div>
                         </div>
-                        <% end %>
                       </div>
+                       -->
+
+
+
                       <div id="myTabContent" class="tab-content">
                         <div class="tab-pane fade in active" id="div-a">
                           <div class="teachers-wrapper">
@@ -150,7 +166,7 @@
                 </div>
               </div>
             </div>  
-            <% end %>
+          <% end %>
 
             <!--
 
