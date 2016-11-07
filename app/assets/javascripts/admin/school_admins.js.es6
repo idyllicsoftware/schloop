@@ -103,4 +103,20 @@ class SchoolAdmins extends SchloopBase {
             }
         });
     }
+
+    add_division (){
+        let _self = this,
+            jForm = $(".add-division-form");
+        jForm.submit( function() {
+            var added_division = jForm.serializeObject;
+            $.ajax({
+                url: `/admin/schools/${school_id}/`,
+                data: added_division,
+                success: function (res) {
+                                                //To DO...
+            }
+
+            });     
+        });       
+    }
 }
