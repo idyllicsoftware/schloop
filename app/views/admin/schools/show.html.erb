@@ -84,8 +84,8 @@
                   </ul>
                   <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left">+Add Subject</a></span>
                 </div>
-                <%= form_tag "/admin/grades/#{grade.id}/add_subject", class: 'form-inline', method: 'post' do %>
-                  <div id="add-subject-popover-content" class="hidden">
+                <%= form_tag "/admin/grades/#{grade.id}/add_subject", class: 'form-inline add-subject-form', method: 'post' do %>
+                  <div id="add-subject-popover-content">
                     <div class="form-group">
                       <input type="text" class="form-control input-field" required name="subject_name" placeholder="subjects Maths,English etc." autocomplete="off">
                       <div class="add-subject-btn">
@@ -113,7 +113,7 @@
 
                       <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
                         <div class="form-group">
-                        <input type="text" name="div_name">
+                        <input type="text" name="div_name" class="form-control input-field">
                         <input type="text" name="grade_id" value="<%= grade.id %>" hidden %>
                               <div class="add-division-btn">
                                 <button  class="btn btn-primary" type="submit">ADD</button>
