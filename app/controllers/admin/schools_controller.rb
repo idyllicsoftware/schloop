@@ -17,6 +17,7 @@ class Admin::SchoolsController < ApplicationController
     @js_data = {
         school_id: params[:id]
     }
+    @grades = Grade.where(school_id: params[:id])
     redirect_to admin_schools_path and return if @school.blank?
   end
 
@@ -53,11 +54,6 @@ class Admin::SchoolsController < ApplicationController
     # 	render admin_schools_path
     # end
 	end
-
-  def add_grade
-    new_grade = Grade.create(:name => params[:grade_name], :school_id => params[:school_id])
-    redirect_to controller:'admin/schools',action: 'edit',id: params[:school_id]
-  end
 
   private
 

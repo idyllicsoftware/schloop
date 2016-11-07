@@ -35,7 +35,6 @@ Rails.application.routes.draw do
     
     resources :schools, only: [:show, :create, :index] do
       member do
-        post :add_grade
       end
       collection do
         get :all
@@ -48,6 +47,7 @@ Rails.application.routes.draw do
       end
 
       resources :grades, only: [:index, :create], shallow: true do
+        get'add_subject' => 'grades#add_subject'
         resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do
 
         end
