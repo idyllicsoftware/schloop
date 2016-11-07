@@ -15,7 +15,7 @@
         <% default_subjects.each_with_index do |subject, index|%>
           <li class="col-md-4">
             <input type="checkbox" name="subjects[]" value="<%= subject %>" id="<%= "default_subject_#{index}" %>" >
-            <label for=""<%= "default_subject_#{index}" %>""><%= subject %></label>
+            <label for="<%= "default_subject_#{index}" %>"><%= subject %></label>
           </li>
         <% end %>
       </ul>

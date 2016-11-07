@@ -67,7 +67,7 @@ class Admin::SchoolAdminsController < ApplicationController
 				last_name: datum[:last_name],
 				email: datum[:email],
 				cell_number: datum[:cell_number],
-				password: '12345678'
+				password: Devise.friendly_token.gsub('-','').first(6)
 		}
 		return school.school_admins.create(create_params)
 	end
