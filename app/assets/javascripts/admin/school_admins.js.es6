@@ -102,7 +102,7 @@ class SchoolAdmins extends SchloopBase {
                 }
             }
         });
-    }
+    };
 
     add_division (){
         let _self = this,
@@ -119,5 +119,22 @@ class SchoolAdmins extends SchloopBase {
 
             });     
         });       
-    }
+    };
+
+    add_subject (){
+        let _self = this,
+            jForm = $(".add-subject-form");
+
+        jForm.submit( function() {
+            var added_subject = jForm.serializeObject;
+            $.ajax({
+                url: `/admin/schools/${school_id}/`,
+                data: added_subject,
+                success: function (res) {
+                                                //To DO...
+            }
+
+            });     
+        });       
+    };
 }
