@@ -9,7 +9,9 @@
       height: 68px;
     }
     .cloud-bannr {
-      margin-left: -35px;
+      margin-left: -35px; 
+      position: absolute;
+      right: 0px;      
     }
   }
   .admin-header-section {
@@ -29,6 +31,7 @@
         justify-content: space-between;
         width: 14%;
         .admin-profile {
+          margin-right: 20px;
           .profile-photo {
                 width: 76px;
                 height: 76px;
