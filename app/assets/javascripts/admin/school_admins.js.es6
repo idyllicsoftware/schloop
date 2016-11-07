@@ -107,6 +107,7 @@ class SchoolAdmins extends SchloopBase {
     add_division (){
         let _self = this,
             jForm = $(".add-division-form");
+
         jForm.submit( function() {
             var added_division = jForm.serializeObject;
             $.ajax({
