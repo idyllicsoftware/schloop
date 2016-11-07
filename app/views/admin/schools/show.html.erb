@@ -72,9 +72,6 @@
                 <a id="add-grade-popover" tabindex="0" data-toggle="popover" role="button" data-value="add-grade-popover-content" >+ Add grade</a>
               </div>
             </div>
-
-            <!--
-
             <div class="subject-wrapper">
               <span class="data-title plr20">Grade 1</span>
               <div class="data-attr">
@@ -111,13 +108,15 @@
                           <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
                           <span><a href="#">+Delete Division A</a></span>
                           <div id="add-division-popover-content" class="hidden" >
+                            <form class="add-division-form">
                             <div class="form-group">
-                              <input type="text" class="form-control input-field" required name="grade_name" placeholder="division A,B,C etc." autocomplete="off">
+                              <input type="text" class="form-control input-field" required name="division_name" data-value="" placeholder="division A,B,C etc." autocomplete="off">
                               <div class="add-division-btn">
-                                <button  class="btn btn-primary">ADD</button>
+                                <button  class="btn btn-primary" type="submit">ADD</button>
                                 <button  class="btn btn-primary">CANCEL</button>
                               </div>
                             </div>
+                            </form>
                           </div>
                         </div>
                       </div>
@@ -246,8 +245,6 @@
                 </div>
               </div>
             </div>
-
-            -->
           </div>
           <div id="teachers-tab" class="tab-pane fade">
             <div class="pull-right upload-sheet">Upload spreadsheet</div>
