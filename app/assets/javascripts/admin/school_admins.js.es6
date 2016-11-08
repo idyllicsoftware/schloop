@@ -15,7 +15,7 @@ class SchoolAdmins extends SchloopBase {
         $("#add-school-administrator-popover").on('show.bs.popover', function () {
             $(".removeUserBtn").hide();
         });
-        
+
         $("#add-school-administrator-popover").on('shown.bs.popover', function () {
             var popupEl = $('#' + $(this).attr('aria-describedby')),
                 jForm = popupEl.find('form');
@@ -44,7 +44,6 @@ class SchoolAdmins extends SchloopBase {
                 jForm[0].reset();
                 _self.add_subject(jForm, url);
         });
-
     };
 
     initForm (jForm, popoverEl, school_admin_id){
