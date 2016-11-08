@@ -48,7 +48,7 @@ Rails.application.routes.draw do
       end
 
       resources :grades, only: [:index, :create], shallow: true do
-        get'add_subject' => 'grades#add_subject'
+        post'add_subject' => 'grades#add_subject'
         resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do
 
         end
