@@ -1,8 +1,12 @@
 class Admin::DivisionsController < ApplicationController
 	def create
-		division= Division.create(name: params[:div_name], grade_id: params[:grade_id])
-		school = Grade.where(id: params[:grade_id]).pluck(:school_id)
-		redirect_to "/admin/schools/#{school[0]}"
+		errors = []
+		begin
+			division= Division.create(name: params[:div_name], grade_id: params[:grade_id])
+		rescue Exception => e
+			errors << "can't store division."
+		end
+		render json: {success: e.nil?, errors: []}
     end
     def find_divisions
     end
