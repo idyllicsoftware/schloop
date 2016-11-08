@@ -6,8 +6,9 @@ class Admin::DivisionsController < ApplicationController
 		rescue Exception => e
 			errors << "can't store division."
 		end
-		render json: {success: e.nil?, errors: [], division_name: params[:div_name]}
+		render json: {success: e.nil?, errors: [], division_name: params[:div_name]} and return
     end
+    
     def find_divisions
     end
 end
