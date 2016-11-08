@@ -16,9 +16,6 @@ class Admin::GradesController < ApplicationController
      render :json => response
   end
 
-  def add_subject
-  end
-
   private
 
   def find_school

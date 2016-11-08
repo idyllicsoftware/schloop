@@ -78,13 +78,13 @@
               <div class="data-attr">
                 <div class="subject-tab-wrapper">
                   <ul id="subject-tab" class="nav nav-tabs">
-                    <li class="active"><a href="#subject1-tab" data-toggle="tab">English</a></li>
-                    <li><a href="#subject2-tab" data-toggle="tab">Maths</a></li>
-                    <li><a href="#subject3-tab" data-toggle="tab">Science</a></li>
+                  <% grade.subject.each do |current_subject| %>
+                    <li class="active"><a href="#subject1-tab" data-toggle="tab"><%=current_subject.name %></a></li>
+                  <% end %>
                   </ul>
                   <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left">+Add Subject</a></span>
                 </div>
-                <%= form_tag "/admin/grades/#{grade.id}/add_subject", class: 'form-inline add-subject-form', method: 'post' do %>
+                <%= form_tag "/admin/grades/#{grade.id}/subjects", class: 'form-inline add-subject-form', method: 'post' do %>
                   <div id="add-subject-popover-content">
                     <div class="form-group">
                       <input type="text" class="form-control input-field" required name="subject_name" placeholder="subjects Maths,English etc." autocomplete="off">
