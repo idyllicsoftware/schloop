@@ -7,8 +7,7 @@ class Admin::SubjectsController < ApplicationController
 	rescue Exception => e
 		errors << "can't store subject."
     end
-    render json: {
-    	success: true, errors: errors
-    }
+    render json: {success: e.nil?, errors: errors}
+    
   end
 end
