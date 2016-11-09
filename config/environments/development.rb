@@ -26,6 +26,8 @@ Rails.application.configure do
       :enable_starttls_auto => true
   }
 
+  MAILER_HOST = "http://52.23.232.204/"
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
