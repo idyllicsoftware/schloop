@@ -25,6 +25,26 @@ class SchoolAdmins extends SchloopBase {
             jForm.find('input[name="administrator[email]"]').removeAttr('disabled');
             _self.initForm(jForm, $(this));
         });
+        
+        $("#add-division-popover").on('shown.bs.popover', function () {
+                var popupEl = $('#' + $(this).attr('aria-describedby')),
+                    jForm = popupEl.find('form'),
+                    grade_id = $(this).data('grade_id');
+                    jForm[0].reset();
+                    jForm.attr('action', `/admin/grades/${grade_id}/divisions`);
+                    jForm.attr('method', 'POST');
+                    _self.add_division(jForm, grade_id, $(this));
+        });
+
+        $("#add-subject-popover").on('shown.bs.popover', function () {
+            var popupEl = $('#' + $(this).attr('aria-describedby')),
+                jForm = popupEl.find('form'),
+                grade_id = $(this).data('grade_id');
+                jForm[0].reset();
+                jForm.attr('action', `/admin/grades/${grade_id}/subjects`);
+                jForm.attr('method', 'POST');
+                _self.add_subject(jForm, grade_id, $(this));
+        });
     };
 
     initForm (jForm, popoverEl, school_admin_id){
@@ -104,37 +124,47 @@ class SchoolAdmins extends SchloopBase {
         });
     };
 
-    add_division (){
+    add_division (jForm, grade_id, popoverEl){
         let _self = this,
-            jForm = $(".add-division-form");
+            msg = 'Division added successfully';
 
-        jForm.submit( function() {
-            var added_division = jForm.serializeObject;
-            $.ajax({
-                url: `/admin/schools/${school_id}/`,
-                data: added_division,
-                success: function (res) {
-                                                //To DO...
+        this.initFormSubmit(jForm, {
+            'div_name': 'name',
+            'grade_id': 'name',
+        }, function (res) {
+            if(res.success) {
+                $(".division-list").append("<li><a href='#subject1-tab' data-toggle='tab'>" + res.division_name + "</a></li>");
+                toastr.success(msg);
+                popoverEl.popover('hide');
+            }else {
+                _self.showErrors(res.errors);
             }
+        });
 
-            });     
-        });       
+        jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
+            popoverEl.popover('hide');
+        });        
     };
 
-    add_subject (){
+    add_subject (jForm, grade_id, popoverEl){
         let _self = this,
-            jForm = $(".add-subject-form");
-
-        jForm.submit( function() {
-            var added_subject = jForm.serializeObject;
-            $.ajax({
-                url: `/admin/schools/${school_id}/`,
-                data: added_subject,
-                success: function (res) {
-                                                //To DO...
+            msg = 'Subject added successfully';
+        
+        this.initFormSubmit(jForm, {
+            'subject_name': 'name',
+            'grade_id': 'name',
+        }, function (res) {
+            if(res.success) {
+                $(".subject-list").append("<li><a href='#subject1-tab' data-toggle='tab'>" + res.subject_name +"</a></li>");
+                toastr.success(msg);
+                popoverEl.popover('hide');
+            }else {
+                _self.showErrors(res.errors);
             }
+        });
 
-            });     
-        });       
+        jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
+            popoverEl.popover('hide');
+        });        
     };
 }

@@ -13,7 +13,7 @@ class Admin::GradesController < ApplicationController
     render json: {success: false, errors: ['School not found']} and return if @school.blank?
     response = create_grades(params[:school_id],params[:grade_name])
     #response = create_school_admin(@school, create_grades)
-     render :json => response
+    render :json => response
   end
 
   private
@@ -36,7 +36,7 @@ class Admin::GradesController < ApplicationController
       end
     end
 
-    return {success: errors.blank?, errors: errors}
+    return {success: errors.blank?, errors: errors, grade_name: name}
   end
 
   def create_school_admin_params
