@@ -28,17 +28,17 @@ class Main extends SchloopBase {
             $("#forgotPasswordDiv").addClass('hidden');
         });
 
-        this.initFormSubmit($("#login-form"), {
-            'user[email]': 'email' ,
-            'user[password]': 'password'
-        }, function () {
-            debugger;
-        });
-
-        this.initFormSubmit($("#forgot-password-form"), {
-            'user[email]': 'email'
-        }, function () {
-            debugger;
-        });
+        //this.initFormSubmit($("#login-form"), {
+        //    'user[email]': 'email' ,
+        //    'user[password]': 'password'
+        //}, function () {
+        //    debugger;
+        //});
+        //
+        //this.initFormSubmit($("#forgot-password-form"), {
+        //    'user[email]': 'email'
+        //}, function () {
+        //    debugger;
+        //});
     }
 }
