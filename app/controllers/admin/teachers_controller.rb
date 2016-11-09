@@ -6,8 +6,12 @@ class Admin::TeachersController < ApplicationController
 
 
   def index
-    school_teachers = []
-    @school.teachers.each do |teacher|
+    school_teachers = []  
+    @school_teachers =@school.teachers.order(:id)
+    #@school_teachers.order(:created_at)
+    
+   # @school_teachers.sort_by { |m| [ m.updated_at,m.created_at].max}.reverse! 
+    @school_teachers.each do |teacher|
       school_teachers << {
         id: teacher.id,
         first_name: teacher.first_name,
@@ -28,6 +32,7 @@ class Admin::TeachersController < ApplicationController
 
   def update
     render json: {success: false, errors: ['Teacher not found']} and return if @teacher.blank?
+     
     response = update_school_teacher(@teacher, update_school_teacher_params)
     render :json => response
   end
@@ -52,6 +57,7 @@ class Admin::TeachersController < ApplicationController
     teacher_params.merge!(password: Devise.friendly_token.gsub('-','').first(6))
     teacher = school.teachers.create(teacher_params)
     errors =  teacher.errors.full_messages.join(', ')
+
     if errors.blank?
       Admin::AdminMailer.welcome_message(teacher.email, teacher.first_name, teacher.password).deliver_now
     end
@@ -63,8 +69,11 @@ class Admin::TeachersController < ApplicationController
     params.require(:teacher).permit(:first_name, :last_name, :cell_number, :email)
   end
 
-  def update_school_teacher(teacher, datum)
-      #TODO ADD UPDATE CODE HERE
+  def update_school_teacher(teacher,teacher_params)
+     # respond_to do |format|
+     teacher.update(teacher_params)
+     return {success: true, error: []} 
+    #end
   end
 
   def update_school_teacher_params

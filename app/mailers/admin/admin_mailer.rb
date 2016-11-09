@@ -1,7 +1,7 @@
 class Admin::AdminMailer < ApplicationMailer
 
   def welcome_message(user_email, user_name, password)
-    @url = "http://52.23.232.204/"
+    @url = MAILER_HOST
     @user_name = user_name
     @user_email = user_email
     @password = password
