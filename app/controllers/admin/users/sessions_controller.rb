@@ -2,9 +2,12 @@ class Admin::Users::SessionsController < Devise::SessionsController
 # before_action :configure_sign_in_params, only: [:create]
   def after_sign_in_path_for(user)
     if user.type == "ProductAdmin"
-      '/admin/schools/index'
+      '/admin/schools'
+    elsif user.type == "SchoolAdmin"
+      school_id = user.school.id rescue ''
+      "/admin/schools/#{school_id}"
     else
-      '/admin/schools/edit'
+      "/"
      end
   end
 
