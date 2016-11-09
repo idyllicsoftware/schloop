@@ -15,7 +15,7 @@ class SchoolAdmins extends SchloopBase {
         $("#add-school-administrator-popover").on('show.bs.popover', function () {
             $(".removeUserBtn").hide();
         });
-
+        
         $("#add-school-administrator-popover").on('shown.bs.popover', function () {
             var popupEl = $('#' + $(this).attr('aria-describedby')),
                 jForm = popupEl.find('form');
@@ -45,6 +45,16 @@ class SchoolAdmins extends SchloopBase {
                 jForm.attr('method', 'POST');
                 _self.add_subject(jForm, grade_id, $(this));
         });
+        
+        // $("#add-grade-popover").on('shown.bs.popover', function () {
+        //     var popupEl = $('#' + $(this).attr('aria-describedby')),
+        //         jForm = popupEl.find('form');
+        //         jForm[0].reset();
+        //         jForm.attr('action', `/admin/schools/${school_id}/grades`);
+        //         jForm.attr('method', 'POST');
+        //         _self.add_grade(jForm, $(this));
+        // });
+
     };
 
     initForm (jForm, popoverEl, school_admin_id){
@@ -167,4 +177,41 @@ class SchoolAdmins extends SchloopBase {
             popoverEl.popover('hide');
         });        
     };
+
+    // add_grade (jForm, popoverEl){
+    //     let _self = this,
+    //         msg = 'Grade added successfully';
+            
+    //     this.initFormSubmit(jForm, {
+    //         'grade_name': 'name',
+    //         'grade_id': 'name',
+    //     }, function (res) {
+    //         if(res.success) {
+    //             _self.loadSchoolsGrades();
+    //             toastr.success(msg);
+    //             popoverEl.popover('hide');
+    //         }else {
+    //             _self.showErrors(res.errors);
+    //         }
+    //     });
+
+    //     jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
+    //         popoverEl.popover('hide');
+    //     });
+    // };
+
+    // loadSchoolsGrades (){
+    //     let _self = this, html = '',
+    //         { school_id } = this._config,
+    //         schoolGradeContainerEl = $("#schoolGradeContainer");
+    //     $.ajax({
+    //         url: `/admin/schools/${school_id}/grades`,
+    //         success: function (res) {
+    //             if(res.success) {
+    //                 html = Mustache.to_html(_self.schoolAdminTpl, res);
+
+    //             }
+    //         }
+    //     });        
+    // }
 }

@@ -4,7 +4,7 @@
 %>
 
 <div id="add-grade-popover-content" class="hidden">
-<%= form_tag "/admin/schools/#{@school.id}/grades", class: 'form-inline', method: 'post' do %>
+<%= form_tag "/admin/schools/#{@school.id}/grades", class: 'form-inline add-grade-form', method: 'post' do %>
   <!-- <form class="form-inline" role="form" action="/admin/schools/<%= @school.id %>/grades" method="post"> -->
     <div class="form-group col-md-12 ">
       <input type="text" class="form-control input-field" required name="grade_name" placeholder="Name, ex.grade I,grade II" autocomplete="off">
@@ -42,3 +42,4 @@
 <% end %>
   <!-- </form> -->
 </div>
+         

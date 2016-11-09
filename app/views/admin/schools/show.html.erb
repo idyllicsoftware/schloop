@@ -72,9 +72,13 @@
                 <a id="add-grade-popover" tabindex="0" data-toggle="popover" role="button" data-value="add-grade-popover-content" >+ Add grade</a>
               </div>
             </div>
+          <!--   <div class="overflow">
+              <div id="schoolGradeContainer" class="grade-data">
+              </div>
+          </div> -->
           <% @grades.each do |grade| %>
             <div class="subject-wrapper">
-              <span class="data-title plr20"><%= grade.name %></span>
+              <span class="data-title plr20"><%= grade.name %><%= grade.id %></span>
               <div class="data-attr">
                 <div class="subject-tab-wrapper">
                   <ul id="subject-tab" class="nav nav-tabs subject-list">
