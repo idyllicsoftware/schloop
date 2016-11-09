@@ -70,6 +70,7 @@ Rails.application.routes.draw do
       post "/teacher/register" => 'teachers#register'
       post "/teacher/login" => 'teachers#login'
       post "/teacher/dashboard" => 'teachers#dashboard'
+      post "/teacher/reset_password" => "teachers#reset_password"
     end
   end
 end
