@@ -23,7 +23,6 @@
 #  cell_number            :string
 #  user_token             :string
 #  school_id              :integer
-#  principal_name         :string
 #
 # Indexes
 #

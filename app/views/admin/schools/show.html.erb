@@ -77,75 +77,35 @@
               <span class="data-title plr20"><%= grade.name %></span>
               <div class="data-attr">
                 <div class="subject-tab-wrapper">
-                  <ul id="subject-tab" class="nav nav-tabs">
-                    <li class="active"><a href="#subject1-tab" data-toggle="tab">English</a></li>
-                    <li><a href="#subject2-tab" data-toggle="tab">Maths</a></li>
-                    <li><a href="#subject3-tab" data-toggle="tab">Science</a></li>
+                  <ul id="subject-tab" class="nav nav-tabs subject-list">
+                  <% grade.subject.each do |current_subject| %>
+                    <li class="active"><a href="#subject1-tab" data-toggle="tab"><%=current_subject.name %></a></li>
+                  <% end %>
                   </ul>
-                  <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left">+Add Subject</a></span>
+                  <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left" data-grade_id="<%= grade.id %>">+Add Subject</a></span>
                 </div>
-                <%= form_tag "/admin/grades/#{grade.id}/add_subject", class: 'form-inline add-subject-form', method: 'post' do %>
-                  <div id="add-subject-popover-content">
-                    <div class="form-group">
-                      <input type="text" class="form-control input-field" required name="subject_name" placeholder="subjects Maths,English etc." autocomplete="off">
-                      <div class="add-subject-btn">
-                        <button  class="btn btn-primary" type="submit">ADD</button>
-                        <button  class="btn btn-primary">CANCEL</button>
-                      </div>                        
-                    </div>
-                  </div>
-                <% end %> 
+                <%= render :partial => "admin/schools/add_subjects", locals: {grade: grade} %> 
                 <div class="tab-content">
                   <div class="tab-pane fade in active division-wrapper inner-tabs" id="subject1-tab">
                     <div class="plr20"><span class="data-title"><a class="fa fa-chevron-down no-of-div"></a>5 Divisions</span></div>
                     <div class="slide-division-wrapper">
                       <div class="plr20">
-                        <ul id="myTab" class="nav nav-tabs">
+                        <ul id="myTab" class="nav nav-tabs division-list">
                           <% grade.division.each do |current_division| %>
-                            <!--li class="active"><a href="#div-a" data-toggle="tab">A</a></li-->
-                            <li><a href="#div-b" data-toggle="tab"><%= current_division.name %></a></li>
+                            <li><a href="#div-a" data-toggle="tab"><%= current_division.name %></a></li>
                           <% end %>
-              
                         </ul>
                       </div>
-                      <br><br>
-                      <%= form_tag "/admin/grades/#{grade.id}/divisions", class: 'form-inline add-division-form', method: 'post' do %> 
-
-                      <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
-                        <div class="form-group">
-                        <input type="text" name="div_name" class="form-control input-field">
-                        <input type="text" name="grade_id" value="<%= grade.id %>" hidden %>
-                              <div class="add-division-btn">
-                                <button  class="btn btn-primary" type="submit">ADD</button>
-                                <button  class="btn btn-primary">CANCEL</button>
-                              </div>
-                        </div>
-                      <% end %>
-
-                      <!-- <div class="div-operation">
-                        <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content">+Add Division</a></span>
+                      <div class="div-operation">
+                        <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content" data-grade_id="<%= grade.id %>">+Add Division</a></span>
                         <span><a href="#">+Delete Division A</a></span>
-                        <div id="add-division-popover-content" class="hidden" >
-                          <div class="form-group">
-                            <input type="text" class="form-control input-field" name="division_name" placeholder="division A,B,C etc." autocomplete="off">
-                            <div class="add-division-btn">
-                              <button  class="btn btn-primary" type="submit">ADD</button>
-                              <button  class="btn btn-primary">CANCEL</button>
-                            </div>
-                          </div>
-                        </div>
+                        <%= render :partial => "admin/schools/add_divisions", locals: {grade: grade} %> 
                       </div>
-                       -->
-
-
-
                       <div id="myTabContent" class="tab-content">
                         <div class="tab-pane fade in active" id="div-a">
                           <div class="teachers-wrapper">
                             <ul>
                               <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>English</span></div></a></li>
-                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>sagar P.</p>Maths</span></div></a></li>
-                              <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>ravi P.</p>Science</span></div></a></li>
                             </ul>
                             <div id="teachers-info-popover-content" class="hidden">
                               <div>
@@ -157,9 +117,6 @@
                           </div>
                         </div>
                         <div class="tab-pane fade" id="div-b"><h1>khjbjhdkhjbjhd</h1></div>
-                        <div class="tab-pane fade" id="div-c"><h1>khjbjhdkhjbjhdkhjbjhd</h1></div>
-                        <div class="tab-pane fade" id="div-d"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
-                        <div class="tab-pane fade" id="div-e"><h1>khjbjhdkhjbjhdkhjbjhdkhjbjhdkhjbjhd</h1></div>
                       </div>
                     </div>
                   </div> 
@@ -343,6 +300,10 @@
             </div>
 
             -->
+
+          <!-- <div>
+            <textarea class="tinymce"></textarea>// html text editor 
+          </div> -->
           </div>
           <div id="teachers-tab" class="tab-pane fade">
             <div class="pull-right upload-sheet">Upload spreadsheet</div>
@@ -365,3 +326,4 @@
 <%= render :partial => "admin/schools/school_teacher" %>
 
 <%= render :partial => "admin/schools/school_admin" %>
+

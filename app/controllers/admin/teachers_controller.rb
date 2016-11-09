@@ -62,7 +62,7 @@ class Admin::TeachersController < ApplicationController
       Admin::AdminMailer.welcome_message(teacher.email, teacher.first_name, teacher.password).deliver_now
     end
 
-    return {success: errors.present?, errors: errors}
+    return {success: errors.blank?, errors: errors}
   end
 
   def create_school_teachers_params
