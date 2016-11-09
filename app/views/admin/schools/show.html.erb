@@ -77,12 +77,12 @@
               <span class="data-title plr20"><%= grade.name %></span>
               <div class="data-attr">
                 <div class="subject-tab-wrapper">
-                  <ul id="subject-tab" class="nav nav-tabs">
+                  <ul id="subject-tab" class="nav nav-tabs subject-list">
                   <% grade.subject.each do |current_subject| %>
                     <li class="active"><a href="#subject1-tab" data-toggle="tab"><%=current_subject.name %></a></li>
                   <% end %>
                   </ul>
-                  <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left">+Add Subject</a></span>
+                  <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left" data-grade_id="<%= grade.id %>">+Add Subject</a></span>
                 </div>
                 <%= render :partial => "admin/schools/add_subjects", locals: {grade: grade} %> 
                 <div class="tab-content">

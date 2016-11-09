@@ -29,8 +29,7 @@ class SchoolAdmins extends SchloopBase {
         $("#add-division-popover").on('shown.bs.popover', function () {
                 var popupEl = $('#' + $(this).attr('aria-describedby')),
                     jForm = popupEl.find('form'),
-                    grade_id = $(this).data('grade_id'),
-                    url = jForm.attr('action');
+                    grade_id = $(this).data('grade_id');
                     jForm[0].reset();
                     jForm.attr('action', `/admin/grades/${grade_id}/divisions`);
                     jForm.attr('method', 'POST');
@@ -40,9 +39,11 @@ class SchoolAdmins extends SchloopBase {
         $("#add-subject-popover").on('shown.bs.popover', function () {
             var popupEl = $('#' + $(this).attr('aria-describedby')),
                 jForm = popupEl.find('form'),
-                url = jForm.attr('action');
+                grade_id = $(this).data('grade_id');
                 jForm[0].reset();
-                _self.add_subject(jForm, url);
+                jForm.attr('action', `/admin/grades/${grade_id}/subjects`);
+                jForm.attr('method', 'POST');
+                _self.add_subject(jForm, grade_id, $(this));
         });
     };
 
@@ -145,18 +146,25 @@ class SchoolAdmins extends SchloopBase {
         });        
     };
 
-    add_subject (jForm, url){
-
-        jForm.submit( function() {
-            var added_subject = jForm.serializeObject;
-            $.ajax({
-                url: url,
-                data: added_subject,
-                success: function (res) {
-                                                //To DO...
+    add_subject (jForm, grade_id, popoverEl){
+        let _self = this,
+            msg = 'Subject added successfully';
+        
+        this.initFormSubmit(jForm, {
+            'subject_name': 'name',
+            'grade_id': 'name',
+        }, function (res) {
+            if(res.success) {
+                $(".subject-list").append("<li><a href='#subject1-tab' data-toggle='tab'>" + res.subject_name +"</a></li>");
+                toastr.success(msg);
+                popoverEl.popover('hide');
+            }else {
+                _self.showErrors(res.errors);
             }
+        });
 
-            });     
-        });       
+        jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
+            popoverEl.popover('hide');
+        });        
     };
 }
