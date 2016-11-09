@@ -57,7 +57,6 @@ class Admin::SchoolAdminsController < ApplicationController
 				raise ActiveRecord::Rollback
 			end
 		end
-
 		return {success: errors.blank?, errors: errors}
 	end
 

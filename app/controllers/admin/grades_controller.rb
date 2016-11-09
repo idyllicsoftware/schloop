@@ -1,12 +1,13 @@
 class Admin::GradesController < ApplicationController
   before_action :authenticate_user!
   before_action :find_school, only: [:index, :create]
+  before_action :find_school, only: [:index, :create]
   layout "admin"
 
   def index
     render json: {success: false, errors: ['School not found']} and return if @school.blank?
-
-    render json: {success: true, grades: []}
+    school_grades = @grades.select(:id, :name, :school_id).order('created_at').all
+    render json: {success: true, grades: school_grades}
   end
 
   def create
@@ -18,6 +19,9 @@ class Admin::GradesController < ApplicationController
 
   private
 
+  def find_grades
+    @grades = Grade.find_by(school_id: params[:school_id])
+  end
   def find_school
     @school = School.find_by(id: params[:school_id])
   end
