@@ -134,7 +134,7 @@
           <img class="img-responsive centre-content" src="<%= asset_path('home/schloop.png') %>">
 
           <div id="loginDiv" class="mt30" >
-            <%= form_tag '/users/sign_in', id:"login-form", novalidate:true do %>
+            <%= form_tag '/users/sign_in', method: :post, id:"login-form", novalidate:true do %>
                 <div class="form-group">
                   <input type="email" class="form-control input-field" required name="user[email]" autocomplete="off" placeholder="Email Address" maxlength="40" />
                 </div>
