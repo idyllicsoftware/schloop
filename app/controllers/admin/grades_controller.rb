@@ -6,21 +6,31 @@ class Admin::GradesController < ApplicationController
 
   def index
     render json: {success: false, errors: ['School not found']} and return if @school.blank?
-    school_grades = @grades.select(:id, :name, :school_id).order('created_at').all
-    render json: {success: true, grades: school_grades}
+    grade_data = []
+    @grades.each do |grade|
+      subjects, divisions = [], []
+      grade.subjects.each {|subject| subjects << {subject_id: subject.id, subject_name: subject.name} }
+      grade.divisions.each {|division| divisions << {division_id: division.id, division_name: division.name} }
+      grade_data << {
+        grade_id: grade.id,
+        grade_name: grade.name,
+        subjects: subjects,
+        divisions: divisions
+      }
+    end
+    render json: {success: true, grades: grade_data}
   end
 
   def create
     render json: {success: false, errors: ['School not found']} and return if @school.blank?
     response = create_grades(params[:school_id],params[:grade_name])
-    #response = create_school_admin(@school, create_grades)
     render :json => response
   end
 
   private
 
   def find_grades
-    @grades = Grade.where(school_id: params[:school_id])
+    @grades = Grade.where(school_id: params[:school_id]).includes(:subjects, :divisions)
   end
   def find_school
     @school = School.find_by(id: params[:school_id])
