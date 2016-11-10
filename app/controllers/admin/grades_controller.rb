@@ -1,7 +1,7 @@
 class Admin::GradesController < ApplicationController
   before_action :authenticate_user!
   before_action :find_school, only: [:index, :create]
-  before_action :find_school, only: [:index, :create]
+  before_action :find_grades, only: [:index, :create]
   layout "admin"
 
   def index
@@ -20,7 +20,7 @@ class Admin::GradesController < ApplicationController
   private
 
   def find_grades
-    @grades = Grade.find_by(school_id: params[:school_id])
+    @grades = Grade.where(school_id: params[:school_id])
   end
   def find_school
     @school = School.find_by(id: params[:school_id])

@@ -86,7 +86,6 @@ class SchoolTeachers extends SchloopBase {
                 toastr.success(msg);
                 popoverEl.popover('hide');
             }else {
-                toastr.errors('invalid action');
                 _self.showErrors(res.errors);
                 popoverEl.popover('hide');
             }
