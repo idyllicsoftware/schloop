@@ -15,6 +15,9 @@
 #  last_sign_in_ip        :inet
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  first_name             :text             not null
+#  last_name              :text             not null
+#  guardian_type          :text             not null
 #
 # Indexes
 #

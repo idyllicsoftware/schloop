@@ -1,0 +1,12 @@
+
+  <div id="add-subject-popover-content" class="hidden">
+	<%= form_tag "", class: 'form-inline add-subject-form', method: 'post' do %>
+    <div class="form-group">
+      <input type="text" class="form-control input-field" required name="subject_name" placeholder="subjects Maths,English etc." autocomplete="off">
+      <div class="add-subject-btn">
+        <button  class="btn btn-primary" type="submit">ADD</button>
+        <button  class="btn btn-primary cancelPopoverBtn">CANCEL</button>
+      </div>                        
+    </div>
+    <% end %>
+  </div>

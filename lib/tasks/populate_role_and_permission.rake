@@ -5,8 +5,12 @@ namespace :seed do
     puts "Creating Roles..."
     User.reset_column_information
 
-    default_user = User.first_or_create(:email => "Product-Admin",
-                                         :password => "product-admin")
+#
+ #   default_user = User.first_or_create(:email => "Product-Admin",
+  #
+   # default_user = User.first_or_create(:email => "admin@schloop.co",
+    #                                     :password => "Test123",
+     #                                    :type => "ProductAdmin")
 
     require Rails.root.join('db','role_permission_data','roles_data.rb').to_s
     roles_data_hash = ROLES

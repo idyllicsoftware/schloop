@@ -1,0 +1,55 @@
+<div class="schools-profile-section">
+  <div class="cloud_image">
+    <img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
+  </div>
+  <div class="container">
+    <div>
+      <img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
+      <img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
+    </div>
+    <div class="row">
+      <span id="schoolsContainer"></span>
+      <div class="col-md-4">
+        <div class="add_profile" id="create-school-btn">
+          <img src="<%= asset_path('admin/plus_icon.svg') %>">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="height: 80px;">
+    
+  </div>
+</div>
+
+<%= render :partial => "admin/schools/create_school" %>
+
+<script id="schools_list_tpl" type="text/html">
+    {{#schools}}
+      <div class="col-md-4">
+        <div class="schools-profile">
+          <a href="/admin/schools/{{ id }}">
+            <div class="schools-profile-active">
+              <img src="<%= asset_path('home/star.png') %>">
+            </div>
+            <div class="school-profile-logo">
+              <div class="school-logo" style="background-image: url('<%= asset_path('school_admin.png') %>');"></div>
+            </div>
+            <div class="school-name-code">
+              <h4>{{ name }}</h4>
+              <p>{{ code }}</p>
+            </div>
+            <div class="school-contact-info">
+                <span>
+                  <img src="<%= asset_path('admin/contact.svg') %>">
+                  <p>{{ phone1 }} {{#phone2}}/ {{ phone2 }}{{/phone2}} </p>
+                </span>
+                <span>
+                  <img src="<%= asset_path('admin/user.svg') %>">
+                  {{ principal_name }}
+                </span>
+            </div>
+          </a>
+        </div>
+      </div>
+  {{/schools}}
+</script>

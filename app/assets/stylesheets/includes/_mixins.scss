@@ -1,0 +1,20 @@
+@mixin posAbs($top:0px, $left:0px) {
+  position: absolute;
+  top: $top;
+  left: $left;
+}
+
+@mixin widthHeight($width:100%, $height:100%){
+  width: $width;
+  height: $height;
+}
+
+@mixin marginTopLeft($top:0px, $left:0px) {
+  margin-top: $top;
+  margin-left: $left;
+}
+
+@mixin fullViewAbs() {
+  @include posAbs;
+  @include widthHeight;
+}

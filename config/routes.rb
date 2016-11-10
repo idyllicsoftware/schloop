@@ -15,30 +15,62 @@ Rails.application.routes.draw do
 
 
   devise_for :teachers, controllers:{
-                         sessions: 'teachers/sessions',
-                         registrations: 'teachers/registrations',
-                         passwords: 'teachers/passwords',
-                         invitations: 'teachers/invitations'
+                         sessions: 'admin/teachers/sessions',
+                         registrations: 'admin/teachers/registrations',
+                         passwords: 'admin/teachers/passwords',
+                         invitations: 'admin/teachers/invitations'
   }
 
 
   devise_for :parents, controllers:{
-                         sessions: 'teachers/sessions',
-                         registrations: 'teachers/registrations',
-                         passwords: 'teachers/passwords',
-                         invitations: 'teachers/invitations'
+                         sessions: 'admin/parents/sessions',
+                         registrations: 'admin/parents/registrations',
+                         passwords: 'admin/parents/passwords',
+                         invitations: 'admin/parents/invitations'
   }
 
   namespace :admin do
     resource :users do
-      get "/dashboards/index" => 'users/dashboards#index'
-      get "/dashboards/admin_dashboard" => 'users/dashboards#admin_dashboard'
-      get "/dashboards/school_admin_dashboard" => 'users/dashboards#school_admin_dashboard'
     end
+    
+    resources :schools, only: [:show, :create, :index] do
+      member do
+      end
+      collection do
+        get :all
+      end
+
+      resources :school_admins, only: [:index, :create, :update, :destroy], shallow: true do
+      end
+
+      resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
+
+      end
+
+      resources :grades, only: [:index, :create], shallow: true do
+        resources :subjects,only: [:index, :create, :update, :destroy], shallow: true do
+
+        end 
+        resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do
+
+        end
+      end
+
+    end
+
+    resource :parents do
+      get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
+    end
+
   end
 
   namespace :api do
     namespace :v1 do
+      post "/school_admin/register" => 'school_admin#register'
+      post "/teacher/register" => 'teachers#register'
+      post "/teacher/login" => 'teachers#login'
+      post "/teacher/dashboard" => 'teachers#dashboard'
+      post "/teacher/reset_password" => "teachers#reset_password"
     end
   end
 end

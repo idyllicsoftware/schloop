@@ -1,0 +1,85 @@
+<div class="modal fade" id="create-school-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="schools-input-form">
+          <%= form_tag admin_schools_path,class:"schools-registration-form" do %>
+              <div class="row">
+                <div class="upload-group col-md-3">
+                  <label for="upload-photo">
+                    <!-- <input type="file" name="school[photo]" id="upload-photo"/> -->
+                    <div class="upload-logo">
+                      <img src="<%= asset_path('admin/plus_icon.svg') %>">
+                    </div>
+                    <!-- <p>Upload School Photo/ Logo</p> --->
+                  </label>
+                </div>
+                <div class="col-md-9">
+                  <div class="row">
+                    <div class="form-group col-md-8">
+                      <label class="mandatory">School name</label>
+                      <input type="text" class="form-control input-field" required name="school[name]" autocomplete="off" maxlength="30" />
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label class="mandatory">Board</label>
+                      <input type="text" class="form-control input-field" required name="school[board]" placeholder="CBSE,ICSC,IB,SSC" autocomplete="off" maxlength="10" />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label>Principal/ Authority</label>
+                      <input type="text" class="form-control input-field" name="school[authority_name]" autocomplete="off"  maxlength="30" />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="mandatory">Website</label>
+                      <input type="url" required class="form-control input-field" name="school[website]" autocomplete="off"  maxlength="30" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-9">
+                  <label class="mandatory">Address</label>
+                  <input type="text" class="form-control input-field" required name="school[address]" autocomplete="off" maxlength="300" />
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="mandatory">Zip code</label>
+                  <input type="text" class="form-control input-field" required name="school[zip_code]" autocomplete="off" maxlength="6" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label class="mandatory">Phone</label>
+                  <input type="text" class="form-control input-field" required name="school[phone1]" autocomplete="off" maxlength="15" />
+                </div>
+                <div class="form-group col-md-4">
+                  <label>Phone(Alternate)</label>
+                  <input type="text" class="form-control input-field" name="school[phone2]" placeholder="Optional" autocomplete="off" maxlength="15" />
+                </div>
+              </div>
+
+              <div><label>School Administrators</label></div>
+              <div class="row administrators-info">
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control input-field" required name="administrator[first_name]" placeholder="First Name" autocomplete="off"  maxlength="20" />
+                </div>
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control input-field" required name="administrator[last_name]" placeholder="Last Name" autocomplete="off" maxlength="20" />
+                </div>
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control input-field" required name="administrator[cell_number]" placeholder="Phone" autocomplete="off"  maxlength="15" />
+                </div>
+                <div class="form-group col-md-3">
+                  <input type="email" class="form-control input-field" required name="administrator[email]" placeholder="Email" autocomplete="off"  maxlength="30" />
+                </div>
+              </div>
+              <div class="action-btn">
+                <button type="submit" class="btn btn-primary">ADD SCHOOL</button>
+                <button class="btn btn-primary cancel-creation">CANCEL</button>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,6 +20,7 @@
 #  first_name             :string
 #  middle_name            :string
 #  last_name              :string
+#  cell_number            :string
 #
 # Indexes
 #
@@ -33,4 +34,21 @@ class Teacher < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  belongs_to :school
+
+  before_save :set_token
+
+  def set_token
+    return if token.present?
+    self.token = generated_token
+  end
+
+  def generated_token
+    loop do
+      token = SecureRandom.uuid.gsub(/\-/,'')
+      return token unless Teacher.where(token: token).first
+    end
+  end
+
 end
