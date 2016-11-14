@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108115010) do
+ActiveRecord::Schema.define(version: 20161114091129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,22 @@ ActiveRecord::Schema.define(version: 20161108115010) do
   end
 
   add_index "divisions", ["grade_id"], name: "index_divisions_on_grade_id", using: :btree
+
+  create_table "ecircular_recipients", force: :cascade do |t|
+    t.integer  "school_id"
+    t.integer  "grade_id"
+    t.integer  "division_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "ecirculars", force: :cascade do |t|
+    t.string  "title"
+    t.text    "body"
+    t.integer "circular_type"
+    t.integer "created_by_type"
+    t.integer "created_by_id"
+  end
 
   create_table "grade_teachers", force: :cascade do |t|
     t.datetime "created_at",  null: false
@@ -90,9 +106,13 @@ ActiveRecord::Schema.define(version: 20161108115010) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "grade_id"
+    t.integer  "teacher_id"
+    t.integer  "division_id"
   end
 
+  add_index "subjects", ["division_id"], name: "index_subjects_on_division_id", using: :btree
   add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
+  add_index "subjects", ["teacher_id"], name: "index_subjects_on_teacher_id", using: :btree
 
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -152,5 +172,7 @@ ActiveRecord::Schema.define(version: 20161108115010) do
   add_foreign_key "grade_teachers", "subjects"
   add_foreign_key "grade_teachers", "teachers"
   add_foreign_key "grades", "schools"
+  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
+  add_foreign_key "subjects", "teachers"
 end
