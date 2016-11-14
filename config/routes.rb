@@ -39,7 +39,7 @@ Rails.application.routes.draw do
       collection do
         get :all
       end
-      
+
       resources :ecirculars do
       end
 
