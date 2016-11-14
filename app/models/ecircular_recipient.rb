@@ -11,4 +11,5 @@
 #
 
 class EcircularRecipient < ActiveRecord::Base
+	belongs_to :ecircular
 end
