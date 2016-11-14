@@ -1,11 +1,11 @@
 ROLES = ActiveSupport::OrderedHash.new()
 
 ROLES["Admin"] = [
-    {name: 'Product-Admin'},
-    {name: 'School-Admin'}
+    {name: 'product-admin'},
+    {name: 'school-admin'}
 ]
 
 ROLES["USER"] = [
-    {name: 'Teacher'},
-    {name: 'Parent'}
+    {name: 'teacher'},
+    {name: 'parent'}
 ]

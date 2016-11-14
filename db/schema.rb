@@ -11,22 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20161108115010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "attachments", force: :cascade do |t|
-    t.string   "attachable_type"
-    t.integer  "attachable_id"
-    t.string   "name"
-    t.integer  "sub_type"
-    t.string   "original_filename"
-    t.integer  "file_size"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-  end
 
   create_table "divisions", force: :cascade do |t|
     t.string   "name",       null: false
@@ -71,7 +59,6 @@ ActiveRecord::Schema.define(version: 20161108115010) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
     t.text     "first_name",                                      null: false
@@ -153,7 +140,6 @@ ActiveRecord::Schema.define(version: 20161108115010) do
     t.string   "middle_name"
     t.string   "last_name"
     t.string   "cell_number"
-
   end
 
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
@@ -197,15 +183,15 @@ ActiveRecord::Schema.define(version: 20161108115010) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
-  add_foreign_key "role_permissions", "permissions"
-  add_foreign_key "role_permissions", "roles"
-  add_foreign_key "user_roles", "roles"
-  add_foreign_key "user_roles", "users"
   add_foreign_key "divisions", "grades"
   add_foreign_key "grade_teachers", "divisions"
   add_foreign_key "grade_teachers", "grades"
   add_foreign_key "grade_teachers", "subjects"
   add_foreign_key "grade_teachers", "teachers"
   add_foreign_key "grades", "schools"
+  add_foreign_key "role_permissions", "permissions"
+  add_foreign_key "role_permissions", "roles"
   add_foreign_key "subjects", "grades"
+  add_foreign_key "user_roles", "roles"
+  add_foreign_key "user_roles", "users"
 end
