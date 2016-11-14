@@ -6,6 +6,8 @@ class CreateEcircular < ActiveRecord::Migration
     	t.integer :circular_type
     	t.integer :created_by_type
     	t.integer :created_by_id
+
+    	t.timestamps null: false
     end
   end
 end

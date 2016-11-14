@@ -8,8 +8,8 @@
 #  circular_type   :integer
 #  created_by_type :integer
 #  created_by_id   :integer
-#  created_at      :datetime
-#  updated_at      :datetime
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 class Ecircular < ActiveRecord::Base
@@ -21,11 +21,5 @@ class Ecircular < ActiveRecord::Base
 	 	:extra_curricular_activities_circular,:school_time_change,:inter_school_competitions,:intra_school_competitions,:olympiads ]
 
  	enum created_by_type: [ :teacher, :school_admin, :product_admin]
-
-before_save :generate_timestamp
-
-  def generate_timestamp
-    self.timestamp_field = DateTime.now
-  end
 
 end
