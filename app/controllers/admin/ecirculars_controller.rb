@@ -1,4 +1,11 @@
 class Admin::EcircularsController < ApplicationController
+	
+	def index
+	#@circular=Ecircular.all.index_by(:created_at).limit(10)
+	@circular=Ecircular.order('id desc').limit(10)
+
+	end
+
 	def new
 		
 	end
@@ -7,6 +14,7 @@ class Admin::EcircularsController < ApplicationController
 
 		new_circular = Ecircular.create(cicular_params)
  	end
+
 	private
 
 	def cicular_params
