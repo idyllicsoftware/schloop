@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108115010) do
+ActiveRecord::Schema.define(version: 20161114091129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,22 @@ ActiveRecord::Schema.define(version: 20161108115010) do
   end
 
   add_index "divisions", ["grade_id"], name: "index_divisions_on_grade_id", using: :btree
+
+  create_table "ecircular_recipients", force: :cascade do |t|
+    t.integer  "school_id"
+    t.integer  "grade_id"
+    t.integer  "division_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "ecirculars", force: :cascade do |t|
+    t.string  "title"
+    t.text    "body"
+    t.integer "circular_type"
+    t.integer "created_by_type"
+    t.integer "created_by_id"
+  end
 
   create_table "grade_teachers", force: :cascade do |t|
     t.datetime "created_at",  null: false

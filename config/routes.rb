@@ -39,6 +39,9 @@ Rails.application.routes.draw do
       collection do
         get :all
       end
+      
+      resources :ecirculars do
+      end
 
       resources :school_admins, only: [:index, :create, :update, :destroy], shallow: true do
       end
@@ -73,4 +76,5 @@ Rails.application.routes.draw do
       post "/teacher/reset_password" => "teachers#reset_password"
     end
   end
+
 end
