@@ -8,6 +8,8 @@
 #  circular_type   :integer
 #  created_by_type :integer
 #  created_by_id   :integer
+#  created_at      :datetime
+#  updated_at      :datetime
 #
 
 class Ecircular < ActiveRecord::Base
