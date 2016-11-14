@@ -21,3 +21,4 @@ class Division < ActiveRecord::Base
 	belongs_to :grade
 	validates :name, :presence => true
 end
+

@@ -1,24 +1,38 @@
 class Admin::EcircularsController < ApplicationController
+	
+	def index
+	#@circular=Ecircular.all.index_by(:created_at).limit(10)
+	@circular=Ecircular.order('id desc').limit(10)
+
+	end
+
 	def new
 		
 	end
 
 	def create
-		new_circular = Ecircular.create(cicular_params)
 
-	end
+		new_circular = Ecircular.create(cicular_params)
+ 	end
+
 	private
 
 	def cicular_params
-		 params[:circular_type] = params[:circular_type].to_sym
-		 if current_user.class.name == 'ProductAdmin'
-		 	params.merge(:created_by_type =>:product_admin)
-		 elsif current_user.class.name == 'SchoolAdmin'
-		 	params.merge(:created_by_type =>:school_admin)
+ 		user_type = current_user.type rescue ''
+		 if user_type == 'ProductAdmin'
+		 	created_by_type = Ecircular.created_by_types[:product_admin]
+		 elsif user_type == 'SchoolAdmin'
+		 	created_by_type = Ecircular.created_by_types[:school_admin]
 		 else
-		 	params.merge(:created_by_type =>:teacher)
+		 	created_by_type = Ecircular.created_by_types[:teacher]
 		 end	
-		 params.merge(:created_by_id => current_user.id)
-		 params.permit(:title, :body, :circular_type, :created_by_type, :created_by_id)
+
+		 return {
+		 	title: params[:title], 
+		 	body: params[:body], 
+		 	circular_type: Ecircular.circular_types[params[:circular_type].to_sym], 
+		 	created_by_type:created_by_type, 
+		 	created_by_id: current_user.id
+		 }
 	end
 end

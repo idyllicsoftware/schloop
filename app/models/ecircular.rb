@@ -22,6 +22,10 @@ class Ecircular < ActiveRecord::Base
 
  	enum created_by_type: [ :teacher, :school_admin, :product_admin]
 
+before_save :generate_timestamp
 
+  def generate_timestamp
+    self.timestamp_field = DateTime.now
+  end
 
 end
