@@ -9,7 +9,7 @@ class SchoolGrades extends SchloopBase {
         _self.initEventListeners();
         return this;
     };
-
+		
     initEventListeners (){
         let _self = this,
         { school_id } = _self._config;
@@ -84,7 +84,7 @@ class SchoolGrades extends SchloopBase {
         let _self = this, html = '',
             { school_id } = this._config,
             schoolGradeContainerEl = $("#schoolGradeContainer");
-          
+         
         $.ajax({
             url: `/admin/schools/${school_id}/grades`,
             success: function (res) {
@@ -114,6 +114,37 @@ class SchoolGrades extends SchloopBase {
                             }
                     	}	
                     });
+                    
+                    schoolGradeContainerEl.find('.data-title').on('click', function () {
+     					var current_el = $(this).parent().next();
+
+			    	    if ($(this).find('.no-of-div').hasClass('fa-chevron-down')){
+			        		$(this).find('.no-of-div').addClass("fa-chevron-up").removeClass("fa-chevron-down");
+			    		}else {
+			    			$(this).find('.no-of-div').removeClass("fa-chevron-up").addClass("fa-chevron-down");
+			    		}
+			        	current_el.slideToggle();
+        			});
+                    schoolGradeContainerEl.find('.subject-wrapper').each( function () {
+        				var current_el = $(this).find(".division-list li:first"),
+        					current_division_name = current_el.data('division_name'),
+        					current_division_id = current_el.data('division_id');
+        					current_el.addClass('active');	
+        					if (current_el.length == '0') {
+							$(this).find('.current_division').hide('.current_division');
+        					}else{	
+							$(this).find('.current_division').replaceWith('<a href="/admin/divisions/'+ current_division_id +'" class="current_division" data-method="delete">+Delete Division ' + current_division_name + '</a>');
+        					}
+
+                    });
+
+        			schoolGradeContainerEl.find('.division-list li').on('click', function () {
+        				var current_el = $(this).parent().closest("div").parent().find(".current_division"),
+        					current_division_name = $(this).data('division_name'),
+        					current_division_id = $(this).data('division_id');
+								
+							current_el.replaceWith('<a href="/admin/divisions/'+ current_division_id +'" class="current_division" data-method="delete">+Delete Division ' + current_division_name + '</a>');
+        			});
                 }
             }
         });        

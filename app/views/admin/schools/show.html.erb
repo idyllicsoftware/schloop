@@ -90,7 +90,7 @@
                 <div class="subject-tab-wrapper">
                   <ul id="subject-tab" class="nav nav-tabs subject-list">
                   {{#subjects}}
-                    <li class="active"><a href="#subject1-tab" data-toggle="tab">{{subject_name}}</a></li>
+                    <li><a href="#subject1-tab" data-toggle="tab">{{subject_name}}</a></li>
                   {{/subjects}}
                   </ul>
                   <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left" data-grade_id="{{grade_id}}">+Add Subject</a></span>
@@ -103,18 +103,18 @@
                       <div class="plr20">
                         <ul id="myTab" class="nav nav-tabs division-list">
                           {{#divisions}}
-                            <li data-division_id="{{division_id}}"><a href="#div-a" data-toggle="tab">{{division_name}}</a></li>
+                            <li data-division_id="{{division_id}}" data-division_name="{{division_name}}"><a href="#div-a" data-toggle="tab">{{division_name}}</a></li>
                           {{/divisions}}
                         </ul>
                       </div>
                       <div class="div-operation">
                         <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content" data-grade_id="{{grade_id}}">+Add Division</a></span>
-                        
+
                         <!-- we need to add proper href link to delete division. -->
 
                         <span>
 
-                          <%= link_to 'Delete Division', '/admin/divisions/1', class: '', method: :delete %> 
+                          <%= link_to 'Delete Division', '/admin/divisions/1', class: 'current_division', method: :delete %> 
                           <!-- <a href="">+Delete Division A</a> -->
                         </span>
 

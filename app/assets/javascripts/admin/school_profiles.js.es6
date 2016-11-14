@@ -16,14 +16,5 @@ class SchoolProfiles extends SchloopBase {
 
     initEventListeners (){
         let self = this;
-
-        $(document).on('click','.data-title', function () {
-    	    if ($(".no-of-div").hasClass("fa-chevron-down")){
-        		$(".no-of-div").addClass("fa-chevron-up").removeClass("fa-chevron-down");
-    		}else {
-    			$(".no-of-div").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-    		}
-        	$(".slide-division-wrapper").slideToggle();
-        });
     }    
 }
