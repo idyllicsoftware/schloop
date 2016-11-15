@@ -1,23 +1,29 @@
 class Admin::EcircularsController < ApplicationController
 	
 	def index
-	#@circular=Ecircular.all.index_by(:created_at).limit(10)
-	@circular=Ecircular.order('id desc').limit(10)
-
+		@circular=Ecircular.order('id desc').limit(10)
 	end
 
 	def new
-		
 	end
 
 	def create
+		attachments = params[:attachments]
+		new_circular = Ecircular.create(circular_params)
+		count = 0
+		attachments.each  do |file|
+			count = count + 1
+			file_name = params[:file_name] + "-#{count}"
+			ecircular_file_upload_service = Admin::EcircularFileUploadService.new
+			response = ecircular_file_upload_service.upload_ecircular_file_to_s3(file,file_name,new_circular.id)
+		end
 
-		new_circular = Ecircular.create(cicular_params)
+		redirect_to admin_school_ecirculars_path	
  	end
 
 	private
 
-	def cicular_params
+	def circular_params
  		user_type = current_user.type rescue ''
 		 if user_type == 'ProductAdmin'
 		 	created_by_type = Ecircular.created_by_types[:product_admin]
@@ -26,7 +32,6 @@ class Admin::EcircularsController < ApplicationController
 		 else
 		 	created_by_type = Ecircular.created_by_types[:teacher]
 		 end	
-
 		 return {
 		 	title: params[:title], 
 		 	body: params[:body], 
