@@ -14,12 +14,11 @@ class Admin::DivisionsController < ApplicationController
 		render json: {success: !errors.present?, errors: errors, division_name: params[:div_name]}
     end 
 
-	def find_divisions
-	end
    
 	def destroy
-		render json: {success: false, errors: ['grade not found']} and return if @division.blank?
-		@division.destroy!
+		division = Division.find_by(id: params[:id])
+		render json: {success: false, errors: ['grade not found']} and return if division.blank?
+		division.destroy!
 		render json: {success: true}
 	end
 end

@@ -9,7 +9,7 @@ class SchoolGrades extends SchloopBase {
         _self.initEventListeners();
         return this;
     };
-
+		
     initEventListeners (){
         let _self = this,
         { school_id } = _self._config;
@@ -38,7 +38,7 @@ class SchoolGrades extends SchloopBase {
             'division_name': 'name',
                     }, function (res) {
             if(res.success) {
-            	
+            	_self.loadSchoolsGrades();
             	if(jForm.hasClass("add-subject-form")){
                 	current_element.find(".subject-list").append("<li><a href='#subject1-tab' data-toggle='tab'>" + res.subject_name +"</a></li>");
              		toastr.success('Subject added successfully');
@@ -84,7 +84,7 @@ class SchoolGrades extends SchloopBase {
         let _self = this, html = '',
             { school_id } = this._config,
             schoolGradeContainerEl = $("#schoolGradeContainer");
-          
+         
         $.ajax({
             url: `/admin/schools/${school_id}/grades`,
             success: function (res) {
@@ -114,8 +114,66 @@ class SchoolGrades extends SchloopBase {
                             }
                     	}	
                     });
+                    
+                    schoolGradeContainerEl.find('.data-title').on('click', function () {
+     					var current_el = $(this).parent().next();
+
+			    	    if ($(this).find('.no-of-div').hasClass('fa-chevron-down')){
+			        		$(this).find('.no-of-div').addClass("fa-chevron-up").removeClass("fa-chevron-down");
+			    		}else {
+			    			$(this).find('.no-of-div').removeClass("fa-chevron-up").addClass("fa-chevron-down");
+			    		}
+			        	current_el.slideToggle();
+        			});
+                    schoolGradeContainerEl.find('.subject-wrapper').each( function () {
+        				var current_el = $(this).find(".division-list li:first"),
+        					current_division_name = current_el.data('division_name'),
+        					current_division_id = current_el.data('division_id');
+        					current_el.addClass('active');	
+        					if (current_el.length == '0') {
+							$(this).find('.current_division').remove('.current_division');
+        					}else{	
+							$(this).find('.current_division').replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>+Delete Division ' + current_division_name + '</a></span>');
+							}
+                    });
+       			
+        			schoolGradeContainerEl.find('.division-list li').off('click').on('click', function () {
+        				var current_el = $(this).parent().closest("div").parent().find(".current_division"), 
+        					current_division_name = $(this).data('division_name'),
+        					current_division_id = $(this).data('division_id');
+							
+							current_el.replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>+Delete Division ' + current_division_name + '</a></span>');
+        					_self.deleteDivision();
+        			});
+        			_self.deleteDivision();	
                 }
             }
         });        
+    };
+
+    deleteDivision () {
+    	let _self = this;
+
+    	$('.current_division').on('click', function () {
+			var	current_division_id = $(this).data('division_id'),
+				url = '/admin/divisions/'+ current_division_id,
+				rm_El = $(this).parent().parent().find(".division-list > li.active"),
+				rm_El_data = rm_El.data('division_id'),
+				msg = 'Division deleted successfully';
+
+            _self.deleteRequest(url, $(this), null, function (res) {
+                if(res.success) {
+                	if(current_division_id !== ''){
+          				if(rm_El_data == current_division_id){
+          				_self.loadSchoolsGrades();
+	                    toastr.success('Division deleted successfully');
+	                    rm_El.remove();
+	                	}
+                	}
+                }else {
+                    _self.showErrors(res.errors);
+                }
+            })
+        });
     };
 }        
