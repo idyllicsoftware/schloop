@@ -64,3 +64,25 @@ $.fn.serializeObject = function (options) {
 
     return json;
 };
+
+Array.prototype.toHash = function(key){
+    let a = {};
+    this.forEach(function (item) {
+       a[item[key]] = item;
+    });
+    return a;
+};
+
+$.fn.fillForm = function (obj, parent_key) {
+    let jForm = $(this),
+        subkey,
+        el;
+    for(var key in obj) {
+        subkey = parent_key ? `${parent_key}[${key}]` : key;
+        el = jForm.find('[name="' + subkey + '"]');
+
+        if(el.length){
+            el.val(obj[key]);
+        }
+    }
+};

@@ -21,6 +21,7 @@
 #  middle_name            :string
 #  last_name              :string
 #  phone                  :string
+#  cell_number            :string
 #
 # Indexes
 #

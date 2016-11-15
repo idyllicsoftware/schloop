@@ -7,7 +7,7 @@ class Schools extends SchloopBase {
         if(action == 'index'){
             this.initDashboard();
         }else if(action == 'show'){
-            this._schoolProfile = new SchoolProfiles();
+            this._schoolProfile = new SchoolProfiles(this._config);
         }
         return this;
     };
@@ -23,10 +23,6 @@ class Schools extends SchloopBase {
 
         self.loadSchools();
 
-        $(".data-title").click( function () {
-            $(".slide-division-wrapper").slideToggle();
-        });
-
         this.initFormSubmit(createSchoolFormEl, {
             'school[name]': 'name',
             'school[board]': 'name',
@@ -36,7 +32,7 @@ class Schools extends SchloopBase {
             'school[website]': 'website',
             'administrator[first_name]': 'name',
             'administrator[last_name]': 'name',
-            'administrator[phone]': 'phone',
+            'administrator[cell_number]': 'phone',
             'administrator[email]': 'email',
         }, function (res) {
             if(res.success) {
@@ -45,8 +41,7 @@ class Schools extends SchloopBase {
                 self.loadSchools();
                 toastr.success('School created successfully');
             }else {
-                let msg = res.errors.join("<br/> ") || "Something went wrong. Please try later."
-                swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+                self.showErrors(res.errors);
             }
         });
 

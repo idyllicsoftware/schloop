@@ -19,7 +19,7 @@ class Main extends SchloopBase {
             $("#loginDiv").addClass('hidden');
             $("#forgotPasswordDiv").removeClass('hidden');
         });
-
+         
         $(".sign-in-link").click(function() {
             $("#loginDiv").removeClass('hidden');
             $("#login-form")[0].reset();
@@ -28,17 +28,17 @@ class Main extends SchloopBase {
             $("#forgotPasswordDiv").addClass('hidden');
         });
 
-        this.initFormSubmit($("#login-form"), {
-            'user[email]': 'email' ,
-            'user[password]': 'password'
-        }, function () {
-            debugger;
-        });
-
-        this.initFormSubmit($("#forgot-password-form"), {
-            'user[email]': 'email'
-        }, function () {
-            debugger;
-        });
+        //this.initFormSubmit($("#login-form"), {
+        //    'user[email]': 'email' ,
+        //    'user[password]': 'password'
+        //}, function () {
+        //    debugger;
+        //});
+        //
+        //this.initFormSubmit($("#forgot-password-form"), {
+        //    'user[email]': 'email'
+        //}, function () {
+        //    debugger;
+        //});
     }
 }

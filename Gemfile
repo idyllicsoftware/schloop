@@ -27,6 +27,8 @@ gem 'roo'
 gem 'sdoc', '~> 0.4.1', group: :doc
 
 gem 'devise'
+gem 'aws-sdk'
+# gem 'rmagick', '2.15.4'
 
 
 group :development do

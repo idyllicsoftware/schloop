@@ -3,7 +3,7 @@
 # Table name: grades
 #
 #  id         :integer          not null, primary key
-#  name       :string
+#  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  school_id  :integer
@@ -19,6 +19,6 @@
 
 class Grade < ActiveRecord::Base
 	belongs_to :school
-	has_many :division
-	has_many :subject
+	has_many :divisions
+	has_many :subjects
 end

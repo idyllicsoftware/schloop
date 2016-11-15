@@ -1,5 +1,6 @@
 class Admin::SchoolsController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_school, only: [:show]
   layout "admin"
 
   def index
@@ -17,8 +18,11 @@ class Admin::SchoolsController < ApplicationController
     @user = User.where(school_id: params[:id])
     @school = School.find(params[:id])
     @teacher_import = TeacherImport.new({}, @school.id)
-    # @school_id = params[:id]
-    # @school_admins = User.where(school_id: @school.id)
+    @js_data = {
+        school_id: params[:id]
+    }
+    @grades = Grade.where(school_id: params[:id])
+    redirect_to admin_schools_path and return if @school.blank?
   end
 
 	def create
@@ -55,12 +59,11 @@ class Admin::SchoolsController < ApplicationController
     # end
 	end
 
-  def add_grade
-    new_grade = Grade.create(:name => params[:grade_name], :school_id => params[:school_id])
-    redirect_to controller:'admin/schools',action: 'edit',id: params[:school_id]
-  end
-
   private
+
+  def find_school
+      @school = School.find_by(id: params[:id])
+  end
 
   def create_school(school_datum, school_admin_datum)
     errors = []
@@ -110,14 +113,14 @@ class Admin::SchoolsController < ApplicationController
         first_name: datum[:first_name],
         last_name: datum[:last_name],
         email: datum[:email],
-        cell_number: datum[:phone],
-        password: '12345678'
+        cell_number: datum[:cell_number],
+        password: Devise.friendly_token.gsub('-','').first(6)
     }
     return school.school_admins.create(create_params)
   end
 
   def school_admin_params
-    params.require(:administrator).permit(:first_name, :last_name, :phone, :email)
+    params.require(:administrator).permit(:first_name, :last_name, :cell_number, :email)
   end
 
   def school_params

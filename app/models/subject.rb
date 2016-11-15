@@ -3,7 +3,7 @@
 # Table name: subjects
 #
 #  id           :integer          not null, primary key
-#  name         :string
+#  name         :string           not null
 #  subject_code :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
@@ -25,4 +25,5 @@
 #
 
 class Subject < ActiveRecord::Base
+	belongs_to :grade
 end

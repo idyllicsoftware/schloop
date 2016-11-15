@@ -4,6 +4,7 @@
   <title>Schloop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <%= stylesheet_link_tag 'admin/admin', media: 'all' %>
+  <!-- <link rel="shortcut icon" type="image/ico" href="/favicon.ico" /> -->
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -36,8 +37,6 @@
 		</div>
 	</div>
 	<%= yield %> 
-	<div class="bottom-img-section">	
-	</div>
 	<div class="footer-section">
 	</div>
 </div>
@@ -50,6 +49,9 @@
        :controller => params[:controller],
        :action => params[:action]
      }
+     if @js_data.present?
+        js_obj.merge!(@js_data);
+     end
      if Rails.env != 'production'
        js_obj[:env] = Rails.env
      end
