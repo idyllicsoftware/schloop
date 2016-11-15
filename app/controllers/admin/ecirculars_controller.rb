@@ -5,6 +5,8 @@ class Admin::EcircularsController < ApplicationController
 	end
 
 	def new
+		school_id = params[:school_id]
+		@circulars = Ecircular.where(school_id: school_id).order('id desc')
 	end
 
 	def create
@@ -19,6 +21,11 @@ class Admin::EcircularsController < ApplicationController
 		end
 
 		redirect_to admin_school_ecirculars_path	
+ 	end
+ 
+ 	def show
+ 
+  @circular=Ecircular.order('id desc').limit(10)
  	end
 
 	private
@@ -37,7 +44,8 @@ class Admin::EcircularsController < ApplicationController
 		 	body: params[:body], 
 		 	circular_type: Ecircular.circular_types[params[:circular_type].to_sym], 
 		 	created_by_type:created_by_type, 
-		 	created_by_id: current_user.id
+		 	created_by_id: current_user.id,
+		 	school_id: current_user.school_id
 		 }
 	end
 end

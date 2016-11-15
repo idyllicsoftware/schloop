@@ -74,6 +74,8 @@ Rails.application.routes.draw do
       post "/teacher/login" => 'teachers#login'
       post "/teacher/dashboard" => 'teachers#dashboard'
       post "/teacher/reset_password" => "teachers#reset_password"
+      post "/teacher/profile" => "teachers#profile"
+      post "/ecircular/tags" => "ecirculars#tags"
     end
   end
 

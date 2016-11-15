@@ -15,6 +15,7 @@
 #  code               :string           not null
 #  board              :string
 #  principal_name     :string
+#  logo               :string
 #
 
 class School < ActiveRecord::Base
@@ -22,6 +23,7 @@ class School < ActiveRecord::Base
   has_many :school_admins
   has_many :teachers
   has_many :grades
+  has_many :ecirculars
   belongs_to :school_director, class_name: 'Teacher'
 
   before_save :update_school_unique_code
