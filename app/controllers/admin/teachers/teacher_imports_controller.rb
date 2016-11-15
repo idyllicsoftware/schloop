@@ -8,7 +8,6 @@ class Admin::Teachers::TeacherImportsController < ApplicationController
   def create
     @school = School.find(params[:school_id])
     @teacher_import = TeacherImport.new(params[:teacher_import], params[:school_id])
-    binding.pry
     if @teacher_import.save
       redirect_to :back, notice: "Imported teachers successfully."
     else
