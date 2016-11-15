@@ -1,18 +1,22 @@
 class Admin::EcircularsController < ApplicationController
 	
 	def index
-	#@circular=Ecircular.all.index_by(:created_at).limit(10)
-	@circular=Ecircular.order('id desc').limit(10)
-
+		school_id = params[:school_id]
+		@circulars = Ecircular.where(school_id: school_id).order('id desc')
 	end
 
 	def new
-		
+		#@circular=Ecircular.new
 	end
 
 	def create
 
 		new_circular = Ecircular.create(cicular_params)
+ 	end
+ 
+ 	def show
+ 
+  @circular=Ecircular.order('id desc').limit(10)
  	end
 
 	private
@@ -32,7 +36,8 @@ class Admin::EcircularsController < ApplicationController
 		 	body: params[:body], 
 		 	circular_type: Ecircular.circular_types[params[:circular_type].to_sym], 
 		 	created_by_type:created_by_type, 
-		 	created_by_id: current_user.id
+		 	created_by_id: current_user.id,
+		 	school_id: current_user.school_id
 		 }
 	end
 end

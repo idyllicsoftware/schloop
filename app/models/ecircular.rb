@@ -8,8 +8,9 @@
 #  circular_type   :integer
 #  created_by_type :integer
 #  created_by_id   :integer
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#  school_id       :integer
 #
 
 class Ecircular < ActiveRecord::Base
@@ -22,4 +23,5 @@ class Ecircular < ActiveRecord::Base
 
  	enum created_by_type: [ :teacher, :school_admin, :product_admin]
 
+ 	belongs_to :school
 end
