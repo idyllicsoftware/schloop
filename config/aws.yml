@@ -1,0 +1,21 @@
+common: &common
+ aws_access_key_id: 'AKIAI6FAGHIHSXGNH6IQ'
+ aws_secret_accerss_key: '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'
+ region: 'us-west-2'
+
+development:
+  bucket: 'schloopdev'
+  <<: *common
+
+staging:
+  bucket: 'schloopstg'
+  <<: *common
+
+production:
+  bucket: 'schloopprod'
+  <<: *common
+
+#Access Key ID:
+#AKIAI6FAGHIHSXGNH6IQ
+#Secret Access Key:
+#/tm/ROmZ4c1Y7UYo4RWkiyqcas8P7oNuDl3AGkIR

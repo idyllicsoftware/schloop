@@ -3,20 +3,30 @@
 <head>
   <title>Schloop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <!-- <link rel="shortcut icon" type="image/ico" href="/favicon.ico" /> -->
   <%= csrf_meta_tags %>
+
 </head>
 <body>
 
-<% if notice %>
-  <p class="alert alert-success"><%= notice %></p>
-<% end %>
-<% if alert %>
-  <p class="alert alert-danger"><%= alert %></p>
-<% end %>
+  <%= yield %>
 
-<%= yield %>
+  <%= javascript_include_tag 'application' %>
+  <script type="text/javascript">
+    $(document).on('ready', function() {
+      <%
+        js_obj = {
+          :controller => params[:controller],
+          :action => params[:action]
+        }
+        if Rails.env != 'production'
+          js_obj[:env] = Rails.env
+        end
+      %>
+      schloop = new Schloop(<%= raw(js_obj.to_json) %>);
+    });
+  </script>
 
 </body>
 </html>

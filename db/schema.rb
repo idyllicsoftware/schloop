@@ -11,10 +11,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161014105508) do
+ActiveRecord::Schema.define(version: 20161108115010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "divisions", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "grade_id"
+  end
+
+  add_index "divisions", ["grade_id"], name: "index_divisions_on_grade_id", using: :btree
+
+  create_table "grade_teachers", force: :cascade do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "division_id"
+    t.integer  "subject_id"
+    t.integer  "teacher_id"
+    t.integer  "grade_id"
+  end
+
+  add_index "grade_teachers", ["division_id"], name: "index_grade_teachers_on_division_id", using: :btree
+  add_index "grade_teachers", ["grade_id"], name: "index_grade_teachers_on_grade_id", using: :btree
+  add_index "grade_teachers", ["subject_id"], name: "index_grade_teachers_on_subject_id", using: :btree
+  add_index "grade_teachers", ["teacher_id"], name: "index_grade_teachers_on_teacher_id", using: :btree
+
+  create_table "grades", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "school_id"
+  end
+
+  add_index "grades", ["school_id"], name: "index_grades_on_school_id", using: :btree
 
   create_table "parents", force: :cascade do |t|
     t.string   "email",                  limit: 100, default: "", null: false
@@ -48,7 +80,19 @@ ActiveRecord::Schema.define(version: 20161014105508) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.string   "code",               null: false
+    t.string   "board"
+    t.string   "principal_name"
   end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string   "name",         null: false
+    t.string   "subject_code"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "grade_id"
+  end
+
+  add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
 
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -68,9 +112,13 @@ ActiveRecord::Schema.define(version: 20161014105508) do
     t.string   "first_name"
     t.string   "middle_name"
     t.string   "last_name"
+<<<<<<< HEAD
     t.string   "grades"
     t.string   "subjects"
     t.string   "phone"
+=======
+    t.string   "cell_number"
+>>>>>>> 7eb98db5517071295eb6bf4de792a68608cae96e
   end
 
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
@@ -104,4 +152,11 @@ ActiveRecord::Schema.define(version: 20161014105508) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
+  add_foreign_key "divisions", "grades"
+  add_foreign_key "grade_teachers", "divisions"
+  add_foreign_key "grade_teachers", "grades"
+  add_foreign_key "grade_teachers", "subjects"
+  add_foreign_key "grade_teachers", "teachers"
+  add_foreign_key "grades", "schools"
+  add_foreign_key "subjects", "grades"
 end

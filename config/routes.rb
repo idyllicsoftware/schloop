@@ -38,19 +38,31 @@ Rails.application.routes.draw do
       post "imports" => 'teachers/teacher_imports#create'
     end
     resource :users do
-      get "/dashboards/index" => 'users/dashboards#index'
-      get "/dashboards/admin_dashboard" => 'users/dashboards#admin_dashboard'
-      get "/dashboards/school_admin_dashboard" => 'users/dashboards#school_admin_dashboard'
     end
     
-    resource :schools do
-      get "new" => 'schools#new'
-      post "new" => 'schools#create'
-    end
+    resources :schools, only: [:show, :create, :index] do
+      member do
+      end
+      collection do
+        get :all
+      end
 
-    resource :school_admins do
-      get "new" => 'school_admins#new'
-      post "new" => 'school_admins#create'
+      resources :school_admins, only: [:index, :create, :update, :destroy], shallow: true do
+      end
+
+      resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
+
+      end
+
+      resources :grades, only: [:index, :create], shallow: true do
+        resources :subjects,only: [:index, :create, :update, :destroy], shallow: true do
+
+        end 
+        resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do
+
+        end
+      end
+
     end
 
     resource :parents do
@@ -65,6 +77,7 @@ Rails.application.routes.draw do
       post "/teacher/register" => 'teachers#register'
       post "/teacher/login" => 'teachers#login'
       post "/teacher/dashboard" => 'teachers#dashboard'
+      post "/teacher/reset_password" => "teachers#reset_password"
     end
   end
 end
