@@ -109,16 +109,7 @@
                       </div>
                       <div class="div-operation">
                         <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content" data-grade_id="{{grade_id}}">+Add Division</a></span>
-
-                        <!-- we need to add proper href link to delete division. -->
-
-                        <span>
-
-                          <%= link_to 'Delete Division', '/admin/divisions/1', class: 'current_division', method: :delete %> 
-                          <!-- <a href="">+Delete Division A</a> -->
-                        </span>
-
-
+                          <span class="current_division"><a>+Delete Division A</a></span>
                         <%= render :partial => "admin/schools/add_divisions"%> 
                       </div>
                       <div id="myTabContent" class="tab-content">
