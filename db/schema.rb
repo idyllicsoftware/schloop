@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(version: 20161115083413) do
     t.integer  "circular_type"
     t.integer  "created_by_type"
     t.integer  "created_by_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.integer  "school_id"
   end
 
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 20161115083413) do
     t.string   "code",               null: false
     t.string   "board"
     t.string   "principal_name"
+    t.string   "logo"
   end
 
   create_table "subjects", force: :cascade do |t|
