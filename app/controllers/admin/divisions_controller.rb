@@ -3,7 +3,7 @@ class Admin::DivisionsController < ApplicationController
 	def create
 		errors = []
 		begin
-			division= Division.create(name: params[:div_name], grade_id: params[:grade_id])
+			division = Division.create(name: params[:div_name], grade_id: params[:grade_id])
 
 			if division.errors.present?
 				raise "error occured while adding new division"
