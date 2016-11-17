@@ -1,31 +1,49 @@
-<%= form_tag controller: "admin/ecirculars", method: "get" do %>
+<%=  form_tag({controller: "admin/ecirculars"}, multipart: true) do %>
+	<input name="school_id" value='<%= @school_id %>' hidden >
   <label>Title:</label>
   <input  name="title" type="text" /><br><br>
   <label>Body:</label>
   <textarea  name="body" cols="30" rows="6"></textarea><br><br>
   <label>Circular Type:</label>
-<select name="circular_type">
-	<option value="lesson_plan">Lesson Plan </option>
-	<option value="exam_timetable">Exam Timetable</option>
-	<option value="my_result">My Result</option>
-	<option value="my_attendance">My Attendance</option>
-	<option value="class_timetable">Class Timetable</option>
-	<option value="transport_details">transport details</option>
-	<option value="holliday_circular">Holliday circular</option>
-	<option value="medical_visit_report">Medical visit Report</option>
-	<option value="news_and_events">news and events</option>
-	<option value="important_announcement">important announcement </option>
-	<option value="event_circular ">event circular </option> 
-	<option value="awards_and_achivements">awards and achivements </option>
-	<option value="fee_notice">fee notice</option>
-	<option value="followup_activity_for_parents ">followup activity for parents </option>
-	<option value="exhibitions">Exhibitions </option>
-	<option value="worksheets">worksheets </option>
-	<option value="extra_curricular_activities_cirular">extra curricular activities cirular </option>
-	<option value="school_time_change">school time change </option>
-	<option value="inter_school_competitions">inter school competitions </option>
-	<option value="intra school competitions">intra school competitions </option>
-	<option value="olymipiads">olymipiads </option>
-</select>
+  <select name="circular_type">
+		<option value="lesson_plan">Lesson Plan </option>
+		<option value="exam_timetable">Exam Timetable</option>
+		<option value="my_result">My Result</option>
+		<option value="my_attendance">My Attendance</option>
+		<option value="class_timetable">Class Timetable</option>
+		<option value="transport_details">Transport Details</option>
+		<option value="holiday_circular">Holiday Circular</option>
+		<option value="medical_visit_report">Medical Visit Report</option>
+		<option value="news_and_events">News And Events</option>
+		<option value="important_announcement">Important Announcement </option>
+		<option value="event_circular ">Event Circular </option> 
+		<option value="awards_and_achivements">Awards And Achivements </option>
+		<option value="fee_notice">Fee Notice</option>
+		<option value="followup_activity_for_parents ">Followup Activity For Parents </option>
+		<option value="exhibitions">Exhibitions </option>
+		<option value="worksheets">Worksheets </option>
+		<option value="extra_curricular_activities_cirular">Extra Curricular Activities Cirular </option>
+		<option value="school_time_change">School Time Change </option>
+		<option value="inter_school_competitions">Inter School Competitions </option>
+		<option value="intra school competitions">Intra School Competitions </option>
+		<option value="olymipiads">Olymipiads </option>
+	</select><br><br>
+  <input id="fileupload" type="file" name="attachments[]" multiple="" accept=".xls,.xlsx,.doc,.docx,.pdf,.csv,.jpg,.jpeg,.png" />  <br><br>
+  <label>File name:</label>
+  <input  name="file_name" type="text" /><br><br>
+	<h3> Recipients</h3>
+	<ul>
+		<% @grades.each do |grade|%>
+	    <li>
+	      <input type="checkbox" id="option"><label for="option"><%= grade.name %></label>
+	      <ul >
+		      <% grade.divisions.each do |division| %>      
+						<%= label_tag  grade.name, division.name %>
+						<%= check_box_tag 'grades['+(grade.id).to_s+"]division][]", division.id %>
+		      <% end %>
+	      </ul>
+	    </li>
+	  <% end %>
+  </ul>
   <input type="submit" name="submit" value= "submit" />
 <% end %>

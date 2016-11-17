@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161115083413) do
+ActiveRecord::Schema.define(version: 20161116103706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attachments", force: :cascade do |t|
+    t.string   "attachable_type"
+    t.integer  "attachable_id"
+    t.string   "name"
+    t.integer  "sub_type"
+    t.string   "original_filename"
+    t.integer  "file_size"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "divisions", force: :cascade do |t|
     t.string   "name",       null: false
@@ -29,9 +40,12 @@ ActiveRecord::Schema.define(version: 20161115083413) do
     t.integer  "school_id"
     t.integer  "grade_id"
     t.integer  "division_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "ecircular_id"
   end
+
+  add_index "ecircular_recipients", ["ecircular_id"], name: "index_ecircular_recipients_on_ecircular_id", using: :btree
 
   create_table "ecirculars", force: :cascade do |t|
     t.string   "title"
@@ -88,6 +102,33 @@ ActiveRecord::Schema.define(version: 20161115083413) do
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
 
+  create_table "permissions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "controller"
+    t.string   "action"
+    t.text     "flags"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "role_permissions", force: :cascade do |t|
+    t.integer  "role_id"
+    t.integer  "permission_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "role_permissions", ["permission_id"], name: "index_role_permissions_on_permission_id", using: :btree
+  add_index "role_permissions", ["role_id"], name: "index_role_permissions_on_role_id", using: :btree
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.string   "role_map"
+    t.boolean  "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "schools", force: :cascade do |t|
     t.string   "name",               null: false
     t.text     "address",            null: false
@@ -101,7 +142,6 @@ ActiveRecord::Schema.define(version: 20161115083413) do
     t.string   "code",               null: false
     t.string   "board"
     t.string   "principal_name"
-    t.string   "logo"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -110,13 +150,9 @@ ActiveRecord::Schema.define(version: 20161115083413) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "grade_id"
-    t.integer  "teacher_id"
-    t.integer  "division_id"
   end
 
-  add_index "subjects", ["division_id"], name: "index_subjects_on_division_id", using: :btree
   add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
-  add_index "subjects", ["teacher_id"], name: "index_subjects_on_teacher_id", using: :btree
 
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -142,6 +178,16 @@ ActiveRecord::Schema.define(version: 20161115083413) do
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
+
+  create_table "user_roles", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "user_roles", ["user_id", "role_id"], name: "index_user_roles_on_user_id_and_role_id", unique: true, using: :btree
+  add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",            null: false
@@ -171,12 +217,15 @@ ActiveRecord::Schema.define(version: 20161115083413) do
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
   add_foreign_key "divisions", "grades"
+  add_foreign_key "ecircular_recipients", "ecirculars"
   add_foreign_key "grade_teachers", "divisions"
   add_foreign_key "grade_teachers", "grades"
   add_foreign_key "grade_teachers", "subjects"
   add_foreign_key "grade_teachers", "teachers"
   add_foreign_key "grades", "schools"
-  add_foreign_key "subjects", "divisions"
+  add_foreign_key "role_permissions", "permissions"
+  add_foreign_key "role_permissions", "roles"
   add_foreign_key "subjects", "grades"
-  add_foreign_key "subjects", "teachers"
+  add_foreign_key "user_roles", "roles"
+  add_foreign_key "user_roles", "users"
 end
