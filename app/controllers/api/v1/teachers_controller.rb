@@ -44,6 +44,8 @@ class Api::V1::TeachersController < Api::V1::BaseController
         error: nil,
         data: {
           id: teacher.id,
+          first_name: teacher.first_name,
+          last_name: teacher.last_name,
           token: teacher.token,
           first_sign_in: (teacher.sign_in_count <= 1)
         }
