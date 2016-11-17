@@ -29,9 +29,7 @@
 		<option value="olymipiads">Olymipiads </option>
 	</select><br><br>
   <input id="fileupload" type="file" name="attachments[]" multiple="" accept=".xls,.xlsx,.doc,.docx,.pdf,.csv,.jpg,.jpeg,.png" />  <br><br>
-  <label>File name:</label>
-  <input  name="file_name" type="text" /><br><br>
-	<h3> Recipients</h3>
+ 	<h3> Recipients</h3>
 	<ul>
 		<% @grades.each do |grade|%>
 	    <li>
@@ -47,3 +45,4 @@
   </ul>
   <input type="submit" name="submit" value= "submit" />
 <% end %>
+
