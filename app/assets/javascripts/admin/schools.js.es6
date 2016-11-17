@@ -45,6 +45,7 @@ class Schools extends SchloopBase {
             'school[zip_code]': 'zip_code',
             'school[phone1]': 'phone',
             'school[website]': 'website',
+            'school[logo]': 'logo',
             'administrator[first_name]': 'name',
             'administrator[last_name]': 'name',
             'administrator[cell_number]': 'phone',
