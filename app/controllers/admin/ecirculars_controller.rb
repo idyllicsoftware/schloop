@@ -17,7 +17,9 @@ class Admin::EcircularsController < ApplicationController
 			count = 0
 			attachments.each  do |file|
 				count = count + 1
-				file_name = params[:file_name] + "-#{count}"
+				extension =  File.extname(file.original_filename)
+				file_name = File.basename(file.original_filename, ".*")
+				file_name = "#{file_name}_#{Time.now.to_i}#{extension}"
 				ecircular_file_upload_service = Admin::EcircularFileUploadService.new
 				response = ecircular_file_upload_service.upload_ecircular_file_to_s3(file,file_name,new_circular.id)
 			end
