@@ -23,7 +23,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
   def tags
     tags_data = []
     Ecircular.circular_types.invert.each do |key, value|
-      tags_data << {key => value.humanize}
+      tags_data << {id: key, name: value.humanize}
     end
 
     render json: {
