@@ -19,7 +19,12 @@ class Attachment < ActiveRecord::Base
 		bucket = AWS_CONFIG['bucket']
 		response = Util::AwsUtils.upload_to_s3(file_to_upload, bucket, file_params[:url], options) 
 		if response[:status] != 'error'
-			attachment = Attachment.create(name: file_params[:url],file_size: file_params[:file_size],original_filename: file_params[:original_filename])
+			create_attachment_params = {
+				name: file_params[:url],
+				file_size: file_params[:file_size],
+				original_filename: file_params[:original_filename]
+			}
+			attachment = Attachment.create(create_attachment_params)
 		end
 		return attachment
 	end
