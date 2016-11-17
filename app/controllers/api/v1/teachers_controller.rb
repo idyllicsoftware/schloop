@@ -69,7 +69,7 @@ class Api::V1::TeachersController < Api::V1::BaseController
     old_password = params[:old_password]
     errors << "Invalid old password" unless @current_user.valid_password?(old_password)
 
-    @current_user.password = params[:new_password]
+    @current_user.password = params[:new_password] if errors.blank?
     if @current_user.save && errors.blank?
       render json: {
         success: true,
