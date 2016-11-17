@@ -1,39 +1,45 @@
+<%= search_form_for @search, url: admin_school_ecirculars_path  , method: :get do |f| %>
+  <%= f.label :title_cont, "Title Contains" %>
+  <%= f.text_field :title_cont %>
+  <%= f.label :created_at_gteq, "Date between" %>
+  <%= f.text_field :created_at_gteq %>
+  <%= f.label :created_at_lteq, "and" %>
+  <%= f.text_field :created_at_lteq %>
 
- <div class="jumbotron">
-<h1> All Circulars</h1> 
-</div>
+<!--  <%= f.select# :circular_type_eq, options_from_collection_for_select(Ecircular.circular_types @search.circular_type_eq) %>
 
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <div class ="row">
-        <div class="col-md-12">
-      
-          <div class="table-responsive">
-            <table class="table"
-            <tbody>
-              <tr>
-              	<th> title </th>
-              	<th> body </th>
-              	<th> type </th>
-              	<th> created by </th>
-              	<th> action </th>
-              </tr>	
-              <tr>
-              <% @circulars.each do |circular| %>
-              <tr>
-              	<td>  <%= circular.title%></td>
-              	 <td> <%= circular.body %></td>
-              	 <td>  <%= circular.circular_type%></td>
-              	 <td>  <%= circular.created_by_type %></td>
-              	 <td>
-              	 	<div class="thumbnail"> 
-              			<%= link_to 'show', '/admin/schools/(@school)/ecirculars/(@ecircular)' %>
-         			</div>
-              	 </td>
-              </tr>
-              <% end %> 
-            </tbody>
-          </table>
-         </div>
-      </div>
-      <div class="col-md-7 col-md-offset-1">
+
+  <% #Ecircular.circular_types.each do |circular_type| %>
+    # the check_box helper will not work as effectively here
+    <%= check_box_tag(#'q[cicular_type][]', circular_type[0]) %>
+    <%= #circular_type[0] %>
+  <% #end %>
+-->
+  <%= f.submit "Search" %>
+<% end %>
+<table>
+  <tr>
+   	<th> title </th>
+   	<th> body </th>
+   	<th> type </th>
+    <th> created by </th>
+    <th> action </th>
+  </tr>
+<tbody>
+<% @result.each do |circular| %>	
+  <tr>
+      <td>  <%= circular.title%></td>&nbsp
+      <td> <%= circular.body %></td>
+      <td>  <%= circular.circular_type%></td>
+      <td>  <%= circular.created_by_type %></td>
+      <td> <%= circular.created_at.to_date.to_s %>
+      <td>
+        <div class="thumbnail"> 
+                    			<%= link_to 'show', '/admin/schools/(@school)/ecirculars/(@ecircular)' %>
+        </div>
+      </td>  
+  </tr>
+  <% end %>
+</tbody>
+</table>
+   

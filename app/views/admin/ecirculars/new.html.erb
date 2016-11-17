@@ -39,7 +39,7 @@
 	      <ul >
 		      <% grade.divisions.each do |division| %>      
 						<%= label_tag  grade.name, division.name %>
-						<%= check_box_tag 'grades['+(grade.id).to_s+"]division][]", division.id %>
+						<%= check_box_tag 'grades['+(grade.id).to_s+"]division[]", division.id %>
 		      <% end %>
 	      </ul>
 	    </li>

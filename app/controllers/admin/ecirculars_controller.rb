@@ -1,7 +1,15 @@
 class Admin::EcircularsController < ApplicationController
 	
 	def index
-		@circulars = Ecircular.order('id desc').limit(10)
+		if current_user.type == 'ProductAdmin'
+			@ecirculars = Ecircular.all
+		else
+			school_id = School.where(current_user.school_id)
+			@ecirculars = Ecircular.where(school_id.id)
+		end
+
+		@search = Ecircular.search(params[:q])
+		@result = @search.result	
 	end
 
 	def new

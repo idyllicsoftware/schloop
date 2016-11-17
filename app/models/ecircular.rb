@@ -14,7 +14,7 @@
 #
 
 class Ecircular < ActiveRecord::Base
-	has_many: attachments
+	has_many :attachments
 	enum circular_type: [:lesson_plan, :exam_time_table, :my_result, :my_attendance, :class_timetable, :sample_papers,
 	 	:transport_details, :holiday_circular, :medical_visit_report, :news_and_events, :important_announcement, :event_circular,
 	 	:awards_and_achievements, :fee_notice, :follow_up_activity_for_parents, :exhibitions, :worksheets,

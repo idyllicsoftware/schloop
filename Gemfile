@@ -29,6 +29,8 @@ gem 'devise'
 gem 'aws-sdk'
 # gem 'rmagick', '2.15.4'
 
+#ransack for filters
+gem 'ransack'
 
 group :development do
   # Using mina for deployment
