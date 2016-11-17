@@ -1,6 +1,7 @@
 //= require_self
 //= require admin/school_profiles
 
+
 class Schools extends SchloopBase {
     init (){
         let {action} = this._config;
@@ -16,15 +17,29 @@ class Schools extends SchloopBase {
         let self = this,
             createSchoolFormEl = $(".schools-registration-form"),
             createModalEl = $("#create-school-modal");
-
+            
         $(document).on('click','#create-school-btn', function () {
             createModalEl.modal('show');
+        });
+
+        $('#upload-photo').change(function(){
+            var res=$('#upload-photo').val();
+            var arr = res.split("\\");
+            var filename = arr.slice(-1)[0];
+            var filextension = filename.split(".");
+            var filext ="."+filextension.slice(-1)[0];
+            var valid=[".jpg"];
+
+            if (valid.indexOf(filext.toLowerCase())==1){
+                alert("You select " + filename + " file.");
+            }
         });
 
         self.loadSchools();
 
         this.initFormSubmit(createSchoolFormEl, {
             'school[name]': 'name',
+            'school[photo]': 'photo',
             'school[board]': 'name',
             'school[address]': 'name',
             'school[zip_code]': 'zip_code',

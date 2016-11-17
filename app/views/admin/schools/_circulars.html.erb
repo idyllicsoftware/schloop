@@ -1,0 +1,276 @@
+
+<div class="tab-pane fade in circulars-container" id="circulars-tab">
+	<div class="content-wrapper">
+		<div class="header-wrapper">
+            <div class="home-logo" style="background-image: url('<%= asset_path('school_admin.png') %>');">
+            	
+            </div>
+            <div class="heading-wrapper">
+              <h2><%= @school.name %></h2>
+              <p><%= @school.code %></p>
+            </div>
+        </div>
+	    <!-- <div>
+	        <textarea class="tinymce"></textarea> 
+    	</div> -->
+    	<div class="circulars-main-form">
+    		<form>
+    		    <div class="form-group col-md-12">
+                      <input type="text" class="form-control input-field" required name="subject" placeholder="Subject" autocomplete="off" maxlength="10" />
+                </div>
+                <div class="form-group col-md-12 upload-photo-wrap">
+                	<label for="upload-photo">
+	                    <div class="upload-logo">
+	                      <img src="<%= asset_path('admin/image_upload.svg') %>">
+	                    </div>
+	                    <input type="file" name="attached_file" value="" required id="upload-photo"/>
+                  	</label>
+                </div>
+                <div class="form-group col-md-12">
+                      <input type="text" class="form-control input-field" required name="subject" placeholder="Body" autocomplete="off" maxlength="10" />
+                      <textarea class="form-control input-field circular-textarea" required name="circular-body"></textarea>
+                </div>
+                <div class="col-md-12">
+	          	    <div class="col-md-5 border_botm">
+	          	    	<a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
+		          	    	<span class="select-recipients">
+						      <p>Select recipients</p>
+						      <p class="fa fa-chevron-down"></p>
+						    </span>
+					    </a>					      
+				      	<div id="select-recipients-popover-content" class="hidden">
+				      		<div class="recipients-container-wrap">
+								<ul id="recipients-Tab" class="nav nav-tabs">
+<!-- 							    	<li class="active">
+						        		<a href="#showing-section-tab" aria-controls="showing-section-tab" role="showing-section-tab" data-toggle="tab">Showing</a>
+						      		</li> -->
+						      		<li class="active">
+						        		<a href="#all-grade-section-tab" aria-controls="all-grade-section-tab" role="all-grade-section-tab" data-toggle="tab">All grades</a>
+						      		</li>
+						      		<li>
+						        		<a href="#selected-grade-section-tab" aria-controls="selected-grade-section-tab" role="selected-grade-section-tab" data-toggle="tab">Only Selected Grades</a>
+						      		</li>
+						      	</ul>
+						      	<div class="tab-content">
+						      		<!-- <div class="tab-pane fade in active" id="showing-section-tab">
+						      		</div> -->
+						      		<div class="tab-pane fade in active" id="all-grade-section-tab">
+							      		<div class="std_name">
+								      		<span class="col-md-12 checkbox_customized">
+								      			<input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										        <label for="check1">A</label>
+										    </span>        
+								      		<ul class="checkbox_customized">
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										    </ul>
+										</div>
+							      		<div class="std_name">
+								      		<span class="col-md-12 checkbox_customized">
+								      			<input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										        <label for="check1">A</label>
+										    </span>        
+								      		<ul class="checkbox_customized">
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										    </ul>
+										</div>
+										<div class="std_name">
+								      		<span class="col-md-12 checkbox_customized">
+								      			<input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										        <label for="check1">A</label>
+										    </span>        
+								      		<ul class="checkbox_customized">
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										    </ul>
+										</div>
+						      		</div>
+						      		<div class="tab-pane fade in" id="selected-grade-section-tab">
+						      			<div class="std_name">
+								      		<span class="col-md-12 checkbox_customized">
+								      			<input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										        <label for="check1">A</label>
+										    </span>        
+								      		<ul class="checkbox_customized">
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										          <li class="col-md-2">
+										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+										            <label for="check1">A</label>
+										          </li>
+										    </ul>
+										</div>
+						      		</div>
+						      	</div>				      			
+				      		</div>
+				     	</div>
+	                </div>
+	                <div class="col-md-4 border_botm">
+	          	    	<a id="select-circular-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-circular-popover-content" data-placement="top">
+		          	    	<span class="select-recipients">
+						      <p>Select E-Circular</p>
+						      <p class="fa fa-chevron-down"></p>
+						    </span>
+					    </a>
+					    <div id="select-circular-popover-content" class="hidden">
+				      		<div class="select-circular-container">
+				      			<div class="radio">
+				      				<input type="radio" name="radio_select" value="lesson_plan" id="lesson_plan">
+								  	<label for="lesson_plan">Lesson Plan</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="exam_timetable" id="exam_timetable">
+								  <label for="exam_timetable">Exam Timetable</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="my_result" id="my_result">
+								  <label for="my_result">My Result</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="my_attendance" id="my_attendance">
+								  <label for="my_attendance">My Attendance</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="class_timetable" id="class_timetable">
+								  <label for="class_timetable">Class Timetable</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="transport_details" id="transport_details">
+								  <label for="transport_details">Transport Details</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="holiday_circular" id="holiday_circular">
+								  <label for="holiday_circular">Holiday Circular</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="medical_visit_report" id="medical_visit_report">
+								  <label for="medical_visit_report">Medical Visit Report</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="news_and_events" id="news_and_events">
+								  <label for="news_and_events">News And Events</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="important_announcement" id="important_announcement">
+								  <label for="important_announcement">Important Announcement</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="event_circular" id="event_circular">
+								  <label for="event_circular">Event Circular</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="awards_and_achivements" id="awards_and_achivements">
+								  <label for="awards_and_achivements">Awards And Achivements</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="fee_notice" id="fee_notice">
+								  <label for="fee_notice">Fee Notice</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="followup_activity_for_parents" id="radio1">
+								  <label for="radio1">Followup Activity For Parents</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="exhibitions" id="radio2">
+								  <label for="radio2">Exhibitions</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="worksheets" id="radio3">
+								  <label for="radio3">Worksheets</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="extra_curricular_activities_cirular" id="radio4" >
+								  <label for="radio4">Extra Curricular Activities Cirular</label>
+								</div>  
+								<div class="radio">
+									<input type="radio" name="radio_select" value="school_time_change" id="radio5">
+								  <label for="radio5">School Time Change </label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="inter_school_competitions" id="radio6">
+								  <label for="radio6">Inter School Competitions</label>
+								</div>
+								<div class="radio">
+									<input type="radio" name="radio_select" value="olymipiads" id="radio7">
+								  <label for="radio7">Olymipiads</label>
+								</div>
+							</div>
+						</div>		
+	                </div>
+	                <div class="col-md-2">
+	                	<button class="btn btn-primary">SEND</button>
+	                </div>
+                </div>
+    		</form>
+    	</div>
+	</div>
+</div>
