@@ -65,8 +65,12 @@ class Api::V1::TeachersController < Api::V1::BaseController
   end
 
   def reset_password
+    errors = []
+    old_password = params[:old_password]
+    errors << "Invalid old password" unless @current_user.valid_password?(old_password)
+
     @current_user.password = params[:new_password]
-    if @current_user.save
+    if @current_user.save && errors.blank?
       render json: {
         success: true,
         error: nil,
@@ -75,11 +79,13 @@ class Api::V1::TeachersController < Api::V1::BaseController
         }
       }
     else
+      error_messages = @current_user.errors.full_messages.join(', ')
+      errors << error_messages if error_messages.present?
       render json: {
         success: false,
         error:  {
           code: 0,
-          message: @current_user.errors.full_messages.join(', ')
+          message: errors
         },
         data: nil
       }
