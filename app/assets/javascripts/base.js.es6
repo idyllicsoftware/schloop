@@ -1,8 +1,10 @@
 //= require jquery2
+//= require jquery-ui
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require sweetalert
 //= require jquery.validate
+//= require jquery-file-upload/jquery.fileupload
 //= require toastr.min
 //= require mustache
 //= require tinymce/tinymce.min.js

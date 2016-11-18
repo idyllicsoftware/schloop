@@ -1,8 +1,8 @@
 @import "includes/variables";
 @import "includes/mixins";
 
-.school-profile-main-section {
-	.container{
+.school-main-section {
+	.container {
 		width: 1020px;
 		margin: 50px auto;
 		background: $container-background;
@@ -10,17 +10,398 @@
 		border-radius: 10px;
 		-webkit-box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35);
 	  	-moz-box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35);
-	  	box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35);
-	  	.data-title{
-			font-weight: bold;
-			line-height: 1;
+	  	box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35); 
+		#school-Tab {
+			margin-top: -110px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: space-between;
+		    border-bottom: transparent;
+		    li {
+		    	height: 130px;
+    			width: 180px;
+			    &.active {
+			    	background-image: url(cloud_tab.svg);
+		  			background-repeat: no-repeat;
+		  			height: 130px;
+		    		width: 180px;
+		    		a {
+		    			margin: 25px 10px;
+		    			color: #25aae1;
+		    		}
+		    	}	
+		    }
+		    a {
+		    	margin: 25px 10px;
+		    	font-size: 18px; 
+			    &:hover{
+	    			text-decoration: none;
+	    			background-color: transparent;
+	    			border: none;
+	    		}
+	    	}	
+    	}
+    	.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    		color: #555555;
+   		 	border: none;
+   		 	background-color: transparent;
+    		border-bottom-color: transparent;
+    		cursor: default;
+    	}
+		.school-profile-main-section {
+			  	.data-title{
+					font-weight: bold;
+					line-height: 1;
+				}
+				.data-attr{
+					display: block;
+					margin-top: 8px;
+				}
+			.content-wrapper {
+				&:first-child { padding-bottom: 50px;
+    				border-bottom: 2px solid #ccc;
+    				margin-bottom: 50px;
+    			}
+		        .admin-detail-section {
+		          .popover {
+		            padding: 10px;
+		          }
+		          .popover-content {
+		            .add-admin-form {
+		              width: 295px;
+		              .form-group {
+		                margin-bottom: 0px;
+		                .input-field {
+		                    margin-bottom: 10px;
+		                }
+		              }
+		              .btn-primary {
+		                margin-top: 20px;
+		                width: 120px;
+		              }
+		            }
+		          }
+		        }
+				.data-attr address{
+					color: $link-color;
+				}
+				.data-wrapper{
+					.last-col {
+						padding-right: 0;
+					}
+					.overflow{
+						overflow: auto;
+					}
+					table{
+						margin-top: 8px;
+						tr td{
+							padding: 5px 14px;
+							&:first-child{
+								padding-left: 0;
+							}
+						}
+					}
+					#add-admin{
+						font-weight: 700;
+						a{
+							text-decoration: none;
+		                    padding-right: 5px;
+						}
+					}
+				}
+				.tab-wrapper{
+					.nav-tabs{
+						border-bottom: 2px solid $tab-border;
+						li{
+							margin-bottom: 0 !important;
+							&:hover{
+								background: transparent;
+							}
+							a{
+							  color: $heading-color !important;
+							  font-weight: 600;
+							  font-size: 16px;
+							  padding: 10px 7px !important;
+								margin-right: 17px !important;
+								border: none;
+								&:hover{
+									background: transparent;
+									border: none;
+								}
+							}
+						}
+					}
+					.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+						background: transparent;
+						border: none;
+						border-bottom: 3px solid $link-color;
+						cursor: default;
+					}
+				}
+				.add_grade {
+					padding: 30px 30px 40px;
+		    		background: #fff;
+		    		display: flex;
+		    		justify-content: flex-start;
+				}
+				.tab-content {
+					#grade-sub-tab {
+						.popover-content {
+							padding: 0px;
+							.col-md-12 { 
+								padding-left: 0px;
+								padding-right: 0px;				
+							}
+							h4 {
+								font-size: 14px;
+				    			color: #666666;
+				    			margin-bottom: 20px;
+				    			font-weight: bold;
+							}
+							label {
+								font-weight: normal;
+							}
+							.add-subject {
+							    padding: 20px 0px;
+							    border-bottom-style: dotted;
+							    border-bottom-color: #cacaca;
+							    border-top-style: dotted;
+							    border-top-color: #cacaca;
+							    border-bottom-width: 2px;
+							    border-top-width: 2px;
+							    > div {
+							    	padding: 0px;
+							    	button {
+							    		margin-top: 30px;
+									    float: right;
+							    	}
+							    }				
+							}
+							.grade-action-btn {
+								padding: 30px 0px 10px 0px;
+							   .btn-primary {
+							   	 width: 120px;
+							   }
+							}
+						}
+					}	
+					.teachers-wrapper {
+						.popover {
+							width: 350px;
+						}			
+					}
+				}
+				.subject-wrapper{
+					padding: 30px 0 40px;
+			   		background: #fff;
+			    	.data-title{
+						font-weight: 700;
+					}
+					.data-attr{
+						.subject-tab-wrapper {
+							position: relative;
+						}
+						#add-sub{
+							float: right;
+							font-weight: 700;
+				    		position: absolute;
+		    				right: 20px;
+		    				bottom: 20px;			
+						}
+						.nav-tabs{
+							padding: 10px;
+							li{
+								margin-bottom: 0 !important;
+								&:hover{
+									background: transparent;
+									border: none;
+								}
+								a{
+								  color: $text-color !important;
+								  font-size: 14px;
+								  font-weight: normal;
+								  margin-right: 30px !important;
+								  border: none;
+								  padding: 10px !important;
+								}
+							}	
+						}
+						.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+								background: transparent;
+								border: none;
+								font-weight: 700;
+								cursor: default;
+							}
+						.popover-content {
+							.form-group {
+								width: 260px;
+								margin: 0px;
+								.input-field {
+									margin-bottom: 30px;
+								}
+								.add-subject-btn {
+									display: flex;
+									.btn-primary {
+										width: 120px;
+									}
+								}
+							}
+						}
+					}
+				}
+				.inner-tabs{
+					background: #f9f8ec;
+					padding: 20px 0 30px;
+					.data-title{
+						text-transform: uppercase;
+						cursor: pointer;
+						a{
+							padding-right: 20px;
+						}
+					}
+					.nav-tabs{
+						border-bottom: 2px dotted $tab-border;
+						li{
+							margin-bottom: 0 !important;
+							&:hover{
+								background: transparent;
+							}
+							a{
+							  color: $text-color !important;
+							  font-size: 13px;
+							  font-weight: normal;
+								margin-right: 17px !important;
+								border: none;
+								padding: 10px !important;
+							}
+						}
+					}
+					.div-operation{
+						float: right;
+						position: relative;
+		    			top: -30px;
+						span{
+							padding-right: 12px;
+							&:last-child{
+								padding-right: 0 !important;
+							}
+							a{
+								font-weight: 700;
+							}
+						}
+						.form-group {
+							width: 260px;
+							margin: 0px;
+							.input-field {
+								margin-bottom: 30px;
+							}
+							.add-division-btn {
+								display: flex;
+								.btn-primary {
+									width: 120px;
+								}
+							}
+						}
+					}
+					.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+						background: transparent;
+						border: none;
+						font-weight: 700;
+						cursor: default;
+					}	
+				}
+				.teachers-wrapper { 
+					ul{	
+		              list-style: none;
+		              padding: 0px;
+		              display: flex;
+		              flex-flow: row wrap;
+		              li{
+		                  text-align: center;
+		                  display: inline-block;
+		                  padding: 30px 0px 30px 30px;
+
+		                  img{
+		                      border-radius: 50%;
+		                      @include widthHeight(70px, 70px);
+		                      margin-bottom: 10px;
+		                      border: 1px solid #25aae1;
+		                  }
+
+		                  .img-caption{
+		                      font-size: 14px;
+		                      color: #666666;
+		                      font-weight: normal;
+		                      p {
+		                          margin: 0px;
+		                          font-weight: 600;
+		                      }
+		                  }
+
+		                  .add-teacher {
+		                      width: 70px;
+		                      height: 70px;
+		                      border-radius: 50%;
+		                      border: 1px solid #25aae1;
+		                      display: flex;
+		                      justify-content: center;
+		                      img {
+		                          width: 30px;
+		                          border: none;
+		                          margin: 0px;
+		                      }
+		                  }
+		              }
+		              .popover.right > .arrow {
+		                top: 43% !important;
+		              }
+
+		              .popover-content {
+		                padding: 0px;
+		                .add-teachers-form {
+		                  >label {
+		                    margin-top: 20px;
+		                  }
+		                  .assign-grade {
+		                    padding: 20px 0px;
+		                    border-top-style: dotted;
+		                    border-top-color: #cacaca;
+		                    border-top-width: 2px;
+		                    ul {
+		                      margin-left: 15px;
+		                      li {
+		                        padding: 0px;
+		                        text-align: left;
+		                      }
+		                    }
+		                  }
+		                }
+
+		                .assign-grade-btn {
+		                  padding: 20px 0px 0px;
+		                  .btn-primary {
+		                    width: 120px;
+		                    margin-top: 10px;
+		                  }
+		                }
+
+		                .form-group {
+		                  margin: 0px;
+		                  .input-field {
+		                    margin-bottom: 10px;
+		                  }
+		                }
+		              }
+					}							
+				}
+				.upload-sheet {
+					padding: 20px;
+		    		color: #25aae1;
+		    		font-weight: 600;
+		    		cursor: pointer;	
+				}
+			}
 		}
-		.data-attr{
-			display: block;
-			margin-top: 8px;
-		}
-	}
-	.content-wrapper{
 		.header-wrapper{
 			border-bottom: 1px solid #979797;
 			padding: 5px 5px 15px;
@@ -45,344 +426,98 @@
 				}
 			}
 		}
-        .admin-detail-section {
-          .popover {
-            padding: 10px;
-          }
-          .popover-content {
-            .add-admin-form {
-              width: 295px;
-              .form-group {
-                margin-bottom: 0px;
-                .input-field {
-                    margin-bottom: 10px;
-                }
-              }
-              .btn-primary {
-                margin-top: 20px;
-                width: 120px;
-              }
-            }
-          }
-        }
-		.data-attr address{
-			color: $link-color;
+		.mce-panel {
+			background-color: transparent;
+    		border: none;
+    		.mce-btn {
+    			background-color: transparent;
+    			border: none;
+    		}
 		}
-		.data-wrapper{
-			.last-col {
-				padding-right: 0;
+		.circulars-container {
+			.header-wrapper {
+				border: none;
 			}
-			.overflow{
+			.circulars-main-form {
+				.upload-photo-wrap {
+			      #upload-photo {
+			        opacity: 0;
+			        position: absolute;
+			        z-index: -1;
+			        width: 120px;
+			        -height: 120px;
+			      }
+			      label {
+			        	float: right;
+			        	cursor: pointer;
+			      }
+			    }  
+		      .circular-textarea {
+	      	    resize: none;
+				height: 300px;
 				overflow: auto;
-			}
-			table{
-				margin-top: 8px;
-				tr td{
-					padding: 5px 14px;
-					&:first-child{
-						padding-left: 0;
-					}
-				}
-			}
-			#add-admin{
-				font-weight: 700;
-				a{
-					text-decoration: none;
-                    padding-right: 5px;
-				}
-			}
+		      }
+		      .border_botm {
+		      	border-bottom: 1px solid #ccc;
+		      	margin-right: 20px;
+		      	.popover {
+		      		padding: 20px;
+		      	}
+		      	.popover-content {
+		      		padding: 0px;
+		      		.tab-content{
+		      			overflow: auto;
+    					height: 270px;
+		      		}
+		      		.recipients-container-wrap {
+		      			width: 310px;
+		      			height: 310px;
+		      			#recipients-Tab {
+			      			>li {
+			      				padding-right: 20px;
+	    						padding-bottom: 10px;
+	    						font-size: 13px;
+	    						color: #666666;
+	    						a {
+	    							padding: 0px;
+	    						}
+			      			}
+			      			> li:active > a:hover, li > a:hover , li:active > a:focus{
+			      				border: 0;
+			      				color: inherit;
+			      				background-color: transparent;
+			      				cursor: pointer;
+			      			}
+		      			}
+		      			.nav-tabs > li > a {
+		      				margin: 0px;
+		      				border: 0px;
+		      			}
+	      				.std_name {
+	      					border-bottom: 2px dotted #ccc;
+							height: 80px;
+	      					> span { padding: 10px;}
+		      				.checkbox_customized {
+		      					padding-left: 20px;
+		      					li{
+		      						margin-right: 8px;
+		      					}
+		      					[type="checkbox"]:not(:checked) + label,
+		      					[type="checkbox"]:checked + label {
+		      						padding-left: 18px;
+		      					}
+		      				}
+		      			}		
+		      		}
+		      	}
+		      }
+		      .select-recipients {
+		      	display: flex;
+			    justify-content: space-between;
+		      }
+			}    
 		}
-		.tab-wrapper{
-			.nav-tabs{
-				border-bottom: 2px solid $tab-border;
-				li{
-					margin-bottom: 0 !important;
-					&:hover{
-						background: transparent;
-					}
-					a{
-					  color: $heading-color !important;
-					  font-weight: 600;
-					  font-size: 16px;
-					  padding: 10px 7px !important;
-						margin-right: 17px !important;
-						border: none;
-						&:hover{
-							background: transparent;
-							border: none;
-						}
-					}
-				}
-			}
-			.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
-				background: transparent;
-				border: none;
-				border-bottom: 3px solid $link-color;
-				cursor: default;
-			}
-		}
-		.add_grade {
-			padding: 30px 30px 40px;
-    		background: #fff;
-    		display: flex;
-    		justify-content: flex-start;
-		}
-		.tab-content {
-			#grade-sub-tab {
-				.popover-content {
-					padding: 0px;
-					.col-md-12 { 
-						padding-left: 0px;
-						padding-right: 0px;				
-					}
-					h4 {
-						font-size: 14px;
-		    			color: #666666;
-		    			margin-bottom: 20px;
-		    			font-weight: bold;
-					}
-					label {
-						font-weight: normal;
-					}
-					.add-subject {
-					    padding: 20px 0px;
-					    border-bottom-style: dotted;
-					    border-bottom-color: #cacaca;
-					    border-top-style: dotted;
-					    border-top-color: #cacaca;
-					    border-bottom-width: 2px;
-					    border-top-width: 2px;
-					    > div {
-					    	padding: 0px;
-					    	button {
-					    		margin-top: 30px;
-							    float: right;
-					    	}
-					    }				
-					}
-					.grade-action-btn {
-						padding: 30px 0px 10px 0px;
-					   .btn-primary {
-					   	 width: 120px;
-					   }
-					}
-				}
-			}	
-			.teachers-wrapper {
-				.popover {
-					width: 350px;
-				}			
-			}
-		}
-		.subject-wrapper{
-			padding: 30px 0 40px;
-	   		background: #fff;
-	    	.data-title{
-				font-weight: 700;
-			}
-			.data-attr{
-				.subject-tab-wrapper {
-					position: relative;
-				}
-				#add-sub{
-					float: right;
-					font-weight: 700;
-		    		position: absolute;
-    				right: 20px;
-    				bottom: 20px;			
-				}
-				.nav-tabs{
-					padding: 10px;
-					li{
-						margin-bottom: 0 !important;
-						&:hover{
-							background: transparent;
-							border: none;
-						}
-						a{
-						  color: $text-color !important;
-						  font-size: 14px;
-						  font-weight: normal;
-						  margin-right: 30px !important;
-						  border: none;
-						  padding: 10px !important;
-						}
-					}	
-				}
-				.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
-						background: transparent;
-						border: none;
-						font-weight: 700;
-						cursor: default;
-					}
-				.popover-content {
-					.form-group {
-						width: 260px;
-						margin: 0px;
-						.input-field {
-							margin-bottom: 30px;
-						}
-						.add-subject-btn {
-							display: flex;
-							.btn-primary {
-								width: 120px;
-							}
-						}
-					}
-				}
-			}
-		}
-		.inner-tabs{
-			background: #f9f8ec;
-			padding: 20px 0 30px;
-			.data-title{
-				text-transform: uppercase;
-				cursor: pointer;
-				a{
-					padding-right: 20px;
-				}
-			}
-			.nav-tabs{
-				border-bottom: 2px dotted $tab-border;
-				li{
-					margin-bottom: 0 !important;
-					&:hover{
-						background: transparent;
-					}
-					a{
-					  color: $text-color !important;
-					  font-size: 13px;
-					  font-weight: normal;
-						margin-right: 17px !important;
-						border: none;
-						padding: 10px !important;
-					}
-				}
-			}
-			.div-operation{
-				float: right;
-				position: relative;
-    			top: -30px;
-				span{
-					padding-right: 12px;
-					&:last-child{
-						padding-right: 0 !important;
-					}
-					a{
-						font-weight: 700;
-					}
-				}
-				.form-group {
-					width: 260px;
-					margin: 0px;
-					.input-field {
-						margin-bottom: 30px;
-					}
-					.add-division-btn {
-						display: flex;
-						.btn-primary {
-							width: 120px;
-						}
-					}
-				}
-			}
-			.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
-				background: transparent;
-				border: none;
-				font-weight: 700;
-				cursor: default;
-			}	
-		}
-		.teachers-wrapper { 
-			ul{	
-              list-style: none;
-              padding: 0px;
-              display: flex;
-              flex-flow: row wrap;
-              li{
-                  text-align: center;
-                  display: inline-block;
-                  padding: 30px 0px 30px 30px;
 
-                  img{
-                      border-radius: 50%;
-                      @include widthHeight(70px, 70px);
-                      margin-bottom: 10px;
-                      border: 1px solid #25aae1;
-                  }
-
-                  .img-caption{
-                      font-size: 14px;
-                      color: #666666;
-                      font-weight: normal;
-                      p {
-                          margin: 0px;
-                          font-weight: 600;
-                      }
-                  }
-
-                  .add-teacher {
-                      width: 70px;
-                      height: 70px;
-                      border-radius: 50%;
-                      border: 1px solid #25aae1;
-                      display: flex;
-                      justify-content: center;
-                      img {
-                          width: 30px;
-                          border: none;
-                          margin: 0px;
-                      }
-                  }
-              }
-              .popover.right > .arrow {
-                top: 43% !important;
-              }
-
-              .popover-content {
-                padding: 0px;
-                .add-teachers-form {
-                  >label {
-                    margin-top: 20px;
-                  }
-                  .assign-grade {
-                    padding: 20px 0px;
-                    border-top-style: dotted;
-                    border-top-color: #cacaca;
-                    border-top-width: 2px;
-                    ul {
-                      margin-left: 15px;
-                      li {
-                        padding: 0px;
-                        text-align: left;
-                      }
-                    }
-                  }
-                }
-
-                .assign-grade-btn {
-                  padding: 20px 0px 0px;
-                  .btn-primary {
-                    width: 120px;
-                    margin-top: 10px;
-                  }
-                }
-
-                .form-group {
-                  margin: 0px;
-                  .input-field {
-                    margin-bottom: 10px;
-                  }
-                }
-              }
-			}							
-		}
-		.upload-sheet {
-			padding: 20px;
-    		color: #25aae1;
-    		font-weight: 600;
-    		cursor: pointer;	
-		}
 	}
 }
 #upload-teachers-modal {
