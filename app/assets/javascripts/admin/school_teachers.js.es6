@@ -54,9 +54,8 @@ class SchoolTeachers extends SchloopBase {
 
         $(".upload-teachers-form").submit(function () {
             var jForm = $(this);
-
             $.ajax({
-                url: '/admin/teachers/upload',
+                url: '/admin/teachers/imports',
                 method: 'POST',
                 data: jForm,
                 success: function() {

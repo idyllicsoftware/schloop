@@ -22,10 +22,26 @@
 #  last_name              :string
 #  phone                  :string
 #  cell_number            :string
+#  invitation_token       :string
+#  invitation_created_at  :datetime
+#  invitation_sent_at     :datetime
+#  invitation_accepted_at :datetime
+#  invitation_limit       :integer
+#  confirmation_token     :string
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string
+#  invited_by_id          :integer
+#  invited_by_type        :string
+#  invitations_count      :integer          default(0)
 #
 # Indexes
 #
+#  index_teachers_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_teachers_on_email                 (email) UNIQUE
+#  index_teachers_on_invitation_token      (invitation_token) UNIQUE
+#  index_teachers_on_invitations_count     (invitations_count)
+#  index_teachers_on_invited_by_id         (invited_by_id)
 #  index_teachers_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_teachers_on_token                 (token)
 #
@@ -33,19 +49,34 @@
 class Teacher < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  include DeviseInvitable::Inviter
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-  validates :phone,:presence => true,
-                 :numericality => true,
-                 :length => { :minimum => 10, :maximum => 10}
+         :recoverable, :rememberable, :trackable, :validatable, :invitable, :invite_for => 2.weeks
+  validates :phone, :presence => true,
+            :numericality => true,
+            :length => {:minimum => 10, :maximum => 10}
 
   belongs_to :school
 
   before_save :set_token
+  after_create :send_invitaion
+
+
 
   def set_token
     return if token.present?
     self.token = generated_token
+  end
+
+  def send_invitaion
+    teacher = Teacher.invite!(:email => self.email)
+    teacher.deliver_invitation
+
+  end
+
+
+  def password_required?
+    new_record? ? false : super
   end
 
   def name
@@ -54,9 +85,10 @@ class Teacher < ActiveRecord::Base
 
   def generated_token
     loop do
-      token = SecureRandom.uuid.gsub(/\-/,'')
+      token = SecureRandom.uuid.gsub(/\-/, '')
       return token unless Teacher.where(token: token).first
     end
   end
+
 
 end

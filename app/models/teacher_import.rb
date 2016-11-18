@@ -36,8 +36,8 @@ class TeacherImport
     header = spreadsheet.row(1)
     (2..spreadsheet.last_row).map do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
-      password = generated_password = Devise.friendly_token.first(8)
-      row["password"] = password
+      # password = generated_password = Devise.friendly_token.first(8)
+      # row["password"] = password
       row["school_id"] = @@school_id
 
       
