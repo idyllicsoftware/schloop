@@ -6,7 +6,6 @@
 #  attachable_type   :string
 #  attachable_id     :integer
 #  name              :string
-#  sub_type          :integer
 #  original_filename :string
 #  file_size         :integer
 #  created_at        :datetime         not null
@@ -15,6 +14,7 @@
 
 class Attachment < ActiveRecord::Base
 	belongs_to :attachable, polymorphic: true
+
 	def self.upload_file(file_to_upload, file_params, metadata, options = {})
 		bucket = AWS_CONFIG['bucket']
 		response = Util::AwsUtils.upload_to_s3(file_to_upload, bucket, file_params[:url], options) 

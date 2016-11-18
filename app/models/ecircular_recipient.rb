@@ -21,4 +21,7 @@
 
 class EcircularRecipient < ActiveRecord::Base
 	belongs_to :ecircular
+	belongs_to :school
+	belongs_to :grade
+	belongs_to :division
 end

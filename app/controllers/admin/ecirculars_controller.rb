@@ -19,7 +19,7 @@ class Admin::EcircularsController < ApplicationController
 				count = count + 1
 				file_name = params[:file_name] + "-#{count}"
 				ecircular_file_upload_service = Admin::EcircularFileUploadService.new
-				response = ecircular_file_upload_service.upload_ecircular_file_to_s3(file,file_name,new_circular.id)
+				response = ecircular_file_upload_service.upload_ecircular_file_to_s3(file, file_name, new_circular)
 			end
 		end
 		sending_response = send_circular(params[:grades], params[:school_id], new_circular.id)		
@@ -47,7 +47,7 @@ class Admin::EcircularsController < ApplicationController
 	end
 
 	def circular_params
- 		user_type = current_user.type rescue ''
+ 		user_type = @current_user.type rescue ''
 		if user_type == 'ProductAdmin'
 		 	created_by_type = Ecircular.created_by_types[:product_admin]
 		elsif user_type == 'SchoolAdmin'
@@ -58,7 +58,7 @@ class Admin::EcircularsController < ApplicationController
 		return {
 		 	title: params[:title], 
 		 	body: params[:body], 
-		 	circular_type: Ecircular.circular_types[params[:circular_type].to_sym], 
+		 	circular_type: Ecircular.circular_tags[params[:circular_type].to_sym],
 		 	created_by_type:created_by_type, 
 		 	created_by_id: current_user.id,
 		 	school_id: current_user.school_id
