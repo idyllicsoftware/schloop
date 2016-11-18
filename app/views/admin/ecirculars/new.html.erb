@@ -1,4 +1,4 @@
-<%=  form_tag({controller: "admin/ecirculars"}, multipart: true) do %>
+<%=  form_tag({controller: "admin/ecirculars"}, multipart: true,class:'circular_form') do %>
 	<input name="school_id" value='<%= @school_id %>' hidden >
   <label>Title:</label>
   <input  name="title" type="text" /><br><br>
@@ -7,19 +7,20 @@
   <label>Circular Type:</label>
   <select name="circular_type">
 		<option value="lesson_plan">Lesson Plan </option>
-		<option value="exam_timetable">Exam Timetable</option>
+		<option value="exam_time_table">Exam Timetable</option>
 		<option value="my_result">My Result</option>
 		<option value="my_attendance">My Attendance</option>
 		<option value="class_timetable">Class Timetable</option>
+		<option value="sample_papers">Sample Papers</option>
 		<option value="transport_details">Transport Details</option>
 		<option value="holiday_circular">Holiday Circular</option>
 		<option value="medical_visit_report">Medical Visit Report</option>
 		<option value="news_and_events">News And Events</option>
 		<option value="important_announcement">Important Announcement </option>
 		<option value="event_circular ">Event Circular </option> 
-		<option value="awards_and_achivements">Awards And Achivements </option>
+		<option value="awards_and_achievements">Awards And Achivements </option>
 		<option value="fee_notice">Fee Notice</option>
-		<option value="followup_activity_for_parents ">Followup Activity For Parents </option>
+		<option value="follow_up_activity_for_parents ">Followup Activity For Parents </option>
 		<option value="exhibitions">Exhibitions </option>
 		<option value="worksheets">Worksheets </option>
 		<option value="extra_curricular_activities_cirular">Extra Curricular Activities Cirular </option>
@@ -29,9 +30,7 @@
 		<option value="olymipiads">Olymipiads </option>
 	</select><br><br>
   <input id="fileupload" type="file" name="attachments[]" multiple="" accept=".xls,.xlsx,.doc,.docx,.pdf,.csv,.jpg,.jpeg,.png" />  <br><br>
-  <label>File name:</label>
-  <input  name="file_name" type="text" /><br><br>
-	<h3> Recipients</h3>
+ 	<h3> Recipients</h3>
 	<ul>
 		<% @grades.each do |grade|%>
 	    <li>
@@ -47,3 +46,4 @@
   </ul>
   <input type="submit" name="submit" value= "submit" />
 <% end %>
+
