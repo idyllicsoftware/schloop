@@ -142,17 +142,17 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     if errors.blank?
       create_response = {
         success: true,
+        error:  nil,
+        data: {}
+      }
+    else
+      create_response = {
+        success: false,
         error:  {
           code: 0,
           message: errors.flatten
         },
         data: nil
-      }
-    else
-      create_response = {
-        success: false,
-        error:  nil,
-        data: {}
       }
     end
     render json: create_response
