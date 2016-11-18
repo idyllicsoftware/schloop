@@ -46,14 +46,14 @@ class SchoolTeachers extends SchloopBase {
             var filename = arr.slice(-1)[0];
             var filextension = filename.split(".");
             var filext ="."+filextension.slice(-1)[0];
-            var valid=[".csv",".jpg"];
+            var valid=[".csv"];
 
             if (valid.indexOf(filext.toLowerCase())==1){
                 $('#namefile').css({"color":"green","font-weight":700,"padding":"20px"});
                 $('#namefile').html("You select " + filename + " file.");
             }
         });
-        debugger;
+
         this.initFormSubmit(jForm,data, function (res) {
             if(res.success) {
                 _self.loadSchoolsTeachers();
