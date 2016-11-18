@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116103706) do
+ActiveRecord::Schema.define(version: 20161117113620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(version: 20161116103706) do
     t.string   "attachable_type"
     t.integer  "attachable_id"
     t.string   "name"
-    t.integer  "sub_type"
     t.string   "original_filename"
     t.integer  "file_size"
     t.datetime "created_at",        null: false
@@ -50,7 +49,7 @@ ActiveRecord::Schema.define(version: 20161116103706) do
   create_table "ecirculars", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-    t.integer  "circular_type"
+    t.integer  "circular_tag"
     t.integer  "created_by_type"
     t.integer  "created_by_id"
     t.datetime "created_at",      null: false
