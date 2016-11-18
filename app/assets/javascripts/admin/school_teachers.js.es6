@@ -32,7 +32,9 @@ class SchoolTeachers extends SchloopBase {
 
     initCsvUpload (){
         var _self = this,
-            uploadTeacherModalEl = $("#upload-teachers-modal");
+            uploadTeacherModalEl = $("#upload-teachers-modal"),
+            jForm = uploadTeacherModalEl.find('form'),
+            data = new FormData(jForm[0]);
 
         $(document).on('click','.upload-sheet', function () {
             uploadTeacherModalEl.modal('show');
@@ -51,17 +53,16 @@ class SchoolTeachers extends SchloopBase {
                 $('#namefile').html("You select " + filename + " file.");
             }
         });
-
-        $(".upload-teachers-form").submit(function () {
-            var jForm = $(this);
-            $.ajax({
-                url: '/admin/teachers/imports',
-                method: 'POST',
-                data: jForm,
-                success: function() {
-                    uploadTeacherModalEl.modal('hide');
-                }
-            });
+        debugger;
+        this.initFormSubmit(jForm,data, function (res) {
+            if(res.success) {
+                _self.loadSchoolsTeachers();
+                toastr.success('File imported successfully');
+                uploadTeacherModalEl.modal('hide');
+            }else {
+                _self.showErrors(res.errors);
+                uploadTeacherModalEl.modal('hide');
+            }
         });
 
         $(document).on('click','.upload-cancel', function () {
