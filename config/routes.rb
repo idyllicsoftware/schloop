@@ -77,7 +77,7 @@ Rails.application.routes.draw do
       get "/teacher/profile" => "teachers#profile"
       post "/ecircular/tags" => "ecirculars#tags"
       post "/ecircular/create" => "ecirculars#create"
-      get "/ecircular/index" => "ecirculars#index"
+      get "/ecirculars" => "ecirculars#index"
     end
   end
 
