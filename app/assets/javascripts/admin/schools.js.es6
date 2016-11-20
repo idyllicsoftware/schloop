@@ -46,6 +46,10 @@ class Schools extends SchloopBase {
             }else {
                 self.showErrors(res.errors);
             }
+        },{
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false
         });
 
         $(document).on('click','.cancel-creation', function () {
