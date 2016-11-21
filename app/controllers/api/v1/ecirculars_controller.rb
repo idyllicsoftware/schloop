@@ -50,7 +50,8 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     if @school.blank?
       errors << "school not found."
     else
-      circulars = @school.ecirculars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(10)
+      school_circulars = @school.ecirculars
+      circulars = school_circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(10)
       circulars.each do |circular|
         recipients, attachments = [], []
         grouped_circulars = circular.ecircular_recipients.group_by do |x| x.grade_id end
@@ -89,7 +90,14 @@ class Api::V1::EcircularsController < Api::V1::BaseController
       index_response = {
         success: true,
         error: nil,
-        data: circular_data
+        data: {
+          pagination_data: {
+            page_size: 20,
+            total_pages: (school_circulars.count/20.0).ceil,
+            curernt_apge: page
+          },
+          circulars: circular_data
+        }
       }
     else
       index_response = {
