@@ -84,7 +84,7 @@ class SchoolGrades extends SchloopBase {
         let _self = this, html = '',
             { school_id } = this._config,
             schoolGradeContainerEl = $("#schoolGradeContainer");
-         
+
         $.ajax({
             url: `/admin/schools/${school_id}/grades`,
             success: function (res) {

@@ -68,7 +68,6 @@ class SchloopBase {
                 swal({title: "Oops!",   text: "Something went wrong. Please try later.",   type: "error",   confirmButtonText: "OK" });
             }
         };
-
         $.extend(params, extraParams || {});
         $.ajax(params);
     };
@@ -180,7 +179,7 @@ class SchloopBase {
         });
     };
 
-    initFormSubmit (jForm, fieldsMapping, cb){
+    initFormSubmit (jForm, fieldsMapping, cb, extraParams){
         let self = this;
 
         self.formValidatorInit(jForm, fieldsMapping);
@@ -189,8 +188,12 @@ class SchloopBase {
             e.preventDefault();
             let jForm = $(this), formData;
             if(jForm.valid()) {
-                formData = jForm.serialize();
-                self.submitData(jForm.attr('action'), jForm, formData, cb);
+                if(extraParams) {
+                    formData = new FormData(jForm[0]);
+                }else{   
+                    formData = jForm.serializeObject();
+                }
+                self.submitData(jForm.attr('action'), jForm, formData, cb, extraParams);
             }
         });
     };
