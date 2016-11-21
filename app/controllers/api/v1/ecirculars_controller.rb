@@ -183,6 +183,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
 
     def recipients_params
       create_params = []
+      return create_params if params[:recipients].blank?
       params[:recipients].each do |grade_id, division_ids|
         division_ids.each do |div_id|
           create_params << {
@@ -197,6 +198,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
 
     def attachments_params(circular)
       create_params = []
+      return create_params if params[:attachments].blank?
       params[:attachments].each do |attachment|
         create_params << {
           attachable_id: circular.id,
