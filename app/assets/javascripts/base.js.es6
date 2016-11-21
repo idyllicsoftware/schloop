@@ -9,6 +9,7 @@
 //= require mustache
 //= require tinymce/tinymce.min.js
 //= require tinymceEditor.js
+//= require multiselect.min
 //= require common
 //= require_self
 
@@ -72,8 +73,10 @@ class SchloopBase {
     };
 
     showErrors (errors){
-        let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
-        swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+        if(errors){
+            let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
+            swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+        }
     };
 
     deleteRequest (url, btnEl, data, cb){

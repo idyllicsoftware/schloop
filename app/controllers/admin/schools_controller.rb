@@ -5,6 +5,9 @@ class Admin::SchoolsController < ApplicationController
 
   def index
     ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
+    @grades = MasterGrade.all.select(:id, :name)
+    @subjects = MasterSubject.all.select(:id, :name)
+    @categories = Category.all.select(:id, :name).where(category_type: Category.category_types[:activity])
   end
 
   def all

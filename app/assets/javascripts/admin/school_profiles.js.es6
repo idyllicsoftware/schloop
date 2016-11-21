@@ -12,11 +12,6 @@ class SchoolProfiles extends SchloopBase {
         self._school_admins = new SchoolAdmins({school_id: this._config.school_id});
         self._grades = new SchoolGrades({school_id: this._config.school_id});
         self._ecircular = new SchoolECircular({school_id: this._config.school_id});
-        self.initEventListeners();
         return this;
     };
-
-    initEventListeners (){
-        let self = this;
-    }    
 }

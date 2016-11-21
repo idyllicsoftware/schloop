@@ -1,27 +1,87 @@
-<div class="schools-profile-section">
+<div class="schools-main-section">
   <div class="cloud_image">
     <img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
   </div>
+
   <div class="container">
-    <div>
-      <img class="cloud1-img img-responsive" src="<%= asset_path('home/cloud_2.png') %>">
-      <img class="cloud4-img img-responsive" src="<%= asset_path('home/cloud_4.png') %>">
-    </div>
-    <div class="row">
-      <span id="schoolsContainer"></span>
-      <div class="col-md-4">
-        <div class="add_profile" id="create-school-btn">
-          <img src="<%= asset_path('admin/plus_icon.svg') %>">
+    <ul id="school-Tab" class="nav nav-tabs">
+      <li class="active">
+        <a href="#schools-tab" data-toggle="tab">Schools</a>
+      </li>
+      <li>
+        <a href="#contents-tab" data-toggle="tab">Content</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane fade in active schools-profile-section" id="schools-tab">
+          <div class="row">
+            <span id="schoolsContainer"></span>
+            <div class="col-md-4">
+              <div class="add_profile" id="create-school-btn">
+                <img src="<%= asset_path('admin/plus_icon.svg') %>">
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="tab-pane fade" id="contents-tab">
+        <div class="clearfix activities-header-bar p0">
+          <div class="col-md-2 pt10 pl0 pr0">
+            <h4>Activities for</h4>
+          </div>
+          <div class="form-group col-md-2">
+            <select id="grade" name="activity[master_grade_id]" required class="form-control field">
+              <option disabled="disabled" selected="selected">Grade</option>
+              <% @grades.each do |grade|%>
+                  <option value="<%= grade.id %>"><%= grade.name %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="form-group col-md-3">
+            <select id="subjects" name="activity[master_subject_id]" required class="form-control field">
+              <option disabled="disabled" selected="selected">Subject</option>
+              <% @subjects.each do |subject|%>
+                  <option value="<%= subject.id %>"><%= subject.name %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="form-group col-md-3">
+            <select id="categories" name="activity[categories][]" required class="form-control field">
+              <option disabled="disabled" value="" selected="selected">Category</option>
+              <% @categories.each do |category|%>
+                  <option value="<%= category.id %>"><%= category.name %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="col-md-2 pull-right web-content-link pt20">
+            <a class="web-content-creation-link ">+Add Activity</a>
+          </div>
+        </div>
+        <div class="content-wrapper">
+            <div class="activities_content_section">
+              <ul id="content_list_id" class="content-list">
+              </ul>
+            </div>
         </div>
       </div>
     </div>
   </div>
-  <div style="height: 80px;">
-    
-  </div>
 </div>
 
 <%= render :partial => "admin/schools/create_school" %>
+
+<script id="content_list_tpl" type="text/html">
+  {{#activities}}
+    <li class="content-item">
+      <div class="clearfix">
+        <h4 class="content-title pull-left">{{ title }}</h4>
+        <div class="tags-right pull-right">{{ grade }} | {{ subject }}</div>
+      </div>
+      <p class="grade_names">{{ topic }} | {{ categories }}</p>
+      <p class="edit-hint-text">Last Edited: {{ updated_at }}</p>
+    </li>
+  {{/activities}}
+</script>
 
 <script id="schools_list_tpl" type="text/html">
     {{#schools}}
@@ -53,3 +113,6 @@
       </div>
   {{/schools}}
 </script>
+
+
+<%= render :partial => "admin/activities/form" %>
