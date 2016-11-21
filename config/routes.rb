@@ -71,6 +71,7 @@ Rails.application.routes.draw do
       post "/teacher/login" => 'teachers#login'
       post "/teacher/dashboard" => 'teachers#dashboard'
       post "/teacher/reset_password" => "teachers#reset_password"
+      get "/contents/create" => "contents#create"
     end
   end
 end
