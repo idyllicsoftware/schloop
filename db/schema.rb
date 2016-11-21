@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161117113620) do
+ActiveRecord::Schema.define(version: 20161121110026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,39 @@ ActiveRecord::Schema.define(version: 20161117113620) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name",          null: false
+    t.string   "name_map",      null: false
+    t.integer  "category_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "content_categories", force: :cascade do |t|
+    t.integer  "content_id"
+    t.integer  "category_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "contents", force: :cascade do |t|
+    t.string   "teaches"
+    t.string   "topic",         null: false
+    t.string   "title",         null: false
+    t.integer  "attachment_id"
+    t.integer  "grade",         null: false
+    t.integer  "subject",       null: false
+    t.integer  "category",      null: false
+    t.text     "details"
+    t.text     "pre_requisite"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "contents", ["category"], name: "index_contents_on_category", using: :btree
+  add_index "contents", ["grade"], name: "index_contents_on_grade", using: :btree
+  add_index "contents", ["subject"], name: "index_contents_on_subject", using: :btree
 
   create_table "divisions", force: :cascade do |t|
     t.string   "name",       null: false

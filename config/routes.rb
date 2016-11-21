@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resource :users do
     end
-    
+
     resources :schools do
       member do
       end
@@ -53,7 +53,7 @@ Rails.application.routes.draw do
       resources :grades, only: [:index, :create], shallow: true do
         resources :subjects,only: [:index, :create, :update, :destroy], shallow: true do
 
-        end 
+        end
         resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do
 
         end
@@ -65,6 +65,9 @@ Rails.application.routes.draw do
       get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
     end
 
+    resources :contents, only: [:index] do
+      post :create_or_update
+    end
   end
 
   namespace :api do
