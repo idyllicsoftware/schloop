@@ -9,6 +9,7 @@
 //= require mustache
 //= require tinymce/tinymce.min.js
 //= require tinymceEditor.js
+//= require multiselect.min
 //= require common
 //= require_self
 

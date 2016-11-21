@@ -1,4 +1,7 @@
 <div class="schools-profile-section">
+  <div class="pull-right web-content-link">
+        <a class="web-content-creation-link">Web Content Creation</a>
+  </div>
   <div class="cloud_image">
     <img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
   </div>
@@ -53,3 +56,122 @@
       </div>
   {{/schools}}
 </script>
+
+<div class="modal fade" id="create-web-content-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="web-content-form-section">
+              <div class="row">
+                <div class="form-group col-md-6">
+                    <select id="grade" name="grade" required class="form-control field">
+                      <option disabled="disabled" selected="selected">Grade</option>
+                      <option>Playgroup</option>
+                      <option>Nursery</option>
+                      <option>Jr.KG</option>
+                      <option>Sr. KG</option>
+                      <option>1st Grade</option>
+                      <option>2nd Grade</option>
+                      <option>3rd Grade</option>
+                      <option>4th Grade</option>
+                      <option>5th Grade</option>
+                      <option>6th Grade</option>
+                      <option>7th Grade</option>
+                      <option>8th Grade</option>
+                      <option>9th Grade</option>
+                      <option>10th Grade</option>
+                      <option>11th Grade</option>
+                      <option>12th Grade</option>
+                    </select> 
+                </div>
+                <div class="form-group col-md-6">
+                    <select id="grade" name="grade" required class="form-control field">
+                      <option disabled="disabled" selected="selected">Subject</option>
+                      <option>English</option>
+                      <option>Mathematics</option>
+                      <option>Science</option>
+                      <option>Social science</option>
+                      <option>Hindi</option>
+                      <option>History</option>
+                      <option>Civics</option>
+                      <option>Geography</option>
+                      <option>Marathi</option>
+                      <option>Computer Science</option>
+                      <option>Life skills</option>
+                      <option>Physics</option>
+                      <option>Chemistry</option>
+                      <option>Biology</option>
+                      <option>General knowledge</option>
+                      <option>Arts</option>
+                    </select> 
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label class="mandatory">Topic</label>
+                  <input type="text" class="form-control input-field" required name="topic" autocomplete="off" maxlength="50" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label class="mandatory">Activity Title</label>
+                  <input type="text" class="form-control input-field" required name="activity_title" autocomplete="off" maxlength="50" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <select multiple="multiple" id="select_multiple" class="form-control input-field" name="my-select[]">
+                    <option disabled="disabled" selected="selected">Category:</option>
+                    <option value='art_and_craft'>Art and Craft</option>
+                    <option value='2'>Indoor Activity</option>
+                    <option value='3'>Outdoor Activity</option>
+                    <option value='4'>Quiz</option>
+                    <option value='100'>Worksheet</option>
+                    <option value='100'>Educational Link</option>
+                    <option value='100'>Research</option>
+                    <option value='100'>Collaborative</option>
+                    <option value='100'>Project</option>
+                    <option value='100'>Image</option>
+                  </select>
+                </div>
+              </div>  
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label class="mandatory">Teaches</label>
+                  <input type="text" class="form-control input-field" required name="teaches" autocomplete="off" maxlength="50" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label class="mandatory">Pre Requisites</label>
+                  <input class="form-control input-field" placeholder="First Name" disabled="disabled"/>
+                  <textarea class="form-control input-field" required name="pre_requisites" maxlength="1000"></textarea>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label class="mandatory">Steps to follow</label>
+                  <textarea class="form-control input-field" required name="details" maxlength="1000"></textarea>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6 image-attach">
+                  <p class="mandatory">Reference Image</p>
+                  <label for="upload-photo">
+                      <div class="upload-logo">
+                        <img src="<%= asset_path('admin/image_upload.svg') %>">
+                      </div>
+                      <input type="file" name="attached_file" value="" required id="upload-photo"/>
+                  </label>
+                  <input name="" class="form-control input-field" disabled="disabled" placeholder="filename">
+                </div>
+              </div>
+              <div class="action-btn">
+                <button type="submit" class="btn btn-primary">ADD ACTIVITY</button>
+                <button class="btn btn-primary cancel-creation">CANCEL</button>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
