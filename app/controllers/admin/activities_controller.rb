@@ -7,7 +7,7 @@ class Admin::ActivitiesController < ApplicationController
   # end
 
   def create_or_update
-    activity_service = ActivityService.new
+    activity_service = Admin::ActivityService.new
     activity_params = get_activity_params
     validate_response = activity_service.validate_params(activity_params)
     if validate_response[:errors].present?
@@ -29,6 +29,6 @@ class Admin::ActivitiesController < ApplicationController
 
   def get_activity_params(params)
     params.require(:activity).permit(:grade, :subject, :topic, :title, :categories, :teaches,
-                                    :pre_requisite, :details, :attachment_id)
+                                    :pre_requisite, :details, :attachments)
   end
 end
