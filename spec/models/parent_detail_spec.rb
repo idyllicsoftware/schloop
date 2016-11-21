@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe Parent, type: :model do
+RSpec.describe ParentDetail, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end

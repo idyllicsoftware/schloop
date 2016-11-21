@@ -22,12 +22,12 @@ Rails.application.routes.draw do
   }
 
 
-  devise_for :parents, controllers:{
-                         sessions: 'admin/parents/sessions',
-                         registrations: 'admin/parents/registrations',
-                         passwords: 'admin/parents/passwords',
-                         invitations: 'admin/parents/invitations'
-  }
+  # devise_for :parents, controllers:{
+  #                        sessions: 'admin/parents/sessions',
+  #                        registrations: 'admin/parents/registrations',
+  #                        passwords: 'admin/parents/passwords',
+  #                        invitations: 'admin/parents/invitations'
+  # }
 
   namespace :admin do
     resource :users do
