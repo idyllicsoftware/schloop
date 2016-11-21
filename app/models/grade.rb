@@ -22,4 +22,6 @@ class Grade < ActiveRecord::Base
 	has_many :divisions
 	has_many :subjects
 	has_many :ecircular_recipients
+
+	validates :name, :presence => true
 end
