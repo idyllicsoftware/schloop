@@ -18,6 +18,9 @@
 #
 
 class Division < ActiveRecord::Base
-	belongs_to :grade
 	validates :name, :presence => true
+
+	belongs_to :grade
+	has_many :ecircular_recipients
 end
+

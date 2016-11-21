@@ -22,19 +22,6 @@ class Schools extends SchloopBase {
             createModalEl.modal('show');
         });
 
-        $('#upload-photo').change(function(){
-            var res=$('#upload-photo').val();
-            var arr = res.split("\\");
-            var filename = arr.slice(-1)[0];
-            var filextension = filename.split(".");
-            var filext ="."+filextension.slice(-1)[0];
-            var valid=[".jpg"];
-
-            if (valid.indexOf(filext.toLowerCase())==1){
-                alert("You select " + filename + " file.");
-            }
-        });
-
         self.loadSchools();
 
         this.initFormSubmit(createSchoolFormEl, {
@@ -59,6 +46,10 @@ class Schools extends SchloopBase {
             }else {
                 self.showErrors(res.errors);
             }
+        },{
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false
         });
 
         $(document).on('click','.cancel-creation', function () {

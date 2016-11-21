@@ -44,6 +44,8 @@ class Api::V1::TeachersController < Api::V1::BaseController
         error: nil,
         data: {
           id: teacher.id,
+          first_name: teacher.first_name,
+          last_name: teacher.last_name,
           token: teacher.token,
           first_sign_in: (teacher.sign_in_count <= 1)
         }
@@ -63,8 +65,12 @@ class Api::V1::TeachersController < Api::V1::BaseController
   end
 
   def reset_password
-    @current_user.password = params[:new_password]
-    if @current_user.save
+    errors = []
+    old_password = params[:old_password]
+    errors << "Invalid old password" unless @current_user.valid_password?(old_password)
+
+    @current_user.password = params[:new_password] if errors.blank?
+    if @current_user.save && errors.blank?
       render json: {
         success: true,
         error: nil,
@@ -73,11 +79,13 @@ class Api::V1::TeachersController < Api::V1::BaseController
         }
       }
     else
+      error_messages = @current_user.errors.full_messages.join(', ')
+      errors << error_messages if error_messages.present?
       render json: {
         success: false,
         error:  {
           code: 0,
-          message: @current_user.errors.full_messages.join(', ')
+          message: errors
         },
         data: nil
       }
@@ -94,6 +102,39 @@ class Api::V1::TeachersController < Api::V1::BaseController
         some_data: "You must see this after providing valid token."
       }
     }
+  end
+
+
+  def profile
+    profile_data = {
+      id: @current_user.id,
+      first_name: @current_user.first_name,
+      last_name: @current_user.last_name,
+      email: @current_user.email,
+      phone: @current_user.cell_number,
+      school_id: @current_user.school_id,
+      grade_divisions: [{grade_id: 1,
+                       grade_name: 'grade one',
+                       divisions: [
+                        {id: 1, name: 'A'},
+                        {id: 2, name: 'B'},
+                        {id: 3, name: 'C'},
+                        {id: 4, name: 'D'}] },
+                      {grade_id: 2,
+                       grade_name: 'grade two',
+                       divisions: [
+                         {id: 5, name: 'A'},
+                         {id: 6, name: 'B'}] }]
+    }
+
+    render json: {
+      success: true,
+      error: nil,
+      data: {
+        profile: profile_data
+      }
+    }
+
   end
 
   private
