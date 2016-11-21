@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "multiselect.min";
+
 .product-admin-dashborad {
   background-color: #caecf0;
   height: 100%;
@@ -55,6 +57,14 @@
   .schools-profile-section {
     margin-bottom: 50px;
     height: 100%;
+    .web-content-link {
+      a {
+          padding: 20px;
+          background-color: #fff;
+          border-radius: 8px;
+          margin-right: 40px;
+      }
+    }
     .container {
       position: relative;
       top: 60px;
@@ -216,4 +226,32 @@
       }
     }  
   }	
+}
+
+#create-web-content-modal {
+  .col-md-12 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  textarea {
+    height: 300px;
+    resize: none;
+  }
+  p{
+    font-weight: bold;
+    color: #666666;
+  }
+  .image-attach{
+    #upload-photo {
+      opacity: 0;
+      position: absolute;
+      z-index: -1;
+      width: 120px;
+      -height: 120px;
+    }
+    label {
+        float: right;
+        cursor: pointer;
+    }
+  }  
 }
