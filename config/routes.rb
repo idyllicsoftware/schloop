@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     resource :users do
     end
     
-    resources :schools, only: [:show, :create, :index] do
+    resources :schools do
       member do
       end
       collection do

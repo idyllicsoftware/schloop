@@ -14,6 +14,8 @@
 
 class Attachment < ActiveRecord::Base
 	belongs_to :attachable, polymorphic: true
+	validates :attachable_type, :attachable_id, :name, :original_filename, :presence => true
+	validates :name, uniqueness: true
 
 	def self.upload_file(file_to_upload, file_params, metadata, options = {})
 		bucket = AWS_CONFIG['bucket']

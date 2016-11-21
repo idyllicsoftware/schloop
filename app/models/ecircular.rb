@@ -20,10 +20,11 @@ class Ecircular < ActiveRecord::Base
 											 exhibitions: 15, worksheets: 16, extra_curricular_activities_circular: 17, school_time_change: 18,
 											 inter_school_competitions: 19, intra_school_competitions: 20, olympiads: 21 }
 
- 	enum created_by_type: {teacher: 0, school_admin: 1, product_admin: 2}
+ 	enum created_by_type: { teacher: 0, school_admin: 1, product_admin: 2 }
 
- 	belongs_to :school
+  belongs_to :school
   has_many :attachments, as: :attachable
   has_many :ecircular_recipients
 
+  validates :title, :created_by_type, :created_by_id , :presence => true
 end
