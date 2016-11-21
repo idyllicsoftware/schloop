@@ -66,12 +66,15 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         circular.attachments.select(:id, :original_filename, :name).each do |attachment|
           attachments << {original_filename: attachment.original_filename, s3_url: attachment.name}
         end
-        created_by = circular.created_by_type.classify.safe_constantize.find_by(id: circular.created_by_id)
+        created_by = (circular.created_by_type || 'teacher').classify.safe_constantize.find_by(id: circular.created_by_id)
         circular_data << {
           id: circular.id,
           title: circular.title,
           body: circular.body,
-          created_by: { id: created_by.id, name: created_by.name },
+          created_by: {
+            id: (created_by.id rescue 0),
+            name: (created_by.name rescue '-')
+          },
           created_on: circular.created_at,
           circular_tag: {
             id: Ecircular.circular_tags[circular.circular_tag],
