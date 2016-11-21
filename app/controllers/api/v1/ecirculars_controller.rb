@@ -191,7 +191,8 @@ class Api::V1::EcircularsController < Api::V1::BaseController
       divisions = []
       filters[:grades].each do |_, division_ids|
         divisions << division_ids
-      end
+      end if filters[:grades].present?
+
       {
         from_date: filters[:from_date],
         to_date: filters[:to_date],
