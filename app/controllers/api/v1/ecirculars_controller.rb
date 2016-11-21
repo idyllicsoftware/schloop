@@ -127,7 +127,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
       created_by_type = Ecircular.created_by_types[:teacher]
     end
 
-    circular = Ecircular.create(circular_params.merge!(created_by_type: created_by_type, created_by_id: @current_user.id))
+    circular = Ecircular.create(circular_params.merge!(created_by_type: created_by_type, created_by_id: @current_user.id, school_id: @current_user.school_id ))
     if circular.persisted?
       begin
         circular.ecircular_recipients.create!(recipients_params)
