@@ -14,4 +14,5 @@
 #
 
 class MasterSubject < ActiveRecord::Base
+  has_many :activities #, dependent: :destroy  #TODO GAURAV
 end

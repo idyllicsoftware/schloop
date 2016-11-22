@@ -15,8 +15,8 @@
 #
 
 class Category < ActiveRecord::Base
-  belongs_to :activity
-  has_many :activity_categories
+  has_many :activity_categories, dependent: :destroy
+  has_many :activities, through: :activity_categories
 
   enum category_type: { activity: 0 }
 end

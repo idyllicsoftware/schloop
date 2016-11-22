@@ -2,55 +2,26 @@
 #
 # Table name: activities
 #
-#  id            :integer          not null, primary key
-#  teaches       :string
-#  topic         :string           not null
-#  title         :string           not null
-#  grade         :integer          not null
-#  subject       :integer          not null
-#  details       :text
-#  pre_requisite :text
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#
-# Indexes
-#
-#  index_activities_on_grade    (grade)
-#  index_activities_on_subject  (subject)
+#  id                :integer          not null, primary key
+#  teaches           :string
+#  topic             :string           not null
+#  title             :string           not null
+#  master_grade_id   :integer          not null
+#  master_subject_id :integer          not null
+#  details           :text
+#  pre_requisite     :text
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 class Activity < ActiveRecord::Base
-  has_many :categories
-  has_many :activity_categories
-  has_many :attachments, as: :attachable
+  belongs_to :master_grade
+  belongs_to :master_subject
+  has_many :activity_categories, dependent: :destroy
+  has_many :categories, through: :activity_categories
+  has_many :attachments, as: :attachable, dependent: :destroy
 
   enum file_sub_type: { reference: 0, thumbnail: 1 }
-
-  enum grade: { 'Playgroup': 0,
-                'Nursery': 1,
-                'Jr. KG': 2,
-                'Sr. KG': 3,
-                '(1-12th Grade)': 4 }
-
-  enum subject: { algebra: 0,
-                  arts: 1,
-                  biology: 2,
-                  chemistry: 3,
-                  civics: 4,
-                  drawing: 5,
-                  english: 6,
-                  general_knowledge: 7,
-                  geography: 8,
-                  geometry: 9,
-                  hindi: 10,
-                  history: 11,
-                  marathi: 12,
-                  mathematics: 13,
-                  physics: 14,
-                  science: 15,
-                  social_science: 16,
-                  computer_science: 17,
-                  life_skills: 18 }
 
   def self.create_activity(create_params)
     errors = []
