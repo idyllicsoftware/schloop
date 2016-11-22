@@ -44,38 +44,40 @@
     </div>
     <div class="form-group">
       <input type="email" class="form-control input-field" required name="teacher[email]" placeholder="Email" autocomplete="off"  maxlength="30" />
-    </div>   
-      <label>Assign Grades & Subjects </label>
+    </div>
+    <label>Assign Grades & Subjects </label>
+    <div class="scroll-grade">   
       <% @school.grades.each do |grade| %>
       <div class="col-md-12 form-group assign-grade">
         <label><%= grade.name %> </label>
         <input type="hidden" name="grade_id" value="<%= grade.id %>"> 
         <div>
           <label>SUBJECTS</label>
-          <% grade.subjects.each_with_index  do |subject, index| %>
           <ul class="checkbox_customized">
-            <li class="col-md-4"><input type="checkbox" name="subjects[]" value="<%= subject.id %>" id="<%= "subject_index_#{index}" %>">
-              <label for="<%= "subject_index_#{index}" %>"><%= subject.name %></label>
+            <% grade.subjects.each  do |subject| %>
+            <li class="col-md-4"><input type="checkbox" name="subjects[]" value="<%= subject.id %>" id="<%= subject.id %>">
+              <label for="<%= subject.id %>"><%= subject.name %></label>
             </li>
+            <% end %>
           </ul>
-          <% end %>
         </div>
         <div>
           <label>DIVISIONS</label>
-          <% grade.divisions.each_with_index do |division, index| %>
           <ul class="checkbox_customized">
-            <li class="col-md-2"><input type="checkbox" name="divisions[]" value="<%= division.id %>" id="<%= "division_index_#{index}" %>" >
-              <label for="<%= "division_index_#{index}" %>"><%= division.name %></label>
+            <% grade.divisions.each_with_index do |division, index| %>
+            <li class="col-md-3"><input type="checkbox" name="divisions[]" value="<%= division.id %>" id="<%= division.id %>" >
+              <label for="<%= division.id %>"><%= division.name %></label>
             </li>
+            <% end %>
           </ul>
-          <% end %>
         </div>
       </div>
       <% end %>
-      <div class="assign-grade-btn">
-        <button type="submit" class="btn btn-primary">SAVE</button>
-        <button type="button" class="btn btn-primary cancelPopoverBtn">CANCEL</button>
-        <button type="button" class="removeTeacherBtn btn btn-primary">REMOVE</button>
-      </div>
+    </div>     
+    <div class="assign-grade-btn">
+      <button type="submit" class="btn btn-primary">SAVE</button>
+      <button type="button" class="btn btn-primary cancelPopoverBtn">CANCEL</button>
+      <button type="button" class="removeTeacherBtn btn btn-primary">REMOVE</button>
+    </div> 
   <% end %>
 </div>
