@@ -92,14 +92,15 @@
                 {{#grades}}
                   <div class="subject-wrapper">
                     <span class="data-title plr20">{{grade_name}}</span>
+                    <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left" data-grade_id="{{grade_id}}">+Add Subject</a></span>
                     <div class="data-attr">
                       <div class="subject-tab-wrapper">
+                      <div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
                         <ul id="subject-tab" class="nav nav-tabs subject-list">
                         {{#subjects}}
                           <li><a href="#subject1-tab" data-toggle="tab">{{subject_name}}</a></li>
                         {{/subjects}}
                         </ul>
-                        <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left" data-grade_id="{{grade_id}}">+Add Subject</a></span>
                       </div>
                       <%= render :partial => "admin/schools/add_subjects" %> 
                       <div class="tab-content">

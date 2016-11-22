@@ -24,6 +24,19 @@ class SchoolTeachers extends SchloopBase {
             jForm.attr('action', `/admin/schools/${school_id}/teachers`);
             jForm.attr('method', 'POST');
             jForm.find('input[name="teacher[email]"]').removeAttr('disabled');
+            $("input[type=checkbox]").change(function(){
+                debugger;
+                    var grade_id = $(this).data('grade_id'),
+                        subject_id = $(this).data('subject_id'),
+                        val = $(this).parents().eq(3).find('.subject_cls').val();
+                    if($("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked")){
+                        $("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked").each(function(i){
+                            if(val == subject_id){     
+                            $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                            }
+                        });
+                    }
+             });  
             _self.initForm(jForm, $(this));
         });
 
