@@ -6,7 +6,6 @@
 #  teaches       :string
 #  topic         :string           not null
 #  title         :string           not null
-#  attachment_id :integer
 #  grade         :integer          not null
 #  subject       :integer          not null
 #  details       :text
@@ -23,6 +22,9 @@
 class Activity < ActiveRecord::Base
   has_many :categories
   has_many :activity_categories
+  has_many :attachments, as: :attachable
+
+  enum file_sub_type: [:reference, :thumbnail]
 
   enum grade: { 'Playgroup': 0,
                 'Nursery': 1,
@@ -47,8 +49,16 @@ class Activity < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       begin
         categories_params = create_params.delete(:categories)
+        reference_files = create_params.delete(:reference_files)
+        thumbnail_file = create_params.delete(:thumbnail_file)
+
         activity = Activity.create!(create_params)
         create_activity_categories(activity.id, categories_params)
+        reference_file_ids = []
+        reference_files.each do |file|
+          FileUploadService.new.upload_file_to_s3(file, activity, sub_type: Activity.file_sub_types['reference'])
+        end
+        FileUploadService.new.upload_file_to_s3(thumbnail_file, activity, sub_type: Activity.file_sub_types['thumbnail'])
       rescue => ex
         errors << ex.message
         Rails.logger.debug("Exception in creating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")

@@ -1,4 +1,4 @@
-class ActivityService < BaseService
+class Admin::ActivityService < BaseService
 
   def validate_params(params)
     char_limit_50_fields = %w(topic title)
