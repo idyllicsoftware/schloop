@@ -60,7 +60,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         data: {
           pagination_data: {
             page_size: page_size,
-            total_pages: (@school.ecirculars.count/page_size.to_f).ceil,
+            total_pages: (circular_data.size/page_size.to_f).ceil,
             current_page: page
           },
           circulars: circular_data
