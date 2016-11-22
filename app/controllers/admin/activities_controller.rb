@@ -7,7 +7,9 @@ class Admin::ActivitiesController < ApplicationController
   # end
 
   def new
-
+    @grades = MasterGrade.all.select(:id, :name, :name_map)
+    @subjects = MasterSubject.all.select(:id, :name, :name_map)
+    @categories = Category.all.select(:id, :name, :name_map).where(category_type: Category.category_types[:activity])
   end
 
   def create_or_update

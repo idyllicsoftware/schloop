@@ -14,8 +14,41 @@ task populate_msater_grades: :environment do
     name: 'Sr. KG',
     name_map: 'sr-kg'
   }, {
-    name: '(1-12th Grade)',
-    name_map: '1-12th-grade'
+    name: '1st Grade',
+    name_map: '1st-grade'
+  }, {
+    name: '2nd Grade',
+    name_map: '2nd-grade'
+  }, {
+    name: '3rd Grade',
+    name_map: '3rd-grade'
+  }, {
+    name: '4th Grade',
+    name_map: '4th-grade'
+  }, {
+    name: '5th Grade',
+    name_map: '5th-grade'
+  }, {
+    name: '6th Grade',
+    name_map: '6th-grade'
+  }, {
+    name: '7th Grade',
+    name_map: '7th-grade'
+  }, {
+    name: '8th Grade',
+    name_map: '8th-grade'
+  }, {
+    name: '9th Grade',
+    name_map: '9th-grade'
+  }, {
+    name: '10th Grade',
+    name_map: '10th-grade'
+  }, {
+    name: '11th Grade',
+    name_map: '11th-grade'
+  }, {
+    name: '12th Grade',
+    name_map: '12th-grade'
   }]
 
   ActiveRecord::Base.transaction do
