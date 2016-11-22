@@ -1,0 +1,63 @@
+=> [{[33m:grade_id[0m=>[1;34m1[0m,
+  [33m:grade_name[0m=>[31m[1;31m"[0m[31mgrade1[1;31m"[0m[31m[0m,
+  [33m:subjects[0m=>
+   [{[33m:subject_id[0m=>[1;34m1[0m,
+     [33m:subject_name[0m=>[31m[1;31m"[0m[31menglish[1;31m"[0m[31m[0m,
+     [33m:divisions[0m=>
+      [{[33m:division_id[0m=>[1;34m1[0m,
+        [33m:division_name[0m=>[31m[1;31m"[0m[31mA[1;31m"[0m[31m[0m,
+        [33m:teacher[0m=>
+         {[33m:teacher_id[0m=>[1;34m25[0m,
+          [33m:first_name[0m=>[31m[1;31m"[0m[31mdmukte[1;31m"[0m[31m[0m,
+          [33m:middle_name[0m=>[1;36mnil[0m,
+          [33m:last_name[0m=>[31m[1;31m"[0m[31mklsjfl[1;31m"[0m[31m[0m,
+          [33m:email[0m=>[31m[1;31m"[0m[31mdmuktesh01+35@gmail.com[1;31m"[0m[31m[0m,
+          [33m:phone[0m=>[31m[1;31m"[0m[31m45344553254[1;31m"[0m[31m[0m}},
+       {[33m:division_id[0m=>[1;34m2[0m,
+        [33m:division_name[0m=>[31m[1;31m"[0m[31mB[1;31m"[0m[31m[0m,
+        [33m:teacher[0m=>
+         {[33m:teacher_id[0m=>[1;34m26[0m, [33m:first_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m, [33m:middle_name[0m=>[1;36mnil[0m, [33m:last_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m, [33m:email[0m=>[31m[1;31m"[0m[31mdmuktesh01+36@gmail.com[1;31m"[0m[31m[0m, [33m:phone[0m=>[31m[1;31m"[0m[31m5676767867867[1;31m"[0m[31m[0m}},
+       {[33m:division_id[0m=>[1;34m7[0m,
+        [33m:division_name[0m=>[31m[1;31m"[0m[31mC[1;31m"[0m[31m[0m,
+        [33m:teacher[0m=>
+         {[33m:teacher_id[0m=>[1;34m26[0m,
+          [33m:first_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m,
+          [33m:middle_name[0m=>[1;36mnil[0m,
+          [33m:last_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m,
+          [33m:email[0m=>[31m[1;31m"[0m[31mdmuktesh01+36@gmail.com[1;31m"[0m[31m[0m,
+          [33m:phone[0m=>[31m[1;31m"[0m[31m5676767867867[1;31m"[0m[31m[0m}}]},
+    {[33m:subject_id[0m=>[1;34m2[0m,
+     [33m:subject_name[0m=>[31m[1;31m"[0m[31mmarathi[1;31m"[0m[31m[0m,
+     [33m:divisions[0m=>
+      [{[33m:division_id[0m=>[1;34m1[0m,
+        [33m:division_name[0m=>[31m[1;31m"[0m[31mA[1;31m"[0m[31m[0m,
+        [33m:teacher[0m=>
+         {[33m:teacher_id[0m=>[1;34m26[0m, [33m:first_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m, [33m:middle_name[0m=>[1;36mnil[0m, [33m:last_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m, [33m:email[0m=>[31m[1;31m"[0m[31mdmuktesh01+36@gmail.com[1;31m"[0m[31m[0m, [33m:phone[0m=>[31m[1;31m"[0m[31m5676767867867[1;31m"[0m[31m[0m}},
+       {[33m:division_id[0m=>[1;34m2[0m,
+        [33m:division_name[0m=>[31m[1;31m"[0m[31mB[1;31m"[0m[31m[0m,
+        [33m:teacher[0m=>
+         {[33m:teacher_id[0m=>[1;34m26[0m,
+          [33m:first_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m,
+          [33m:middle_name[0m=>[1;36mnil[0m,
+          [33m:last_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m,
+          [33m:email[0m=>[31m[1;31m"[0m[31mdmuktesh01+36@gmail.com[1;31m"[0m[31m[0m,
+          [33m:phone[0m=>[31m[1;31m"[0m[31m5676767867867[1;31m"[0m[31m[0m}}]},
+    {[33m:subject_id[0m=>[1;34m3[0m, [33m:subject_name[0m=>[31m[1;31m"[0m[31mscience[1;31m"[0m[31m[0m, [33m:divisions[0m=>[]}]},
+ {[33m:grade_id[0m=>[1;34m2[0m,
+  [33m:grade_name[0m=>[31m[1;31m"[0m[31mgrade 2[1;31m"[0m[31m[0m,
+  [33m:subjects[0m=>
+   [{[33m:subject_id[0m=>[1;34m4[0m,
+     [33m:subject_name[0m=>[31m[1;31m"[0m[31mhindi[1;31m"[0m[31m[0m,
+     [33m:divisions[0m=>
+      [{[33m:division_id[0m=>[1;34m3[0m,
+        [33m:division_name[0m=>[31m[1;31m"[0m[31mA[1;31m"[0m[31m[0m,
+        [33m:teacher[0m=>
+         {[33m:teacher_id[0m=>[1;34m26[0m,
+          [33m:first_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m,
+          [33m:middle_name[0m=>[1;36mnil[0m,
+          [33m:last_name[0m=>[31m[1;31m"[0m[31ma[1;31m"[0m[31m[0m,
+          [33m:email[0m=>[31m[1;31m"[0m[31mdmuktesh01+36@gmail.com[1;31m"[0m[31m[0m,
+          [33m:phone[0m=>[31m[1;31m"[0m[31m5676767867867[1;31m"[0m[31m[0m}}]}]},
+ {[33m:grade_id[0m=>[1;34m3[0m, [33m:grade_name[0m=>[31m[1;31m"[0m[31mgrade 3[1;31m"[0m[31m[0m, [33m:subjects[0m=>[]},
+ {[33m:grade_id[0m=>[1;34m4[0m, [33m:grade_name[0m=>[31m[1;31m"[0m[31mgrade 34[1;31m"[0m[31m[0m, [33m:subjects[0m=>[]},
+ {[33m:grade_id[0m=>[1;34m5[0m, [33m:grade_name[0m=>[31m[1;31m"[0m[31mkdsfjkld[1;31m"[0m[31m[0m, [33m:subjects[0m=>[]}]

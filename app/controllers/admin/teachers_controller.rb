@@ -94,11 +94,21 @@ class Admin::TeachersController < ApplicationController
   end
 =end
 
-  def create_grade_teacher_association(teacher_id)
-    grades =params[:grades]
+  def create_grade_teacher_association(teacher)
+    teacher_id = teacher[:teacher_id]
+    grades = params[:grade]
     grades.each do |grade|
-      id = 
+      grade_id = grade[0].to_i
+      grade_data = grade[1]
+      subjects = grade_data[:subjects]
+      subjects.each do |subject| 
+        subject_id = subject[0].to_i
+        subject_data = subject[1]
+        divisions= subject_data[:divisions]
+        divisions.each do |division|
+          grade_teacher = GradeTeacher.create(teacher_id: teacher_id,grade_id: grade_id, subject_id: subject_id, division_id: division.to_i)
+        end
+      end
     end
-    #grade_teacher = GradeTeacher.create(:teacher_id => teacher_id, :grade_id => grade_id, :division_id => division_id, :subject_id => subject_id)
   end
 end
