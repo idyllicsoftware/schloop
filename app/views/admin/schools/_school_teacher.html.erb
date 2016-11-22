@@ -45,48 +45,39 @@
     <div class="form-group">
       <input type="email" class="form-control input-field" required name="teacher[email]" placeholder="Email" autocomplete="off"  maxlength="30" />
     </div>
-      <!--
-
-      <label>Assign Grades & Subjects </label>
+    <label>Assign Grades & Subjects </label>
+    <div class="scroll-grade">   
+      <% @school.grades.each do |grade| %>
       <div class="col-md-12 form-group assign-grade">
+        <label><%= grade.name %> </label>
+        <input type="hidden" name="grade_id" value="<%= grade.id %>"> 
         <div>
-          <label>Grade 1</label>
+          <label>SUBJECTS</label>
           <ul class="checkbox_customized">
-            <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="sub11">
-              <label for="sub11">Science</label>
+            <% grade.subjects.each  do |subject| %>
+            <li class="col-md-4"><input type="checkbox" name="subjects[]" value="<%= subject.id %>" id="<%= subject.id %>">
+              <label for="<%= subject.id %>"><%= subject.name %></label>
             </li>
-            <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="sub12">
-              <label for="sub12">Science</label>
-            </li>
-            <li class="col-md-4"><input type="checkbox" name="subject1" value="Science" id="sub13">
-              <label for="sub13">Science</label>
-            </li>
+            <% end %>
           </ul>
         </div>
         <div>
           <label>DIVISIONS</label>
           <ul class="checkbox_customized">
-            <li class="col-md-2"><input type="checkbox" name="subject1" value="A" id="div11" >
-              <label for="div11">A</label>
+            <% grade.divisions.each_with_index do |division, index| %>
+            <li class="col-md-3"><input type="checkbox" name="divisions[]" value="<%= division.id %>" id="<%= division.id %>" >
+              <label for="<%= division.id %>"><%= division.name %></label>
             </li>
-            <li class="col-md-2"><input type="checkbox" name="subject1" value="B" id="div12">
-              <label for="div12">B</label>
-            </li>
-            <li class="col-md-2"><input type="checkbox" name="subject1" value="C" id="div13">
-              <label for="div13">C</label>
-            </li>
-            <li class="col-md-2"><input type="checkbox" name="subject1" value="D" id="div14" >
-              <label for="div14">D</label>
-            </li>
+            <% end %>
           </ul>
         </div>
       </div>
-
-      -->
-      <div class="assign-grade-btn">
-        <button type="submit" class="btn btn-primary">SAVE</button>
-        <button type="button" class="btn btn-primary cancelPopoverBtn">CANCEL</button>
-        <button type="button" class="removeTeacherBtn btn btn-primary">REMOVE</button>
-      </div>
+      <% end %>
+    </div>     
+    <div class="assign-grade-btn">
+      <button type="submit" class="btn btn-primary">SAVE</button>
+      <button type="button" class="btn btn-primary cancelPopoverBtn">CANCEL</button>
+      <button type="button" class="removeTeacherBtn btn btn-primary">REMOVE</button>
+    </div> 
   <% end %>
 </div>
