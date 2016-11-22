@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(version: 20161122093457) do
     t.string   "teaches"
     t.string   "topic",         null: false
     t.string   "title",         null: false
-    t.integer  "attachment_id"
     t.integer  "grade",         null: false
     t.integer  "subject",       null: false
     t.text     "details"

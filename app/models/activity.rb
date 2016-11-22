@@ -6,7 +6,6 @@
 #  teaches       :string
 #  topic         :string           not null
 #  title         :string           not null
-#  attachment_id :integer
 #  grade         :integer          not null
 #  subject       :integer          not null
 #  details       :text
