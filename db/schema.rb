@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20161121142434) do
     t.string   "teaches"
     t.string   "topic",         null: false
     t.string   "title",         null: false
+    t.integer  "attachment_id"
     t.integer  "grade",         null: false
     t.integer  "subject",       null: false
     t.text     "details"
@@ -58,6 +59,29 @@ ActiveRecord::Schema.define(version: 20161121142434) do
   end
 
   add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
+
+  create_table "content_categories", force: :cascade do |t|
+    t.integer  "content_id",  null: false
+    t.integer  "category_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "contents", force: :cascade do |t|
+    t.string   "teaches"
+    t.string   "topic",         null: false
+    t.string   "title",         null: false
+    t.integer  "attachment_id"
+    t.integer  "grade",         null: false
+    t.integer  "subject",       null: false
+    t.text     "details"
+    t.text     "pre_requisite"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "contents", ["grade"], name: "index_contents_on_grade", using: :btree
+  add_index "contents", ["subject"], name: "index_contents_on_subject", using: :btree
 
   create_table "divisions", force: :cascade do |t|
     t.string   "name",       null: false
