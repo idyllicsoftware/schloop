@@ -74,7 +74,7 @@ class SchoolTeachers extends SchloopBase {
         let _self = this,
             delete_teachers_url = `/admin/teachers/${school_teacher_id}`,
             msg = school_teacher_id ? 'School teacher updated successfully' : 'School teacher added successfully';
-            
+           
         this.initFormSubmit(jForm, {
             'teacher[first_name]': 'name',
             'teacher[last_name]': 'name',
@@ -89,6 +89,10 @@ class SchoolTeachers extends SchloopBase {
                 _self.showErrors(res.errors);
                 popoverEl.popover('hide');
             }
+        },{
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false
         });
 
         jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
