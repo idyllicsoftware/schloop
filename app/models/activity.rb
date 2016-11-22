@@ -24,7 +24,7 @@ class Activity < ActiveRecord::Base
   has_many :activity_categories
   has_many :attachments, as: :attachable
 
-  enum file_sub_type: [:reference, :thumbnail]
+  enum file_sub_type: { reference: 0, thumbnail: 1 }
 
   enum grade: { 'Playgroup': 0,
                 'Nursery': 1,
@@ -33,16 +33,24 @@ class Activity < ActiveRecord::Base
                 '(1-12th Grade)': 4 }
 
   enum subject: { algebra: 0,
-                  civics: 1,
-                  drawing: 2,
-                  english: 3,
-                  geography: 4,
-                  geometry: 5,
-                  hindi: 6,
-                  history: 7,
-                  marathi: 8,
-                  maths: 9,
-                  science: 10 }
+                  arts: 1,
+                  biology: 2,
+                  chemistry: 3,
+                  civics: 4,
+                  drawing: 5,
+                  english: 6,
+                  general_knowledge: 7,
+                  geography: 8,
+                  geometry: 9,
+                  hindi: 10,
+                  history: 11,
+                  marathi: 12,
+                  mathematics: 13,
+                  physics: 14,
+                  science: 15,
+                  social_science: 16,
+                  computer_science: 17,
+                  life_skills: 18 }
 
   def self.create_activity(create_params)
     errors = []
@@ -54,11 +62,7 @@ class Activity < ActiveRecord::Base
 
         activity = Activity.create!(create_params)
         create_activity_categories(activity.id, categories_params)
-        reference_file_ids = []
-        reference_files.each do |file|
-          FileUploadService.new.upload_file_to_s3(file, activity, sub_type: Activity.file_sub_types['reference'])
-        end
-        FileUploadService.new.upload_file_to_s3(thumbnail_file, activity, sub_type: Activity.file_sub_types['thumbnail'])
+        upload_files(activity, reference_files, thumbnail_file)
       rescue => ex
         errors << ex.message
         Rails.logger.debug("Exception in creating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
@@ -72,9 +76,13 @@ class Activity < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       begin
         categories_params = update_params.delete(:categories)
+        reference_files = create_params.delete(:reference_files)
+        thumbnail_file = create_params.delete(:thumbnail_file)
+
         activity = update_attributes!(update_params)
         activity_categories.destroy_all
         create_activity_categories(activity.id, categories_params)
+        upload_files(activity, reference_files, thumbnail_file)
       rescue => ex
         errors << ex.message
         Rails.logger.debug("Exception in updating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
@@ -84,6 +92,13 @@ class Activity < ActiveRecord::Base
   end
 
   private
+
+  def upload_files(activity, reference_files, thumbnail_file)
+    reference_files.each do |file|
+      FileUploadService.new.upload_file_to_s3(file, activity, sub_type: Activity.file_sub_types['reference'])
+    end
+    FileUploadService.new.upload_file_to_s3(thumbnail_file, activity, sub_type: Activity.file_sub_types['thumbnail'])
+  end
 
   def create_activity_categories(activity_id, categories_params)
     categories_params.each do |category_id|

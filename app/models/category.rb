@@ -3,9 +3,9 @@
 # Table name: categories
 #
 #  id            :integer          not null, primary key
-#  name          :string           not null
+#  name          :string
 #  name_map      :string           not null
-#  category_type :integer
+#  category_type :integer          default(0)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -15,10 +15,8 @@
 #
 
 class Category < ActiveRecord::Base
+  belongs_to :activity
+  has_many :activity_categories
 
-  belongs_to :content
-  has_many :content_categories
-
-  enum category_type: { content: 0 }
-
+  enum category_type: { activity: 0 }
 end
