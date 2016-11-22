@@ -85,15 +85,12 @@ class Schools extends SchloopBase {
         $(document).on('click','.web-content-creation-link', function () {
             createWebContentModal.modal('show');
             $('#select_multiple').multipleSelect({});
-
-            debugger;
         });
 
         this.initFormSubmit(createWebContentFormEl, {
             'topic': 'topic',
         }, function (res) {
             if(res.success) {
-                debugger;
                 createWebContentFormEl[0].reset();
                 createWebContentModal.modal('hide');
                 toastr.success('Activity created successfully');
