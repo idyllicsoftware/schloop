@@ -46,8 +46,8 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     errors, circular_data = [], []
     @school = School.find_by(id: @current_user.school_id)
     page = params[:page].to_s.to_i
-    offset = (page * 10)
     page_size = 20
+    offset = (page * page_size)
     if @school.blank?
       errors << "school not found."
     else
