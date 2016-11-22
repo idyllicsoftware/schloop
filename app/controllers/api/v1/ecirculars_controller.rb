@@ -51,8 +51,9 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     if @school.blank?
       errors << "school not found."
     else
-      circular_data = Ecircular.school_circulars(@school, filter_params, offset, page_size)
+      circular_data, total_records = Ecircular.school_circulars(@school, filter_params, offset, page_size)
     end
+
     if errors.blank?
       index_response = {
         success: true,
@@ -60,7 +61,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         data: {
           pagination_data: {
             page_size: page_size,
-            total_pages: (circular_data.size/page_size.to_f).ceil,
+            total_pages: (total_records/page_size.to_f).ceil,
             current_page: page
           },
           circulars: circular_data

@@ -51,6 +51,8 @@ class Ecircular < ActiveRecord::Base
 			circulars = circulars.where(id: circular_ids)
 		end
 
+		total_records = circulars.count
+
 		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
 		circulars.each do |circular|
 			recipients, attachments = [], []
@@ -86,7 +88,7 @@ class Ecircular < ActiveRecord::Base
 				attachments: attachments
 			}
 		end
-		return circular_data
+		return circular_data, total_records
 	end
 
 end
