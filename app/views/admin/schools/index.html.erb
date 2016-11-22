@@ -61,7 +61,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
-        <div class="web-content-form-section">
+        <form class="web-content-form" action="/admin/schools/all" method="POST">
               <div class="row">
                 <div class="form-group col-md-6">
                     <select id="grade" name="grade" required class="form-control field">
@@ -85,7 +85,7 @@
                     </select> 
                 </div>
                 <div class="form-group col-md-6">
-                    <select id="grade" name="grade" required class="form-control field">
+                    <select id="grade" name="subject" required class="form-control field">
                       <option disabled="disabled" selected="selected">Subject</option>
                       <option>English</option>
                       <option>Mathematics</option>
@@ -121,17 +121,17 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <select multiple="multiple" id="select_multiple" class="form-control input-field" name="my-select[]">
-                    <option disabled="disabled" selected="selected">Category:</option>
+                    <option disabled="disabled" selected="selected">Category :</option>
                     <option value='art_and_craft'>Art and Craft</option>
-                    <option value='2'>Indoor Activity</option>
-                    <option value='3'>Outdoor Activity</option>
-                    <option value='4'>Quiz</option>
-                    <option value='100'>Worksheet</option>
-                    <option value='100'>Educational Link</option>
-                    <option value='100'>Research</option>
-                    <option value='100'>Collaborative</option>
-                    <option value='100'>Project</option>
-                    <option value='100'>Image</option>
+                    <option value='indoor_activity'>Indoor Activity</option>
+                    <option value='outdoor_activity'>Outdoor Activity</option>
+                    <option value='quiz'>Quiz</option>
+                    <option value='Worksheet'>Worksheet</option>
+                    <option value='Educational Link'>Educational Link</option>
+                    <option value='Research'>Research</option>
+                    <option value='Collaborative'>Collaborative</option>
+                    <option value='Project'>Project</option>
+                    <option value='Image'>Image</option>
                   </select>
                 </div>
               </div>  
@@ -161,16 +161,16 @@
                       <div class="upload-logo">
                         <img src="<%= asset_path('admin/image_upload.svg') %>">
                       </div>
-                      <input type="file" name="attached_file" value="" required id="upload-photo"/>
+                      <input type="file" name="attached_file" value="" id="upload-photo"/>
                   </label>
-                  <input name="" class="form-control input-field" disabled="disabled" placeholder="filename">
+                  <input class="form-control input-field" disabled="disabled" placeholder="filename">
                 </div>
               </div>
               <div class="action-btn">
                 <button type="submit" class="btn btn-primary">ADD ACTIVITY</button>
                 <button class="btn btn-primary cancel-creation">CANCEL</button>
               </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>

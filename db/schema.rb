@@ -57,9 +57,11 @@ ActiveRecord::Schema.define(version: 20161121131556) do
     t.datetime "updated_at",    null: false
   end
 
+  add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
+
   create_table "content_categories", force: :cascade do |t|
-    t.integer  "content_id"
-    t.integer  "category_id"
+    t.integer  "content_id",  null: false
+    t.integer  "category_id", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
@@ -71,14 +73,12 @@ ActiveRecord::Schema.define(version: 20161121131556) do
     t.integer  "attachment_id"
     t.integer  "grade",         null: false
     t.integer  "subject",       null: false
-    t.integer  "category",      null: false
     t.text     "details"
     t.text     "pre_requisite"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
 
-  add_index "contents", ["category"], name: "index_contents_on_category", using: :btree
   add_index "contents", ["grade"], name: "index_contents_on_grade", using: :btree
   add_index "contents", ["subject"], name: "index_contents_on_subject", using: :btree
 
@@ -179,9 +179,13 @@ ActiveRecord::Schema.define(version: 20161121131556) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "grade_id"
+    t.integer  "teacher_id"
+    t.integer  "division_id"
   end
 
+  add_index "subjects", ["division_id"], name: "index_subjects_on_division_id", using: :btree
   add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
+  add_index "subjects", ["teacher_id"], name: "index_subjects_on_teacher_id", using: :btree
 
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -202,9 +206,26 @@ ActiveRecord::Schema.define(version: 20161121131556) do
     t.string   "middle_name"
     t.string   "last_name"
     t.string   "cell_number"
+    t.string   "phone"
+    t.string   "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer  "invitation_limit"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.integer  "invited_by_id"
+    t.string   "invited_by_type"
+    t.integer  "invitations_count",      default: 0
   end
 
+  add_index "teachers", ["confirmation_token"], name: "index_teachers_on_confirmation_token", unique: true, using: :btree
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
+  add_index "teachers", ["invitation_token"], name: "index_teachers_on_invitation_token", unique: true, using: :btree
+  add_index "teachers", ["invitations_count"], name: "index_teachers_on_invitations_count", using: :btree
+  add_index "teachers", ["invited_by_id"], name: "index_teachers_on_invited_by_id", using: :btree
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
 
@@ -242,5 +263,7 @@ ActiveRecord::Schema.define(version: 20161121131556) do
   add_foreign_key "grade_teachers", "subjects"
   add_foreign_key "grade_teachers", "teachers"
   add_foreign_key "grades", "schools"
+  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
+  add_foreign_key "subjects", "teachers"
 end
