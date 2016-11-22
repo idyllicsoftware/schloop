@@ -34,6 +34,7 @@ class Schools extends SchloopBase {
             'school[website]': 'website',
             'school[logo]': 'logo',
             'administrator[first_name]': 'name',
+
             'administrator[last_name]': 'name',
             'administrator[cell_number]': 'phone',
             'administrator[email]': 'email',
@@ -55,7 +56,7 @@ class Schools extends SchloopBase {
         $(document).on('click','.cancel-creation', function () {
             createModalEl.modal('hide');
         });
-
+        this.webContentCreation();
     };
 
     get schoolListTpl (){
@@ -74,5 +75,20 @@ class Schools extends SchloopBase {
                 schoolsContainerEl.html(html);
             }
         });
+    }
+
+    webContentCreation() {
+            let self = this,
+                createWebContentModal = $('#create-web-content-modal');
+        
+        $(document).on('click','.web-content-creation-link', function () {
+            createWebContentModal.modal('show');
+            $('#select_multiple').multipleSelect({});
+
+            debugger;
+        });
+        // $(document).on('click','.cancel-creation', function () {
+        //     createWebContentModal.modal('hide');
+        // });    
     }
 }

@@ -11,10 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121110026) do
+ActiveRecord::Schema.define(version: 20161121131556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.string   "teaches"
+    t.string   "topic",         null: false
+    t.string   "title",         null: false
+    t.integer  "attachment_id"
+    t.integer  "grade",         null: false
+    t.integer  "subject",       null: false
+    t.text     "details"
+    t.text     "pre_requisite"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "activities", ["grade"], name: "index_activities_on_grade", using: :btree
+  add_index "activities", ["subject"], name: "index_activities_on_subject", using: :btree
+
+  create_table "activity_categories", force: :cascade do |t|
+    t.integer  "activity_id", null: false
+    t.integer  "category_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "attachments", force: :cascade do |t|
     t.string   "attachable_type"

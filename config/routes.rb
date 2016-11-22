@@ -65,7 +65,7 @@ Rails.application.routes.draw do
       get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
     end
 
-    resources :contents, only: [:index] do
+    resources :activities, only: [:index] do
       post :create_or_update
     end
   end
@@ -77,7 +77,7 @@ Rails.application.routes.draw do
       post "/teacher/login" => 'teachers#login'
       post "/teacher/dashboard" => 'teachers#dashboard'
       post "/teacher/reset_password" => "teachers#reset_password"
-      post "/contents/index" => "contents#index"
+      get "/activities/index" => "activities#index"
       get "/teacher/profile" => "teachers#profile"
       post "/ecircular/tags" => "ecirculars#tags"
       post "/ecircular/create" => "ecirculars#create"

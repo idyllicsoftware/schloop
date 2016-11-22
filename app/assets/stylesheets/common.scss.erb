@@ -262,3 +262,59 @@ input::-ms-input-placeholder {
     box-shadow: 2px 2px 8px 0 rgba(170, 170, 170, 0.5);
     border: none;
 }
+.form-group {
+	select {
+		width: 100%;
+	    height: 40px;
+	    margin: 8px 0;
+	    border: 0;
+	    border: 1px solid black;
+	    border-top: 4px solid black;
+	    background: url('down_arrow.svg') no-repeat;
+	    background-size: 14px;
+	    background-position: right 10px center;
+	    font-family: 'Arial';
+	    -webkit-appearance: none;
+	    -moz-appearance: none;
+	    -webkit-border-radius: 4px;
+	    -moz-border-radius: 4px;
+	    border-radius: 4px;
+	}
+	.field {
+	box-shadow: none;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    font-size: 14px;
+    color: #cacaca;
+    outline: 0;
+    padding: 0;
+    width: 100%;
+	}
+	.ms-choice {
+	border: none;
+	background-color: transparent;
+	background: url(down_arrow.svg) no-repeat;
+    background-size: 14px;
+    background-position: right 10px center;
+    color: #cacaca;
+	font-size: 14px;
+		&:focus {
+	    	outline: 0px;
+		}
+	}
+	.ms-drop ul > li {
+		outline: none;
+	}
+	.ms-drop {
+		input[type="checkbox"]{
+			visibility: hidden;
+		}
+		li.selected {
+		    background-color: #ccc;
+		    border: 0px;
+		    box-shadow: none;
+		    outline: none;
+		}
+	}		    
+}

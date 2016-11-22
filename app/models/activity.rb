@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: contents
+# Table name: activities
 #
 #  id            :integer          not null, primary key
 #  teaches       :string
@@ -16,13 +16,13 @@
 #
 # Indexes
 #
-#  index_contents_on_grade    (grade)
-#  index_contents_on_subject  (subject)
+#  index_activities_on_grade    (grade)
+#  index_activities_on_subject  (subject)
 #
 
-class Content < ActiveRecord::Base
+class Activity < ActiveRecord::Base
   has_many :categories
-  has_many :content_categories
+  has_many :activity_categories
 
   enum grade: { 'Playgroup': 0,
                 'Nursery': 1,
@@ -42,32 +42,32 @@ class Content < ActiveRecord::Base
                   maths: 9,
                   science: 10 }
 
-  def self.create_content(create_params)
+  def self.create_activity(create_params)
     errors = []
     ActiveRecord::Base.transaction do
       begin
         categories_params = create_params.delete(:categories)
-        content = Content.create!(create_params)
-        create_content_categories(content.id, categories_params)
+        activity = Activity.create!(create_params)
+        create_activity_categories(activity.id, categories_params)
       rescue => ex
         errors << ex.message
-        Rails.logger.debug("Exception in creating content: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
+        Rails.logger.debug("Exception in creating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
       end
     end
     { errors: errors, data: [] }
   end
 
-  def update_content
+  def update_activity(update_params)
     errors = []
     ActiveRecord::Base.transaction do
       begin
-        categories_params = create_params.delete(:categories)
-        update_attributes!(create_params)
-        content.content_categories.destroy_all
-        create_content_categories(content.id, categories_params)
+        categories_params = update_params.delete(:categories)
+        activity = update_attributes!(update_params)
+        activity_categories.destroy_all
+        create_activity_categories(activity.id, categories_params)
       rescue => ex
         errors << ex.message
-        Rails.logger.debug("Exception in updating content: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
+        Rails.logger.debug("Exception in updating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
       end
     end
     { errors: errors, data: [] }
@@ -75,9 +75,9 @@ class Content < ActiveRecord::Base
 
   private
 
-  def create_content_categories(content_id, categories_params)
+  def create_activity_categories(activity_id, categories_params)
     categories_params.each do |category_id|
-      ContentCategory.create!(content_id: content_id, category_id: category_id, category_type: Category.category_types['content'])
+      ActivityCategory.create!(activity_id: activity_id, category_id: category_id, category_type: Category.category_types['activity'])
     end
   end
 end
