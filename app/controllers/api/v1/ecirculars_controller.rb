@@ -61,6 +61,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         data: {
           pagination_data: {
             page_size: page_size,
+            record_count: total_records,
             total_pages: (total_records/page_size.to_f).ceil,
             current_page: page
           },
