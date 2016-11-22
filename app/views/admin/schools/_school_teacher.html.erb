@@ -50,7 +50,7 @@
       <% @school.grades.each do |grade| %>
       <div class="col-md-12 form-group assign-grade">
         <label><%= grade.name %> </label>
-        <input type="hidden" name="grade_id" value="<%= grade.id %>"> 
+        <input type="hidden" name="grade_id[]" value="<%= grade.id %>"> 
         <div>
           <label>SUBJECTS</label>
           <ul class="checkbox_customized">

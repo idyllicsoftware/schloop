@@ -26,7 +26,8 @@ class Admin::TeachersController < ApplicationController
 
   def create
     render json: {success: false, errors: ['School not found']} and return if @school.blank?
-    response = create_teachers(@school, create_school_teachers_params)
+    teacher_id = create_teachers(@school, create_school_teachers_params)
+    response = create_grade_teacher_association(teacher_id)
     render :json => response
   end
 
@@ -62,7 +63,7 @@ class Admin::TeachersController < ApplicationController
       Admin::AdminMailer.welcome_message(teacher.email, teacher.first_name, teacher.password).deliver_now
     end
 
-    return {success: errors.blank?, errors: errors}
+    return {success: errors.blank?, errors: errors, teacher_id: teacher.id}
   end
 
   def create_school_teachers_params
@@ -81,7 +82,23 @@ class Admin::TeachersController < ApplicationController
       params.require(:teacher).permit(:first_name, :last_name, :cell_number)
   end
 
-
+=begin
   def grade_teacher_params
+    response = {
+              school_id: params[:school_id],
+              grade_id: params[:grade_id],
+              subjects: params[:subjects],
+              divisions: params[:divisions]
+    }
+    return response
+  end
+=end
+
+  def create_grade_teacher_association(teacher_id)
+    grades =params[:grades]
+    grades.each do |grade|
+      id = 
+    end
+    #grade_teacher = GradeTeacher.create(:teacher_id => teacher_id, :grade_id => grade_id, :division_id => division_id, :subject_id => subject_id)
   end
 end
