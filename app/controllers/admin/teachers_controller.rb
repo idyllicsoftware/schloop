@@ -82,4 +82,6 @@ class Admin::TeachersController < ApplicationController
   end
 
 
+  def grade_teacher_params
+  end
 end

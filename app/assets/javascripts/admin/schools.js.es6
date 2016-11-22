@@ -79,7 +79,8 @@ class Schools extends SchloopBase {
 
     webContentCreation() {
             let self = this,
-                createWebContentModal = $('#create-web-content-modal');
+                createWebContentModal = $('#create-web-content-modal'),
+                createWebContentFormEl = $('.web-content-form');
         
         $(document).on('click','.web-content-creation-link', function () {
             createWebContentModal.modal('show');
@@ -87,8 +88,26 @@ class Schools extends SchloopBase {
 
             debugger;
         });
-        // $(document).on('click','.cancel-creation', function () {
-        //     createWebContentModal.modal('hide');
-        // });    
+
+        this.initFormSubmit(createWebContentFormEl, {
+            'topic': 'topic',
+        }, function (res) {
+            if(res.success) {
+                debugger;
+                createWebContentFormEl[0].reset();
+                createWebContentModal.modal('hide');
+                toastr.success('Activity created successfully');
+            }else {
+                self.showErrors(res.errors);
+            }
+        },{
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false
+        });
+
+        $(document).on('click','.cancel-creation', function () {
+            createWebContentModal.modal('hide');
+        });    
     }
 }

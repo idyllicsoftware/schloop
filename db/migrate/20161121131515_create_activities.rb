@@ -4,7 +4,6 @@ class CreateActivities < ActiveRecord::Migration
       t.string :teaches
       t.string :topic, null: false
       t.string :title, null: false
-      t.integer :attachment_id
       t.integer :grade, null: false, index: true
       t.integer :subject, null: false, index: true
       t.text :details
