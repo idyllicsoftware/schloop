@@ -11,26 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121142434) do
+ActiveRecord::Schema.define(version: 20161122093457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "activities", force: :cascade do |t|
     t.string   "teaches"
-    t.string   "topic",         null: false
-    t.string   "title",         null: false
-    t.integer  "attachment_id"
-    t.integer  "grade",         null: false
-    t.integer  "subject",       null: false
+    t.string   "topic",             null: false
+    t.string   "title",             null: false
+    t.integer  "master_grade_id",   null: false
+    t.integer  "master_subject_id", null: false
     t.text     "details"
     t.text     "pre_requisite"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
-
-  add_index "activities", ["grade"], name: "index_activities_on_grade", using: :btree
-  add_index "activities", ["subject"], name: "index_activities_on_subject", using: :btree
 
   create_table "activity_categories", force: :cascade do |t|
     t.integer  "activity_id", null: false
@@ -51,11 +47,11 @@ ActiveRecord::Schema.define(version: 20161121142434) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string   "name",          null: false
-    t.string   "name_map",      null: false
-    t.integer  "category_type"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.string   "name"
+    t.string   "name_map",                  null: false
+    t.integer  "category_type", default: 0
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
@@ -106,13 +102,32 @@ ActiveRecord::Schema.define(version: 20161121142434) do
   add_index "grade_teachers", ["teacher_id"], name: "index_grade_teachers_on_teacher_id", using: :btree
 
   create_table "grades", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",            null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.integer  "school_id"
+    t.integer  "master_grade_id", null: false
   end
 
   add_index "grades", ["school_id"], name: "index_grades_on_school_id", using: :btree
+
+  create_table "master_grades", force: :cascade do |t|
+    t.string   "name"
+    t.string   "name_map",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "master_grades", ["name_map"], name: "index_master_grades_on_name_map", using: :btree
+
+  create_table "master_subjects", force: :cascade do |t|
+    t.string   "name"
+    t.string   "name_map",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "master_subjects", ["name_map"], name: "index_master_subjects_on_name_map", using: :btree
 
   create_table "parents", force: :cascade do |t|
     t.string   "email",                  limit: 100, default: "", null: false
@@ -178,11 +193,12 @@ ActiveRecord::Schema.define(version: 20161121142434) do
   end
 
   create_table "subjects", force: :cascade do |t|
-    t.string   "name",         null: false
+    t.string   "name",              null: false
     t.string   "subject_code"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "grade_id"
+    t.integer  "master_subject_id", null: false
     t.integer  "teacher_id"
     t.integer  "division_id"
   end
