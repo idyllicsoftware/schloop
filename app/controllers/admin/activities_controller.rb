@@ -6,6 +6,12 @@ class Admin::ActivitiesController < ApplicationController
   #   @activitys = Activity.all
   # end
 
+  def new
+    @grades = MasterGrade.all.select(:id, :name, :name_map)
+    @subjects = MasterSubject.all.select(:id, :name, :name_map)
+    @categories = Category.all.select(:id, :name, :name_map).where(category_type: Category.category_types[:activity])
+  end
+
   def create_or_update
     activity_service = Admin::ActivityService.new
     activity_params = get_activity_params
@@ -13,11 +19,8 @@ class Admin::ActivitiesController < ApplicationController
     if validate_response[:errors].present?
       render json: { errors: validate_response[:errors], data: validate_response[:data] }
     end
-    if @activity
-      response = @activity.update_activity(activity_params)
-    else
-      response = Activity.create_activity(activity_params)
-    end
+    response = if @activity
+                 @activity&.update_activity(activity_params)
     render json: { errors: response[:errors], data: response[:data] }
   end
 
@@ -29,6 +32,6 @@ class Admin::ActivitiesController < ApplicationController
 
   def get_activity_params(params)
     params.require(:activity).permit(:grade, :subject, :topic, :title, :categories, :teaches,
-                                    :pre_requisite, :details, :attachments)
+                                     :pre_requisite, :details, :attachments, :reference_files, :thumbnail_file)
   end
 end

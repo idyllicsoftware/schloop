@@ -2,11 +2,12 @@
 #
 # Table name: grades
 #
-#  id         :integer          not null, primary key
-#  name       :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  school_id  :integer
+#  id              :integer          not null, primary key
+#  name            :string           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  school_id       :integer
+#  master_grade_id :integer          not null
 #
 # Indexes
 #
