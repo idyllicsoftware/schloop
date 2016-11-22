@@ -1,4 +1,4 @@
-# Rake task to populate categories
+# Rake task to populate categories for activity
 desc 'rake populate_activity_categories RAILS_ENV=<environment_name> --trace '
 task populate_activity_categories: :environment do
   category_type_activity = Category.category_types[:activity]
