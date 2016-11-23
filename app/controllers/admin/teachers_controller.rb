@@ -1,3 +1,52 @@
+=begin
+[
+  {
+    grade_id: '1',
+    grade_name: 'grade_one',
+    subjects_data: [
+      {
+        subject_id: '1',
+        subject_name: 'maths',
+        divisions_data: [
+          {division_id: '1', division_name: 'A'},
+          {division_id: '2', division_name: 'B'},
+        ]
+      },
+      {
+        subject_id: '2',
+        subject_name: 'Sci',
+        divisions_data: [
+          {division_id: '1', division_name: 'A'},
+          {division_id: '2', division_name: 'B'},
+        ]
+      }
+    ]
+  },
+  {
+    grade_id: '2',
+    grade_name: 'grade_two',
+    subjects_data: [
+      {
+        subject_id: '1',
+        subject_name: 'maths',
+        divisions_data: [
+          {division_id: '1', division_name: 'A'},
+          {division_id: '2', division_name: 'B'},
+        ]
+      },
+      {
+        subject_id: '2',
+        subject_name: 'Sci',
+        divisions_data: [
+          {division_id: '1', division_name: 'A'},
+          {division_id: '2', division_name: 'B'},
+        ]
+      }
+    ]
+  }
+]
+
+=end
 class Admin::TeachersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_school, only: [:index, :create]
@@ -11,14 +60,17 @@ class Admin::TeachersController < ApplicationController
     #@school_teachers.order(:created_at)
     
    # @school_teachers.sort_by { |m| [ m.updated_at,m.created_at].max}.reverse! 
+
     @school_teachers.each do |teacher|
+      grade_teacher_data = get_grade_teacher_data(teacher.id)
       school_teachers << {
         id: teacher.id,
         first_name: teacher.first_name,
         last_name: teacher.last_name,
         image_url: 'https://dummyimage.com/45x45/2abdda/0011ff&text=1',
         cell_number: teacher.cell_number,
-        email: teacher.email
+        email: teacher.email,
+        grade_teacher_data: grade_teacher_data
       }
     end
     render json: {success: true, school_teachers: school_teachers}
@@ -94,6 +146,34 @@ class Admin::TeachersController < ApplicationController
     return response
   end
 =end
+  def get_grade_teacher_data(teacher_id)
+    grade_teacher_data = []
+    teacher = Teacher.find(teacher_id)
+    grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
+      
+    grades_data.each do |grade_id, datas|
+      subjects_data = {}
+      datas.each do |data|
+        subjects_data[data.subject_id ] ||= {
+          subject_id: data.subject_id,
+          subject_name: data.subject.name,
+          divisions_data: []
+        }
+        subjects_data[data.subject_id][:divisions_data] << {
+          division_id: data.division_id,
+          division_name: data.division.name
+        }
+      end
+
+      grade_teacher_data << {
+        grade_id: grade_id,
+        grade_name: datas.first.grade.name,
+        subjects_data: subjects_data.values
+      }
+
+    end
+    return grade_teacher_data
+  end
 
   def create_grade_teacher_association(teacher)
     errors = []

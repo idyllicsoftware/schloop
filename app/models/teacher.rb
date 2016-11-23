@@ -36,7 +36,7 @@ class Teacher < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :school
-
+  has_many :grade_teachers
   before_save :set_token
 
   def set_token
