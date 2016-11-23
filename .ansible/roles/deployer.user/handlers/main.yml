@@ -1,0 +1,8 @@
+---
+# handlers file for deployer.user
+- name: nori-rdoc
+  become: yes
+  become_method: sudo
+  copy:
+    src: public_keys/.gemrc
+    dest: /home/{{ deploy_user }}/.gemrc

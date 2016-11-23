@@ -1,0 +1,18 @@
+deploy_user: deployer
+deploy_password: deployer
+project: schloop
+rvm1_user: deployer
+rvm_gemset: '{{ project }}'
+rvm_ruby: 2.3.1
+rvm_default_ruby: 'ruby-{{ rvm_ruby }}@{{ rvm_gemset }}'
+rvm1_rubies: [2.3.1]
+rvm1_path: '/home/{{ deploy_user }}/.rvm'
+rvm1_install_path: '/home/{{ deploy_user }}/.rvm'
+rvm1_install_flags: '--auto-dotfiles --user-install'
+postgresql_ext_install_contrib: yes
+postgresql_ext_install_dev_headers: yes
+git_repo_url: git@github.com:idyllicsoftware/schloop.git
+deploy_to: /var/app
+passenger_app_root: '{{ deploy_to }}/{{ project }}/current/public'
+passenger_server_name: 35.154.39.5
+passenger_app_ruby: '{{ rvm1_path }}/gems/{{ rvm_default_ruby }}/wrappers/ruby'
