@@ -25,14 +25,14 @@ Also ensure the the `PEM` file has a PERMISSION given `0600`.(I believe all down
   ssh -i .ansible/public_keys/schloop.pem ubuntu@server-ip 
 
 ```
-Please do run this. (Weird as it sound but amazon server are don't have python installed in them. Amazing even on linux) 
+  Please do run this. (Weird as it sound but amazon server are don't have python installed in them. Amazing even on linux) 
 ``` 
   sudo apt-get install python
 ```
 
 3. The ansible module create a deployer user. I strong recommend doing that. Instead of ubuntu or admin user. 
 
-4. For authorized keys please copy all the user .ansible/public_keys/authorized_keys directory of the project.
+4. For authorized keys please copy all the user `.ansible/public_keys/authorized_keys` directory of the project.
 
 5. Please do a have a look at `vars/main.yml` file inside `.ansible` and make the necessary adjustment over here.
 
