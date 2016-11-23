@@ -63,8 +63,8 @@ class Admin::GradesController < ApplicationController
           if teacher_id.present?
             teacher_data = Teacher.find(teacher_id)
             teacher << { teacher_id: teacher_id, first_name: teacher_data.first_name, middle_name: teacher_data.middle_name, last_name: teacher_data.last_name, email: teacher_data.email, phone: teacher_data.cell_number}
-            divisions <<  {division_id: division.id, division_name: division.name, teacher: teacher}
           end
+          divisions <<  {division_id: division.id, division_name: division.name, teacher: teacher}
         end
         subjects << { subject_id: subject.id, subject_name: subject.name, divisions: divisions}
       end

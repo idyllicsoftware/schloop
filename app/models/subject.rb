@@ -10,7 +10,7 @@
 #  grade_id          :integer
 #  teacher_id        :integer
 #  division_id       :integer
-#  master_subject_id :integer          not null
+#  master_subject_id :integer
 #
 # Indexes
 #
