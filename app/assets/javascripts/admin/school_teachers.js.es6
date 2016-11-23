@@ -25,7 +25,6 @@ class SchoolTeachers extends SchloopBase {
             jForm.attr('method', 'POST');
             jForm.find('input[name="teacher[email]"]').removeAttr('disabled');
             $("input[type=checkbox]").change(function(){
-                debugger;
                     var grade_id = $(this).data('grade_id'),
                         subject_id = $(this).data('subject_id'),
                         val = $(this).parents().eq(3).find('.subject_cls').val();

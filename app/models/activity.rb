@@ -33,7 +33,7 @@ class Activity < ActiveRecord::Base
 
         activity = Activity.create!(create_params)
         create_activity_categories(activity.id, categories_params)
-        upload_files(activity, reference_files, thumbnail_file)
+        # upload_files(activity, reference_files, thumbnail_file)
       rescue => ex
         errors << ex.message
         Rails.logger.debug("Exception in creating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")

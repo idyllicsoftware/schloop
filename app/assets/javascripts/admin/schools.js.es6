@@ -1,4 +1,5 @@
 //= require_self
+//= require admin/activities
 //= require admin/school_profiles
 
 
@@ -7,6 +8,7 @@ class Schools extends SchloopBase {
         let {action} = this._config;
         if(action == 'index'){
             this.initDashboard();
+            this._activities = new Activities(this._config);
         }else if(action == 'show'){
             this._schoolProfile = new SchoolProfiles(this._config);
         }
@@ -56,7 +58,6 @@ class Schools extends SchloopBase {
         $(document).on('click','.cancel-creation', function () {
             createModalEl.modal('hide');
         });
-        this.webContentCreation();
     };
 
     get schoolListTpl (){
@@ -75,36 +76,5 @@ class Schools extends SchloopBase {
                 schoolsContainerEl.html(html);
             }
         });
-    }
-
-    webContentCreation() {
-            let self = this,
-                createWebContentModal = $('#create-web-content-modal'),
-                createWebContentFormEl = $('.web-content-form');
-        
-        $(document).on('click','.web-content-creation-link', function () {
-            createWebContentModal.modal('show');
-            $('#select_multiple').multipleSelect({});
-        });
-
-        this.initFormSubmit(createWebContentFormEl, {
-            'topic': 'topic',
-        }, function (res) {
-            if(res.success) {
-                createWebContentFormEl[0].reset();
-                createWebContentModal.modal('hide');
-                toastr.success('Activity created successfully');
-            }else {
-                self.showErrors(res.errors);
-            }
-        },{
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false
-        });
-
-        $(document).on('click','.cancel-creation', function () {
-            createWebContentModal.modal('hide');
-        });    
     }
 }
