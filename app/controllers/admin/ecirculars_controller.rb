@@ -60,7 +60,7 @@ class Admin::EcircularsController < ApplicationController
 		return {
 		 	title: params[:title], 
 		 	body: params[:body], 
-		 	circular_type: Ecircular.circular_tags[params[:circular_type].to_sym],
+		 	circular_tag: Ecircular.circular_tags[params[:circular_tag].to_sym],
 		 	created_by_type:created_by_type, 
 		 	created_by_id: current_user.id,
 		 	school_id: current_user.school_id

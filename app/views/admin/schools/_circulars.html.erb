@@ -14,7 +14,7 @@
 	        <textarea class="tinymce"></textarea> 
     	</div> -->
     	<div class="circulars-main-form">
-    		<%=  form_tag( "admin/schools/#{@school.id}/ecirculars"	, class:"school-ecircular-form", multipart: true) do %>
+    		<%=  form_tag( "/admin/schools/#{@school.id}/ecirculars"	, class:"school-ecircular-form", multipart: true) do %>
     		    <div class="form-group col-md-12">
     		    	<input name="school_id" value='<%= @school.id %>' hidden >
                       <input type="text" class="form-control input-field" required name="title" placeholder="Subject" autocomplete="off" maxlength="10" />
@@ -61,7 +61,7 @@
 								      		<ul class="checkbox_customized">
 								      			<% grade.divisions.each do |division| %>
 										          <li class="col-md-2">
-										            <input type="checkbox" name="grade[<%= grade.id %>]division[]" value="<%= division.id %>" id="<%= division.name %>" data-grade_id="<%= grade.id %>">
+										            <input type="checkbox" name="grade_id[<%= grade.id %>]division[]" value="<%= division.id %>" id="<%= division.name %>" data-grade_id="<%= grade.id %>">
 										            <label for="<%= division.name %>"><%= division.name %></label>
 										          </li>
 										        <% end %>  
