@@ -31,7 +31,8 @@ class Admin::ActivityService < BaseService
   def get_activities(filter_options)
     filter_options ||= []
     filter_query = build_search_query(filter_options)
-    activities = Activity.includes(:categories).where(filter_query).select(:id, :title, :topic, :updated_at)
+    activities = Activity.includes(:categories, :master_grade, :master_subject).where(filter_query).
+                  select(:id, :title, :topic, :master_grade_id, :master_subject_id, :updated_at)
     filtered_activities = []
     activities.each do |activity|
       filtered_activities << {
@@ -39,6 +40,8 @@ class Admin::ActivityService < BaseService
         title: activity.title,
         topic: activity.topic,
         updated_at: activity.updated_at.strftime('%b, %d %Y'),
+        grade: activity.master_grade.name,
+        subject: activity.master_subject.name,
         categories: activity.categories.pluck(:name)
       }
     end
