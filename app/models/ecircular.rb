@@ -1,0 +1,94 @@
+# == Schema Information
+#
+# Table name: ecirculars
+#
+#  id              :integer          not null, primary key
+#  title           :string
+#  body            :text
+#  circular_tag    :integer
+#  created_by_type :integer
+#  created_by_id   :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  school_id       :integer
+#
+
+class Ecircular < ActiveRecord::Base
+	enum circular_tag: {lesson_plan: 0, exam_time_table: 1, my_result: 2, my_attendance: 3, class_timetable: 4, sample_papers: 5,
+											 transport_details: 6, holiday_circular: 7, medical_visit_report: 8, news_and_events: 9, important_announcement: 10,
+											 event_circular: 11, awards_and_achievements: 12, fee_notice: 13, follow_up_activity_for_parents: 14,
+											 exhibitions: 15, worksheets: 16, extra_curricular_activities_circular: 17, school_time_change: 18,
+											 inter_school_competitions: 19, intra_school_competitions: 20, olympiads: 21 }
+
+ 	enum created_by_type: { teacher: 0, school_admin: 1, product_admin: 2 }
+
+  belongs_to :school
+  has_many :attachments, as: :attachable
+  has_many :ecircular_recipients
+
+  validates :title, :created_by_type, :created_by_id , :presence => true
+
+	def self.school_circulars(school, filter_params, offset, page_size)
+		circular_data = []
+		circulars = school.ecirculars
+		if filter_params[:from_date].present?
+			from_date = DateTime.parse(filter_params[:from_date])
+			circulars = circulars.where("created_at >= ?", from_date)
+		end
+
+		if filter_params[:to_date].present?
+			to_date = DateTime.parse(filter_params[:to_date])
+			circulars = circulars.where("created_at <= ?", to_date)
+		end
+
+		if filter_params[:tags].present?
+			circulars = circulars.where(circular_tag: filter_params[:tags])
+		end
+
+		if filter_params[:divisions].present?
+			division_ids = filter_params[:divisions].join(', ')
+			circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{division_ids})").ids
+			circulars = circulars.where(id: circular_ids)
+		end
+
+		total_records = circulars.count
+
+		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
+		circulars.each do |circular|
+			recipients, attachments = [], []
+			grouped_circulars = circular.ecircular_recipients.group_by do |x| x.grade_id end
+			grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
+			grouped_circulars.each do |grade_id, recipients_data|
+				recipient = {grade_id: grade_id, grade_name: grades_by_id[grade_id].name}
+				recipient[:divisions] = []
+				recipients_data.each do |rec|
+					recipient[:divisions] << {div_id: rec.division_id, div_name: rec.division.name}
+				end
+				recipients << recipient
+			end
+
+			circular.attachments.select(:id, :original_filename, :name).each do |attachment|
+				attachments << {original_filename: attachment.original_filename, s3_url: attachment.name}
+			end
+			created_by = (circular.created_by_type || 'teacher').classify.safe_constantize.find_by(id: circular.created_by_id)
+			circular_data << {
+				id: circular.id,
+				title: circular.title,
+				body: circular.body,
+				created_by: {
+					id: (created_by.id rescue 0),
+					name: (created_by.name rescue '-')
+				},
+				created_on: circular.created_at,
+				circular_tag: {
+					id: Ecircular.circular_tags[circular.circular_tag],
+					name: circular.circular_tag.humanize
+				},
+				recipients: recipients,
+				attachments: attachments
+			}
+		end
+		return circular_data, total_records
+	end
+
+end

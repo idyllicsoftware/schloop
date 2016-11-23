@@ -33,11 +33,14 @@ Rails.application.routes.draw do
     resource :users do
     end
     
-    resources :schools, only: [:show, :create, :index] do
+    resources :schools do
       member do
       end
       collection do
         get :all
+      end
+
+      resources :ecirculars do
       end
 
       resources :school_admins, only: [:index, :create, :update, :destroy], shallow: true do
@@ -71,6 +74,12 @@ Rails.application.routes.draw do
       post "/teacher/login" => 'teachers#login'
       post "/teacher/dashboard" => 'teachers#dashboard'
       post "/teacher/reset_password" => "teachers#reset_password"
+      get "/teacher/profile" => "teachers#profile"
+      post "/ecircular/tags" => "ecirculars#tags"
+      post "/ecircular/create" => "ecirculars#create"
+      get "/ecirculars" => "ecirculars#index"
+      post "/ecirculars" => "ecirculars#index"
     end
   end
+
 end
