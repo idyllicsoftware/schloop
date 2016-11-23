@@ -15,7 +15,6 @@
 #  board          :string
 #  principal_name :string
 #  logo           :string
-#
 
 class School < ActiveRecord::Base
 

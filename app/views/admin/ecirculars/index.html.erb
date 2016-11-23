@@ -1,6 +1,62 @@
 
- <div class="jumbotron">
-<h1> All Circulars</h1> 
+<br>
+<%= search_form_for @search, url: admin_school_ecirculars_path  , method: :get do |f| %>
+<h6> circular type</h6>
+  <% Ecircular.select("distinct circular_type").each do |ecircular| %>
+     <%= check_box_tag('q[circular_type_eq_any][]', ecircular[:circular_type]) %>
+     <%= Ecircular.circular_types.key(ecircular[:circular_type]) %>
+  <% end %>
+  <br><br>
+   <%= f.label :title_cont, "Title Contains" %>
+  <%= f.text_field :title_cont %>
+  <br><br>
+  <%= f.label :created_at_gteq, "Date between" %>
+  <%= f.text_field :created_at_gteq %>
+  <%= f.label :created_at_lteq, "and" %>
+  <%= f.text_field :created_at_lteq %>
+  <br><br>
+  <% @grades.each do |grade|%>
+      <li>
+        <input type="checkbox" id="option"><label for="option"><%= grade.name %></label>
+        <ul >
+          <% grade.divisions.each do |division| %>      
+            <%= label_tag  grade.name, division.name %>
+            <%= check_box_tag "division[]", division.id %>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+         <%= f.submit "Search" %>
+<% end %>
+<br><br>
+<div class="container">
+  <table class="table">
+    <thead>
+       <tr>
+        <th> title </th>
+        <th> body </th>
+        <th> type </th>
+        <th> created by </th>
+        <th> action </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @result.each do |circular| %>  
+      <tr>
+        <td>  <%= circular.title%></td>
+        <td> <%= circular.body %></td>
+        <td>  <%= circular.circular_type%></td>
+        <td>  <%= circular.created_by_type %></td>
+        <td> <%= circular.created_at.to_date.to_s %></td>
+        <td>
+          <div class="thumbnail"> 
+                          <%= link_to 'show', '/admin/schools/(@school)/ecirculars/(@ecircular)' %>
+          </div>
+        </td>  
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 </div>
 
   <div class="panel panel-default">
@@ -9,7 +65,7 @@
         <div class="col-md-12">
       
           <div class="table-responsive">
-            <table class="table"
+            <table class="table">
             <tbody>
               <tr>
               	<th> title </th>
