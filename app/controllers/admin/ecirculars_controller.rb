@@ -56,7 +56,7 @@ class Admin::EcircularsController < ApplicationController
 		 	created_by_type = Ecircular.created_by_types[:school_admin]
 		else
 		 	created_by_type = Ecircular.created_by_types[:teacher]
-		end	
+		end
 		return {
 		 	title: params[:title], 
 		 	body: params[:body], 
