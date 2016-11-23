@@ -33,12 +33,12 @@ class Ecircular < ActiveRecord::Base
 		circulars = school.ecirculars
 		if filter_params[:from_date].present?
 			from_date = DateTime.parse(filter_params[:from_date])
-			circulars = circulars.where("created_at >= ?", from_date)
+			circulars = circulars.where("created_at >= ?", from_date.beginning_of_day)
 		end
 
 		if filter_params[:to_date].present?
 			to_date = DateTime.parse(filter_params[:to_date])
-			circulars = circulars.where("created_at <= ?", to_date)
+			circulars = circulars.where("created_at <= ?", to_date.end_of_day)
 		end
 
 		if filter_params[:tags].present?
