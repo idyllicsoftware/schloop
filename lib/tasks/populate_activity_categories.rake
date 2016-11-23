@@ -47,9 +47,9 @@ task populate_activity_categories: :environment do
 
   categories_data.each do |category_datum|
     puts "\n\n================================STARTING CATEGORY #{category_datum[:name]} ====================================\n"
-    category = Category.where(category_type: category_datum[:category_type], name_map: category_datum[:name_map], name: category_datum[:name]).first_or_create
-    #binding.pry
-    #category.save!
+    category = Category.where(category_type: category_datum[:category_type], name_map: category_datum[:name_map]).first_or_create
+    category.name = category_datum[:name]
+    category.save!
     puts "\n================================ENDING CATEGORY #{category.name} ======================================\n"
   end
 end

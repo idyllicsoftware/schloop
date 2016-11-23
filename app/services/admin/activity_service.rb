@@ -3,7 +3,7 @@ class Admin::ActivityService < BaseService
   def validate_params(params)
     char_limit_50_fields = %w(topic title)
     char_limit_1000_fields = %w(details pre_requisite)
-    mandatory_fields = %w(topic title grade subject category)
+    mandatory_fields = %w(topic title master_grade_id master_subject_id)
     errors = []
     params.each do |field, value|
       if mandatory_fields.include?(field)
