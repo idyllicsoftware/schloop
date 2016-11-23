@@ -31,6 +31,7 @@ class Admin::ActivitiesController < ApplicationController
     activity_service = Admin::ActivityService.new
     activities = activity_service.get_activities(params[:filter])
     render json: {
+      success: true,
       activities: activities
     }
   end
