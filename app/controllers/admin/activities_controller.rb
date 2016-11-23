@@ -28,11 +28,11 @@ class Admin::ActivitiesController < ApplicationController
   end
 
   def all
-      render json: {
-          activities: [{
-              details: 'das'
-         }]
-      }
+    activity_service = Admin::ActivityService.new
+    activities = activity_service.get_activities(params[:filter])
+    render json: {
+      activities: activities
+    }
   end
 
   private
