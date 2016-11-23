@@ -1,5 +1,4 @@
 class Admin::ActivityService < BaseService
-
   def validate_params(params)
     char_limit_50_fields = %w(topic title)
     char_limit_1000_fields = %w(details pre_requisite)
@@ -20,18 +19,17 @@ class Admin::ActivityService < BaseService
         end
       end
 
-      if char_limit_50_fields.include?(field)
-        if value.length > 1000
-          errors << 'Please enter chaaracters less than 50 for field ' + field.humanize
-          next
-        end
+      next unless char_limit_50_fields.include?(field)
+      if value.length > 1000
+        errors << 'Please enter chaaracters less than 50 for field ' + field.humanize
+        next
       end
     end
     { errors: errors, data: [] }
   end
 
   def get_activities(filter_options)
-    filter_options = filter_options || []
+    filter_options ||= []
     filter_query = build_search_query(filter_options)
     activities = Activity.includes(:categories).where(filter_query).select(:id, :title, :topic, :updated_at)
     filtered_activities = []
@@ -52,7 +50,7 @@ class Admin::ActivityService < BaseService
   def build_search_query(filter_options)
     filter_query = {}
     filter_options.each do |attribute, value|
-      if ['master_grade_id','master_subject_id'].include?(attribute)
+      if %w(master_grade_id master_subject_id).include?(attribute)
         filter_query[attribute] = value
       elsif attribute == 'categories'
         filter_query['categories.id'] = value

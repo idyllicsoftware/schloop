@@ -42,34 +42,35 @@ class Activity < ActiveRecord::Base
     { errors: errors, data: [] }
   end
 
-  def update_activity(update_params)
-    errors = []
-    ActiveRecord::Base.transaction do
-      begin
-        categories_params = update_params.delete(:categories)
-        reference_files = create_params.delete(:reference_files)
-        thumbnail_file = create_params.delete(:thumbnail_file)
+  # def update_activity(update_params)
+  #   errors = []
+  #   ActiveRecord::Base.transaction do
+  #     begin
+  #       categories_params = update_params.delete(:categories)
+  #       reference_files = create_params.delete(:reference_files)
+  #       thumbnail_file = create_params.delete(:thumbnail_file)
 
-        activity = update_attributes!(update_params)
-        activity_categories.destroy_all
-        create_activity_categories(activity.id, categories_params)
-        upload_files(activity, reference_files, thumbnail_file)
-      rescue => ex
-        errors << ex.message
-        Rails.logger.debug("Exception in updating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
-      end
+  #       activity = update_attributes!(update_params)
+  #       activity_categories.destroy_all
+  #       create_activity_categories(activity.id, categories_params)
+  #       upload_files(activity, reference_files, thumbnail_file)
+  #     rescue => ex
+  #       errors << ex.message
+  #       Rails.logger.debug("Exception in updating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
+  #     end
+  #   end
+  #   { errors: errors, data: [] }
+  # end
+
+  private
+
+  def upload_files(activity, reference_files, thumbnail_file)
+    file_upload_service = FileUploadService.new
+    reference_files.each do |file|
+      file_upload_service.upload_file_to_s3(file, activity, sub_type: Activity.file_sub_types['reference'])
     end
-    { errors: errors, data: [] }
+    file_upload_service.upload_file_to_s3(thumbnail_file, activity, sub_type: Activity.file_sub_types['thumbnail'])
   end
-
-    private
-    def upload_files(activity, reference_files, thumbnail_file)
-      file_upload_service = FileUploadService.new
-      reference_files.each do |file|
-        file_upload_service.upload_file_to_s3(file, activity, sub_type: Activity.file_sub_types['reference'])
-      end
-      file_upload_service.upload_file_to_s3(thumbnail_file, activity, sub_type: Activity.file_sub_types['thumbnail'])
-    end
 
   def self.create_activity_categories(activity_id, categories_params)
     categories_params.each do |category_id|
