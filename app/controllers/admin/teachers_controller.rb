@@ -61,9 +61,10 @@ class Admin::TeachersController < ApplicationController
 
     if errors.blank?
       Admin::AdminMailer.welcome_message(teacher.email, teacher.first_name, teacher.password).deliver_now
+      return {success: errors.blank?, teacher_id: teacher.id}
+    else
+        return {success: errors.blank?, errors: errors}  
     end
-
-    return {success: errors.blank?, errors: errors, teacher_id: teacher.id}
   end
 
   def create_school_teachers_params
@@ -95,20 +96,29 @@ class Admin::TeachersController < ApplicationController
 =end
 
   def create_grade_teacher_association(teacher)
-    teacher_id = teacher[:teacher_id]
-    grades = params[:grade]
-    grades.each do |grade|
-      grade_id = grade[0].to_i
-      grade_data = grade[1]
-      subjects = grade_data[:subjects]
-      subjects.each do |subject| 
-        subject_id = subject[0].to_i
-        subject_data = subject[1]
-        divisions= subject_data[:divisions]
-        divisions.each do |division|
-          grade_teacher = GradeTeacher.create(teacher_id: teacher_id,grade_id: grade_id, subject_id: subject_id, division_id: division.to_i)
+    errors = []
+    grade_teacher = nil
+    begin
+      teacher_id = teacher[:teacher_id]
+      grades = params[:grade]
+      grades.each do |grade|
+        grade_id = grade[0].to_i
+        grade_data = grade[1]
+        subjects = grade_data[:subjects]
+        subjects.each do |subject| 
+          subject_id = subject[0].to_i
+          subject_data = subject[1]
+          divisions= subject_data[:divisions]
+          divisions.each do |division|
+            grade_teacher = GradeTeacher.create(teacher_id: teacher_id,grade_id: grade_id, subject_id: subject_id, division_id: division.to_i)
+          end
         end
       end
+    rescue Exception => e
+      errors << "error occured while creating grade teacher asssociation"
+      return {success: false, errors: errors}
     end
+    return {success: true, grade_teacher: grade_teacher}
+
   end
 end
