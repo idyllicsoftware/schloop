@@ -62,14 +62,14 @@ class Activity < ActiveRecord::Base
     { errors: errors, data: [] }
   end
 
-  private
-
-  def upload_files(activity, reference_files, thumbnail_file)
-    reference_files.each do |file|
-      FileUploadService.new.upload_file_to_s3(file, activity, sub_type: Activity.file_sub_types['reference'])
+    private
+    def upload_files(activity, reference_files, thumbnail_file)
+      file_upload_service = FileUploadService.new
+      reference_files.each do |file|
+        file_upload_service.upload_file_to_s3(file, activity, sub_type: Activity.file_sub_types['reference'])
+      end
+      file_upload_service.upload_file_to_s3(thumbnail_file, activity, sub_type: Activity.file_sub_types['thumbnail'])
     end
-    FileUploadService.new.upload_file_to_s3(thumbnail_file, activity, sub_type: Activity.file_sub_types['thumbnail'])
-  end
 
   def self.create_activity_categories(activity_id, categories_params)
     categories_params.each do |category_id|
