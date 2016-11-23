@@ -18,13 +18,11 @@
 #  first_name             :text             not null
 #  last_name              :text             not null
 #  guardian_type          :text             not null
-#  token                  :string
 #
 # Indexes
 #
 #  index_parents_on_email                 (email) UNIQUE
 #  index_parents_on_reset_password_token  (reset_password_token) UNIQUE
-#  index_parents_on_token                 (token)
 #
 
 class Parent < ActiveRecord::Base
