@@ -35,7 +35,7 @@ class Admin::ActivitiesController < ApplicationController
   end
 
   def get_activity_params(params)
-    params.require(:activity).permit(:grade, :subject, :topic, :title, :categories, :teaches,
-                                     :pre_requisite, :details, :attachments, :reference_files, :thumbnail_file)
+    params.require(:activity).permit(:master_grade_id, :master_subject_id, :topic, :title, :categories, :teaches,
+                                     :pre_requisite, :details, :reference_files, :thumbnail_file)
   end
 end

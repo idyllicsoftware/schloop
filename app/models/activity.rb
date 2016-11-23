@@ -71,9 +71,9 @@ class Activity < ActiveRecord::Base
     FileUploadService.new.upload_file_to_s3(thumbnail_file, activity, sub_type: Activity.file_sub_types['thumbnail'])
   end
 
-  def create_activity_categories(activity_id, categories_params)
+  def self.create_activity_categories(activity_id, categories_params)
     categories_params.each do |category_id|
-      ActivityCategory.create!(activity_id: activity_id, category_id: category_id, category_type: Category.category_types['activity'])
+      ActivityCategory.create!(activity_id: activity_id, category_id: category_id)
     end
   end
 end
