@@ -94,7 +94,7 @@ class SchoolGrades extends SchloopBase {
 
                     schoolGradeContainerEl.html(html);
                     _self.popoverInit(false, schoolGradeContainerEl);
-
+                    
                     schoolGradeContainerEl.find('.subject-list').each(function(){
                         var firstliEl = $(this).find('li').eq(0);
                         firstliEl.find('a').trigger('click');
