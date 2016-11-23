@@ -20,6 +20,7 @@
 
 class Grade < ActiveRecord::Base
 	belongs_to :school
+	belongs_to :master_grade
 	has_many :divisions
 	has_many :subjects
 	has_many :ecircular_recipients

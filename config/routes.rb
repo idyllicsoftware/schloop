@@ -66,7 +66,9 @@ Rails.application.routes.draw do
     end
 
     resources :activities, only: [:index, :new] do
-      post :create_or_update
+      collection do
+        post :create_or_update
+      end
     end
   end
 
