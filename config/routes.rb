@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   # }
 
   namespace :admin do
+    resources :parent_imports
     resource :users do
     end
     

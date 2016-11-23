@@ -1,0 +1,6 @@
+<div class="tab-pane fade in parents-container" id="parents-tab">
+<div class="content-wrapper">
+<%= select_tag "page_type", options_for_select(@grades.collect{ |u| [u.name, u.id]}), {:class =>"select_combobox",:onchange=>"reset_form(this.id,'page_type_msg');"} %>
+<%= link_to "Upload Playgroup CSV", new_admin_parent_import_path(:school_id => @school.id)%>
+</div>
+</div>

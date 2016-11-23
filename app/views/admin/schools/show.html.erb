@@ -5,7 +5,7 @@
         <a href="#school-profile-main-section-tab" aria-controls="school-profile-main-section-id" role="school-profile-main-section-id" data-toggle="tab">School Profile</a>
       </li>
       <li>
-        <a href="#parents-tab" aria-controls="parents-tab" role="parents-tab"  data-toggle="tab">Parents</a>
+        <a href="#parents-tab" aria-controls="parents-tab" role="parents-tab"  data-toggle="tab">Students</a>
       </li>
       <li>
         <a href="#circulars-tab" aria-controls="circulars-tab" role="circulars-tab"  data-toggle="tab">Circulars</a>
@@ -157,11 +157,8 @@
           </div>
         </div>
       </div>
-      <div class="tab-pane fade in parents-container" id="parents-tab">
-        <div class="content-wrapper">
-          <h1>HIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</h1>
-        </div>
-      </div>
+      
+      <%= render :partial => "admin/schools/students" %>
       <%= render :partial => "admin/schools/circulars" %>
     </div>
   </div>

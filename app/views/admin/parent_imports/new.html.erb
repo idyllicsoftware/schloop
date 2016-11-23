@@ -1,0 +1,29 @@
+
+<div class="school-main-section">
+  <div class="container">
+<h1>Parent Import</h1>
+
+
+
+
+<%= form_for @parent_import,  :url => admin_parent_imports_path do |f| %>
+  <% if @parent_import.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@parent_import.errors.count, "error") %> prohibited this import from completing:</h2>
+      <ul>
+      <% @parent_import.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+  <%= hidden_field_tag :school_id,  @school.id%>
+    <%= f.file_field :file %>
+  </div>
+  <div class="buttons"><%= f.submit "Import" %></div>
+<% end %>
+
+</div>
+</div>

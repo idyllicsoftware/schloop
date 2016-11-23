@@ -32,5 +32,6 @@
 #
 
 class Parent < User
+	has_many :students, :dependent => :destroy
 	has_many :parent_details
 end

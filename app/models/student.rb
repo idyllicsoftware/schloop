@@ -9,9 +9,11 @@
 #  middle_name :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  parent_id   :integer
 #
 
 class Student < ActiveRecord::Base
-	belongd_to :school
+	belongs_to :school
+	belongs_to :parent
 	has_many :student_profiles
 end
