@@ -7,14 +7,15 @@ class Admin::ActivitiesController < ApplicationController
   # end
 
   def new
-    @grades = MasterGrade.all.select(:id, :name, :name_map)
-    @subjects = MasterSubject.all.select(:id, :name, :name_map)
-    @categories = Category.all.select(:id, :name, :name_map).where(category_type: Category.category_types[:activity])
+    @grades = MasterGrade.all.select(:id, :name)
+    @subjects = MasterSubject.all.select(:id, :name)
+    @categories = Category.all.select(:id, :name).where(category_type: Category.category_types[:activity])
+    @activity = Activity.new
   end
 
   def create_or_update
     activity_service = Admin::ActivityService.new
-    activity_params = get_activity_params
+    activity_params = get_activity_params(params)
     validate_response = activity_service.validate_params(activity_params)
     if validate_response[:errors].present?
       render json: { errors: validate_response[:errors], data: validate_response[:data] }
