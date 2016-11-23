@@ -36,10 +36,10 @@ class Admin::EcircularsController < ApplicationController
 				file_name = File.basename(file.original_filename, ".*")
 				file_name = "#{file_name}_#{Time.now.to_i}#{extension}"
 				ecircular_file_upload_service = Admin::EcircularFileUploadService.new
-				response = ecircular_file_upload_service.upload_ecircular_file_to_s3(file, file_name, new_circular)
+				ecircular_file_upload_service.upload_ecircular_file_to_s3(file, file_name, new_circular)
 			end
 		end
-		sending_response = send_circular(params[:grades], params[:school_id], new_circular.id)		
+		add_recipients_data(params[:grade], params[:school_id], new_circular.id)
 		redirect_to admin_school_ecirculars_path	
  	end
  
@@ -49,7 +49,7 @@ class Admin::EcircularsController < ApplicationController
 
 	private
 
-	def send_circular(recipients, school_id, ecircular_id)
+	def add_recipients_data(recipients, school_id, ecircular_id)
 		recipients.each do |grade|
 			grade_id = grade[0][0].to_i
 			grade_data = grade[1]
@@ -57,7 +57,7 @@ class Admin::EcircularsController < ApplicationController
 			if divisions.present?
 				divisions.each do |division|
 					division_id = division.to_i
-					circular_recipient = EcircularRecipient.create(:school_id => school_id, :grade_id => grade_id, :division_id => division_id,:ecircular_id => ecircular_id )
+					circular_recipient = EcircularRecipient.create(school_id: school_id, grade_id: grade_id, division_id: division_id, ecircular_id: ecircular_id )
 				end
 			end
 		end

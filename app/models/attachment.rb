@@ -10,6 +10,7 @@
 #  file_size         :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  sub_type          :integer          default(0), not null
 #
 
 class Attachment < ActiveRecord::Base

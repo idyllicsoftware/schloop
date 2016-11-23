@@ -11,14 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20161117113620) do
-=======
-ActiveRecord::Schema.define(version: 20161118100242) do
->>>>>>> master
+ActiveRecord::Schema.define(version: 20161122093457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.string   "teaches"
+    t.string   "topic",             null: false
+    t.string   "title",             null: false
+    t.integer  "master_grade_id",   null: false
+    t.integer  "master_subject_id", null: false
+    t.text     "details"
+    t.text     "pre_requisite"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "activity_categories", force: :cascade do |t|
+    t.integer  "activity_id", null: false
+    t.integer  "category_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "attachments", force: :cascade do |t|
     t.string   "attachable_type"
@@ -26,9 +41,20 @@ ActiveRecord::Schema.define(version: 20161118100242) do
     t.string   "name"
     t.string   "original_filename"
     t.integer  "file_size"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "sub_type",          default: 0, null: false
   end
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name"
+    t.string   "name_map",                  null: false
+    t.integer  "category_type", default: 0
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
 
   create_table "divisions", force: :cascade do |t|
     t.string   "name",       null: false
@@ -53,11 +79,7 @@ ActiveRecord::Schema.define(version: 20161118100242) do
   create_table "ecirculars", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-<<<<<<< HEAD
     t.integer  "circular_tag"
-=======
-    t.integer  "circular_type"
->>>>>>> master
     t.integer  "created_by_type"
     t.integer  "created_by_id"
     t.datetime "created_at",      null: false
@@ -80,13 +102,32 @@ ActiveRecord::Schema.define(version: 20161118100242) do
   add_index "grade_teachers", ["teacher_id"], name: "index_grade_teachers_on_teacher_id", using: :btree
 
   create_table "grades", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                        null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "school_id"
+    t.integer  "master_grade_id", default: 0, null: false
   end
 
   add_index "grades", ["school_id"], name: "index_grades_on_school_id", using: :btree
+
+  create_table "master_grades", force: :cascade do |t|
+    t.string   "name"
+    t.string   "name_map",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "master_grades", ["name_map"], name: "index_master_grades_on_name_map", using: :btree
+
+  create_table "master_subjects", force: :cascade do |t|
+    t.string   "name"
+    t.string   "name_map",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "master_subjects", ["name_map"], name: "index_master_subjects_on_name_map", using: :btree
 
   create_table "parents", force: :cascade do |t|
     t.string   "email",                  limit: 100, default: "", null: false
@@ -104,37 +145,12 @@ ActiveRecord::Schema.define(version: 20161118100242) do
     t.text     "first_name",                                      null: false
     t.text     "last_name",                                       null: false
     t.text     "guardian_type",                                   null: false
+    t.string   "token"
   end
 
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
-
-  create_table "permissions", force: :cascade do |t|
-    t.string   "name"
-    t.string   "controller"
-    t.string   "action"
-    t.text     "flags"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "role_permissions", force: :cascade do |t|
-    t.integer  "role_id"
-    t.integer  "permission_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  add_index "role_permissions", ["permission_id"], name: "index_role_permissions_on_permission_id", using: :btree
-  add_index "role_permissions", ["role_id"], name: "index_role_permissions_on_role_id", using: :btree
-
-  create_table "roles", force: :cascade do |t|
-    t.string   "name"
-    t.string   "role_map"
-    t.boolean  "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+  add_index "parents", ["token"], name: "index_parents_on_token", using: :btree
 
   create_table "schools", force: :cascade do |t|
     t.string   "name",           null: false
@@ -152,13 +168,14 @@ ActiveRecord::Schema.define(version: 20161118100242) do
   end
 
   create_table "subjects", force: :cascade do |t|
-    t.string   "name",         null: false
+    t.string   "name",                          null: false
     t.string   "subject_code"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "grade_id"
     t.integer  "teacher_id"
     t.integer  "division_id"
+    t.integer  "master_subject_id", default: 0, null: false
   end
 
   add_index "subjects", ["division_id"], name: "index_subjects_on_division_id", using: :btree
@@ -184,38 +201,11 @@ ActiveRecord::Schema.define(version: 20161118100242) do
     t.string   "middle_name"
     t.string   "last_name"
     t.string   "cell_number"
-    t.string   "phone"
-    t.string   "invitation_token"
-    t.datetime "invitation_created_at"
-    t.datetime "invitation_sent_at"
-    t.datetime "invitation_accepted_at"
-    t.integer  "invitation_limit"
-    t.string   "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email"
-    t.integer  "invited_by_id"
-    t.string   "invited_by_type"
-    t.integer  "invitations_count",      default: 0
   end
 
-  add_index "teachers", ["confirmation_token"], name: "index_teachers_on_confirmation_token", unique: true, using: :btree
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
-  add_index "teachers", ["invitation_token"], name: "index_teachers_on_invitation_token", unique: true, using: :btree
-  add_index "teachers", ["invitations_count"], name: "index_teachers_on_invitations_count", using: :btree
-  add_index "teachers", ["invited_by_id"], name: "index_teachers_on_invited_by_id", using: :btree
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
-
-  create_table "user_roles", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "user_roles", ["user_id", "role_id"], name: "index_user_roles_on_user_id_and_role_id", unique: true, using: :btree
-  add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",            null: false
@@ -251,11 +241,7 @@ ActiveRecord::Schema.define(version: 20161118100242) do
   add_foreign_key "grade_teachers", "subjects"
   add_foreign_key "grade_teachers", "teachers"
   add_foreign_key "grades", "schools"
-  add_foreign_key "role_permissions", "permissions"
-  add_foreign_key "role_permissions", "roles"
   add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
   add_foreign_key "subjects", "teachers"
-  add_foreign_key "user_roles", "roles"
-  add_foreign_key "user_roles", "users"
 end

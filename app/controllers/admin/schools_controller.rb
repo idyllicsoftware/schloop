@@ -18,6 +18,7 @@ class Admin::SchoolsController < ApplicationController
         school_id: params[:id]
     }
     @grades = Grade.where(school_id: params[:id])
+    @circular_tags = Ecircular.circular_tags
     redirect_to admin_schools_path and return if @school.blank?
   end
 
