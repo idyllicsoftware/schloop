@@ -3,9 +3,9 @@
 # Table name: categories
 #
 #  id            :integer          not null, primary key
-#  name          :string
+#  name          :string           not null
 #  name_map      :string           not null
-#  category_type :integer          default(0)
+#  category_type :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

@@ -63,7 +63,7 @@
                 <label>DIVISIONS</label>
                 <ul class="checkbox_customized">
                   <% grade.divisions.each do |division| %>
-                  <li class="col-md-4"><input type="checkbox" name="grade[<%= grade.id %>]subjects[<%= subject.id %>]divisions[]" value="<%= division.id %>" id="subject<%= subject.id %>division<%= division.id %>" data-grade_id="<%= grade.id %>" 
+                  <li class="col-md-6"><input type="checkbox" name="grade[<%= grade.id %>]subjects[<%= subject.id %>]divisions[]" value="<%= division.id %>" id="subject<%= subject.id %>division<%= division.id %>" data-grade_id="<%= grade.id %>" 
                     data-subject_id="<%= subject.id %>">
                     <label for="subject<%= subject.id %>division<%= division.id %>"><%= division.name %></label>
                   </li>

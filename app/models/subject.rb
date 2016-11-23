@@ -9,6 +9,8 @@
 #  updated_at        :datetime         not null
 #  grade_id          :integer
 #  master_subject_id :integer          default(0), not null
+#  teacher_id        :integer
+#  division_id       :integer
 #
 # Indexes
 #

@@ -98,19 +98,20 @@
                       <div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
                         <ul id="subject-tab" class="nav nav-tabs subject-list">
                         {{#subjects}}
-                          <li><a href="#subject1-tab" data-toggle="tab">{{subject_name}}</a></li>
+                          <li><a href="#{{subject_id}}" data-toggle="tab">{{subject_name}}</a></li>
                         {{/subjects}}
                         </ul>
                       </div>
                       <%= render :partial => "admin/schools/add_subjects" %> 
                       <div class="tab-content">
-                        <div class="tab-pane fade in active division-wrapper inner-tabs" id="subject1-tab">
+                        {{#subjects}}
+                        <div class="tab-pane fade in division-wrapper inner-tabs" id="{{subject_id}}">
                           <div class="plr20"><span class="data-title"><a class="fa fa-chevron-down no-of-div"></a>5 Divisions</span></div>
                           <div class="slide-division-wrapper">
                             <div class="plr20">
                               <ul id="myTab" class="nav nav-tabs division-list">
                                 {{#divisions}}
-                                  <li data-division_id="{{division_id}}" data-division_name="{{division_name}}"><a href="#div-a" data-toggle="tab">{{division_name}}</a></li>
+                                  <li data-division_id="{{division_id}}" data-division_name="{{division_name}}"><a href="#{{division_id}}" data-toggle="tab">{{division_name}}</a></li>
                                 {{/divisions}}
                               </ul>
                             </div>
@@ -120,24 +121,29 @@
                               <%= render :partial => "admin/schools/add_divisions"%> 
                             </div>
                             <div id="myTabContent" class="tab-content">
-                              <div class="tab-pane fade in active" id="div-a">
+                              {{#divisions}}
+                              <div class="tab-pane fade in" id="{{division_id}}">
                                 <div class="teachers-wrapper">
                                   <ul>
-                                    <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption"><p>Ruchi P.</p>English</span></div></a></li>
+                                  {{#teacher}}
+                                    <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption">
+                                    <p>{{first_name}} {{last_name}}</p>{{subject_name}}</span></div></a></li>
+                                  {{/teacher}}  
                                   </ul>
                                   <div id="teachers-info-popover-content" class="hidden">
                                     <div>
-                                      <p>Ruchi Patil</p>
-                                      <p>8234769386</p>
-                                      <p>ruchi@gmail</p>
+                                      <p>{{first_name}}{{last_name}}</p>
+                                      <p>{{phone}}</p>
+                                      <p>{{email}}</p>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="tab-pane fade" id="div-b"><h1>khjbjhdkhjbjhd</h1></div>
+                              {{/divisions}}
                             </div>
                           </div>
-                        </div> 
+                        </div>
+                        {{/subjects}} 
                       </div>
                     </div>
                   </div>  
