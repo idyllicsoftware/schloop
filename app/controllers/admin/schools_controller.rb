@@ -14,6 +14,10 @@ class Admin::SchoolsController < ApplicationController
   end
 
   def show
+    ### TODO KAPIL CHECK PRODUCT ADMIN & SCHLOOP ADMIN ROLE FOR THIS ACTION
+    @user = User.where(school_id: params[:id])
+    @school = School.find(params[:id])
+    @teacher_import = TeacherImport.new({}, @school.id)
     @js_data = {
         school_id: params[:id]
     }

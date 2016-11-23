@@ -1,4 +1,5 @@
 class Admin::TeachersController < ApplicationController
+
   before_action :authenticate_user!
   before_action :find_school, only: [:index, :create]
   before_action :find_teacher, only: [:update, :destroy]

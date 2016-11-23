@@ -18,7 +18,8 @@ Rails.application.routes.draw do
                          sessions: 'admin/teachers/sessions',
                          registrations: 'admin/teachers/registrations',
                          passwords: 'admin/teachers/passwords',
-                         invitations: 'admin/teachers/invitations'
+                         invitations: 'admin/teachers/invitations',
+                         imports: 'admin/teachers/teacher_imports'
   }
 
 
@@ -30,6 +31,11 @@ Rails.application.routes.draw do
   # }
 
   namespace :admin do
+
+    resource :teachers do
+      get "imports/new" => 'teachers/teacher_imports#new'
+      post "imports" => 'teachers/teacher_imports#create'
+    end
     resource :users do
     end
     
