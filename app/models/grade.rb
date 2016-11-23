@@ -7,7 +7,7 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  school_id       :integer
-#  master_grade_id :integer
+#  master_grade_id :integer          default(0), not null
 #
 # Indexes
 #
