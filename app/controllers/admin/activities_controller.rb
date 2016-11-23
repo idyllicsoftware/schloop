@@ -19,8 +19,11 @@ class Admin::ActivitiesController < ApplicationController
     if validate_response[:errors].present?
       render json: { errors: validate_response[:errors], data: validate_response[:data] }
     end
-    response = if @activity
-                 @activity&.update_activity(activity_params)
+    if @activity
+      response = @activity.update_activity(activity_params)
+    else
+      response = Activity.create_activity(activity_params)
+    end
     render json: { errors: response[:errors], data: response[:data] }
   end
 

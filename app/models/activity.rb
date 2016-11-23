@@ -2,22 +2,16 @@
 #
 # Table name: activities
 #
-#  id            :integer          not null, primary key
-#  teaches       :string
-#  topic         :string           not null
-#  title         :string           not null
-#  attachment_id :integer
-#  grade         :integer          not null
-#  subject       :integer          not null
-#  details       :text
-#  pre_requisite :text
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#
-# Indexes
-#
-#  index_activities_on_grade    (grade)
-#  index_activities_on_subject  (subject)
+#  id                :integer          not null, primary key
+#  teaches           :string
+#  topic             :string           not null
+#  title             :string           not null
+#  master_grade_id   :integer          not null
+#  master_subject_id :integer          not null
+#  details           :text
+#  pre_requisite     :text
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 class Activity < ActiveRecord::Base
