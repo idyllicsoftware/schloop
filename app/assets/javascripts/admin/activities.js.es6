@@ -13,20 +13,19 @@ class Activities extends SchloopBase {
 
     initEventListeners(){
         let _self = this,
-            jForm,
-            createWebContentModal = $('#create-web-content-modal');
+            createWebContentModal = $('#create-web-content-modal'),
+            jForm = createWebContentModal.find('form');
 
         $('#select_multiple').multipleSelect({});
 
         $(document).on('click','.web-content-creation-link', function () {
             createWebContentModal.modal('show');
-            jForm = createWebContentModal.find('form');
             jForm[0].reset();
             jForm.attr('action', `/admin/activities`);
             jForm.attr('method', 'POST');
-            _self.initForm(jForm);
         });
 
+        _self.initForm(jForm);
         _self.loadActivities();
 
     };
