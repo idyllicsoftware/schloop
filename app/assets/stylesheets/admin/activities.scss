@@ -1,3 +1,29 @@
-// Place all the styles related to the admin/activities controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "includes/variables";
+@import "includes/mixins";
+
+.activities_content_section {
+    .content-list {
+        border-top: 1px solid #dadada;
+        border-bottom: 1px solid #dadada;
+        padding: 0px;
+        list-style-type: none;
+        margin-top: 15px;
+        .content-item {
+            padding: 15px 0px;
+            color: #666666;
+            border-bottom: 1px dotted #999999;
+            &:last-child {
+                border-bottom: none;
+            }
+            .content-title {
+              margin-top: 0px;
+            }
+            .edit-hint-text {
+              font-size: 13px;
+            }
+            .tags-right {
+                color: $heading-color;
+            }
+        }
+    }
+}

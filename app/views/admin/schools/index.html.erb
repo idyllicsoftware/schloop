@@ -26,9 +26,16 @@
       </div>
       <div class="tab-pane fade" id="contents-tab">
         <div class="content-wrapper">
-          <div class="pull-right web-content-link">
-            <a class="web-content-creation-link">+Add Activity</a>
+          <div class="clearfix">
+            <div class="pull-right web-content-link">
+              <a class="web-content-creation-link">+Add Activity</a>
+            </div>
           </div>
+          <div class="activities_content_section">
+            <ul id="content_list_id" class="content-list">
+            </ul>
+          </div>
+
         </div>
       </div>
     </div>
@@ -36,6 +43,19 @@
 </div>
 
 <%= render :partial => "admin/schools/create_school" %>
+
+<script id="content_list_tpl" type="text/html">
+  {{#activities}}
+    <li class="content-item">
+      <div class="clearfix">
+        <h4 class="content-title pull-left">{{ title }}</h4>
+        <div class="tags-right pull-right">{{ grade }} | {{ subject }}</div>
+      </div>
+      <p class="grade_names">{{ topic }} | {{ categories }}</p>
+      <p class="edit-hint-text">Last Edited: {{ updated_at }}</p>
+    </li>
+  {{/activities}}
+</script>
 
 <script id="schools_list_tpl" type="text/html">
     {{#schools}}

@@ -7,6 +7,10 @@ class Activities extends SchloopBase {
         return this;
     };
 
+    get activitiesListTpl (){
+        return $('#content_list_tpl').html();
+    }
+
     initEventListeners(){
         let _self = this,
             jForm,
@@ -27,14 +31,29 @@ class Activities extends SchloopBase {
 
     };
 
+    getProcessedData(res){
+        let {activities} = res;
+        if(activities && activities.length){
+            activities.forEach(function (item) {
+                item.categories = item.categories.join(' | ');
+            });
+        }
+
+        return {
+            activities: activities || []
+        };
+    }
+
     loadActivities(){
-        let _self = this, html = '';
+        let _self = this, html = '',
+            activitiesListEl = $('#content_list_id');
         $.ajax({
             url: `/admin/activities/all`,
             success: function (res) {
                 if(res.success) {
-
+                    html = Mustache.to_html(_self.activitiesListTpl, _self.getProcessedData(res));
                 }
+                activitiesListEl.html(html);
             }
         });
     };
