@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161122093457) do
+ActiveRecord::Schema.define(version: 20161124111628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,16 +151,15 @@ ActiveRecord::Schema.define(version: 20161122093457) do
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
 
   create_table "schools", force: :cascade do |t|
-    t.string   "name",               null: false
-    t.text     "address",            null: false
-    t.string   "zip_code",           null: false
-    t.string   "phone1",             null: false
+    t.string   "name",           null: false
+    t.text     "address",        null: false
+    t.string   "zip_code",       null: false
+    t.string   "phone1",         null: false
     t.string   "phone2"
-    t.string   "website",            null: false
-    t.integer  "school_director_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.string   "code",               null: false
+    t.string   "website",        null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "code",           null: false
     t.string   "board"
     t.string   "principal_name"
     t.string   "logo"

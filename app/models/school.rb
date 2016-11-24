@@ -2,20 +2,19 @@
 #
 # Table name: schools
 #
-#  id                 :integer          not null, primary key
-#  name               :string           not null
-#  address            :text             not null
-#  zip_code           :string           not null
-#  phone1             :string           not null
-#  phone2             :string
-#  website            :string           not null
-#  school_director_id :integer
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  code               :string           not null
-#  board              :string
-#  principal_name     :string
-#  logo               :string
+#  id             :integer          not null, primary key
+#  name           :string           not null
+#  address        :text             not null
+#  zip_code       :string           not null
+#  phone1         :string           not null
+#  phone2         :string
+#  website        :string           not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  code           :string           not null
+#  board          :string
+#  principal_name :string
+#  logo           :string
 #
 
 class School < ActiveRecord::Base
@@ -32,7 +31,7 @@ class School < ActiveRecord::Base
   validates :address, :presence =>true, :length => { :maximum => 300 }
   validates :zip_code, :presence => true, numericality: { only_integer: true }, :length => { :is => 6 }
   validates :phone1, :presence => true, numericality: { only_integer: true },  :length => { :maximum => 15 } 
-  validates :phone2, numericality: { only_integer: true }, :length => { :maximum => 15 }
+  validates :phone2, :length => { :maximum => 15 }
   validates :website, :presence => true, :length => { :maximum => 100 }
 
   #validates :code, :presence => true, :uniqueness => true, :length => { :is => 6}
