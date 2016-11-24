@@ -44,7 +44,8 @@ Please install ansible on your system (on local machine) from [here](http://docs
 
 7. With the server set. Final task is to do mina deploy
   - mina setup
-  # if in case you want to copy the database.yml and secrets.yml file via ansible templates directory. Run the below command else skip it and use the mina deploy and set the database.yml and secrets.yml manually.
+  
+   # if in case you want to copy the database.yml and secrets.yml file via ansible templates directory. Run the below command else skip it and use the mina deploy and set the database.yml and secrets.yml manually.
   - cd .ansible && ansible-playbook ansible.yml -i host --tags=mina-helper `## Please make sure the database.yml and secrets.yml are set properly. Inside templates directory`
   - mina deploy
 
