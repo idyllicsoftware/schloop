@@ -32,7 +32,7 @@ Please install ansible on your system (on local machine) from [here](http://docs
 
 3. The ansible module create a deployer user. I strong recommend doing that. Instead of ubuntu or admin user. 
 
-4. For authorized keys please copy all the user `.ansible/public_keys/authorized_keys` directory of the project.
+4. For authorized keys please copy all the user public key inside `.ansible/public_keys/authorized_keys` directory of the project.
 
 5. Please do a have a look at `vars/main.yml` file inside `.ansible` and make the necessary adjustment over here.
 
