@@ -1,13 +1,8 @@
 class Api::V1::ContentsController < ApplicationController
 
-	def create
+	def index
 		errors = []
-		user =@current_user
-		new_content = Content.create(content_params)
-		if new_content.errors?
-			errors << new_content.errors.full_messages
-		end
-
+		@contents = Content.search(params[:filter])
 		if errors.blank?
 			response = {
 				success: true,
@@ -26,7 +21,7 @@ class Api::V1::ContentsController < ApplicationController
 		end
 		render json: response
 	end
-	
+
 	private
     def content_params
       params.permit(:grade, :subject, :topic, :activity_title, :catagory, :teachers, :pre_requisites, :reference_image)
