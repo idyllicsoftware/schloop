@@ -30,12 +30,12 @@ class SchoolECircular extends SchloopBase {
                 selectedObj = allData[key];
                 html = selectedObj.name;
                 divisions = [];
-                selectedHash[key].forEach(function (item) {
-                    if(selectedObj.divisions.hasOwnProperty(item)) {
-                        selectedDivisions = selectedObj.divisions[item];
-                        divisions.push(selectedDivisions.name + `<input type="hidden" name="divisions[]" value="${item}" />`);
+                for(var divKey in selectedHash[key]){
+                    if(selectedObj.divisions.hasOwnProperty(divKey)) {
+                        selectedDivisions = selectedObj.divisions[divKey];
+                        divisions.push(selectedDivisions.name + `<input type="hidden" name="divisions[]" value="${divKey}" />`);
                     }
-                });
+                };
                 if(divisions.length){
                     html += "(";
                     html += divisions.join(', ');
@@ -59,14 +59,15 @@ class SchoolECircular extends SchloopBase {
         allData = {},
         selectedHash = {},
         processCheckbox = function(popupEl){
+            selectedHash = {};
             var checkedEl = popupEl.find('.division_checkbox:checked');
             checkedEl.each(function (index, item) {
                 let checkEl = $(this),
                     { grade_id } =  checkEl.data();
                 if(!selectedHash.hasOwnProperty(grade_id)) {
-                    selectedHash[grade_id] = [];
+                    selectedHash[grade_id] = {};
                 }
-                selectedHash[grade_id].push($(this).val());
+                selectedHash[grade_id][$(this).val()] = true;
             });
 
             _self.updateRecipientsHtml(allData, selectedHash);
@@ -102,7 +103,18 @@ class SchoolECircular extends SchloopBase {
         $("#select-recipients-popover").on('shown.bs.popover', function () {
             var popupEl = $('#' + $(this).attr('aria-describedby'));
 
-            debugger;
+            for(var cls in selectedHash){
+                var divs = selectedHash[cls];
+                popupEl.find('.division_checkbox').each(function (indx, item) {
+                    if(divs.hasOwnProperty($(item).val())){
+                        var gradeEl = $(item).closest('.std_name').find('.grade_checkbox');
+                        gradeEl[0].checked = true;
+                        item.checked = true;
+                    }
+                });
+            }
+            processCheckbox(popupEl);
+
             popupEl.find('.grade_checkbox').change(function () {
                 toggleAllDivisions($(this), $(this).is(":checked"));
                 processCheckbox(popupEl);
