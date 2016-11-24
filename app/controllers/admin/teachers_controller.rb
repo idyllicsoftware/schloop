@@ -8,16 +8,16 @@
         subject_id: '1',
         subject_name: 'maths',
         divisions_data: [
-          {division_id: '1', division_name: 'A'},
-          {division_id: '2', division_name: 'B'},
+          {division_id: '1', division_name: 'A', check:status: true},
+          {division_id: '2', division_name: 'B', check:status: false},
         ]
       },
       {
         subject_id: '2',
         subject_name: 'Sci',
         divisions_data: [
-          {division_id: '1', division_name: 'A'},
-          {division_id: '2', division_name: 'B'},
+          {division_id: '1', division_name: 'A', check:status: true},
+          {division_id: '2', division_name: 'B', check:status: true},
         ]
       }
     ]
@@ -30,16 +30,16 @@
         subject_id: '1',
         subject_name: 'maths',
         divisions_data: [
-          {division_id: '1', division_name: 'A'},
-          {division_id: '2', division_name: 'B'},
+          {division_id: '1', division_name: 'A', check:status: false},
+          {division_id: '2', division_name: 'B', check:status: false},
         ]
       },
       {
         subject_id: '2',
         subject_name: 'Sci',
         divisions_data: [
-          {division_id: '1', division_name: 'A'},
-          {division_id: '2', division_name: 'B'},
+          {division_id: '1', division_name: 'A', check:status: false},
+          {division_id: '2', division_name: 'B', check:status: true},
         ]
       }
     ]
@@ -154,23 +154,30 @@ class Admin::TeachersController < ApplicationController
     grades_data.each do |grade_id, datas|
       subjects_data = {}
       datas.each do |data|
+        all_divisions = Grade.find(grade_id).divisions.pluck(:id,:name)
         subjects_data[data.subject_id ] ||= {
           subject_id: data.subject_id,
           subject_name: data.subject.name,
           divisions_data: []
         }
-        subjects_data[data.subject_id][:divisions_data] << {
-          division_id: data.division_id,
-          division_name: data.division.name
-        }
+        all_divisions.each do |division|
+          if data.division_id == division[0]
+            check_status = true;
+          else
+            check_status = false;
+          end
+          subjects_data[data.subject_id][:divisions_data] << {
+            division_id: division.first,
+            division_name: division.last,
+            division_checked: check_status
+          }
+        end
       end
-
       grade_teacher_data << {
         grade_id: grade_id,
         grade_name: datas.first.grade.name,
         subjects_data: subjects_data.values
       }
-
     end
     return grade_teacher_data
   end
