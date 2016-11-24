@@ -46,50 +46,27 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     errors, circular_data = [], []
     @school = School.find_by(id: @current_user.school_id)
     page = params[:page].to_s.to_i
-    offset = (page * 10)
+    page_size = 20
+    offset = (page * page_size)
     if @school.blank?
       errors << "school not found."
     else
-      circulars = @school.ecirculars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(10)
-      circulars.each do |circular|
-        recipients, attachments = [], []
-        grouped_circulars = circular.ecircular_recipients.group_by do |x| x.grade_id end
-        grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
-        grouped_circulars.each do |grade_id, recipients_data|
-          recipient = {grade_id: grade_id, grade_name: grades_by_id[grade_id].name}
-          recipient[:divisions] = []
-          recipients_data.each do |rec|
-            recipient[:divisions] << {div_id: rec.division_id, div_name: rec.division.name}
-          end
-          recipients << recipient
-        end
-        circular.attachments.select(:id, :original_filename, :name).each do |attachment|
-          attachments << {original_filename: attachment.original_filename, s3_url: attachment.name}
-        end
-        created_by = (circular.created_by_type || 'teacher').classify.safe_constantize.find_by(id: circular.created_by_id)
-        circular_data << {
-          id: circular.id,
-          title: circular.title,
-          body: circular.body,
-          created_by: {
-            id: (created_by.id rescue 0),
-            name: (created_by.name rescue '-')
-          },
-          created_on: circular.created_at,
-          circular_tag: {
-            id: Ecircular.circular_tags[circular.circular_tag],
-            name: circular.circular_tag.humanize
-          },
-          recipients: recipients,
-          attachments: attachments
-        }
-      end
+      circular_data, total_records = Ecircular.school_circulars(@school, filter_params, offset, page_size)
     end
+
     if errors.blank?
       index_response = {
         success: true,
         error: nil,
-        data: circular_data
+        data: {
+          pagination_data: {
+            page_size: page_size,
+            record_count: total_records,
+            total_pages: (total_records/page_size.to_f).ceil,
+            current_page: page
+          },
+          circulars: circular_data
+        }
       }
     else
       index_response = {
@@ -209,4 +186,21 @@ class Api::V1::EcircularsController < Api::V1::BaseController
       end
       return create_params
     end
+
+    def filter_params
+      filters = params[:filter]
+      return {} if filters.blank?
+      divisions = []
+      filters[:grades].each do |_, division_ids|
+        divisions << division_ids
+      end if filters[:grades].present?
+
+      {
+        from_date: filters[:from_date],
+        to_date: filters[:to_date],
+        divisions: divisions.flatten,
+        tags: filters[:tags]
+      }
+    end
+
 end

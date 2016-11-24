@@ -1,0 +1,13 @@
+
+- name: RVM | Create and use {{ rvm_gemset }} gemset.
+  command: bash -lc "rvm use ruby-{{ item }}@{{ rvm_gemset }} --create"
+  with_items: '{{ rvm1_rubies }}'
+
+
+- name: RVM | Use {{ rvm_gemset }} gemset as default.
+  command: bash -lc "rvm use ruby-{{ item }}@{{ rvm_gemset }} --default"
+  with_items: '{{ rvm1_rubies }}'
+
+- name: RVM | Install bundle {{ rvm_gemset }}
+  command: bash -lc "rvm use ruby-{{ item }}@{{ rvm_gemset }} && gem install bundler"
+  with_items: '{{ rvm1_rubies }}'

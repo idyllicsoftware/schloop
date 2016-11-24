@@ -84,6 +84,8 @@ Rails.application.routes.draw do
       post "/ecircular/tags" => "ecirculars#tags"
       post "/ecircular/create" => "ecirculars#create"
       get "/ecirculars" => "ecirculars#index"
+      post "/ecirculars" => "ecirculars#index"
+      get "/contents/create" => "contents#create"
     end
   end
 

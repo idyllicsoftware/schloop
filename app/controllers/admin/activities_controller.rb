@@ -7,7 +7,7 @@ class Admin::ActivitiesController < ApplicationController
     activity_params = get_activity_params(params)
     validate_response = activity_service.validate_params(activity_params)
     if validate_response[:errors].present?
-      render json: { errors: validate_response[:errors] }
+      render json: { errors: validate_response[:errors] } and return
     end
     response = Activity.create_activity(activity_params)
     render json: { errors: response[:errors] }
@@ -18,7 +18,7 @@ class Admin::ActivitiesController < ApplicationController
   #   activity_params = get_activity_params(params)
   #   validate_response = activity_service.validate_params(activity_params)
   #   if validate_response[:errors].present?
-  #     render json: { errors: validate_response[:errors] }
+  #     render json: { errors: validate_response[:errors] } and return
   #   end
 
   #   response = @activity.update_activity(activity_params)

@@ -35,7 +35,7 @@ class Activity < ActiveRecord::Base
         create_activity_categories(activity.id, categories_params)
         # upload_files(activity, reference_files, thumbnail_file)
       rescue => ex
-        errors << ex.message
+        errors << 'Failed to create activity. Please enter details properly.'
         Rails.logger.debug("Exception in creating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
       end
     end
@@ -61,6 +61,14 @@ class Activity < ActiveRecord::Base
   #   end
   #   { errors: errors, data: [] }
   # end
+
+   def get_thumbnail_file
+    attachments.where(sub_type: Activity.file_sub_types['thumbnail'])
+  end
+
+  def get_reference_files
+    attachments.where(sub_type: Activity.file_sub_types['reference'])
+  end
 
   private
 

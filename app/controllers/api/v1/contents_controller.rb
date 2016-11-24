@@ -21,7 +21,7 @@ class Api::V1::ContentsController < ApplicationController
 		end
 		render json: response
 	end
-	
+
 	private
     def content_params
       params.permit(:grade, :subject, :topic, :activity_title, :catagory, :teachers, :pre_requisites, :reference_image)

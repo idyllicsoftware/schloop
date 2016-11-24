@@ -55,12 +55,11 @@ class Admin::TeachersController < ApplicationController
 
 
   def index
-    school_teachers = []  
+    school_teachers = []
     @school_teachers =@school.teachers.order(:id)
     #@school_teachers.order(:created_at)
-    
-   # @school_teachers.sort_by { |m| [ m.updated_at,m.created_at].max}.reverse! 
 
+   # @school_teachers.sort_by { |m| [ m.updated_at,m.created_at].max}.reverse!
     @school_teachers.each do |teacher|
       grade_teacher_data = get_grade_teacher_data(teacher.id)
       school_teachers << {
@@ -85,7 +84,7 @@ class Admin::TeachersController < ApplicationController
 
   def update
     render json: {success: false, errors: ['Teacher not found']} and return if @teacher.blank?
-     
+
     response = update_school_teacher(@teacher, update_school_teacher_params)
     render :json => response
   end
@@ -115,7 +114,7 @@ class Admin::TeachersController < ApplicationController
       Admin::AdminMailer.welcome_message(teacher.email, teacher.first_name, teacher.password).deliver_now
       return {success: errors.blank?, teacher_id: teacher.id}
     else
-        return {success: errors.blank?, errors: errors}  
+        return {success: errors.blank?, errors: errors}
     end
   end
 
@@ -126,7 +125,7 @@ class Admin::TeachersController < ApplicationController
   def update_school_teacher(teacher,teacher_params)
      # respond_to do |format|
      teacher.update(teacher_params)
-     return {success: true, error: []} 
+     return {success: true, error: []}
     #end
   end
 
@@ -150,7 +149,7 @@ class Admin::TeachersController < ApplicationController
     grade_teacher_data = []
     teacher = Teacher.find(teacher_id)
     grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
-      
+
     grades_data.each do |grade_id, datas|
       subjects_data = {}
       datas.each do |data|
@@ -192,7 +191,7 @@ class Admin::TeachersController < ApplicationController
         grade_id = grade[0].to_i
         grade_data = grade[1]
         subjects = grade_data[:subjects]
-        subjects.each do |subject| 
+        subjects.each do |subject|
           subject_id = subject[0].to_i
           subject_data = subject[1]
           divisions= subject_data[:divisions]
