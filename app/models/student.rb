@@ -16,4 +16,12 @@ class Student < ActiveRecord::Base
 	belongs_to :school
 	belongs_to :parent
 	has_many :student_profiles
+	validates :first_name, :presence => true, :length => { :maximum => 30 }
+  	validates :middle_name,  :length => { :maximum => 30 }
+  	validates :last_name, :presence => true, :length => { :maximum => 30 }
+
+  	def name
+		"#{self.first_name} #{self.middle_name} #{self.last_name}"
+	end
+# 
 end

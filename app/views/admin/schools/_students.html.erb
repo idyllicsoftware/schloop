@@ -1,6 +1,35 @@
 <div class="tab-pane fade in parents-container" id="parents-tab">
-<div class="content-wrapper">
-<%= select_tag "page_type", options_for_select(@grades.collect{ |u| [u.name, u.id]}), {:class =>"select_combobox",:onchange=>"reset_form(this.id,'page_type_msg');"} %>
-<%= link_to "Upload Playgroup CSV", new_admin_parent_import_path(:school_id => @school.id)%>
-</div>
+  <div class="content-wrapper"> 
+    <%= select_tag "page_type", options_for_select(@grades.collect{ |u| [u.name, u.id]}), {:class =>"select_combobox",:onchange=>"reset_form(this.id,'page_type_msg');"} %>
+    <%= link_to "Upload Playgroup CSV", new_admin_parent_import_path(:school_id => @school.id, :grade_id => @grades.first.id)%>
+  </div>
+  <div>
+  	<ui>
+  		<% @grades.first.divisions.each do |division|%>
+  		<li>
+  			<%= division.name%>
+  		</li>
+  		<%end%>
+  	</ui>
+  </div>
+  <div>
+  	<table>
+  		<tr>
+  		  <th>Parent Name</th>
+  		  <th>Parent email</th>
+  		  <th>Student name</th>
+  		  <th>Division</th>
+  		</tr>
+  		<% @grades.first.school.parent_details.each do |parent_detail|%>
+  		<tr>
+  			
+  			<td><%= parent_detail.name%></td>
+  			<td><%= parent_detail.parent.email%></td>
+  			<td><%= parent_detail.parent.students.first.name%></td>
+  			<td><%= parent_detail.parent.students.first.student_profiles.first.division.name rescue ""%></td>
+  			
+  		</tr>
+  		<%end%>
+  	</table>
+  </div>
 </div>

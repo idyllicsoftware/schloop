@@ -21,4 +21,5 @@ class Grade < ActiveRecord::Base
 	belongs_to :school
 	has_many :divisions
 	has_many :subjects
+	has_many :studen_profiles
 end

@@ -20,6 +20,7 @@
 
   <div class="field">
   <%= hidden_field_tag :school_id,  @school.id%>
+  <%= hidden_field_tag :grade_id,  @grade.id%>
     <%= f.file_field :file %>
   </div>
   <div class="buttons"><%= f.submit "Import" %></div>

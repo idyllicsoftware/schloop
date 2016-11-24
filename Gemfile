@@ -28,6 +28,7 @@ gem 'roo'
 gem 'sdoc', '~> 0.4.1', group: :doc
 
 gem 'devise'
+gem 'devise_invitable', '~> 1.7.0'
 gem 'aws-sdk'
 # gem 'rmagick', '2.15.4'
 

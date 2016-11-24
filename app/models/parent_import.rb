@@ -3,9 +3,10 @@ class ParentImport
   attr_accessor :file
   attr_reader :school_id
 
-  def initialize(attributes = {}, school_id)
+  def initialize(attributes = {}, school_id, grade_id)
     
     @@school_id = school_id
+    @@grade_id = grade_id
     attributes.each { |name, value| send("#{name}=", value) }
   end
 
@@ -21,7 +22,6 @@ class ParentImport
 
       imported_parents.each_with_index do |parent, index|
         parent.errors.full_messages.each do |message|
-          binding.pry
           errors.add :base, "Row #{index+2}: #{message}"
         end
       end
@@ -40,15 +40,20 @@ class ParentImport
       
       row = Hash[[header, spreadsheet.row(i)].transpose]
       row["school_id"] = @@school_id
-      password = generated_password = Devise.friendly_token.first(8)
-      parent_data = {"first_name" => row["first_name"], "last_name" => row["last_name"], "email" => row["email"], "cell_number" => row["cell_number"], "password" => password, "school_id" =>  row["school_id"]}      
+      division = Division.where(:grade_id => @@grade_id, :name => row["division"].downcase)
+      division_id = division.id rescue ""
+      parent_data = {"first_name" => row["first_name"], "last_name" => row["last_name"], "email" => row["email"], "cell_number" => row["cell_number"], "school_id" =>  row["school_id"]}      
       student_data = {"first_name" => row["student_first_name"], "last_name" => row["student_last_name"], "school_id" =>  row["school_id"]}
+      student_profile_data = {"grade_id" => @@grade_id, "division_id"=> division}
+      parent_detail_data = {"school_id" => @@school_id}
       parent = Parent.find_by(email: row["email"]) || Parent.new(parent_data)
+      parent_detail = parent.parent_details.build(parent_detail_data)
       student = parent.students.build(student_data)
+      student_profile = student.student_profiles.build(student_profile_data)
       parent.attributes = parent_data.to_hash
       student.attributes = student_data.to_hash
-      binding.pry
-       parent, student
+      student_profile.attributes = student_profile_data.to_hash
+      parent
     end    
   end
 
