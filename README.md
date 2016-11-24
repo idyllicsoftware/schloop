@@ -12,9 +12,9 @@ Please install ansible on your system (on local machine) from [here](http://docs
 1. Create a server on Amazon
 
   - Note the `IP` and download or copy the `PEM` file to public_keys directory inside .ansible of the project as `schloop.pem` 
-   - You can name the file(PEM FILE) as per your liking but it you change the name please ensure that you do change the relevant inside `.ansible/hosts` file inside the project directory. 
+   - You can name the file(PEM FILE) as per your liking but if you change the name please ensure that you do change the relevant inside `.ansible/hosts`(also do set the IP as well) file inside the project directory. 
 
-  Also ensure the the `PEM` file has a PERMISSION given `0600`.(I believe all download file has 0644 permission)
+  Also ensure the the `PEM` file has a PERMISSION given `0600`.(I believe all file have default 0644 permission (depending upon umask though))
 
 
 2. Before running the server please ensure that python is installed on Server(i.e Amazon server). you can login to amazon server using pem file.
