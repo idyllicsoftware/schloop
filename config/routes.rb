@@ -87,9 +87,7 @@ Rails.application.routes.draw do
       get  "/ecirculars" => "ecirculars#index"
       post "/ecirculars" => "ecirculars#index"
 
-      get "/activities" => "activities#index"
-      get "/grade_subjects" => "activities#grade_subjects"
-
+      get  "/activities" => "activities#index"
     end
   end
 
