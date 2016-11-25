@@ -17,11 +17,13 @@ class Admin::SchoolsController < ApplicationController
   end
 
   def show
+    redirect_to admin_schools_path and return if @school.blank?
     @js_data = {
         school_id: params[:id]
     }
     @grades = Grade.where(school_id: params[:id])
-    redirect_to admin_schools_path and return if @school.blank?
+    @master_grades = MasterGrade.all.select(:id, :name)
+    @master_subjects = MasterSubject.all.select(:id, :name)
   end
 
 	def create
@@ -125,5 +127,5 @@ class Admin::SchoolsController < ApplicationController
 
   def school_params
     params.require(:school).permit(:name, :board, :authority_name, :website, :address, :zip_code, :phone1, :phone2, :logo)
-  end     
+  end
 end
