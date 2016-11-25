@@ -76,6 +76,9 @@ GEM
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.7.0)
+    fcm (0.0.2)
+      httparty
+      json
     font-awesome-sass (4.7.0)
       sass (>= 3.2)
     foreman (0.82.0)
@@ -83,6 +86,8 @@ GEM
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     hirb (0.7.3)
+    httparty (0.14.0)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -109,6 +114,7 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.9.1)
     multi_json (1.12.1)
+    multi_xml (0.5.5)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
@@ -238,6 +244,7 @@ DEPENDENCIES
   brakeman
   bullet
   devise
+  fcm
   font-awesome-sass
   foreman
   hirb

@@ -36,7 +36,7 @@ class Teacher < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :school
-
+  has_many :grade_teachers
   before_save :set_token
 
   def set_token
@@ -49,6 +49,10 @@ class Teacher < ActiveRecord::Base
       token = SecureRandom.uuid.gsub(/\-/,'')
       return token unless Teacher.where(token: token).first
     end
+  end
+
+  def name
+    "#{first_name} #{last_name}"
   end
 
 end

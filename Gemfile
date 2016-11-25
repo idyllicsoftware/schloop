@@ -28,6 +28,7 @@ gem 'sdoc', '~> 0.4.1', group: :doc
 
 gem 'devise'
 gem 'aws-sdk'
+gem 'fcm'
 # gem 'rmagick', '2.15.4'
 
 
