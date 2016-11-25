@@ -19,7 +19,7 @@
 
 class Division < ActiveRecord::Base
 	belongs_to :grade
-	belongs_to :student_profiles
+	has_many :student_profiles
 
 	validates :name, :presence => true
 	has_many :grade_teacher, :dependent => :destroy
