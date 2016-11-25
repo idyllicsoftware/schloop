@@ -1,7 +1,7 @@
 ---
 - group: name=sudo state=present
 
-- name: Allow 'deployer' group to have passwordless sudo
+- name: Allow '{{ deploy_user }}' group to have passwordless sudo
   lineinfile:
     dest: /etc/sudoers
     state: present
@@ -16,13 +16,14 @@
         createhome=yes
         generate_ssh_key=yes
         shell=/bin/bash
+        groups=sudo
   become: yes
   become_method: sudo
 
 - name: Set up authorized keys for the deployer user
   authorized_key: user={{ deploy_user }} key="{{item}}" manage_dir=yes
   become: yes
-  become_method: sudo
+  become_user: '{{ deploy_user }}'
   with_lines: 
     - "cat public_keys/authorized_keys/*.pub"
   notify:
@@ -30,13 +31,13 @@
 
 - name: Copy the ssh keys for git clone
   become: yes
-  become_method: sudo
-  copy: src={{ item.src }} dest={{ item.dest }}
+  become_user: '{{ deploy_user }}'
+  copy: src={{ item.src }} dest={{ item.dest }} mode=0600
   with_items:
     - { src: public_keys/deploy.pub, dest: '/home/{{ deploy_user }}/.ssh/id_rsa.pub'}
     - { src: public_keys/deploy, dest: '/home/{{ deploy_user }}/.ssh/id_rsa' }
 
-- name: 'Create /var/apps/ directory'
+- name: 'Create {{ deploy_to }} directory'
   become: yes
   become_method: sudo
   file: path={{ deploy_to }} state=directory owner={{ deploy_user }} group={{ deploy_user }} mode=0755 recurse=yes
