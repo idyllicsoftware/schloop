@@ -9,9 +9,6 @@ user = %x(git config user.name).delete("\n")
 branch = (ENV['branch'].nil? ? %x(git symbolic-ref --short -q HEAD).delete("\n") : ENV['branch'])
 branch = "master" if branch == ""
 
-
-
-
 # Basic settings:
 #   domain       - The hostname to SSH to.
 #   deploy_to    - Path to deploy into.
