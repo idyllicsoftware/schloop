@@ -25,7 +25,7 @@ class Activity < ActiveRecord::Base
 
   def self.grade_activities(search_params, page_size, offset)
     activities_data = []
-    activities = Activity.where(search_params).order(id: :desc)
+    activities = Activity.where(search_params).includes(:attachments).order(id: :desc)
     total_records = activities.count
     activities = activities.offset(offset).limit(page_size) if search_params[:subject_id].present?
 
@@ -42,7 +42,9 @@ class Activity < ActiveRecord::Base
           teaches: activity.teaches,
           title: activity.title,
           details: activity.details,
-          pre_requisite: activity.pre_requisite
+          pre_requisite: activity.pre_requisite,
+          thumbnail: 'thumbnail',
+          references: ['reference_1','reference_1','reference_1']
         }
       }
     end
