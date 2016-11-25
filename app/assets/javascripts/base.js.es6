@@ -9,6 +9,7 @@
 //= require mustache
 //= require tinymce/tinymce.min.js
 //= require tinymceEditor.js
+//= require multiselect.min
 //= require common
 //= require_self
 
@@ -67,14 +68,15 @@ class SchloopBase {
                 swal({title: "Oops!",   text: "Something went wrong. Please try later.",   type: "error",   confirmButtonText: "OK" });
             }
         };
-
         $.extend(params, extraParams || {});
         $.ajax(params);
     };
 
     showErrors (errors){
-        let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
-        swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+        if(errors){
+            let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
+            swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+        }
     };
 
     deleteRequest (url, btnEl, data, cb){
@@ -179,7 +181,7 @@ class SchloopBase {
         });
     };
 
-    initFormSubmit (jForm, fieldsMapping, cb){
+    initFormSubmit (jForm, fieldsMapping, cb, extraParams){
         let self = this;
 
         self.formValidatorInit(jForm, fieldsMapping);
@@ -188,8 +190,12 @@ class SchloopBase {
             e.preventDefault();
             let jForm = $(this), formData;
             if(jForm.valid()) {
-                formData = jForm.serialize();
-                self.submitData(jForm.attr('action'), jForm, formData, cb);
+                if(extraParams) {
+                    formData = new FormData(jForm[0]);
+                }else{   
+                    formData = jForm.serializeObject();
+                }
+                self.submitData(jForm.attr('action'), jForm, formData, cb, extraParams);
             }
         });
     };

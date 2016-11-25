@@ -20,5 +20,9 @@
 class Division < ActiveRecord::Base
 	belongs_to :grade
 	belongs_to :student_profiles
+
 	validates :name, :presence => true
+	has_many :grade_teacher, :dependent => :destroy
+	has_many :ecircular_recipients
 end
+
