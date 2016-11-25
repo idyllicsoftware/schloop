@@ -20,7 +20,9 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     errors << "Master Grade not found" if master_grade.blank?
 
     if errors.blank?
-      search_params = {master_grade_id: master_grade.id, subject_id: subject_id}
+      master_subject_id = Subject.find(id: subject_id).master_subject.id rescue nil
+      search_params = {master_grade_id: master_grade.id}
+      search_params.merge!(master_subject_id: master_subject_id) if master_subject_id.present?
       activities_data, total_records = Activity.grade_activities(search_params, page_size, offset)
     end
 

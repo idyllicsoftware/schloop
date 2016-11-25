@@ -32,8 +32,8 @@ class Activity < ActiveRecord::Base
     activities.each do |activity|
       master_subject = activity.master_subject
       activities_data << {
-        grade_id: master_grade.id,
-        grade_name: master_grade.name,
+        grade_id: activity.master_grade.id,
+        grade_name: activity.master_grade.name,
         subject_id: master_subject.id,
         subject_name: master_subject.name,
         activity: {
