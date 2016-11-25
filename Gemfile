@@ -30,12 +30,14 @@ gem 'sdoc', '~> 0.4.1', group: :doc
 gem 'devise'
 gem 'devise_invitable', '~> 1.7.0'
 gem 'aws-sdk'
+gem 'fcm'
 # gem 'rmagick', '2.15.4'
 
 
 group :development do
   # Using mina for deployment
   gem 'mina', '~> 0.3.8'
+  gem 'mina-multistage', require: false
   # Use thin as the app server
   gem 'sextant'
   gem 'better_errors'

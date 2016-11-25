@@ -57,7 +57,7 @@ class Teacher < ActiveRecord::Base
             :length => {:minimum => 10, :maximum => 10}
 
   belongs_to :school
-
+  has_many :grade_teachers
   before_save :set_token
   after_create :send_invitaion
 
@@ -90,5 +90,9 @@ class Teacher < ActiveRecord::Base
     end
   end
 
+
+  def name
+    "#{first_name} #{last_name}"
+  end
 
 end

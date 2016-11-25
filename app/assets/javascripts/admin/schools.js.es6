@@ -1,4 +1,5 @@
 //= require_self
+//= require admin/activities
 //= require admin/school_profiles
 
 
@@ -7,6 +8,7 @@ class Schools extends SchloopBase {
         let {action} = this._config;
         if(action == 'index'){
             this.initDashboard();
+            this._activities = new Activities(this._config);
         }else if(action == 'show'){
             this._schoolProfile = new SchoolProfiles(this._config);
         }
@@ -22,19 +24,6 @@ class Schools extends SchloopBase {
             createModalEl.modal('show');
         });
 
-        $('#upload-photo').change(function(){
-            var res=$('#upload-photo').val();
-            var arr = res.split("\\");
-            var filename = arr.slice(-1)[0];
-            var filextension = filename.split(".");
-            var filext ="."+filextension.slice(-1)[0];
-            var valid=[".jpg"];
-
-            if (valid.indexOf(filext.toLowerCase())==1){
-                alert("You select " + filename + " file.");
-            }
-        });
-
         self.loadSchools();
 
         this.initFormSubmit(createSchoolFormEl, {
@@ -47,6 +36,7 @@ class Schools extends SchloopBase {
             'school[website]': 'website',
             'school[logo]': 'logo',
             'administrator[first_name]': 'name',
+
             'administrator[last_name]': 'name',
             'administrator[cell_number]': 'phone',
             'administrator[email]': 'email',
@@ -59,12 +49,15 @@ class Schools extends SchloopBase {
             }else {
                 self.showErrors(res.errors);
             }
+        },{
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false
         });
 
         $(document).on('click','.cancel-creation', function () {
             createModalEl.modal('hide');
         });
-
     };
 
     get schoolListTpl (){

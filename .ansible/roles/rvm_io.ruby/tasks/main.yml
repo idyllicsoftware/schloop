@@ -1,0 +1,16 @@
+---
+
+- name: Install RVM
+  include: 'rvm.yml'
+  become: yes
+  become_user: '{{ rvm1_user }}'
+
+- name: Install Ruby and Gems
+  include: 'rubies.yml'
+  become: yes
+  become_user: '{{ rvm1_user }}'
+
+- name: Install Gemset
+  include: 'gemset.yml'
+  become: yes
+  become_user: '{{ rvm1_user }}'

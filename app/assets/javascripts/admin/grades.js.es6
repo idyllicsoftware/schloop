@@ -84,7 +84,7 @@ class SchoolGrades extends SchloopBase {
         let _self = this, html = '',
             { school_id } = this._config,
             schoolGradeContainerEl = $("#schoolGradeContainer");
-         
+
         $.ajax({
             url: `/admin/schools/${school_id}/grades`,
             success: function (res) {
@@ -94,6 +94,16 @@ class SchoolGrades extends SchloopBase {
 
                     schoolGradeContainerEl.html(html);
                     _self.popoverInit(false, schoolGradeContainerEl);
+                    
+                    schoolGradeContainerEl.find('.subject-list').each(function(){
+                        var firstliEl = $(this).find('li').eq(0);
+                        firstliEl.find('a').trigger('click');
+                    });
+                
+                    schoolGradeContainerEl.find('.division-list').each(function(){
+                        var firstliEl = $(this).find('li').eq(0);
+                        firstliEl.find('a').trigger('click');
+                    });
 
                     schoolGradeContainerEl.find("[data-toggle=popover]").on('shown.bs.popover', function () {
                         let popupEl = $('#' + $(this).attr('aria-describedby')),
@@ -125,6 +135,7 @@ class SchoolGrades extends SchloopBase {
 			    		}
 			        	current_el.slideToggle();
         			});
+
                     schoolGradeContainerEl.find('.subject-wrapper').each( function () {
         				var current_el = $(this).find(".division-list li:first"),
         					current_division_name = current_el.data('division_name'),

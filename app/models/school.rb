@@ -25,6 +25,7 @@ class School < ActiveRecord::Base
   has_many :grades
   has_many :students
   has_many :parent_details
+  has_many :ecirculars
   belongs_to :school_director, class_name: 'Teacher'
 
   before_save :update_school_unique_code
@@ -32,8 +33,8 @@ class School < ActiveRecord::Base
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :address, :presence =>true, :length => { :maximum => 300 }
   validates :zip_code, :presence => true, numericality: { only_integer: true }, :length => { :is => 6 }
-  validates :phone1, :presence => true #, numericality: { only_integer: true }, :length => { :maximum => 15 }
-  # validates :phone2, numericality: { only_integer: true }
+  validates :phone1, :presence => true, numericality: { only_integer: true },  :length => { :maximum => 15 } 
+  validates :phone2, :length => { :maximum => 15 }
   validates :website, :presence => true, :length => { :maximum => 100 }
 
   #validates :code, :presence => true, :uniqueness => true, :length => { :is => 6}

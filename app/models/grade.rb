@@ -7,7 +7,7 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  school_id       :integer
-#  master_grade_id :integer
+#  master_grade_id :integer          default(0), not null
 #
 # Indexes
 #
@@ -20,6 +20,12 @@
 
 class Grade < ActiveRecord::Base
 	belongs_to :school
+	belongs_to :master_grade
 	has_many :divisions
 	has_many :subjects
+	has_many :studen_profiles
+
+	has_many :ecircular_recipients
+
+	validates :name, :presence => true
 end

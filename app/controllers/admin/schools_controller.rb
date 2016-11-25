@@ -5,6 +5,9 @@ class Admin::SchoolsController < ApplicationController
 
   def index
     ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
+    @grades = MasterGrade.all.select(:id, :name)
+    @subjects = MasterSubject.all.select(:id, :name)
+    @categories = Category.all.select(:id, :name).where(category_type: Category.category_types[:activity])
   end
 
   def all
@@ -14,15 +17,14 @@ class Admin::SchoolsController < ApplicationController
   end
 
   def show
-    ### TODO KAPIL CHECK PRODUCT ADMIN & SCHLOOP ADMIN ROLE FOR THIS ACTION
-    @user = User.where(school_id: params[:id])
-    @school = School.find(params[:id])
     @teacher_import = TeacherImport.new({}, @school.id)
+    redirect_to admin_schools_path and return if @school.blank?
     @js_data = {
         school_id: params[:id]
     }
     @grades = Grade.where(school_id: params[:id])
-    redirect_to admin_schools_path and return if @school.blank?
+    @master_grades = MasterGrade.all.select(:id, :name)
+    @master_subjects = MasterSubject.all.select(:id, :name)
   end
 
 	def create
@@ -126,5 +128,5 @@ class Admin::SchoolsController < ApplicationController
 
   def school_params
     params.require(:school).permit(:name, :board, :authority_name, :website, :address, :zip_code, :phone1, :phone2, :logo)
-  end     
+  end
 end
