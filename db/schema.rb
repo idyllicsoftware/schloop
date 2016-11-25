@@ -11,10 +11,54 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108115010) do
+
+ActiveRecord::Schema.define(version: 20161124111628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.string   "teaches"
+    t.string   "topic",             null: false
+    t.string   "title",             null: false
+    t.integer  "master_grade_id",   null: false
+    t.integer  "master_subject_id", null: false
+    t.text     "details"
+    t.text     "pre_requisite"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "activity_categories", force: :cascade do |t|
+    t.integer  "activity_id", null: false
+    t.integer  "category_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "attachments", force: :cascade do |t|
+    t.string   "attachable_type"
+    t.integer  "attachable_id"
+    t.string   "name"
+    t.string   "original_filename"
+    t.integer  "file_size"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "sub_type",          default: 0, null: false
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name"
+    t.string   "name_map",                  null: false
+    t.integer  "category_type", default: 0
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
 
   create_table "divisions", force: :cascade do |t|
     t.string   "name",       null: false
@@ -24,6 +68,29 @@ ActiveRecord::Schema.define(version: 20161108115010) do
   end
 
   add_index "divisions", ["grade_id"], name: "index_divisions_on_grade_id", using: :btree
+
+  create_table "ecircular_recipients", force: :cascade do |t|
+    t.integer  "school_id"
+    t.integer  "grade_id"
+    t.integer  "division_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "ecircular_id"
+  end
+
+  add_index "ecircular_recipients", ["ecircular_id"], name: "index_ecircular_recipients_on_ecircular_id", using: :btree
+
+  create_table "ecirculars", force: :cascade do |t|
+    t.string   "title"
+    t.text     "body"
+
+    t.integer  "circular_tag"
+    t.integer  "created_by_type"
+    t.integer  "created_by_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "school_id"
+  end
 
   create_table "grade_teachers", force: :cascade do |t|
     t.datetime "created_at",  null: false
@@ -40,13 +107,32 @@ ActiveRecord::Schema.define(version: 20161108115010) do
   add_index "grade_teachers", ["teacher_id"], name: "index_grade_teachers_on_teacher_id", using: :btree
 
   create_table "grades", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                        null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "school_id"
+    t.integer  "master_grade_id", default: 0, null: false
   end
 
   add_index "grades", ["school_id"], name: "index_grades_on_school_id", using: :btree
+
+  create_table "master_grades", force: :cascade do |t|
+    t.string   "name"
+    t.string   "name_map",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "master_grades", ["name_map"], name: "index_master_grades_on_name_map", using: :btree
+
+  create_table "master_subjects", force: :cascade do |t|
+    t.string   "name"
+    t.string   "name_map",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "master_subjects", ["name_map"], name: "index_master_subjects_on_name_map", using: :btree
 
   create_table "parents", force: :cascade do |t|
     t.string   "email",                  limit: 100, default: "", null: false
@@ -97,26 +183,27 @@ ActiveRecord::Schema.define(version: 20161108115010) do
   end
 
   create_table "schools", force: :cascade do |t|
-    t.string   "name",               null: false
-    t.text     "address",            null: false
-    t.string   "zip_code",           null: false
-    t.string   "phone1",             null: false
+    t.string   "name",           null: false
+    t.text     "address",        null: false
+    t.string   "zip_code",       null: false
+    t.string   "phone1",         null: false
     t.string   "phone2"
-    t.string   "website",            null: false
-    t.integer  "school_director_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.string   "code",               null: false
+    t.string   "website",        null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "code",           null: false
     t.string   "board"
     t.string   "principal_name"
+    t.string   "logo"
   end
 
   create_table "subjects", force: :cascade do |t|
-    t.string   "name",         null: false
+    t.string   "name",                          null: false
     t.string   "subject_code"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "grade_id"
+    t.integer  "master_subject_id", default: 0, null: false
   end
 
   add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
@@ -184,6 +271,7 @@ ActiveRecord::Schema.define(version: 20161108115010) do
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
   add_foreign_key "divisions", "grades"
+  add_foreign_key "ecircular_recipients", "ecirculars"
   add_foreign_key "grade_teachers", "divisions"
   add_foreign_key "grade_teachers", "grades"
   add_foreign_key "grade_teachers", "subjects"
@@ -191,7 +279,10 @@ ActiveRecord::Schema.define(version: 20161108115010) do
   add_foreign_key "grades", "schools"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+
+  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
+  add_foreign_key "subjects", "teachers"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end

@@ -1,0 +1,5 @@
+
+- name: PostgreSQL | Ensure the client libarary is present
+  yum:
+    name: ca-certificates
+    state: present

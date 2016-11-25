@@ -58,6 +58,14 @@ class Util::AwsUtils
   end
 
 
+  def self.upload_to_s3(input_file, bucket , s3_location, options = {})
+    bucket ||= AWS_CONFIG['bucket']
+    path =  input_file.tempfile.path
+    resp = direct_upload(path, bucket, s3_location, options)
+    return resp
+  end
+
+
   def self.copy_file(from_location, to_location)
     error = ''
     begin

@@ -5,6 +5,9 @@ class Admin::SchoolsController < ApplicationController
 
   def index
     ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
+    @grades = MasterGrade.all.select(:id, :name)
+    @subjects = MasterSubject.all.select(:id, :name)
+    @categories = Category.all.select(:id, :name).where(category_type: Category.category_types[:activity])
   end
 
   def all
@@ -22,7 +25,7 @@ class Admin::SchoolsController < ApplicationController
   end
 
 	def create
-    ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
+    ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTIONw
     response = create_school(school_params, school_admin_params)
     render :json => response
     # school_params
@@ -99,7 +102,8 @@ class Admin::SchoolsController < ApplicationController
         address: datum[:address],
         zip_code: datum[:zip_code],
         phone1: datum[:phone1],
-        phone2: datum[:phone2]
+        phone2: datum[:phone2],
+        logo: datum[:logo]
     }
     return School.create(create_params)
   end
@@ -120,6 +124,6 @@ class Admin::SchoolsController < ApplicationController
   end
 
   def school_params
-    params.require(:school).permit(:name, :board, :authority_name, :website, :address, :zip_code, :phone1, :phone2)
+    params.require(:school).permit(:name, :board, :authority_name, :website, :address, :zip_code, :phone1, :phone2, :logo)
   end     
 end

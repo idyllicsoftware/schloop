@@ -1,11 +1,14 @@
 //= require_self
+//= require admin/activities
 //= require admin/school_profiles
+
 
 class Schools extends SchloopBase {
     init (){
         let {action} = this._config;
         if(action == 'index'){
             this.initDashboard();
+            this._activities = new Activities(this._config);
         }else if(action == 'show'){
             this._schoolProfile = new SchoolProfiles(this._config);
         }
@@ -16,7 +19,7 @@ class Schools extends SchloopBase {
         let self = this,
             createSchoolFormEl = $(".schools-registration-form"),
             createModalEl = $("#create-school-modal");
-
+            
         $(document).on('click','#create-school-btn', function () {
             createModalEl.modal('show');
         });
@@ -25,12 +28,15 @@ class Schools extends SchloopBase {
 
         this.initFormSubmit(createSchoolFormEl, {
             'school[name]': 'name',
+            'school[photo]': 'photo',
             'school[board]': 'name',
             'school[address]': 'name',
             'school[zip_code]': 'zip_code',
             'school[phone1]': 'phone',
             'school[website]': 'website',
+            'school[logo]': 'logo',
             'administrator[first_name]': 'name',
+
             'administrator[last_name]': 'name',
             'administrator[cell_number]': 'phone',
             'administrator[email]': 'email',
@@ -43,12 +49,15 @@ class Schools extends SchloopBase {
             }else {
                 self.showErrors(res.errors);
             }
+        },{
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false
         });
 
         $(document).on('click','.cancel-creation', function () {
             createModalEl.modal('hide');
         });
-
     };
 
     get schoolListTpl (){

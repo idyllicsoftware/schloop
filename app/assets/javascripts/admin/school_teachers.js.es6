@@ -24,6 +24,18 @@ class SchoolTeachers extends SchloopBase {
             jForm.attr('action', `/admin/schools/${school_id}/teachers`);
             jForm.attr('method', 'POST');
             jForm.find('input[name="teacher[email]"]').removeAttr('disabled');
+            $("input[type=checkbox]").change(function(){
+                    var grade_id = $(this).data('grade_id'),
+                        subject_id = $(this).data('subject_id'),
+                        val = $(this).parents().eq(3).find('.subject_cls').val();
+                    if($("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked")){
+                        $("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked").each(function(i){
+                            if(val == subject_id){     
+                            $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                            }
+                        });
+                    }
+             });  
             _self.initForm(jForm, $(this));
         });
 
@@ -74,7 +86,7 @@ class SchoolTeachers extends SchloopBase {
         let _self = this,
             delete_teachers_url = `/admin/teachers/${school_teacher_id}`,
             msg = school_teacher_id ? 'School teacher updated successfully' : 'School teacher added successfully';
-            
+           
         this.initFormSubmit(jForm, {
             'teacher[first_name]': 'name',
             'teacher[last_name]': 'name',
@@ -86,10 +98,13 @@ class SchoolTeachers extends SchloopBase {
                 toastr.success(msg);
                 popoverEl.popover('hide');
             }else {
-                toastr.errors('invalid action');
                 _self.showErrors(res.errors);
                 popoverEl.popover('hide');
             }
+        },{
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false
         });
 
         jForm.find('.cancelPopoverBtn').off('click').on('click', function () {

@@ -2,7 +2,6 @@ class Api::V1::SchoolAdminController < Api::V1::BaseController
   skip_before_filter :authenticate, only: [:register]
 
   def register
-
   end
 
     private

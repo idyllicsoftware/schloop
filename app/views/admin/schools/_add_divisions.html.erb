@@ -3,7 +3,7 @@
   <%= form_tag "", class: 'form-inline add-division-form', method: 'post' do %>
   <div class="form-group">
     <input type="text" class="form-control input-field" required name="div_name" placeholder="division A,B,C etc." autocomplete="off" maxlength="20">
-    <input type="text" name="grade_id" value="<%= grade.id %>" hidden %>
+    <input type="text" name="grade_id" value="{{id}}" hidden %>
     <div class="add-division-btn">
       <button  class="btn btn-primary" type="submit">ADD</button>
       <button  class="btn btn-primary cancelPopoverBtn">CANCEL</button>

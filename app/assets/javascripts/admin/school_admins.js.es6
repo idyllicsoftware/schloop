@@ -24,44 +24,14 @@ class SchoolAdmins extends SchloopBase {
             jForm.attr('method', 'POST');
             jForm.find('input[name="administrator[email]"]').removeAttr('disabled');
             _self.initForm(jForm, $(this));
-        });
-        
-        $("#add-division-popover").on('shown.bs.popover', function () {
-                var popupEl = $('#' + $(this).attr('aria-describedby')),
-                    jForm = popupEl.find('form'),
-                    grade_id = $(this).data('grade_id');
-                    jForm[0].reset();
-                    jForm.attr('action', `/admin/grades/${grade_id}/divisions`);
-                    jForm.attr('method', 'POST');
-                    _self.add_division(jForm, grade_id, $(this));
-        });
-
-        $("#add-subject-popover").on('shown.bs.popover', function () {
-            var popupEl = $('#' + $(this).attr('aria-describedby')),
-                jForm = popupEl.find('form'),
-                grade_id = $(this).data('grade_id');
-                jForm[0].reset();
-                jForm.attr('action', `/admin/grades/${grade_id}/subjects`);
-                jForm.attr('method', 'POST');
-                _self.add_subject(jForm, grade_id, $(this));
-        });
-        
-        // $("#add-grade-popover").on('shown.bs.popover', function () {
-        //     var popupEl = $('#' + $(this).attr('aria-describedby')),
-        //         jForm = popupEl.find('form');
-        //         jForm[0].reset();
-        //         jForm.attr('action', `/admin/schools/${school_id}/grades`);
-        //         jForm.attr('method', 'POST');
-        //         _self.add_grade(jForm, $(this));
-        // });
-
+        });  
     };
 
     initForm (jForm, popoverEl, school_admin_id){
         let _self = this,
             delete_admin_url = `/admin/school_admins/${school_admin_id}`,
             msg = school_admin_id ? 'School admin updated successfully' : 'School admin added successfully';
-
+            
         this.initFormSubmit(jForm, {
             'administrator[first_name]': 'name',
             'administrator[last_name]': 'name',
@@ -133,85 +103,4 @@ class SchoolAdmins extends SchloopBase {
             }
         });
     };
-
-    add_division (jForm, grade_id, popoverEl){
-        let _self = this,
-            msg = 'Division added successfully';
-
-        this.initFormSubmit(jForm, {
-            'div_name': 'name',
-            'grade_id': 'name',
-        }, function (res) {
-            if(res.success) {
-                $(".division-list").append("<li><a href='#subject1-tab' data-toggle='tab'>" + res.division_name + "</a></li>");
-                toastr.success(msg);
-                popoverEl.popover('hide');
-            }else {
-                _self.showErrors(res.errors);
-            }
-        });
-
-        jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
-            popoverEl.popover('hide');
-        });        
-    };
-
-    add_subject (jForm, grade_id, popoverEl){
-        let _self = this,
-            msg = 'Subject added successfully';
-        
-        this.initFormSubmit(jForm, {
-            'subject_name': 'name',
-            'grade_id': 'name',
-        }, function (res) {
-            if(res.success) {
-                $(".subject-list").append("<li><a href='#subject1-tab' data-toggle='tab'>" + res.subject_name +"</a></li>");
-                toastr.success(msg);
-                popoverEl.popover('hide');
-            }else {
-                _self.showErrors(res.errors);
-            }
-        });
-
-        jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
-            popoverEl.popover('hide');
-        });        
-    };
-
-    // add_grade (jForm, popoverEl){
-    //     let _self = this,
-    //         msg = 'Grade added successfully';
-            
-    //     this.initFormSubmit(jForm, {
-    //         'grade_name': 'name',
-    //         'grade_id': 'name',
-    //     }, function (res) {
-    //         if(res.success) {
-    //             _self.loadSchoolsGrades();
-    //             toastr.success(msg);
-    //             popoverEl.popover('hide');
-    //         }else {
-    //             _self.showErrors(res.errors);
-    //         }
-    //     });
-
-    //     jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
-    //         popoverEl.popover('hide');
-    //     });
-    // };
-
-    // loadSchoolsGrades (){
-    //     let _self = this, html = '',
-    //         { school_id } = this._config,
-    //         schoolGradeContainerEl = $("#schoolGradeContainer");
-    //     $.ajax({
-    //         url: `/admin/schools/${school_id}/grades`,
-    //         success: function (res) {
-    //             if(res.success) {
-    //                 html = Mustache.to_html(_self.schoolAdminTpl, res);
-
-    //             }
-    //         }
-    //     });        
-    // }
 }

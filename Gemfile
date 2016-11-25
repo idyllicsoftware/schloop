@@ -20,6 +20,7 @@ gem 'sprockets-es6'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.6.0'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -27,6 +28,7 @@ gem 'sdoc', '~> 0.4.1', group: :doc
 
 gem 'devise'
 gem 'aws-sdk'
+gem 'fcm'
 # gem 'rmagick', '2.15.4'
 
 
