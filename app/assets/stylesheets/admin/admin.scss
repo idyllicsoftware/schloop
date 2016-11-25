@@ -1,6 +1,7 @@
 @import "common";
 @import "admin/schools";
 @import "admin/activities";
+@import "admin/students";
 @import "admin/school_profile";
 
 .school-main-section {
@@ -22,7 +23,7 @@
   .container {
     margin: 50px auto;
     background: $container-background;
-    padding: 40px 90px;
+    padding: 40px 40px;
     border-radius: 10px;
     -webkit-box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.35);
     -moz-box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.35);
