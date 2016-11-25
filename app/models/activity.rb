@@ -44,7 +44,7 @@ class Activity < ActiveRecord::Base
           details: activity.details,
           pre_requisite: activity.pre_requisite,
           thumbnail: 'thumbnail',
-          references: ['reference_1','reference_1','reference_1']
+          references: [{original_filename: 'name', s3_url: 'http://www.google.com'}, {original_filename: 'name', s3_url: 'http://www.google.com'}]
         }
       }
     end
