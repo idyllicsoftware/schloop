@@ -32,7 +32,7 @@ Please install ansible on your system (on local machine) from [here](http://docs
 
 3. The ansible module create a deployer user. I strong recommend doing that. Instead of ubuntu or admin user. 
 
-4. For authorized keys please copy all the user `.ansible/public_keys/authorized_keys` directory of the project.
+4. For authorized keys please copy all the user public key inside `.ansible/public_keys/authorized_keys` directory of the project.
 
 5. Please do a have a look at `vars/main.yml` file inside `.ansible` and make the necessary adjustment over here.
 
@@ -43,8 +43,10 @@ Please install ansible on your system (on local machine) from [here](http://docs
   ```
 
 7. With the server set. Final task is to do mina deploy
-  - mina setup
-  - mina deploy `## Please make sure the database.yml and secrets.yml are set properly.`
+   - `mina setup`
+   - if in case you want to copy the database.yml and secrets.yml file via ansible templates directory. Run the below command else skip it and use the `mina deploy` and set the `database.yml` and `secrets.yml` manually.
+  - `cd .ansible && ansible-playbook ansible.yml -i hosts --tags=mina-helper ## Please make sure the database.yml and secrets.yml are set properly. Inside templates directory`
+  - `mina deploy`
 
 I guess rest all will follow perfectly well.
 

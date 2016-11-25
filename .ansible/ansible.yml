@@ -23,12 +23,29 @@
     - { role: deployer.user,tags: deployer }
     - { role: rvm_io.ruby, tags: ruby }
     - { role: ANXS.postgresql,tags: postgresql,postgresql_version: 9.3,become: yes,become_user: root }
-    - { role: geerlingguy.passenger,tags: passenger, become: yes, become_user: root }
+    - { role: geerlingguy.passenger,tags: passenger, become: yes,become_user: root }
   post_tasks:
   - name: 'Add Git repo to host'
     become: yes
     become_user: '{{ deploy_user }}'
     git: repo={{ git_repo_url }} accept_hostkey=yes clone=no update=no
+  - name: 'Create Postgres User with DB access'
+    postgresql_user: name={{ db_user }} password={{ db_password }} encrypted=yes role_attr_flags=CREATEDB,NOSUPERUSER
+  - name: Check for shared directory exist
+    tags: mina-helper
+    stat:
+      path: '{{ shared_directory }}'
+    register: shared_dir
+  - name: Template copy
+    tags: mina-helper
+    when: shared_dir.stat.exists
+    become: yes
+    become_user: '{{ deploy_user }}'
+    template:
+      src: '{{ item }}'
+      dest: '{{ shared_directory }}'
+    with_items:
+      - database.yml
+      - secrets.yml
   - name: 'Running Post Tasks'
     shell: echo 'Completed!'
-
