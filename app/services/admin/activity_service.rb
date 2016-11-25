@@ -18,7 +18,7 @@ class Admin::ActivityService < BaseService
 
         if char_limit_1000_fields.include?(field)
           if value.length > 1000
-            errors << 'Please enter chaaracters less than 1000 for field ' + field.humanize
+            errors << 'Please enter characters less than 1000 for field ' + field.humanize
             next
           end
         end

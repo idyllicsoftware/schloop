@@ -1,39 +1,45 @@
-class Api::V1::ActivitiesController < ApplicationController
+class Api::V1::ActivitiesController < Api::V1::BaseController
+
 
 	def index
-		errors = []
-		filter_options = {}
-		filter_options << Activity.grades
-		filter_options << Activity.subjects
-		@activities = activity.all
-		response = {
-			success: true,
-     	    error:  nil,
-			data: @activities
-		}
 
-		render json: response
-	end
-=begin
-	def show
-		id = params[:activity_id]
-		activity = activity.where(id: id)
-		attachments = Attachment.where(attachable_type: , attachable_id: activity.id)
-		response = {
-			grade: activity.grade,
-			subject: activity.subject,
-			topic: activity.topic,
-			activity_title: activity.activity_title,
-			catagory: activity.catagory,
-			teachers: activity.teachers,
-			pre_requisites: activity.pre_requisites
-		}
-		render json: activity
-	end
-=end	
+  end
+
+  def grade_subjects
+
+    profile_data = {
+      id: @current_user.id,
+      first_name: @current_user.first_name,
+      last_name: @current_user.last_name,
+      email: @current_user.email,
+      phone: @current_user.cell_number,
+      school_id: @current_user.school_id,
+      grade_divisions: [{grade_id: 1,
+                         grade_name: 'grade one',
+                         divisions: [
+                           {id: 1, name: 'A'},
+                           {id: 2, name: 'B'},
+                           {id: 3, name: 'C'},
+                           {id: 4, name: 'D'}] },
+                        {grade_id: 2,
+                         grade_name: 'grade two',
+                         divisions: [
+                           {id: 5, name: 'A'},
+                           {id: 6, name: 'B'}] }]
+    }
+
+    render json: {
+      success: true,
+      error: nil,
+      data: {
+        profile: profile_data
+      }
+    }
+  end
+
 	private
     def activity_params
-      params.permit(:grade, :subject, :topic, :activity_title, :catagory, :teachers, :pre_requisites, :reference_image)
+      params.permit(:grade, :subject, :topic, :activity_title, :category, :teaches, :pre_requisites, :reference_image)
 	end
 
 end
