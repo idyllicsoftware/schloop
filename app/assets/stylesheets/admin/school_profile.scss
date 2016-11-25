@@ -3,51 +3,6 @@
 
 .school-main-section {
 	.container {
-		width: 1020px;
-		margin: 50px auto;
-		background: $container-background;
-		padding: 40px 90px;
-		border-radius: 10px;
-		-webkit-box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35);
-	  	-moz-box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35);
-	  	box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.35); 
-		#school-Tab {
-			margin-top: -110px;
-		    display: flex;
-		    align-items: center;
-		    justify-content: space-between;
-		    border-bottom: transparent;
-		    li {
-		    	height: 130px;
-    			width: 180px;
-			    &.active {
-			    	background-image: url(cloud_tab.svg);
-		  			background-repeat: no-repeat;
-		  			height: 130px;
-		    		width: 180px;
-		    		a {
-		    			margin: 25px 10px;
-		    			color: #25aae1;
-		    		}
-		    	}	
-		    }
-		    a {
-		    	margin: 25px 10px;
-		    	font-size: 18px; 
-			    &:hover{
-	    			text-decoration: none;
-	    			background-color: transparent;
-	    			border: none;
-	    		}
-	    	}	
-    	}
-    	.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-    		color: #555555;
-   		 	border: none;
-   		 	background-color: transparent;
-    		border-bottom-color: transparent;
-    		cursor: default;
-    	}
 		.school-profile-main-section {
 			  	.data-title{
 					font-weight: bold;
@@ -187,7 +142,7 @@
 					}	
 					.teachers-wrapper {
 						.popover {
-							width: 350px;
+							width: 450px;
 						}			
 					}
 				}
@@ -197,16 +152,23 @@
 			    	.data-title{
 						font-weight: 700;
 					}
+					#add-sub{
+						float: right;
+						font-weight: 700;
+			    		padding: 0px 20px;			
+					}
 					.data-attr{
 						.subject-tab-wrapper {
 							position: relative;
-						}
-						#add-sub{
-							float: right;
-							font-weight: 700;
-				    		position: absolute;
-		    				right: 20px;
-		    				bottom: 20px;			
+							ul {
+							    width: 700px;
+   								overflow-x: scroll;
+   								white-space: nowrap;
+   								li {
+   									float: none;
+  									display: inline-block;
+   								}
+							}
 						}
 						.nav-tabs{
 							padding: 10px;
@@ -261,8 +223,13 @@
 					}
 					.nav-tabs{
 						border-bottom: 2px dotted $tab-border;
+					    width: 550px;
+					    overflow-x: scroll;
+					    white-space: nowrap;
 						li{
 							margin-bottom: 0 !important;
+							float: none;
+    						display: inline-block;
 							&:hover{
 								background: transparent;
 							}
@@ -374,6 +341,10 @@
 		                        text-align: left;
 		                      }
 		                    }
+		                  }
+		                  .scroll-grade {
+		                  	height: 200px;
+		                  	overflow: auto;
 		                  }
 		                }
 
