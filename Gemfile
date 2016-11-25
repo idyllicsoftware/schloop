@@ -35,6 +35,7 @@ gem 'fcm'
 group :development do
   # Using mina for deployment
   gem 'mina', '~> 0.3.8'
+  gem 'mina-multistage', require: false
   # Use thin as the app server
   gem 'sextant'
   gem 'better_errors'
