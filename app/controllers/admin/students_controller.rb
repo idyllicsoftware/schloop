@@ -22,7 +22,8 @@ class Admin::StudentsController < ApplicationController
 	      					:parent_first_name => student_profile.student.parent.parent_details.first.first_name,
 	      					:parent_middle_name => student_profile.student.parent.parent_details.first.middle_name,
 	      					:parent_last_name => student_profile.student.parent.parent_details.first.last_name,
-	      					:parent_email => student_profile.student.parent.email
+	      					:parent_email => student_profile.student.parent.email,
+	      					:cell_number => student_profile.student.parent.cell_number
 	      				}
 	    end
 	    render json: {success: true, student_data: student_data}
