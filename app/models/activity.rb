@@ -23,19 +23,24 @@ class Activity < ActiveRecord::Base
 
   enum file_sub_type: { reference: 0, thumbnail: 1 }
 
-  def self.grade_activities(search_params, page_size, offset)
+  def self.grade_activities(search_params, page)
+    if page.present?
+      page = page.to_s.to_i
+      page_size = 20
+      offset = (page * page_size)
+    end
     activities_data = []
     activities = Activity.where(search_params).includes(:attachments).order(id: :desc)
     total_records = activities.count
-    activities = activities.offset(offset).limit(page_size) if search_params[:subject_id].present?
+    activities = activities.offset(offset).limit(page_size) if page.present?
 
     activities.each do |activity|
       master_subject = activity.master_subject
       activities_data << {
         grade_id: activity.master_grade.id,
         grade_name: activity.master_grade.name,
-        subject_id: master_subject.id,
-        subject_name: master_subject.name,
+        master_subject_id: master_subject.id,
+        master_subject_name: master_subject.name,
         activity: {
           id: activity.id,
           topic: activity.topic,

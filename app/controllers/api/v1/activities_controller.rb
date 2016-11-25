@@ -5,13 +5,9 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
 	def index
     errors = []
     grade_id = params[:grade_id]
-    subject_id = params[:subject_id]
-    page = params[:page].to_s.to_i
-
-    @school = School.find_by(id: @current_user.school_id)
-    page = params[:page].to_s.to_i
+    subject_ids = params[:subject_ids]
+    page = params[:page]
     page_size = 20
-    offset = (page * page_size)
 
     grade = Grade.find_by(id: grade_id)
     errors << "Grade not found" if grade.blank?
@@ -20,10 +16,13 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     errors << "Master Grade not found" if master_grade.blank?
 
     if errors.blank?
-      master_subject_id = Subject.find(id: subject_id).master_subject.id rescue nil
       search_params = {master_grade_id: master_grade.id}
-      search_params.merge!(master_subject_id: master_subject_id) if master_subject_id.present?
-      activities_data, total_records = Activity.grade_activities(search_params, page_size, offset)
+      if subject_ids.present?
+        subject_ids = subject_ids.split(',')
+        master_subject_ids = Subject.where(id: subject_ids).pluck(:master_subject_id) rescue []
+        search_params.merge!(master_subject_id: master_subject_ids)
+      end
+      activities_data, total_records = Activity.grade_activities(search_params, page)
     end
 
     if errors.blank?
