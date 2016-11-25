@@ -1,7 +1,10 @@
 class Admin::SchoolsController < ApplicationController
+  include ApplicationHelper
   before_action :authenticate_user!
   before_action :find_school, only: [:show]
   layout "admin"
+  before_filter :authorize_permission
+
 
   def index
     ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION

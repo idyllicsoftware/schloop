@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20161124111628) do
+ActiveRecord::Schema.define(version: 20161125104931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,13 +41,10 @@ ActiveRecord::Schema.define(version: 20161124111628) do
     t.string   "name"
     t.string   "original_filename"
     t.integer  "file_size"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-  end
-
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "sub_type",          default: 0, null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -83,7 +79,6 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   create_table "ecirculars", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-
     t.integer  "circular_tag"
     t.integer  "created_by_type"
     t.integer  "created_by_id"
@@ -234,14 +229,11 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
 
   create_table "user_roles", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "user_original_id"
     t.integer  "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
-
-  add_index "user_roles", ["user_id", "role_id"], name: "index_user_roles_on_user_id_and_role_id", unique: true, using: :btree
-  add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",            null: false
@@ -279,10 +271,6 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   add_foreign_key "grades", "schools"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
-
-  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
-  add_foreign_key "subjects", "teachers"
   add_foreign_key "user_roles", "roles"
-  add_foreign_key "user_roles", "users"
 end

@@ -1,4 +1,8 @@
 
+admin: &admin
+  - product-admin
+  - school-admin
+
 # NOTE: BY DEFAULT FLAG IS ASSUMED TO BE {}
 :PERMISSIONS:
   admin/schools:                                            #On this line put controller name
@@ -8,13 +12,22 @@
   - :action: new
     :role_maps:
     - product-admin 
-  admin/teachers:                                            
-  - :action: index
+  - :action: show
     :role_maps:
     - product-admin
-  - :action: new
+  - :action: create
+    :role_maps:
+    - product-admin 
+  - :action: all
     :role_maps:
     - product-admin   
-      
+  - :action: create_school
+    : role_maps:
+    - product-admin
+  - :action: show
+    :role_maps: *admin
+  - :action: find_school
+    :role_maps: *admin
+
       
 
