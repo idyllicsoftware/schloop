@@ -50,7 +50,7 @@ Rails.application.routes.draw do
 
       end
 
-      resources :grades, only: [:index, :create], shallow: true do
+      resources :grades, only: [:index, :create, :destroy], shallow: true do
         resources :subjects,only: [:index, :create, :update, :destroy], shallow: true do
 
         end
