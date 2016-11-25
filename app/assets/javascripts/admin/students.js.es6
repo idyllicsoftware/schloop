@@ -60,9 +60,7 @@ class Students extends SchloopBase {
                     });
                 }
                 studentWrapperEl.html(html);
-                if(res.grades[0]) {
-                    _self.processDivisions(res.grades[0].grade_id);
-                }
+                $("#grade_select").trigger('change');
             }
         });
     };
@@ -73,13 +71,22 @@ class Students extends SchloopBase {
     };
 
     initEventListeners(){
-        let _self = this;
+        let _self = this,
+            { school_id } = _self._config;
 
         $(document).on('click', '.division-list-item', function () {
             let { division_id } = $(this).data();
             $(".division-list-item.active").removeClass('active');
             $(this).addClass('active');
             _self.loadStudents(division_id);
+        });
+
+        $(document).on('change', '#grade_select', function () {
+            let grade_id = $(this).val();
+            $('#studentListWrapper').html("");
+            $("#divisions_wrapper_id").html("");
+            $("#uploadStudentCSVLink").attr('href', `/admin/parent_imports/new?grade_id=${grade_id}&school_id=${school_id}`)
+            _self.processDivisions(grade_id);
         });
     };
 

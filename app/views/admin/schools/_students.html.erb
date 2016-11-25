@@ -14,8 +14,8 @@
        <div id="divisions_wrapper_id" class="col-md-8">
 
        </div>
-       <div class="col-md-2 web-content-link pt20">
-         <%= link_to "Upload CSV", new_admin_parent_import_path(:school_id => @school.id, :grade_id => @grades.first.id)%>
+       <div class="col-md-2  pt20">
+         <a id="uploadStudentCSVLink" href="/admin/parent_imports/new" target="_blank">Upload CSV</a>
        </div>
      </div>
     <div id="studentListWrapper"></div>
