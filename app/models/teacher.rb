@@ -21,27 +21,10 @@
 #  middle_name            :string
 #  last_name              :string
 #  cell_number            :string
-#  phone                  :string
-#  invitation_token       :string
-#  invitation_created_at  :datetime
-#  invitation_sent_at     :datetime
-#  invitation_accepted_at :datetime
-#  invitation_limit       :integer
-#  confirmation_token     :string
-#  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
-#  unconfirmed_email      :string
-#  invited_by_id          :integer
-#  invited_by_type        :string
-#  invitations_count      :integer          default(0)
 #
 # Indexes
 #
-#  index_teachers_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_teachers_on_email                 (email) UNIQUE
-#  index_teachers_on_invitation_token      (invitation_token) UNIQUE
-#  index_teachers_on_invitations_count     (invitations_count)
-#  index_teachers_on_invited_by_id         (invited_by_id)
 #  index_teachers_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_teachers_on_token                 (token)
 #
@@ -53,7 +36,7 @@ class Teacher < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :school
-
+  has_many :grade_teachers
   before_save :set_token
 
   def set_token

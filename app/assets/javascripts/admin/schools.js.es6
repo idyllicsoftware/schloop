@@ -1,4 +1,5 @@
 //= require_self
+//= require admin/activities
 //= require admin/school_profiles
 
 
@@ -7,6 +8,7 @@ class Schools extends SchloopBase {
         let {action} = this._config;
         if(action == 'index'){
             this.initDashboard();
+            this._activities = new Activities(this._config);
         }else if(action == 'show'){
             this._schoolProfile = new SchoolProfiles(this._config);
         }
@@ -34,6 +36,7 @@ class Schools extends SchloopBase {
             'school[website]': 'website',
             'school[logo]': 'logo',
             'administrator[first_name]': 'name',
+
             'administrator[last_name]': 'name',
             'administrator[cell_number]': 'phone',
             'administrator[email]': 'email',
@@ -55,7 +58,6 @@ class Schools extends SchloopBase {
         $(document).on('click','.cancel-creation', function () {
             createModalEl.modal('hide');
         });
-
     };
 
     get schoolListTpl (){
