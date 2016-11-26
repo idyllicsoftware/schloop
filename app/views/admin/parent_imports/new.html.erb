@@ -3,31 +3,56 @@
   <div class="container">
     <div class="text-center mb50">
       <h3>Upload <%= @grade.name %> CSV</h3>
-      <p>Uploading  a  file  will  update  an  existing  student  profile  if  it  exists.  For  new records, they will be added to the current list</p>
+      <p>Uploading  a  file  will  update  an  existing  student  profile  if  it  exists.  <br/>For  new records, they will be added to the current list</p>
     </div>
 
 
 
-
-<%= form_for @parent_import,  :url => admin_parent_imports_path do |f| %>
-  <% if @parent_import.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@parent_import.errors.count, "error") %> prohibited this import from completing:</h2>
-      <ul>
-      <% @parent_import.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-  <%= hidden_field_tag :school_id,  @school.id%>
-  <%= hidden_field_tag :grade_id,  @grade.id%>
-    <%= f.file_field :file %>
-  </div>
-  <div class="buttons"><%= f.submit "Import" %></div>
-<% end %>
-
+    <%= form_tag '', :id => "fileDetails", class:"uploadFiles_btn_container clearfix", novalidate: true do %>
+        <%= hidden_field_tag :school_id,  @school.id%>
+        <%= hidden_field_tag :grade_id,  @grade.id%>
+        <div class="file_upload_files--upload-block">
+          <div>
+            <div class="fileUpload file_upload_files--fileUploadBtn">
+              <span><i class="fa fa-cloud-upload"></i> choose file</span>
+              <input id="fileupload" class="upload" type="file" name="parent_import[file]" data-url="/admin/parent_imports" accept=".csv">
+            </div>
+            <button class="btn btn-primary text-uppercase disabled uploadBtn">upload</button>
+          </div>
+        <div class="progressWrap" style="padding: 15px 0px;display: none;">
+          <div class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+              <span></span>
+            </div>
+          </div>
+        </div>
+        <table class="selected_files"></table>
+        </div>
+    <% end %>
+<br/>
 </div>
 </div>
+
+<script id="selectedFileTr" type="text/html">
+  <tr class='selectedFile'>
+    <td>{{name}}</td>
+    <td class="text-right">
+      <button type='button' class='btn btn-danger delete'>
+        <i class='fa fa-trash f16'></i>
+      </button>
+    </td>
+  </tr>
+</script>
+
+<script id="uploadedFileTr" type="text/html">
+  <tr>
+    <td style="word-wrap: break-word;">
+      <a target='_blank' href="{{url}}">
+        {{name}}
+      </a>
+      <input type="hidden" name="attachment_ids[]" value="{{id}}">
+    </td>
+    <td>{{format}}</td>
+    <td>{{size}}</td>
+  </tr>
+</script>

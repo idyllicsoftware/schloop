@@ -68,3 +68,130 @@
     }
   }
 }
+
+.file_upload_files {
+  padding: 5px 15px 20px 15px;
+  &--table {
+    margin-bottom: 30px;
+    table-layout: fixed;
+    thead {
+      text-transform: uppercase;
+      th {
+        min-width: 150px;
+        border-top: 1px solid #ddd !important;
+        border-bottom: 1px solid #ddd !important;
+        text-transform: capitalize;
+        &.product_name {
+          width: 20%;
+        }
+        &.file_type,
+        &.file_format,
+        &.file_name {
+          width: 15%;
+        }
+        &.file_size {
+          width: 10%;
+        }
+      }
+    }
+    tbody {
+      td {
+        font-size: 14px;
+        padding-top: 9px;
+        padding-bottom: 9px;
+      }
+    }
+  }
+  &--comment {
+    width: 30%;
+  }
+  &--fileUploadBtn {
+    color: #27a9e0;
+    font-size: 18px;
+    font-weight: normal;
+    text-transform: initial;
+    position: relative;
+    display: inline-block;
+    margin-right: 20px;
+    .fa-cloud-upload {
+      font-size: 26px;
+      position: relative;
+      top: 2px;
+    }
+    &:hover {
+      color: #000;
+    }
+    input {
+      display: block;
+      position: absolute;
+      z-index: 4;
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
+  &--upload-block{
+    display: inline-block;
+    margin-bottom: 15px;
+    table.selected_files{
+      width: 100%;
+      margin: 10px 0px;
+
+      td {
+        padding: 5px 5px;
+      }
+      .selectedFile {
+        word-break: break-all;
+      }
+    }
+
+    .progressWrap {
+      display: none;
+      float: left;
+      width: 100%;
+      position: relative;
+
+      > .progress {
+        margin: 6px 0px;
+      }
+    }
+
+    .errorMessage {
+        color: #dd0017;
+    }
+  }
+}
+
+.uploadFiles_btn_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .disabled {
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+      opacity: 0.65 !important;
+      filter: alpha(opacity=65);
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+    .progressWrap {
+        position: relative;
+    }
+    .progress {
+      height: 8px;
+      margin-bottom: 10px;
+      width: 85%;
+      .progress-bar {
+          span {
+            color: #666;
+            position: absolute;
+            z-index: 1;
+            right: 10px;
+            top: 15px;
+          }
+      }
+    }
+}

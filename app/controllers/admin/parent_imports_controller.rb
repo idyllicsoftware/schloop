@@ -7,18 +7,20 @@ class Admin::ParentImportsController < ApplicationController
     redirect_to '/' and return if @school.blank?
     @grade = @school.grades.find(params[:grade_id])
     redirect_to admin_school_path(@school.id) and return if @grade.blank?
-    @parent_import = ParentImport.new({}, @school.id, @grade.id)
+    @js_data = {
+        school_id: params[:school_id]
+    }
   end
 
   def create
-    redirect_to '/' and return if @school.blank?
+    render json: {success: false, errors: ['School not found']} and return if @school.blank?
     @grade = @school.grades.find(params[:grade_id])
-    redirect_to admin_school_path(@school.id) and return if @grade.blank?
+    render json: {success: false, errors: ['Grade not found']} and return if @grade.blank?
     @parent_import = ParentImport.new(params[:parent_import], params[:school_id], params[:grade_id])
     if @parent_import.save
-      redirect_to admin_school_path(@school.id)
+      render json: {success: true}
     else
-      render :action => "new" #,:school_id => @school.id, :grade_id => @grade 
+      render json: {success: false, errors: ['Something went wrong. Please contact dev team.']}
     end
   end
 
