@@ -45,7 +45,7 @@ grade_data {
 
 class Admin::GradesController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_school, only: [:index, :create]
+  before_action :find_school, only: [:index, :create, :grades_divisions]
   before_action :find_grades, only: [:index, :create]
   layout "admin"
 
@@ -68,6 +68,20 @@ class Admin::GradesController < ApplicationController
         subjects << { subject_id: subject.id, subject_name: subject.name, divisions: divisions}
       end
       grade_data << { grade_id: grade.id, grade_name: grade.name, subjects:subjects }
+    end
+    render json: {success: true, grades: grade_data}
+  end
+
+  def grades_divisions
+    render json: {success: false, errors: ['School not found']} and return if @school.blank?
+    @grades = Grade.where(school_id: params[:school_id]).includes(:divisions)
+    grade_data = []
+    @grades.each do |grade|
+      divisions = []
+      grade.divisions.each do |division|
+        divisions <<  {division_id: division.id, division_name: division.name}
+      end
+      grade_data << { grade_id: grade.id, grade_name: grade.name, divisions: divisions }
     end
     render json: {success: true, grades: grade_data}
   end

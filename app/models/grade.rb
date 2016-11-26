@@ -23,6 +23,8 @@ class Grade < ActiveRecord::Base
 	belongs_to :master_grade
 	has_many :divisions
 	has_many :subjects
+	has_many :studen_profiles
+
 	has_many :ecircular_recipients
 
 	validates :name, :presence => true

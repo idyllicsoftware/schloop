@@ -22,14 +22,16 @@ Rails.application.routes.draw do
   }
 
 
-  devise_for :parents, controllers:{
-                         sessions: 'admin/parents/sessions',
-                         registrations: 'admin/parents/registrations',
-                         passwords: 'admin/parents/passwords',
-                         invitations: 'admin/parents/invitations'
-  }
+  # devise_for :parents, controllers:{
+  #                        sessions: 'admin/parents/sessions',
+  #                        registrations: 'admin/parents/registrations',
+  #                        passwords: 'admin/parents/passwords',
+  #                        invitations: 'admin/parents/invitations'
+  # }
 
   namespace :admin do
+    resources :parent_imports
+    resources :students
     resource :users do
     end
 
@@ -51,6 +53,9 @@ Rails.application.routes.draw do
       end
 
       resources :grades, only: [:index, :create], shallow: true do
+        collection do
+          get :grades_divisions
+        end
         resources :subjects,only: [:index, :create, :update, :destroy], shallow: true do
 
         end
