@@ -65,7 +65,7 @@ Rails.application.routes.draw do
       get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
     end
 
-    resources :activities, only: [:create, :update] do
+    resources :activities, only: [:create, :show] do
       collection do
         get :all
       end

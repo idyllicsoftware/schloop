@@ -18,6 +18,20 @@ class Activities extends SchloopBase {
 
         $('#select_multiple').multipleSelect({});
 
+        $(document).on('click', '.activity_title_link', function () {
+            var el = $(this),
+                 activity_id = el.data('activity-id');
+            $.ajax({
+                url: `/admin/activities/${activity_id}`,
+                success: function (res) {
+                    if(res.success) {
+                        createWebContentModal.modal('show');
+                        // TODO UPDATE MODAL HERE
+                    }
+                }
+            });
+        });
+
         $(document).on('click','.web-content-creation-link', function () {
             createWebContentModal.modal('show');
             jForm[0].reset();
