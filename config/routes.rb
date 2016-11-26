@@ -52,11 +52,11 @@ Rails.application.routes.draw do
 
       end
 
-      resources :grades, only: [:index, :create], shallow: true do
+      resources :grades, only: [:index, :create, :destroy], shallow: true do
         collection do
           get :grades_divisions
         end
-        resources :subjects,only: [:index, :create, :update, :destroy], shallow: true do
+        resources :subjects, only: [:index, :create, :update, :destroy], shallow: true do
 
         end
         resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do

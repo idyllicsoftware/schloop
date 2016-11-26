@@ -47,6 +47,7 @@ class Admin::GradesController < ApplicationController
   before_action :authenticate_user!
   before_action :find_school, only: [:index, :create, :grades_divisions]
   before_action :find_grades, only: [:index, :create]
+  before_action :load_grade, only: [:destroy]
   layout "admin"
 
   def index
@@ -87,11 +88,24 @@ class Admin::GradesController < ApplicationController
   end
 
   def create
+    if params[:grades_data][:master_subject_ids].blank?
+      render json: { success: false, errors: 'please select subjects.' } and return
+    end
     response = Grade.create_grade(@school, params[:grades_data])
     render :json => response
   end
 
+  def destroy
+    response = @grade.destroy_grade
+    render json: response
+  end
+
   private
+
+  def load_grade
+    @grade = Grade.find_by(id: params[:id])
+    render json: { success: false, errors: ['Grade not found'] } and return if @grade.blank?
+  end
 
   def find_grades
     @grades = Grade.where(school_id: params[:school_id]).includes(:subjects, :divisions)

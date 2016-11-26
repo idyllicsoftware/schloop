@@ -23,6 +23,31 @@ class SchoolGrades extends SchloopBase {
                 jForm.attr('method', 'POST');
                 _self.add_grade(jForm, $(this));
         });
+
+        $(document).on('click', '.delete_grade',function(){
+            var el = $(this),
+                grade_div = el.parent(),
+                grade_id = el.data('grade-id');
+
+                swal({
+                  title: "Are you sure?",
+                  text: "You want delete this grade",
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "Yes, delete it!"
+                },
+                function(){
+                  _self.deleteRequest(`/admin/grades/${grade_id}`, el, null, function (res) {
+                        if(res.success) {
+                            toastr.success('Grade deleted successfully');
+                            grade_div.remove();
+                        }else {
+                            _self.showErrors(res.errors);
+                        }
+                    });
+                });
+        });
     };
 
     get schoolGradesTpl (){
