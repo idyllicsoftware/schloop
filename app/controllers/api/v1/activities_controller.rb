@@ -17,12 +17,17 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
 
     if errors.blank?
       search_params = {master_grade_id: master_grade.id}
+      mapping_data = {
+        master_grade_id_grade_id: {master_grade.id => grade}
+      }
       if subject_ids.present?
         subject_ids = subject_ids.split(',')
-        master_subject_ids = Subject.where(id: subject_ids).pluck(:master_subject_id) rescue []
+        subjects_by_master_id = Subject.where(id: subject_ids).index_by(&:master_subject_id) rescue nil
+        master_subject_ids = subjects_by_master_id.keys rescue []
         search_params.merge!(master_subject_id: master_subject_ids)
+        mapping_data[:subjects_by_master_id] = subjects_by_master_id
       end
-      activities_data, total_records = Activity.grade_activities(search_params, page)
+      activities_data, total_records = Activity.grade_activities(search_params, mapping_data, page)
     end
 
     if errors.blank?
@@ -34,7 +39,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
             page_size: page_size,
             record_count: total_records,
             total_pages: (total_records/page_size.to_f).ceil,
-            current_page: page
+            current_page: (page || 0)
           },
           activities: activities_data
         }
