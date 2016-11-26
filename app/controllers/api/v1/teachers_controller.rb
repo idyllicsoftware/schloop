@@ -106,25 +106,30 @@ class Api::V1::TeachersController < Api::V1::BaseController
 
 
   def profile
+    teacher = @current_user
+    grades_data = teacher.grade_teachers.includes(:grade).group_by do |x| x.grade_id end
+    profile_data ={}
+    grades_data.each do |grade_id, datas|
+      divisions, subjects = {}, {}
+      datas.each do |data|
+        profile_data[grade_id]||= {
+          grade_id: grade_id,
+          grade_name: data.grade.name
+        }
+        divisions[data.division.id] = { id: data.division.id, name: data.division.name }
+        subjects[data.subject.id] = { id: data.subject.id, name: data.subject.name }
+      end
+      profile_data[grade_id][:divisions] = divisions.values
+      profile_data[grade_id][:subjects] = subjects.values
+    end
     profile_data = {
-      id: @current_user.id,
-      first_name: @current_user.first_name,
-      last_name: @current_user.last_name,
-      email: @current_user.email,
-      phone: @current_user.cell_number,
-      school_id: @current_user.school_id,
-      grade_divisions: [{grade_id: 1,
-                       grade_name: 'grade one',
-                       divisions: [
-                        {id: 1, name: 'A'},
-                        {id: 2, name: 'B'},
-                        {id: 3, name: 'C'},
-                        {id: 4, name: 'D'}] },
-                      {grade_id: 2,
-                       grade_name: 'grade two',
-                       divisions: [
-                         {id: 5, name: 'A'},
-                         {id: 6, name: 'B'}] }]
+      id: teacher.id,
+      first_name: teacher.first_name,
+      last_name: teacher.last_name,
+      email: teacher.email,
+      phone: teacher.cell_number,
+      school_id: teacher.school_id,
+      grade_divisions: profile_data.values
     }
 
     render json: {

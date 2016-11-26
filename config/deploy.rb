@@ -1,3 +1,4 @@
+require 'mina/multistage'
 require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
@@ -8,21 +9,18 @@ user = %x(git config user.name).delete("\n")
 branch = (ENV['branch'].nil? ? %x(git symbolic-ref --short -q HEAD).delete("\n") : ENV['branch'])
 branch = "master" if branch == ""
 
-server = '52.23.232.204' # this is staging instance
-env = 'staging' # the dev server is in test env
-
-
 # Basic settings:
 #   domain       - The hostname to SSH to.
 #   deploy_to    - Path to deploy into.
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :domain, server
+# set :domain, server
 set :deploy_to, '/var/app/schloop'
 set :repository, 'git@github.com:idyllicsoftware/schloop.git'
-set :branch, branch
-set :rails_env, env
+## this are taken from individually environment 
+# set :branch, branch
+# set :rails_env, env
 
 # For system-wide RVM install.
 #   set :rvm_path, '/usr/local/rvm/bin/rvm'
@@ -32,7 +30,8 @@ set :rails_env, env
 set :shared_paths, ['config/database.yml', 'config/secrets.yml', 'log','config/settings/staging.yml']
 
 # Optional settings:
-set :user, 'ubuntu'    # Username in the server to SSH to.
+# taken from individual
+# set :user, 'ubuntu'    # Username in the server to SSH to.
 set :port, '22'     # SSH port number.
 set :forward_agent, true     # SSH forward_agent.
 

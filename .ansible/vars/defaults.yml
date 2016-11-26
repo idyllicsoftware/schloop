@@ -14,10 +14,10 @@ postgresql_ext_install_dev_headers: yes
 git_repo_url: git@github.com:idyllicsoftware/schloop.git
 deploy_to: /var/app
 passenger_app_root: '{{ deploy_to }}/{{ project }}/current/public'
-passenger_server_name: 35.154.50.217
+passenger_server_name: schloop.co.in
 passenger_app_env: production
 passenger_app_ruby: '{{ rvm1_path }}/gems/{{ rvm_default_ruby }}/wrappers/ruby'
 shared_directory: '{{ deploy_to }}/{{ project }}/shared/config'
 db_user: postgres
-db_name: production-dev
-db_password: f128a27450c8e1dd470fee673062aed3
+db_name: schloop_production
+db_password: f128a27450c8e1dd470fee673062aed3 # this is not need
