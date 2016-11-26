@@ -10,10 +10,12 @@
         <p><%= @school.code %></p>
       </div>
     </div>
+    <div class="history-btn"><a class="pull-right p10px">History</a></div>
+
     <!-- <div>
         <textarea class="tinymce"></textarea>
     </div> -->
-    <div class="circulars-main-form">
+    <div class="circulars-main-form hidden">
       <%=  form_tag( "/admin/schools/#{@school.id}/ecirculars"	, class:"school-ecircular-form", multipart: true) do %>
         <div class="form-group col-md-12">
           <input name="school_id" value='<%= @school.id %>' hidden >
@@ -136,5 +138,158 @@
         </div>
       <% end %>
     </div>
+    <div class="content-wrapper">
+      <div class="ecirculars-history-section">
+        <ul class="circular-history-list">
+          <li class="circular-history-item">
+            <div class="pb10">
+              <h4 class="circular-subject"> School closed on Monday,Oct 20 2016 due to Diwali  </h4>
+              <p class="sent-by">Oct 18 2016,4:12 PM | Sent by Rita Kaur</p>
+            </div>
+            <p class="sent-to">Sent to Grade 1 (A, B, C, D),Grade 2 (A, B),Grade 3 (A, C ,H)</p>
+          </li>
+          <li class="circular-history-item">
+            <div class="pb10">
+              <h4 class="circular-subject"> School closed on Monday,Oct 20 2016 due to Diwali  </h4>
+              <p class="sent-by">Oct 18 2016,4:12 PM | Sent by Rita Kaur</p>
+            </div>
+            <p class="sent-to">Sent to Grade 1 (A, B, C, D),Grade 2 (A, B),Grade 3 (A, C ,H)</p>
+          </li>
+          <li class="circular-history-item">
+            <div class="pb10">
+              <h4 class="circular-subject"> School closed on Monday,Oct 20 2016 due to Diwali  </h4>
+              <p class="sent-by">Oct 18 2016,4:12 PM | Sent by Rita Kaur</p>
+            </div>
+            <p class="sent-to">Sent to Grade 1 (A, B, C, D),Grade 2 (A, B),Grade 3 (A, C ,H)</p>
+          </li>
+          <li class="circular-history-item">
+            <div class="pb10">
+              <h4 class="circular-subject"> School closed on Monday,Oct 20 2016 due to Diwali  </h4>
+              <p class="sent-by">Oct 18 2016,4:12 PM | Sent by Rita Kaur</p>
+            </div>
+            <p class="sent-to">Sent to Grade 1 (A, B, C, D),Grade 2 (A, B),Grade 3 (A, C ,H)</p>
+          </li> 
+        </ul>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<div class="modal fade" id="circular-history-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+          <div class="content-wrapper">
+            <div class="pull-right">
+              <a>Edit</a>
+            </div>
+            <div class="circulars-main-form hidden">
+              <%=  form_tag( "/admin/schools/#{@school.id}/ecirculars"  , class:"school-ecircular-form", multipart: true) do %>
+                <div class="form-group col-md-12">
+                  <input name="school_id" value='<%= @school.id %>' hidden >
+                  <input type="text" class="form-control input-field" required name="title" placeholder="Subject" autocomplete="off" maxlength="10" />
+                </div>
+                <div class="form-group col-md-12 upload-photo-wrap">
+                  <label for="upload-photo">
+                    <div class="upload-logo">
+                      <img src="<%= asset_path('admin/image_upload.svg') %>">
+                    </div>
+                    <input type="file" name="attachments[]" multiple="" accept=".xls,.xlsx,.doc,.docx,.pdf,.csv,.jpg,.jpeg,.png" required id="upload-photo"/>
+                  </label>
+                </div>
+                <div class="form-group col-md-12">
+                  <input type="text" class="form-control input-field" name="" placeholder="Body" autocomplete="off" maxlength="10" disabled="disabled"/>
+                  <textarea class="form-control input-field circular-textarea" required name="body"></textarea>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-5 border_botm">
+                    <a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
+                              <span class="select-recipients">
+                          <p class="select-recipients_name">Select recipients</p>
+                          <p class="fa fa-chevron-down"></p>
+                        </span>
+                    </a>
+                    <div id="select-recipients-popover-content" class="hidden">
+                      <div class="recipients-container-wrap">
+                        <div class="tab-content">
+                          <div class="tab-pane fade in active" id="all-grade-section-tab">
+                            <% @grades.each do |grade|%>
+                              <div class="std_name">
+                                  <span class="col-md-12 checkbox_customized">
+                                    <input class='chek_cls grade_checkbox' value="<%= grade.id %>" type="checkbox" id="<%= grade.name %>" >
+                                    <label for="<%= grade.name %>"><%= grade.name %></label>
+                                </span>
+                                <ul class="checkbox_customized">
+                                  <% grade.divisions.each do |division| %>
+                                    <li class="col-md-2">
+                                      <input type="checkbox" class="division_checkbox" name="grades[<%= grade.id %>]division[]" value="<%= division.id %>" id="<%= division.name %>" data-grade_id="<%= grade.id %>">
+                                      <label for="<%= division.name %>"><%= division.name %></label>
+                                    </li>
+                                  <% end %>
+                                </ul>
+                              </div>
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 border_botm">
+                    <a id="select-circular-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-circular-popover-content" data-placement="top">
+                        <span class="select-recipients">
+                            <p class="selected_circular_tag">Select E-Circular</p>
+                            <input type="hidden" class="cirular_value" name="circular_tag" value="">
+                            <p class="fa fa-chevron-down"></p>
+                        </span>
+                    </a>
+
+                    <div id="select-circular-popover-content" class="hidden">
+                      <div class="select-circular-container">
+                        <% @circular_tags.each do |key, value| %>
+                          <div class="radio">
+                            <input type="radio" name="radio_select" value="<%= key %>" id="<%= value %>">
+                            <label for="<%= value %>"> <%= key.humanize %> </label>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">SEND</button>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <div class="preview-container">
+              <div class="subject-body pb10">
+                <h4>School closed on Monday,Oct 20 2016 due to Diwali</h4>
+                <p>
+                  lgdjhbsdjhvbdljsbfljksbfljkbflkjsbflkjsblkjfblkfjb
+                  jfnlkjfblkjfblkdjbflkjf
+                  lfkn;dkfnlkdjnf
+                  dlkfnkdjfbkj
+                  dlkfjldkfnlkn
+                  mfldknflknf
+                </p>
+              </div>
+              <div class="attachments-list">
+                <h4>Attachments</h4>
+                <p>Image1</p>
+                <p>Image2</p>
+              </div>
+              <div>
+                <h4>Sent to</h4>
+                <p>Grade I (A, B, C)</p>
+                <p>Grade II (A, B, C)</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>           
+
+
+                    
+              

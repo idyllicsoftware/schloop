@@ -194,6 +194,7 @@ class SchoolECircular extends SchloopBase {
 
         _self.initCircularTagPopover();
         _self.initRecipientsSelectPopover();
+        _self.initCircularHistory();
 
         this.initFormSubmit(eCircularFormEl, {
             'title': 'title',
@@ -209,5 +210,17 @@ class SchoolECircular extends SchloopBase {
             enctype: 'multipart/form-data',
             processData: false
         });
+    }
+
+    initCircularHistory (){
+        let _self = this,
+        { school_id } = _self._config,
+        circularHistoryModal = $('#circular-history-modal');
+
+        $(document).on('click','.circular-history-item', function () {
+            circularHistoryModal.modal('show');
+        });
+
+        
     }
 }        

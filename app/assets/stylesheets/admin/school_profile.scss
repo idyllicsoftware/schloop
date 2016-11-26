@@ -435,6 +435,14 @@
     		}
 		}
 		.circulars-container {
+			position: relative;
+			.history-btn {
+				position: absolute;
+			    right: 20px;
+			    padding: 10px;
+			    top: 35px;
+			    font-weight: 700;
+			}
 			.header-wrapper {
 				border: none;
 			}
@@ -515,7 +523,24 @@
 		      	display: flex;
 			    justify-content: space-between;
 		      }
-			}    
+			} 
+			.ecirculars-history-section{
+				.circular-history-list{
+					list-style: none;
+    				padding: 0px;
+    				color: #666666;
+    				font-size: 14px;
+					.circular-history-item{
+						padding: 20px 0px;
+    					border-bottom: 1px solid #ccc;
+    					h4{
+    						font-size: 16px;
+    						font-weight: 700;
+    					}
+    					cursor: pointer;
+					}
+				}
+			}   
 		}
 
 	}
@@ -541,4 +566,92 @@
   	.browse-file {
 	    margin-bottom: 20px;
   	}  	
+}
+
+#circular-history-modal {
+	color: #666666;
+	.attachments-list, .subject-body {
+		border-bottom: 1px solid #ccc;
+	}
+	h4{
+		font-weight: 600;
+	}
+	.circulars-main-form {
+		.upload-photo-wrap {
+	      #upload-photo {
+	        opacity: 0;
+	        position: absolute;
+	        z-index: -1;
+	        width: 120px;
+	        -height: 120px;
+	      }
+	      label {
+	        	float: right;
+	        	cursor: pointer;
+	      }
+	    }  
+	  .circular-textarea {
+		    resize: none;
+		height: 300px;
+		overflow: auto;
+	  }
+	  .border_botm {
+	  	border-bottom: 1px solid #ccc;
+	  	margin-right: 20px;
+	  	.popover {
+	  		padding: 20px;
+	  	}
+	  	.popover-content {
+	  		padding: 0px;
+	  		.tab-content{
+	  			overflow: auto;
+				height: 270px;
+	  		}
+	  		.recipients-container-wrap {
+	  			width: 310px;
+	  			height: 310px;
+	  			#recipients-Tab {
+	      			>li {
+	      				padding-right: 20px;
+						padding-bottom: 10px;
+						font-size: 13px;
+						color: #666666;
+						a {
+							padding: 0px;
+						}
+	      			}
+	      			> li:active > a:hover, li > a:hover , li:active > a:focus{
+	      				border: 0;
+	      				color: inherit;
+	      				background-color: transparent;
+	      				cursor: pointer;
+	      			}
+	  			}
+	  			.nav-tabs > li > a {
+	  				margin: 0px;
+	  				border: 0px;
+	  			}
+					.std_name {
+						border-bottom: 2px dotted #ccc;
+					height: 80px;
+						> span { padding: 10px;}
+	  				.checkbox_customized {
+	  					padding-left: 20px;
+	  					li{
+	  						margin-right: 8px;
+	  					}
+	  					[type="checkbox"]:not(:checked) + label,
+	  					[type="checkbox"]:checked + label {
+	  						padding-left: 18px;
+	  					}
+	  				}
+	  			}		
+	  		}
+	  	}
+	  }
+	  .select-recipients {
+	  	display: flex;
+	    justify-content: space-between;
+	  }
+	}
 } 	
