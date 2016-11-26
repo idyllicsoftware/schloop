@@ -40,6 +40,7 @@
 #  index_users_on_invited_by_id         (invited_by_id)
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_user_token            (user_token)
+
 #
 
 class Parent < User
