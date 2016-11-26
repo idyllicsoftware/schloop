@@ -2,13 +2,13 @@
   <div class="container">
     <ul id="school-Tab" class="nav nav-tabs">
       <li class="active">
-        <a href="#school-profile-main-section-tab" aria-controls="school-profile-main-section-id" role="school-profile-main-section-id" data-toggle="tab"  data-tab-name="school_profile">School Profile</a>
+        <a href="#school-profile-main-section-tab" aria-controls="school-profile-main-section-id" role="school-profile-main-section-id" data-toggle="tab">School Profile</a>
       </li>
       <li>
-        <a href="#students-tab" aria-controls="students-tab" role="students-tab"  data-toggle="tab" data-tab-name="students">Students</a>
+        <a href="#parents-tab" aria-controls="parents-tab" role="parents-tab"  data-toggle="tab">Parents</a>
       </li>
       <li>
-        <a href="#circulars-tab" aria-controls="circulars-tab" role="circulars-tab"  data-toggle="tab"  data-tab-name="circulars">Circulars</a>
+        <a href="#circulars-tab" aria-controls="circulars-tab" role="circulars-tab"  data-toggle="tab">Circulars</a>
       </li>
     </ul>
     <div class="tab-content">
@@ -85,14 +85,15 @@
                 </div>
                 <div class="overflow">
                   <div id="schoolGradeContainer">
-                    
+
                   </div>
                 </div>
                 <script type="text/html" id="school_grade_tpl">
                 {{#grades}}
                   <div class="subject-wrapper">
                     <span class="data-title plr20">{{grade_name}}</span>
-                    <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left" data-grade_id="{{grade_id}}">+Add Subject</a></span>
+                    <span class="delete_grade pull-right" data-grade-id="{{grade_id}}"><a> - Delete Grade {{grade_name}}</a></span>
+                    <!-- <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left" data-grade_id="{{grade_id}}">+Add Subject</a></span> -->
                     <div class="data-attr">
                       <div class="subject-tab-wrapper">
                       <div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
@@ -102,7 +103,7 @@
                         {{/subjects}}
                         </ul>
                       </div>
-                      <%= render :partial => "admin/schools/add_subjects" %> 
+                      <%= render :partial => "admin/schools/add_subjects" %>
                       <div class="tab-content">
                         {{#subjects}}
                         <div class="tab-pane fade in division-wrapper inner-tabs" id="{{subject_id}}">
@@ -118,7 +119,7 @@
                             <div class="div-operation">
                               <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content" data-grade_id="{{grade_id}}">+Add Division</a></span>
                                 <span class="current_division"><a>+Delete Division A</a></span>
-                              <%= render :partial => "admin/schools/add_divisions"%> 
+                              <%= render :partial => "admin/schools/add_divisions"%>
                             </div>
                             <div id="myTabContent" class="tab-content">
                               {{#divisions}}
@@ -127,7 +128,7 @@
                                   <ul>
                                   {{#teacher}}
                                     <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption">
-                                    <p>{{first_name}} {{last_name}}</p>{{subject_name}}</span></div></a></li>  
+                                    <p>{{first_name}} {{last_name}}</p>{{subject_name}}</span></div></a></li>
                                     <div id="teachers-info-popover-content" class="hidden">
                                       <div>
                                         <p>{{first_name}} {{last_name}}</p>
@@ -143,10 +144,10 @@
                             </div>
                           </div>
                         </div>
-                        {{/subjects}} 
+                        {{/subjects}}
                       </div>
                     </div>
-                  </div>  
+                  </div>
                 {{/grades}}
                 </script>
               </div>
@@ -159,18 +160,21 @@
                     </li>
                   </ul>
                 </div>
-              </div>           
-            </div>  
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      
-      <%= render :partial => "admin/schools/students" %>
+      <div class="tab-pane fade in parents-container" id="parents-tab">
+        <div class="content-wrapper">
+          <h1>HIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</h1>
+        </div>
+      </div>
       <%= render :partial => "admin/schools/circulars" %>
     </div>
   </div>
 </div>
-<%= render :partial => "admin/schools/grades" %>
+<%= render :partial => "admin/schools/grades", locals: { master_grades: @master_grades, master_subjects: @master_subjects } %>
 
 <%= render :partial => "admin/schools/school_teacher" %>
 
