@@ -23,6 +23,7 @@ class Grade < ActiveRecord::Base
 	belongs_to :master_grade
 	has_many :divisions, dependent: :destroy
 	has_many :subjects, dependent: :destroy
+  has_many :studen_profiles, dependent: :destroy
 	has_many :ecircular_recipients, dependent: :destroy
 
 	validates :name, :presence => true

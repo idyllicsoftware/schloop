@@ -4,13 +4,13 @@
 //= require bootstrap-sprockets
 //= require sweetalert
 //= require jquery.validate
-//= require jquery-file-upload/jquery.fileupload
 //= require toastr.min
 //= require mustache
 //= require tinymce/tinymce.min.js
 //= require tinymceEditor.js
 //= require multiselect.min
 //= require common
+//= require file_uploads
 //= require_self
 
 class SchloopBase {

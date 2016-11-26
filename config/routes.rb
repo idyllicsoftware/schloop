@@ -22,14 +22,16 @@ Rails.application.routes.draw do
   }
 
 
-  devise_for :parents, controllers:{
-                         sessions: 'admin/parents/sessions',
-                         registrations: 'admin/parents/registrations',
-                         passwords: 'admin/parents/passwords',
-                         invitations: 'admin/parents/invitations'
-  }
+  # devise_for :parents, controllers:{
+  #                        sessions: 'admin/parents/sessions',
+  #                        registrations: 'admin/parents/registrations',
+  #                        passwords: 'admin/parents/passwords',
+  #                        invitations: 'admin/parents/invitations'
+  # }
 
   namespace :admin do
+    resources :parent_imports
+    resources :students
     resource :users do
     end
 
@@ -51,7 +53,10 @@ Rails.application.routes.draw do
       end
 
       resources :grades, only: [:index, :create, :destroy], shallow: true do
-        resources :subjects,only: [:index, :create, :update, :destroy], shallow: true do
+        collection do
+          get :grades_divisions
+        end
+        resources :subjects, only: [:index, :create, :update, :destroy], shallow: true do
 
         end
         resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do
@@ -75,17 +80,19 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post "/school_admin/register" => 'school_admin#register'
+
       post "/teacher/register" => 'teachers#register'
       post "/teacher/login" => 'teachers#login'
       post "/teacher/dashboard" => 'teachers#dashboard'
       post "/teacher/reset_password" => "teachers#reset_password"
-      get "/activities/index" => "activities#index"
-      get "/teacher/profile" => "teachers#profile"
+      get  "/teacher/profile" => "teachers#profile"
+
       post "/ecircular/tags" => "ecirculars#tags"
       post "/ecircular/create" => "ecirculars#create"
-      get "/ecirculars" => "ecirculars#index"
+      get  "/ecirculars" => "ecirculars#index"
       post "/ecirculars" => "ecirculars#index"
-      get "/contents/create" => "contents#create"
+
+      get  "/activities" => "activities#index"
     end
   end
 
