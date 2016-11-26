@@ -15,7 +15,7 @@
 class Student < ActiveRecord::Base
 	belongs_to :school
 	belongs_to :parent
-	has_many :student_profiles
+	has_many :student_profiles, :dependent => :destroy
 	validates :first_name, :presence => true, :length => { :maximum => 30 }
   	validates :middle_name,  :length => { :maximum => 30 }
   	validates :last_name, :presence => true, :length => { :maximum => 30 }
