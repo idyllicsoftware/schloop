@@ -20,7 +20,7 @@ class Admin::ParentImportsController < ApplicationController
     if @parent_import.save
       render json: {success: true}
     else
-      render json: {success: false, errors: ['Something went wrong. Please contact dev team.']}
+      render json: {success: false, errors: @parent_import.errors.full_messages}
     end
   end
 

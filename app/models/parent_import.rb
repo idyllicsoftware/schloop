@@ -41,7 +41,6 @@ class ParentImport
       row = Hash[[header, spreadsheet.row(i)].transpose]
       row["school_id"] = @@school_id
       division = Division.where(:grade_id => @@grade_id, :name => row["division"].downcase)
-      binding.pry
       division_id = division.first.id rescue ""
       parent_data = {"first_name" => row["first_name"], "last_name" => row["last_name"], "email" => row["email"], "cell_number" => row["cell_number"], "school_id" =>  row["school_id"]}      
       student_data = {"first_name" => row["student_first_name"], "last_name" => row["student_last_name"], "school_id" =>  row["school_id"]}
