@@ -25,6 +25,38 @@ class Activities extends SchloopBase {
             jForm.attr('method', 'POST');
         });
 
+        $(document).on('click', '.deactivate_activity', function(){
+            var el = $(this),
+                activity_div = el.parent(),
+                activity_id = el.data('activity-id');
+
+            swal({
+              title: "Are you sure?",
+              text: "You want deactivate this Activity",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Yes, deactivate it!"
+            },
+            function(){
+                $.ajax({
+                    url: '/admin/activities/'+activity_id+'/deactivate',
+                    method: 'PUT',
+                    success: function (res) {
+                        if(res.success){
+                            toastr.success('Activity deactivated successfully');
+                            activity_div.find('span').html("<span class=pull-right ml10>Deactivated</span>")
+                        } else {
+                            _self.showErrors(res.errors);
+                        }
+                    },
+                    error: function () {
+                        swal({title: "Oops!", text: "Something went wrong. Please try later.", type: "error", confirmButtonText: "OK" });
+                    }
+                });
+            });
+        });
+
         _self.initForm(jForm);
         _self.loadActivities();
 
