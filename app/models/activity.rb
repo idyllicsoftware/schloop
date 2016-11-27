@@ -12,6 +12,7 @@
 #  pre_requisite     :text
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  status            :integer          default(0), not null
 #
 
 class Activity < ActiveRecord::Base
@@ -22,6 +23,9 @@ class Activity < ActiveRecord::Base
   has_many :attachments, as: :attachable, dependent: :destroy
 
   enum file_sub_type: { reference: 0, thumbnail: 1 }
+  enum status: { active: 0, deleted: 1 }
+
+  default_scope { where(status: Activity.statuses['active']) }
 
   def self.grade_activities(search_params, mapping_data, page)
     if page.present?
@@ -101,6 +105,17 @@ class Activity < ActiveRecord::Base
   #   end
   #   { errors: errors, data: [] }
   # end
+
+  def destroy_activity
+    errors = []
+    begin
+      destroy
+    rescue => ex
+      errors << 'Something went wrong. Please contact to support team.'
+      Rails.logger.debug("Exception in destroying activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
+    end
+    { success: errors.blank?, errors: errors }
+  end
 
    def get_thumbnail_file
     attachments.where(sub_type: Activity.file_sub_types['thumbnail'])

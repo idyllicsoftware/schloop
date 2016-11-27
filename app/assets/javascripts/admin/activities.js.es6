@@ -25,6 +25,31 @@ class Activities extends SchloopBase {
             jForm.attr('method', 'POST');
         });
 
+        $(document).on('click', '.delete_activity', function(){
+            var el = $(this),
+                activity_div = el.parent(),
+                activity_id = el.data('activity-id');
+
+                swal({
+                  title: "Are you sure?",
+                  text: "You want delete this Activity",
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "Yes, delete it!"
+                },
+                function(){
+                  _self.deleteRequest(`/admin/activities/${activity_id}`, el, null, function (res) {
+                        if(res.success) {
+                            toastr.success('Activity deleted successfully');
+                            activity_div.remove();
+                        }else {
+                            _self.showErrors(res.errors);
+                        }
+                    });
+                });
+        });
+
         _self.initForm(jForm);
         _self.loadActivities();
 

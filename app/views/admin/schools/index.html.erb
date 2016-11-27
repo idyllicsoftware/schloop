@@ -73,6 +73,7 @@
 <script id="content_list_tpl" type="text/html">
   {{#activities}}
     <li class="content-item">
+    <span class="delete_activity pull-right" data-activity-id="{{id}}"><a> - Delete Activity</a></span>
       <div class="clearfix">
         <h4 class="content-title pull-left">{{ title }}</h4>
         <div class="tags-right pull-right">{{ grade }} | {{ subject }}</div>
