@@ -77,7 +77,6 @@ class Activities extends SchloopBase {
 
         $(document).on('click', '.deactivate_activity', function(){
             var el = $(this),
-                activity_div = el.parent(),
                 activity_id = el.data('activity-id');
 
             swal({
@@ -95,7 +94,7 @@ class Activities extends SchloopBase {
                         success: function (res) {
                             if(res.success){
                                 toastr.success('Activity deactivated successfully');
-                                activity_div.find('span').html("<span class=pull-right ml10>Deactivated</span>")
+                                el.removeClass('deactivate_activity').addClass('disabled').html("Deactivated");
                             } else {
                                 _self.showErrors(res.errors);
                             }

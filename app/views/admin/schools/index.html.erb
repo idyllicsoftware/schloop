@@ -76,10 +76,10 @@
   {{#activities}}
     <li class="content-item">
       {{#status}}
-        <span class="deactivate_activity pull-right ml10" data-activity-id="{{id}}"><a>Deactivate</a></span>
+        <a class="deactivate_activity pull-right ml10" data-activity-id="{{id}}">Deactivate</a>
       {{/status}}
       {{^status}}
-        <span class="pull-right ml10">Deactivated</span>
+        <a class="pull-right ml10 disabled">Deactivated</a>
       {{/status}}
       <div class="clearfix">
         <h4 class="content-title pull-left">{{ title }}</h4>
