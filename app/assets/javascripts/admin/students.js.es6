@@ -93,6 +93,7 @@ class Students extends SchloopBase {
     loadStudents(division_id){
         let _self = this, html = '',
             studentListWrapperEl = $('#studentListWrapper');
+            
         $.ajax({
             url: `/admin/students?division_id=${division_id}`,
             success: function (res) {
@@ -103,6 +104,17 @@ class Students extends SchloopBase {
                     });
                 }
                 studentListWrapperEl.html(html);
+                _self.popoverInit(false, studentListWrapperEl);
+                
+                studentListWrapperEl.find('td #student-edit-popover').on('shown.bs.popover', function (){
+                    let popupEl = $('#' + $(this).attr('aria-describedby')),
+                        jForm = popupEl.find('form');
+                    //TO DO...
+
+                    jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
+                        popupEl.popover('hide');
+                    });
+                });
             }
         });
     };

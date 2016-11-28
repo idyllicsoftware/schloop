@@ -161,16 +161,15 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
 
   create_table "schools", force: :cascade do |t|
-    t.string   "name",               null: false
-    t.text     "address",            null: false
-    t.string   "zip_code",           null: false
-    t.string   "phone1",             null: false
+    t.string   "name",           null: false
+    t.text     "address",        null: false
+    t.string   "zip_code",       null: false
+    t.string   "phone1",         null: false
     t.string   "phone2"
-    t.string   "website",            null: false
-    t.integer  "school_director_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.string   "code",               null: false
+    t.string   "website",        null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "code",           null: false
     t.string   "board"
     t.string   "principal_name"
     t.string   "logo"
@@ -201,14 +200,10 @@ ActiveRecord::Schema.define(version: 20161124111628) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "grade_id"
-    t.integer  "teacher_id"
-    t.integer  "division_id"
     t.integer  "master_subject_id", default: 0, null: false
   end
 
-  add_index "subjects", ["division_id"], name: "index_subjects_on_division_id", using: :btree
   add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
-  add_index "subjects", ["teacher_id"], name: "index_subjects_on_teacher_id", using: :btree
 
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -228,27 +223,10 @@ ActiveRecord::Schema.define(version: 20161124111628) do
     t.string   "first_name"
     t.string   "middle_name"
     t.string   "last_name"
-    t.string   "phone"
     t.string   "cell_number"
-    t.string   "invitation_token"
-    t.datetime "invitation_created_at"
-    t.datetime "invitation_sent_at"
-    t.datetime "invitation_accepted_at"
-    t.integer  "invitation_limit"
-    t.string   "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email"
-    t.integer  "invited_by_id"
-    t.string   "invited_by_type"
-    t.integer  "invitations_count",      default: 0
   end
 
-  add_index "teachers", ["confirmation_token"], name: "index_teachers_on_confirmation_token", unique: true, using: :btree
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
-  add_index "teachers", ["invitation_token"], name: "index_teachers_on_invitation_token", unique: true, using: :btree
-  add_index "teachers", ["invitations_count"], name: "index_teachers_on_invitations_count", using: :btree
-  add_index "teachers", ["invited_by_id"], name: "index_teachers_on_invited_by_id", using: :btree
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
 
@@ -297,7 +275,5 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   add_foreign_key "grade_teachers", "subjects"
   add_foreign_key "grade_teachers", "teachers"
   add_foreign_key "grades", "schools"
-  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
-  add_foreign_key "subjects", "teachers"
 end
