@@ -103,19 +103,52 @@ class Students extends SchloopBase {
                         student_data_present: res.student_data.length
                     });
                 }
+
+               // _self.studentsData = res.students.toHash('id');
                 studentListWrapperEl.html(html);
                 _self.popoverInit(false, studentListWrapperEl);
                 
                 studentListWrapperEl.find('td #student-edit-popover').on('shown.bs.popover', function (){
                     let popupEl = $('#' + $(this).attr('aria-describedby')),
+                        student_id = $(this).data('student_id'),
                         jForm = popupEl.find('form');
-                    //TO DO...
-
-                    jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
-                        popupEl.popover('hide');
-                    });
+                    // //TO DO...
+                    // if(_self.studentsData.hasOwnProperty(student_id)){
+                    //         jForm.fillForm(_self.studentsData[student_id], 'student_data');
+                    //         jForm.attr('action', `/admin/students/${student_id}`);
+                    //         jForm.attr('method', 'PUT');
+                    //         jForm.find('input[name="student[email]"]').attr('disabled', 'disabled');
+                    //         _self.initForm(jForm, $(this), student_id);
+                    //     }
                 });
             }
         });
     };
+
+    // initForm (jForm, popoverEl, student_id){
+    //     let _self = this,
+    //         msg = student_id ? 'School student updated successfully' : 'School student added successfully';
+           
+    //     this.initFormSubmit(jForm, {
+    //         'student[first_name]': 'name',
+    //         'student[last_name]': 'name',
+    //         'parent[first_name]': 'name',
+    //         'parent[last_name]': 'name',
+    //         'parent[email]': 'email',
+    //         'parent[cell_number]': 'phone'
+    //     }, function (res) {
+    //         if(res.success) {
+    //             _self.loadStudents();
+    //             toastr.success(msg);
+    //             popoverEl.popover('hide');
+    //         }else {
+    //             _self.showErrors(res.errors);
+    //             popoverEl.popover('hide');
+    //         }
+    //     });
+
+    //     jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
+    //         popoverEl.popover('hide');
+    //     });
+    // };
 }
