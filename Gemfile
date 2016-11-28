@@ -46,7 +46,6 @@ group :development do
   gem 'hirb'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-
   gem 'annotate', '~> 2.7.1'
   gem 'quiet_assets'
   gem 'pry'
