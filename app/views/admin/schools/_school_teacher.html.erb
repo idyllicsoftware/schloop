@@ -16,20 +16,34 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
-        <form class="upload-teachers-form">
-          <h3>Do you want upload school teachers CSV file</h3>
-          <div class="browse-file">
-            <button type="button" id="btnup" class="btn btn-primary">Browse...</button>
-            <input type="file" value="" name="teachers-file" id="upload-csv-file"/>
-            <p id="namefile"></p>
-          </div>
-          <button  type="submit" class="btn btn-primary ">UPLOAD</button>
-          <button  class="btn btn-primary upload-cancel">CANCEL</button>
-        </form>
+        <div class="text-center mb50">
+          <h3 class="mt0">Upload Teacher CSV</h3>
+          <p>Uploading  a  file  will  update  an  existing  teacher  profile  if  it  exists.  <br/>For new records, they will be added to the current list</p>
+        </div>
+        <%= form_tag '', class:"fileDetails uploadFiles_btn_container clearfix", novalidate: true do %>
+            <%= hidden_field_tag :school_id,  @school.id%>
+            <div class="file_upload_files--upload-block">
+              <div>
+                <div class="fileUpload file_upload_files--fileUploadBtn">
+                  <span><i class="fa fa-cloud-upload"></i> choose file</span>
+                  <input class="fileuploadInput upload" type="file" name="teacher_import[file]" data-url="/admin/teachers/teacher_imports" accept=".csv">
+                </div>
+                <button class="btn btn-primary text-uppercase disabled uploadBtn">upload</button>
+              </div>
+              <div class="progressWrap" style="padding: 15px 0px;display: none;">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+              <table class="selected_files"></table>
+            </div>
+        <% end %>
       </div>
     </div>
   </div>
-</div>
+</div>  
 
 <div id="add-teachers-popover-content" class="hidden">
   <%= form_tag teacher_registration_path, class:"add-teachers-form" do %>

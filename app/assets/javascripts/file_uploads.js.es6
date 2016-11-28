@@ -17,20 +17,21 @@ class FileUpload {
     }
 
     init (){
-        var oUpload = this;
-        oUpload.selectedFilesTable = $(".selected_files");
-        oUpload.fileDetails = $("#fileDetails");
+        var oUpload = this,
+            jScope = oUpload._config.jScope || $(document);
 
-        oUpload.uploadsBlock = $(".file_upload_files--upload-block");
+        oUpload.selectedFilesTable = jScope.find(".selected_files");
+        oUpload.fileDetails = jScope.find(".fileDetails");
+
+        oUpload.uploadsBlock = jScope.find(".file_upload_files--upload-block");
 
         oUpload.uploadsBtn = oUpload.uploadsBlock.find(".uploadBtn");
-        oUpload.successModal = $("#upload-success");
-        oUpload.progressBarWrap = $('.progressWrap');
+        oUpload.progressBarWrap = jScope.find('.progressWrap');
 
         oUpload.currentAddedFileSize = 0;
         oUpload.uploadFailedFlag = false;
-        oUpload.fileUpload = $("#fileupload");
-        oUpload.fileUpload_container = $(".file_upload_files--fileUploadBtn");
+        oUpload.fileUpload = jScope.find(".fileuploadInput");
+        oUpload.fileUpload_container = jScope.find(".file_upload_files--fileUploadBtn");
         oUpload.hasmultiple = oUpload.fileUpload_container.children('input').is('[multiple]');
 
         oUpload.initFileUploadWidget();
@@ -50,22 +51,25 @@ class FileUpload {
     };
 
     clearErrorMessages() {
-        $(".uploadFiles_btn_container .errorMessage").fadeOut().remove();
-        $(".file_upload_files--selector .errorMessage").fadeOut().remove();
-        $(".file_upload_files--sub-selection .errorMessage").fadeOut().remove();
+        var oUpload = this,
+            jScope = oUpload._config.jScope || $(document);
+        jScope.find(".uploadFiles_btn_container .errorMessage").fadeOut().remove();
+        jScope.find(".file_upload_files--selector .errorMessage").fadeOut().remove();
+        jScope.find(".file_upload_files--sub-selection .errorMessage").fadeOut().remove();
     };
 
     addFileAllowed (file){
         var oUpload = this
+            , jScope = oUpload._config.jScope || $(document)
             , fileNameSplit = file.name.split(".")
             , fileNameExt = fileNameSplit[fileNameSplit.length - 1]
             ;
 
-        if ((oUpload.currentAddedFileSize + file.size) > $("#fileupload").data("blueimpFileupload").options.limitMultiFileUploadSize) {
+        if ((oUpload.currentAddedFileSize + file.size) > jScope.find(".fileuploadInput").data("blueimpFileupload").options.limitMultiFileUploadSize) {
             $("<div class='errorMessage' style='margin-left: 15px;'>"+ oUpload.limitMultiFileUploadSize / 1000000 +"MB total file size limit reached.</div>").appendTo(oUpload.uploadsBlock).fadeIn();
             return false;
         } else {
-            $('.errorMessage').remove();
+            jScope.find('.errorMessage').remove();
         }
 
         if (!oUpload.isFileTypeAllowed(fileNameExt)) {
@@ -119,7 +123,6 @@ class FileUpload {
         var oUpload = this;
 
         if(!oUpload.uploadFailedFlag){
-            oUpload.successModal.modal("show");
             oUpload.uploadsBtn.text('upload finished');
         }
 
@@ -139,7 +142,6 @@ class FileUpload {
         if(!oUpload.uploadFailedFlag){
             oUpload.clearErrorMessages();
             oUpload.uploadsBtn.text('upload').prop("disabled", true).addClass("disabled");
-            oUpload.successModal.modal("hide");
         }
 
         oUpload.fileUpload.prop("disabled", false).removeClass("disabled");
@@ -162,7 +164,8 @@ class FileUpload {
     };
 
     initFileUploadWidget(){
-        var oUpload = this;
+        var oUpload = this,
+            jScope = oUpload._config.jScope || $(document);
 
         oUpload.fileUpload.fileupload({
             dataType: 'json',
@@ -193,7 +196,7 @@ class FileUpload {
                             data.context = null;
                             self.closest(".selectedFile").fadeOut().remove();
                             oUpload.clearErrorMessages();
-                            if ($(".selected_files tr").length < 1) {
+                            if (jScope.find(".selected_files tr").length < 1) {
                                 oUpload.uploadsBtn.text('upload').prop("disabled", true).addClass("disabled");
                                 oUpload.fileUpload_container.removeClass("disabled");
                             }
@@ -226,13 +229,13 @@ class FileUpload {
                     errors = data.result.errors || [],
                     onError = function(){
                         oUpload.uploadFailedFlag = true;
-                        $(".file_upload_files--upload-block .errorMessage").remove();
+                        jScope.find(".file_upload_files--upload-block .errorMessage").remove();
                         $.each(data.result.errors, function (index, error) {
                             $("<div class='errorMessage' style='margin-left: 15px;'>" + error + "</div>").appendTo(oUpload.uploadsBlock).fadeIn();
                         });
 
-                        $('.progressWrap').fadeOut(function () {
-                            $('.progress-bar').css('width', '0%').attr('aria-valuenow', 0).find("span").html("0%");
+                        jScope.find('.progressWrap').fadeOut(function () {
+                            jScope.find('.progress-bar').css('width', '0%').attr('aria-valuenow', 0).find("span").html("0%");
                         });
                         data.context.find(".delete").prop("disabled", false);
                         oUpload.uploadsBtn.text('upload').prop("disabled", false).removeClass("disabled");
@@ -272,10 +275,10 @@ class FileUpload {
             },
             progressall: function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('.progressWrap').show();
-                $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).find("span").html(progress + "%");
+                jScope.find('.progressWrap').show();
+                jScope.find('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).find("span").html(progress + "%");
                 if (progress === 100) {
-                    $('.progress-bar').removeClass("active");
+                    jScope.find('.progress-bar').removeClass("active");
                 }
             },
             fail: function (e, data) {

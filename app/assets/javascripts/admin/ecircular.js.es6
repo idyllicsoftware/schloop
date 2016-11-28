@@ -9,7 +9,7 @@ class SchoolECircular extends SchloopBase {
         _self.initEventListeners();
         return this;
     };
-			
+            
     initEventListeners (){
         let _self = this,
         { school_id } = _self._config,
@@ -17,24 +17,24 @@ class SchoolECircular extends SchloopBase {
         data = new FormData(eCircularFormEl[0]);
 
         $("#select-circular-popover").on('shown.bs.popover', function () {
-        	$("input[name=radio_select]").change(function(){ 
-			        if( $(this).is(":checked") ){ 
-			            var val = $(this).val(),
-			            	name = $(this).next().text(),
-			            	tag_El = $(this).parents().eq(4).find('.selected_circular_tag');
-			        	
-			        	tag_El.replaceWith('<p class="selected_circular_tag">'+ name +'</p>');
-			        	$('.selected_circular_tag').next().val(val)     
-			        }
-			    });
+            $("input[name=radio_select]").change(function(){ 
+                    if( $(this).is(":checked") ){ 
+                        var val = $(this).val(),
+                            name = $(this).next().text(),
+                            tag_El = $(this).parents().eq(4).find('.selected_circular_tag');
+                        
+                        tag_El.replaceWith('<p class="selected_circular_tag">'+ name +'</p>');
+                        $('.selected_circular_tag').next().val(val)     
+                    }
+                });
         });
 
         $("#select-recipients-popover").on('shown.bs.popover', function () {
-        	$("input[type=checkbox]").change(function(){
-        	        var selected_grade_id,selected_grade,selected_division, hash = {},
-        	        	selected_division_id,vall = $(this).data('grade_id'),
-        	        	tag_El = $('.school-ecircular-form').find('.select-recipients_name');  
-		        
+            $("input[type=checkbox]").change(function(){
+                    var selected_grade_id,selected_grade,selected_division, hash = {},
+                        selected_division_id,vall = $(this).data('grade_id'),
+                        tag_El = $('.school-ecircular-form').find('.select-recipients_name');  
+                
                 if($("input[name='grade["+ vall +"]division[]']:checked") && $(this).parents().eq(2).find('.chek_cls').is(':not(:checked)')){
                     if($("input[name='grade[]']:checked") && vall == undefined){ 
                         return true;
@@ -81,7 +81,7 @@ class SchoolECircular extends SchloopBase {
                 tag_El.parent().find('.input_el').replaceWith('<ul class="input_el hidden">'+ ul_list.join('<br/>') +'</ul>');
                 console.log(hash);
                 tag_El.replaceWith('<p class="select-recipients_name">'+ printData(hash) +'</p>');
-		    });    
+            });    
         });
         
 

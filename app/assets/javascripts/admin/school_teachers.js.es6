@@ -43,41 +43,22 @@ class SchoolTeachers extends SchloopBase {
 
     initCsvUpload (){
         var _self = this,
-            uploadTeacherModalEl = $("#upload-teachers-modal");
+            uploadTeacherModalEl = $("#upload-teachers-modal"),
+            file_upload = new FileUpload({
+                jScope: uploadTeacherModalEl
+            });
 
         $(document).on('click','.upload-sheet', function () {
             uploadTeacherModalEl.modal('show');
         });
 
-        $('#upload-csv-file').change(function(){
-            var res=$('#upload-csv-file').val();
-            var arr = res.split("\\");
-            var filename = arr.slice(-1)[0];
-            var filextension = filename.split(".");
-            var filext ="."+filextension.slice(-1)[0];
-            var valid=[".csv",".jpg"];
-
-            if (valid.indexOf(filext.toLowerCase())==1){
-                $('#namefile').css({"color":"green","font-weight":700,"padding":"20px"});
-                $('#namefile').html("You select " + filename + " file.");
+        $(document).on("uploadedFileResponse", function (e, res) {
+            let {result} = res;
+            if(result.success){
+                toastr.success('Upload Successful');
+                uploadTeacherModalEl.modal('hide');
+                _self.loadSchoolsTeachers();
             }
-        });
-
-        $(".upload-teachers-form").submit(function () {
-            var jForm = $(this);
-
-            $.ajax({
-                url: '/admin/teachers/upload',
-                method: 'POST',
-                data: jForm,
-                success: function() {
-                    uploadTeacherModalEl.modal('hide');
-                }
-            });
-        });
-
-        $(document).on('click','.upload-cancel', function () {
-            uploadTeacherModalEl.modal('hide');
         });
     };
 
