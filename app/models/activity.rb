@@ -71,6 +71,7 @@ class Activity < ActiveRecord::Base
       begin
         categories_params = create_params.delete(:categories) || []
         activity = Activity.create!(create_params)
+        activity_id = activity.id
         create_activity_categories(activity.id, categories_params)
       rescue => ex
         errors << 'Failed to create activity. Please enter details properly.'

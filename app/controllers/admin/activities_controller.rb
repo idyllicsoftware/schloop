@@ -24,7 +24,7 @@ class Admin::ActivitiesController < ApplicationController
 
   def upload_file
     activity_service = Admin::ActivityService.new
-    response = activity_service.upload_file(activity, params[:file], params[:type])
+    response = activity_service.upload_file(@activity, params[:file], params[:type])
     render json: {
       success: response[:errors].blank?,
       errors: response[:errors],
@@ -35,7 +35,7 @@ class Admin::ActivitiesController < ApplicationController
   private
 
   def load_activity
-    @activity = Activity.find_by(id: params[:id])
+    @activity = Activity.find_by(id: params[:activity_id])
     render json: { success: false, errors: ['Activity not present.'] } if @activity.blank?
   end
 
