@@ -10,7 +10,7 @@ class Admin::ActivitiesController < ApplicationController
       render json: { errors: validate_response[:errors] } and return
     end
     response = Activity.create_activity(activity_params)
-    render json: { errors: response[:errors] }
+    render json: { errors: response[:errors], activity_id: response[:data] }
   end
 
   def all

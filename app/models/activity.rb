@@ -65,6 +65,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.create_activity(create_params)
+    activity_id = 0
     errors = []
     ActiveRecord::Base.transaction do
       begin
@@ -76,7 +77,7 @@ class Activity < ActiveRecord::Base
         Rails.logger.debug("Exception in creating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
       end
     end
-    { errors: errors, data: [] }
+    { errors: errors, data: activity_id }
   end
 
    def get_thumbnail_file
