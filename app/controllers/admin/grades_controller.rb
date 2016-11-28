@@ -1,8 +1,8 @@
-=begin 
+=begin
 grades = []
 @grades.each do |grade|
   subjects = []
-  grade.subjects.each |subject| do 
+  grade.subjects.each |subject| do
     divisions = []
     grade.divisions.each |division| do
       teacher = []
@@ -45,16 +45,16 @@ grade_data {
 
 class Admin::GradesController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_school, only: [:index, :create]
+  before_action :find_school, only: [:index, :create, :grades_divisions]
   before_action :find_grades, only: [:index, :create]
+  before_action :load_grade, only: [:destroy]
   layout "admin"
 
   def index
-    render json: {success: false, errors: ['School not found']} and return if @school.blank?
     grade_data = []
     @grades.each do |grade|
       subjects = []
-      grade.subjects.each do |subject| 
+      grade.subjects.each do |subject|
         divisions = []
         grade.divisions.each do |division|
           teacher = []
@@ -73,36 +73,47 @@ class Admin::GradesController < ApplicationController
     render json: {success: true, grades: grade_data}
   end
 
-  def create
+  def grades_divisions
     render json: {success: false, errors: ['School not found']} and return if @school.blank?
-    response = create_grades(params[:school_id],params[:grade_name])
+    @grades = Grade.where(school_id: params[:school_id]).includes(:divisions)
+    grade_data = []
+    @grades.each do |grade|
+      divisions = []
+      grade.divisions.each do |division|
+        divisions <<  {division_id: division.id, division_name: division.name}
+      end
+      grade_data << { grade_id: grade.id, grade_name: grade.name, divisions: divisions }
+    end
+    render json: {success: true, grades: grade_data}
+  end
+
+  def create
+    if params[:grades_data][:master_subject_ids].blank?
+      render json: { success: false, errors: 'please select subjects.' } and return
+    end
+    response = Grade.create_grade(@school, params[:grades_data])
     render :json => response
+  end
+
+  def destroy
+    response = @grade.destroy_grade
+    render json: response
   end
 
   private
 
+  def load_grade
+    @grade = Grade.find_by(id: params[:id])
+    render json: { success: false, errors: ['Grade not found'] } and return if @grade.blank?
+  end
+
   def find_grades
     @grades = Grade.where(school_id: params[:school_id]).includes(:subjects, :divisions)
   end
+
   def find_school
     @school = School.find_by(id: params[:school_id])
-  end
-
-  def create_grades(id,name)
-    errors = []
-    ActiveRecord::Base.transaction do
-      begin
-        grade = Grade.create(name: name, school_id: id)
-      rescue Exception => ex
-        if ex.message != 'custom_errors'
-          errors << 'Something went wrong. Please contact dev team.'
-          Rails.logger.debug("Exception in creating grade: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
-        end
-        raise ActiveRecord::Rollback
-      end
-    end
-
-    return {success: errors.blank?, errors: errors, grade_name: name}
+    render json: { success: false, errors: ['School not found'] } and return if @school.blank?
   end
 
   def create_school_admin_params

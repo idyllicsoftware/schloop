@@ -1,0 +1,63 @@
+ <div class="tab-pane fade in parents-container" id="students-tab"></div>
+
+
+ <script id="grades_list_tpl" type="text/html">
+   {{#grades_present}}
+     <div class="clearfix p0">
+       <div class="form-group col-md-2 p0">
+         <select id="grade_select" class="form-control field" style="border-bottom: 0px;">
+           {{#grades}}
+              <option value="{{ grade_id }}">{{grade_name}}</option>
+           {{/grades}}
+         </select>
+       </div>
+       <div id="divisions_wrapper_id" class="col-md-8">
+
+       </div>
+       <div class="col-md-2  pt20">
+         <a id="uploadStudentCSVLink" href="/admin/parent_imports/new" target="_blank">Upload CSV</a>
+       </div>
+     </div>
+    <div id="studentListWrapper"></div>
+   {{/grades_present}}
+   {{^grades_present}}
+      Please add Grades first
+   {{/grades_present}}
+ </script>
+
+ <script id="divisions_list_tpl" type="text/html">
+   {{#divisions_present}}
+    <ul class="clearfix">
+      {{#divisions}}
+        <li class="division-list-item" data-division_id="{{division_id}}">{{ division_name }}</li>
+      {{/divisions}}
+    </ul>
+   {{/divisions_present}}
+   {{^divisions_present}}
+      Please add divisions for this grade.
+   {{/divisions_present}}
+ </script>
+
+ <script type="text/html" id="student_list_tpl">
+   {{#student_data_present}}
+   <table class="table table-striped">
+     <tr>
+       <th>STUDENT</th>
+       <th>PARENT</th>
+       <th>EMAIL</th>
+       <th>PHONE</th>
+     </tr>
+     {{ #student_data }}
+         <tr>
+           <td>{{ student_first_name }} {{ student_middle_name }} {{student_last_name}} </td>
+           <td>{{ parent_first_name }} {{ parent_middle_name }} {{parent_last_name}} </td>
+           <td>{{ parent_email }}</td>
+           <td>{{ cell_number }}</td>
+         </tr>
+     {{ /student_data }}
+   </table>
+   {{/student_data_present}}
+   {{^student_data_present}}
+      No students available. Please upload Students for this division.
+   {{/student_data_present}}
+ </script>

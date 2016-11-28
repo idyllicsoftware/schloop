@@ -23,6 +23,46 @@ class Activity < ActiveRecord::Base
 
   enum file_sub_type: { reference: 0, thumbnail: 1 }
 
+  def self.grade_activities(search_params, mapping_data, page)
+    if page.present?
+      page = page.to_s.to_i
+      page_size = 20
+      offset = (page * page_size)
+    end
+    activities_data = []
+    activities = Activity.where(search_params).includes(:attachments).order(id: :desc)
+    total_records = activities.count
+    activities = activities.offset(offset).limit(page_size) if page.present?
+
+    activities.each do |activity|
+      master_subject = activity.master_subject
+
+      subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
+      grade = mapping_data[:master_grade_id_grade_id][activity.master_grade.id]
+      activities_data << {
+        grade_id: grade.id,
+        grade_name: grade.name,
+        master_grade_id: activity.master_grade.id,
+        master_grade_name: activity.master_grade.name,
+        subject_id: (subject.id rescue nil) ,
+        subject_name: (subject.name rescue nil),
+        master_subject_id: master_subject.id,
+        master_subject_name: master_subject.name,
+        activity: {
+          id: activity.id,
+          topic: activity.topic,
+          teaches: activity.teaches,
+          title: activity.title,
+          details: activity.details,
+          pre_requisite: activity.pre_requisite,
+          thumbnail: 'thumbnail',
+          references: [{original_filename: 'name', s3_url: 'http://www.google.com'}, {original_filename: 'name', s3_url: 'http://www.google.com'}]
+        }
+      }
+    end
+    return activities_data, total_records
+  end
+
   def self.create_activity(create_params)
     errors = []
     ActiveRecord::Base.transaction do
