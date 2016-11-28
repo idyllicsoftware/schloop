@@ -1,6 +1,6 @@
 class Admin::ActivitiesController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_activity, only: [:upload_file]
+  before_action :load_activity, only: [:deactivate, :upload_file]
 
   def create
     activity_service = Admin::ActivityService.new
@@ -22,6 +22,11 @@ class Admin::ActivitiesController < ApplicationController
     }
   end
 
+  def deactivate
+    response = @activity.deactivate_activity
+    render json: response
+  end
+
   def upload_file
     activity_service = Admin::ActivityService.new
     response = activity_service.upload_file(@activity, params[:file], params[:type])
@@ -36,7 +41,7 @@ class Admin::ActivitiesController < ApplicationController
 
   def load_activity
     @activity = Activity.find_by(id: params[:id])
-    render json: { success: false, errors: ['Activity not present.'] } if @activity.blank?
+    render json: { success: false, errors: ['Activity not found'] } and return if @activity.blank?
   end
 
   def get_activity_params(params)

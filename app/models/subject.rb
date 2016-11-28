@@ -20,5 +20,6 @@
 #
 
 class Subject < ActiveRecord::Base
-	belongs_to :grade
+  belongs_to :grade
+  belongs_to :master_subject
 end
