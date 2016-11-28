@@ -113,12 +113,8 @@ class Admin::TeachersController < ApplicationController
     teacher = school.teachers.create(teacher_params)
     errors =  teacher.errors.full_messages.join(', ')
 
-    if errors.blank?
-      Admin::AdminMailer.welcome_message(teacher.email, teacher.first_name, teacher.password).deliver_now
-      return {success: true, teacher_id: teacher.id}
-    else
-      return {success: false, errors: errors}
-    end
+    return {success: true, teacher_id: teacher.id} if errors.blank?
+    return {success: false, errors: errors}
   end
 
   def create_school_teachers_params
