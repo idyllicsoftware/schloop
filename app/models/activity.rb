@@ -27,7 +27,6 @@ class Activity < ActiveRecord::Base
 
   scope :active, -> { where(status: Activity.statuses['active']) }
 
-
   def self.grade_activities(search_params, mapping_data, page)
     if page.present?
       page = page.to_s.to_i

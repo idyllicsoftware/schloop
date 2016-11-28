@@ -30,31 +30,24 @@ class Activities extends SchloopBase {
                 activity_div = el.parent(),
                 activity_id = el.data('activity-id');
 
-            swal({
-              title: "Are you sure?",
-              text: "You want deactivate this Activity",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#DD6B55",
-              confirmButtonText: "Yes, deactivate it!"
-            },
-            function(){
-                $.ajax({
-                    url: '/admin/activities/'+activity_id+'/deactivate',
-                    method: 'PUT',
-                    success: function (res) {
-                        if(res.success){
-                            toastr.success('Activity deactivated successfully');
-                            activity_div.find('span').html("<span class=pull-right ml10>Deactivated</span>")
-                        } else {
+                swal({
+                  title: "Are you sure?",
+                  text: "You want delete this Activity",
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "Yes, delete it!"
+                },
+                function(){
+                  _self.deleteRequest(`/admin/activities/${activity_id}`, el, null, function (res) {
+                        if(res.success) {
+                            toastr.success('Activity deleted successfully');
+                            activity_div.remove();
+                        }else {
                             _self.showErrors(res.errors);
                         }
-                    },
-                    error: function () {
-                        swal({title: "Oops!", text: "Something went wrong. Please try later.", type: "error", confirmButtonText: "OK" });
-                    }
+                    });
                 });
-            });
         });
 
         _self.initForm(jForm);
