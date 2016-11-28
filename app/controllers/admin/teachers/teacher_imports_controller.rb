@@ -1,17 +1,21 @@
 class Admin::Teachers::TeacherImportsController < ApplicationController
-	before_action :authenticate_user!
+  before_action :authenticate_user!
+  before_action :find_school, only: [:create]
   layout "admin"
-	def new
-    @teacher_import = TeacherImport.new
-  end
 
   def create
-    @school = School.find(params[:school_id])
+    render json: {success: false, errors: ['School not found']} and return if @school.blank?
     @teacher_import = TeacherImport.new(params[:teacher_import], params[:school_id])
     if @teacher_import.save
-      redirect_to :back, notice: "Imported teachers successfully."
+      render json: {success: true}
     else
-      redirect_to :back, errors: "Please check csv data."
+      render json: {success: false, errors: @teacher_import.errors.full_messages}
     end
   end
+
+  private
+  def find_school
+    @school = School.find_by(id: params[:school_id])
+  end
+
 end

@@ -45,46 +45,21 @@ class SchoolTeachers extends SchloopBase {
     initCsvUpload (){
         var _self = this,
             uploadTeacherModalEl = $("#upload-teachers-modal"),
-            uploadTeacherForm = uploadTeacherModalEl.find('form');
+            file_upload = new FileUpload({
+                jScope: uploadTeacherModalEl
+            });
 
         $(document).on('click','.upload-sheet', function () {
             uploadTeacherModalEl.modal('show');
         });
 
-        $('#upload-csv-file').change(function(){
-            var res=$('#upload-csv-file').val();
-            var arr = res.split("\\");
-            var filename = arr.slice(-1)[0];
-            var filextension = filename.split(".");
-            var filext ="."+filextension.slice(-1)[0];
-            var valid=[".csv"];
-
-            if (valid.indexOf(filext.toLowerCase())==1){
-                $('#namefile').css({"color":"green","font-weight":700,"padding":"20px"});
-                $('#namefile').html("You select " + filename + " file.");
-            }
-        });
-
-        this.initFormSubmit(uploadTeacherForm , {
-            'school_id' : 'school_id'
-        }, function (res) {
-            if(res.success) {
+        $(document).on("uploadedFileResponse", function (e, res) {
+            let {result} = res;
+            if(result.success){
+                toastr.success('Upload Successful');
+                uploadTeacherModalEl.modal('hide');
                 _self.loadSchoolsTeachers();
-                toastr.success('File imported successfully');
-                uploadTeacherModalEl.modal('hide');
-            }else {
-                _self.showErrors(res.errors);
-                uploadTeacherModalEl.modal('hide');
             }
-        },
-        {
-           contentType: false,
-           enctype: 'multipart/form-data',
-           processData: false
-        });
-
-        $(document).on('click','.upload-cancel', function () {
-            uploadTeacherModalEl.modal('hide');
         });
     };
 
