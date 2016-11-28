@@ -20,7 +20,6 @@
 #  first_name             :string
 #  middle_name            :string
 #  last_name              :string
-#  phone                  :string
 #  cell_number            :string
 #  invitation_token       :string
 #  invitation_created_at  :datetime
@@ -52,7 +51,7 @@ class Teacher < ActiveRecord::Base
   include DeviseInvitable::Inviter
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :invitable, :invite_for => 2.weeks
-  validates :phone, :presence => true,
+  validates :cell_number, :presence => true,
             :numericality => true,
             :length => {:minimum => 10, :maximum => 10}
 
