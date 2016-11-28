@@ -15,17 +15,23 @@ class Activities extends SchloopBase {
         let _self = this,
             createWebContentModal = $('#create-web-content-modal'),
             jForm = createWebContentModal.find('#activity_creation_form'),
-            file_upload;
+            thumbnail_file_upload, reference_file_upload;
 
         $('#select_multiple').multipleSelect({});
 
-        file_upload = new FileUpload({
-            jScope: createWebContentModal,
+        thumbnail_file_upload = new FileUpload({
+            jScope: createWebContentModal.find("#thumbnailImageUploadSection"),
+            isImageUpload: true
+        });
+
+        reference_file_upload = new FileUpload({
+            jScope: createWebContentModal.find("#referenceImageUploadSection"),
             isImageUpload: true
         });
 
         $(document).on('click','.web-content-creation-link', function () {
-            file_upload.resetForm();
+            thumbnail_file_upload.resetForm();
+            reference_file_upload.resetForm();
             createWebContentModal.modal('show');
             jForm[0].reset();
             jForm.attr('action', `/admin/activities`);
@@ -33,7 +39,7 @@ class Activities extends SchloopBase {
         });
         _self.initForm(jForm, null, $("#activitySubmit"));
         createWebContentModal.find("#activitySubmit").on('click', function () {
-            if(!createWebContentModal.find("#activity_id").val()) {
+            if(!createWebContentModal.find(".activity_id_hidden_input").val()) {
                 jForm.submit();
             }else {
                 createWebContentModal.find("#activitySubmit").attr('disabled', 'disabled');
@@ -41,10 +47,12 @@ class Activities extends SchloopBase {
             }
         });
 
-        createWebContentModal.on('hide.bs.popover', function () {
-            file_upload.resetForm();
-            createWebContentModal.find("#activity_id").val(null);
+        createWebContentModal.on('hide.bs.modal', function () {
+            thumbnail_file_upload.resetForm();
+            reference_file_upload.resetForm();
+            createWebContentModal.find(".activity_id_hidden_input").val(null);
             createWebContentModal.find("#activitySubmit").removeAttr('disabled');
+            createWebContentModal.find(".selected_files").html('');
         });
 
         $(document).on("uploadedFileResponse", function (event, res) {
@@ -102,7 +110,7 @@ class Activities extends SchloopBase {
             if(res.errors && res.errors.length) {
                 _self.showErrors(res.errors);
             }else {
-                createWebContentModal.find("#activity_id").val(res.activity_id);
+                createWebContentModal.find(".activity_id_hidden_input").val(res.activity_id);
                 if(createWebContentModal.find(".selected_files tr").length){
                     btnEl.attr('disabled', 'disabled');
                     createWebContentModal.find(".uploadBtn").trigger('click');

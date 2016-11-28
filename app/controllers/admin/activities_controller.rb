@@ -35,7 +35,7 @@ class Admin::ActivitiesController < ApplicationController
   private
 
   def load_activity
-    @activity = Activity.find_by(id: params[:activity_id])
+    @activity = Activity.find_by(id: params[:id])
     render json: { success: false, errors: ['Activity not present.'] } if @activity.blank?
   end
 
