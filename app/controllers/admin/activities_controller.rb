@@ -1,6 +1,6 @@
 class Admin::ActivitiesController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_activity, only: [:update]
+  before_action :load_activity, only: [:show] # :update
 
   def create
     activity_service = Admin::ActivityService.new
@@ -34,10 +34,30 @@ class Admin::ActivitiesController < ApplicationController
     }
   end
 
+  def show
+    activity_datum = {
+      master_grade_id: @activity.master_grade_id,
+      master_subject_id: @activity.master_subject_id,
+      topic: @activity.topic,
+      title: @activity.title,
+      teaches: @activity.teaches,
+      pre_requisite: @activity.pre_requisite,
+      details: @activity.details,
+      categories: @activity.categories.map(&:id)
+    }
+      # reference_files: @activity.,
+      # thumbnail_file: @activity.,
+    render json: {
+      success: true,
+      activity: activity_datum
+    }
+  end
+
   private
 
   def load_activity
     @activity = Activity.find_by(id: params[:id])
+    render json: { success: false, errors: ['Activity not found'] } and return if @activity.blank?
   end
 
   def get_activity_params(params)
