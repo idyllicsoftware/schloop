@@ -50,7 +50,7 @@ class Teacher < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   include DeviseInvitable::Inviter
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :invitable, :invite_for => 2.weeks
+         :recoverable, :rememberable, :trackable, :validatable
   validates :cell_number, :presence => true,
             :numericality => true,
             :length => {:minimum => 10, :maximum => 15}
@@ -58,19 +58,15 @@ class Teacher < ActiveRecord::Base
   belongs_to :school
   has_many :grade_teachers, dependent: :destroy
   before_save :set_token
-  after_create :send_invitaion
-
-
+  after_create :send_invitation
 
   def set_token
     return if token.present?
     self.token = generated_token
   end
 
-  def send_invitaion
-    teacher = Teacher.invite!(:email => self.email)
-    teacher.deliver_invitation
-
+  def send_invitation
+    Admin::AdminMailer.welcome_message(self.email, self.first_name, self.password).deliver_now
   end
 
 
