@@ -56,7 +56,7 @@ class Teacher < ActiveRecord::Base
             :length => {:minimum => 10, :maximum => 15}
 
   belongs_to :school
-  has_many :grade_teachers
+  has_many :grade_teachers, dependent: :destroy
   before_save :set_token
   after_create :send_invitation
 
