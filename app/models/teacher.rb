@@ -53,7 +53,7 @@ class Teacher < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :invitable, :invite_for => 2.weeks
   validates :cell_number, :presence => true,
             :numericality => true,
-            :length => {:minimum => 10, :maximum => 10}
+            :length => {:minimum => 10, :maximum => 15}
 
   belongs_to :school
   has_many :grade_teachers
