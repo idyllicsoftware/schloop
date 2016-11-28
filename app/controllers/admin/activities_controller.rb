@@ -34,6 +34,16 @@ class Admin::ActivitiesController < ApplicationController
     }
   end
 
+  def upload_file
+    activity_service = Admin::ActivityService.new
+    response = activity_service.upload_file(params[:file], params[:type])
+    render json: {
+      success: response[:errors].blank?,
+      errors: response[:errors],
+      attachment_id: response[:data]
+    }
+  end
+
   private
 
   def load_activity

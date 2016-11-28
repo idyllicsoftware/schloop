@@ -76,6 +76,7 @@ Rails.application.routes.draw do
     resources :activities, only: [:create, :update] do
       collection do
         get :all
+        post :upload_file
       end
     end
   end
