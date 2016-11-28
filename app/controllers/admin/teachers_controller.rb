@@ -178,8 +178,8 @@ class Admin::TeachersController < ApplicationController
     begin
       grades = params[:grade] || {}
       grades.each do |grade_id, grades_data|
-        grades_data[:subjects] || {}.each do |subject_id, divisions_data|
-          divisions_data[:divisions] || [].each do |division_id|
+        grades_data[:subjects].each do |subject_id, divisions_data|
+          divisions_data[:divisions].each do |division_id|
             create_grade_teacher_params << {
               teacher_id: teacher_id,
               grade_id: grade_id,
@@ -190,8 +190,8 @@ class Admin::TeachersController < ApplicationController
         end
       end
       GradeTeacher.create(create_grade_teacher_params)
-    rescue Exception => e
-      errors << "error occured while creating grade teacher asssociation"
+    rescue Exception => ex
+      errors << "error occured while creating grade teacher asssociation. \n #{ex.message}"
       return {success: false, errors: errors}
     end
     return {success: true, data: {}}
