@@ -38,7 +38,7 @@ class Admin::ActivityService < BaseService
     filter_query = build_search_query(filter_options)
     activities = Activity.where(filter_query)
                          .includes(:categories, :master_grade, :master_subject)
-                         .select(:id, :title, :topic, :master_grade_id, :master_subject_id, :updated_at)
+                         .select(:id, :title, :topic, :master_grade_id, :master_subject_id, :updated_at, :status)
                          .order('activities.created_at desc')
     filtered_activities = []
     activities.each do |activity|
@@ -49,7 +49,8 @@ class Admin::ActivityService < BaseService
         updated_at: activity.updated_at.strftime('%b, %d %Y'),
         grade: activity.master_grade.name,
         subject: activity.master_subject.name,
-        categories: activity.categories.map(&:name)
+        categories: activity.categories.map(&:name),
+        status: activity.active? ? true : false
       }
     end
     filtered_activities

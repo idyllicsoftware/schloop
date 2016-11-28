@@ -75,6 +75,12 @@
 <script id="content_list_tpl" type="text/html">
   {{#activities}}
     <li class="content-item">
+      {{#status}}
+        <a class="deactivate_activity pull-right ml10" data-activity-id="{{id}}">Deactivate</a>
+      {{/status}}
+      {{^status}}
+        <a class="pull-right ml10 disabled">Deactivated</a>
+      {{/status}}
       <div class="clearfix">
         <h4 class="content-title pull-left">{{ title }}</h4>
         <div class="tags-right pull-right">{{ grade }} | {{ subject }}</div>

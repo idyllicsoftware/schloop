@@ -4,7 +4,7 @@ class FileUploadService < BaseService
     errors = []
     begin
       ext = File.extname(input_file.original_filename)
-      file_name = File.basename(input_file.original_filename)
+      file_name = File.basename(input_file.original_filename, '.*')
       file_name = "#{file_name}_#{Time.now.to_i}#{ext}"
       file_params = {
         original_filename: file_name,

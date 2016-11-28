@@ -22,6 +22,9 @@ class Activity < ActiveRecord::Base
   has_many :attachments, as: :attachable, dependent: :destroy
 
   enum file_sub_type: { reference: 0, thumbnail: 1 }
+  enum status: { active: 0, inactive: 1 }
+
+  scope :active, -> { where(status: Activity.statuses['active']) }
 
   def self.grade_activities(search_params, mapping_data, page)
     if page.present?
@@ -39,6 +42,16 @@ class Activity < ActiveRecord::Base
 
       subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
       grade = mapping_data[:master_grade_id_grade_id][activity.master_grade.id]
+
+      thumbnail_data = {}
+      activity.get_thumbnail_file.select(:original_filename, :name).each do |file|
+        thumbnail_data[:name] = file.name
+        thumbnail_data[:original_filename] = file.original_filename
+      end
+      reference_files = []
+      activity.get_reference_files.select(:original_filename, :name).each do |file|
+        reference_files << { name: file.name, original_filename: file.original_filename }
+      end
       activities_data << {
         grade_id: grade.id,
         grade_name: grade.name,
@@ -55,8 +68,8 @@ class Activity < ActiveRecord::Base
           title: activity.title,
           details: activity.details,
           pre_requisite: activity.pre_requisite,
-          thumbnail: 'thumbnail',
-          references: [{original_filename: 'name', s3_url: 'http://www.google.com'}, {original_filename: 'name', s3_url: 'http://www.google.com'}]
+          thumbnail: thumbnail_data,
+          references: reference_files
         }
       }
     end
@@ -78,6 +91,17 @@ class Activity < ActiveRecord::Base
       end
     end
     { errors: errors, data: activity_id }
+  end
+
+  def deactivate_activity
+    errors = []
+    begin
+      inactive!
+    rescue => ex
+      errors << 'Something went wrong. Please contact to support team.'
+      Rails.logger.debug("Exception in deactivating activity: Message: #{ex.message}/n/n/n Backtrace: #{ex.backtrace}")
+    end
+    { success: errors.blank?, errors: errors }
   end
 
    def get_thumbnail_file
