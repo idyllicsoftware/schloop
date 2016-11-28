@@ -92,7 +92,8 @@
                 {{#grades}}
                   <div class="subject-wrapper">
                     <span class="data-title plr20">{{grade_name}}</span>
-                    <span class="delete_grade pull-right" data-grade-id="{{grade_id}}"><a> - Delete Grade {{grade_name}}</a></span>
+
+                    <span id="add-sub" class="delete_grade pull-right" data-grade-id="{{grade_id}}"><a>Delete Grade {{grade_name}}</a></span>
                     <!-- <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left" data-grade_id="{{grade_id}}">+Add Subject</a></span> -->
                     <div class="data-attr">
                       <div class="subject-tab-wrapper">
@@ -107,7 +108,7 @@
                       <div class="tab-content">
                         {{#subjects}}
                         <div class="tab-pane fade in division-wrapper inner-tabs" id="{{subject_id}}">
-                          <div class="plr20"><span class="data-title"><a class="fa fa-chevron-down no-of-div"></a>5 Divisions</span></div>
+                          <div class="plr20"><span class="data-title"><a class="fa fa-chevron-down no-of-div"></a>Divisions</span></div>
                           <div class="slide-division-wrapper">
                             <div class="plr20">
                               <ul id="myTab" class="nav nav-tabs division-list">
@@ -118,7 +119,7 @@
                             </div>
                             <div class="div-operation">
                               <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content" data-grade_id="{{grade_id}}">+Add Division</a></span>
-                                <span class="current_division"><a>+Delete Division A</a></span>
+                                <span class="current_division"><a>Delete Division A</a></span>
                               <%= render :partial => "admin/schools/add_divisions"%>
                             </div>
                             <div id="myTabContent" class="tab-content">
