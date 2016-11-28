@@ -1,10 +1,12 @@
 //= require jquery-file-upload/jquery.fileupload
+//= require_self
 
 class FileUpload {
     constructor (config = {}) {
-        var oUpload = this;
+        let oUpload = this,
+            {isImageUpload=false} = config;
         oUpload._config = config;
-        oUpload._config.allowedFileTypes = ["doc", "docx", "pdf", "xls", "xlsx", "csv", "xlsm"];
+        oUpload._config.allowedFileTypes = !isImageUpload ? ["doc", "docx", "pdf", "xls", "xlsx", "csv", "xlsm"] : ['jpg', 'jpeg', 'png', 'gif'];
         oUpload.limitMultiFileUploadSize = (typeof config !== 'undefined' && config.limitMultiFileUploadSize) ? config.limitMultiFileUploadSize : 10000000;
         oUpload.file_ids = [];
 
@@ -81,10 +83,12 @@ class FileUpload {
     };
 
     isFileTypeAllowed (fileExt) {
-        var oUpload = this;
+        let oUpload = this,
+            {isImageUpload=false, allowedFileTypes} = oUpload._config,
+            msg = !isImageUpload ? `Please only upload files with doc, docx, pdf, xls, xlsx, or csv extensions.` : `Please only upload files with jpg, jpeg, or png extensions.`;
 
-        if (oUpload._config.allowedFileTypes.indexOf(fileExt.toLowerCase()) < 0) {
-            $("<div class='errorMessage'> Please only upload files with doc, docx, pdf, xls, xlsx, or csv extensions.</div>").appendTo(oUpload.uploadsBlock).fadeIn();
+        if (allowedFileTypes.indexOf(fileExt.toLowerCase()) < 0) {
+            $(`<div class='errorMessage'>${msg}</div>`).appendTo(oUpload.uploadsBlock).fadeIn();
             return false;
         }
 
@@ -165,13 +169,23 @@ class FileUpload {
 
     initFileUploadWidget(){
         var oUpload = this,
-            jScope = oUpload._config.jScope || $(document);
+            {isImageUpload=false, jScope=$(document)} = oUpload._config;
 
         oUpload.fileUpload.fileupload({
             dataType: 'json',
-            acceptFileTypes: /(\.|\/)(doc|docx|pdf|xls|xlsx|csv)$/i,
+            acceptFileTypes: !isImageUpload ? /(\.|\/)(doc|docx|pdf|xls|xlsx|csv)$/i : /(\.|\/)(gif|jpe?g|png)$/i,
             limitMultiFileUploadSize: oUpload.limitMultiFileUploadSize,
             maxNumberOfFiles: 1,
+            autoUpload: true,
+            maxFileSize: 999000,
+            // Enable image resizing, except for Android and Opera,
+            // which actually support image resizing, but fail to
+            // send Blob objects via XHR requests:
+            disableImageResize: /Android(?!.*Chrome)|Opera/
+                .test(window.navigator.userAgent),
+            previewMaxWidth: 100,
+            previewMaxHeight: 100,
+            previewCrop: true,
             add: function (e, data) {
                 var currentFile = data.files[0];
                 oUpload.clearErrorMessages();
@@ -282,7 +296,6 @@ class FileUpload {
                 }
             },
             fail: function (e, data) {
-
                 $("<div class='errorMessage'>" + data.response().errorThrown + "</div>").appendTo(oUpload.uploadsBlock).fadeIn();
                 data.context.find(".delete").prop("disabled", false);
                 oUpload.uploadFailed();

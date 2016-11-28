@@ -79,6 +79,7 @@ Rails.application.routes.draw do
       end
       collection do
         get :all
+        post :upload_file
       end
     end
   end

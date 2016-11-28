@@ -78,16 +78,30 @@ class Admin::TeachersController < ApplicationController
 
   def create
     render json: {success: false, errors: ['School not found']} and return if @school.blank?
-    teacher_id = create_teachers(@school, create_school_teachers_params)
-    response = create_grade_teacher_association(teacher_id)
-    render :json => response
+    create_teachers_response = create_teachers(@school, create_school_teachers_params)
+    if create_teachers_response[:success] and params[:grade].present?
+      create_teachers_response = create_grade_teacher_association(create_teachers_response[:teacher_id])
+    end
+    render json: create_teachers_response
   end
 
   def update
     render json: {success: false, errors: ['Teacher not found']} and return if @teacher.blank?
-
-    response = update_school_teacher(@teacher, update_school_teacher_params)
-    render :json => response
+    errors = []
+    ActiveRecord::Base.transaction do
+      begin
+        if params[:grade].present?
+          @teacher.grade_teachers.destroy_all
+          create_grade_teacher_association(@teacher.id)
+        end
+        update_response = update_school_teacher(@teacher, update_school_teacher_params)
+        errors = update_response[:errors]
+      rescue Exception => ex
+        errors << 'Error occured while updating teacher.'
+        raise ActiveRecord::Rollback
+      end
+    end
+    render json: { success: errors.blank?, errors: errors }
   end
 
   def destroy
@@ -104,6 +118,9 @@ class Admin::TeachersController < ApplicationController
 
   def find_teacher
     @teacher = Teacher.find_by(id: params[:id])
+    if @teacher.blank?
+      {success: false, errors: ["teacher not found"]}
+    end
   end
 
   def create_teachers(school, teacher_params)
@@ -111,12 +128,8 @@ class Admin::TeachersController < ApplicationController
     teacher = school.teachers.create(teacher_params)
     errors =  teacher.errors.full_messages.join(', ')
 
-    if errors.blank?
-      Admin::AdminMailer.welcome_message(teacher.email, teacher.first_name, teacher.password).deliver_now
-      return {success: errors.blank?, teacher_id: teacher.id}
-    else
-        return {success: errors.blank?, errors: errors}
-    end
+    return {success: true, teacher_id: teacher.id} if errors.blank?
+    return {success: false, errors: errors}
   end
 
   def create_school_teachers_params
@@ -124,14 +137,17 @@ class Admin::TeachersController < ApplicationController
   end
 
   def update_school_teacher(teacher,teacher_params)
-     # respond_to do |format|
-     teacher.update(teacher_params)
-     return {success: true, error: []}
-    #end
+    errors = []
+    teacher.update(teacher_params)
+    if teacher.errors.blank?
+      return { success: true, error: errors }
+    else
+      errors << teacher.errors.full_messages
+      return {success: false, errors: errors}
+    end
   end
 
   def update_school_teacher_params
-      #TODO ADD MORE PARAMS
       params.require(:teacher).permit(:first_name, :last_name, :cell_number)
   end
 
@@ -174,30 +190,27 @@ class Admin::TeachersController < ApplicationController
     return grade_teacher_data
   end
 
-  def create_grade_teacher_association(teacher)
-    errors = []
-    grade_teacher = nil
+  def create_grade_teacher_association(teacher_id)
+    errors, create_grade_teacher_params = [], []
     begin
-      teacher_id = teacher[:teacher_id]
-      grades = params[:grade]
-      grades.each do |grade|
-        grade_id = grade[0].to_i
-        grade_data = grade[1]
-        subjects = grade_data[:subjects]
-        subjects.each do |subject|
-          subject_id = subject[0].to_i
-          subject_data = subject[1]
-          divisions= subject_data[:divisions]
-          divisions.each do |division|
-            grade_teacher = GradeTeacher.create(teacher_id: teacher_id,grade_id: grade_id, subject_id: subject_id, division_id: division.to_i)
+      grades = params[:grade] || {}
+      grades.each do |grade_id, grades_data|
+        grades_data[:subjects].each do |subject_id, divisions_data|
+          divisions_data[:divisions].each do |division_id|
+            create_grade_teacher_params << {
+              teacher_id: teacher_id,
+              grade_id: grade_id,
+              subject_id: subject_id,
+              division_id: division_id
+            }
           end
         end
       end
-    rescue Exception => e
-      errors << "error occured while creating grade teacher asssociation"
+      GradeTeacher.create(create_grade_teacher_params)
+    rescue Exception => ex
+      errors << "error occured while creating grade teacher asssociation. \n #{ex.message}"
       return {success: false, errors: errors}
     end
-    return {success: true, grade_teacher: grade_teacher}
-
+    return {success: true, data: {}}
   end
 end

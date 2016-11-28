@@ -68,43 +68,21 @@ class Activity < ActiveRecord::Base
   end
 
   def self.create_activity(create_params)
+    activity_id = 0
     errors = []
     ActiveRecord::Base.transaction do
       begin
-        categories_params = create_params.delete(:categories)
-        reference_files = create_params.delete(:reference_files)
-        thumbnail_file = create_params.delete(:thumbnail_file)
-
+        categories_params = create_params.delete(:categories) || []
         activity = Activity.create!(create_params)
+        activity_id = activity.id
         create_activity_categories(activity.id, categories_params)
-        # upload_files(activity, reference_files, thumbnail_file)
       rescue => ex
         errors << 'Failed to create activity. Please enter details properly.'
         Rails.logger.debug("Exception in creating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
       end
     end
-    { errors: errors, data: [] }
+    { errors: errors, data: activity_id }
   end
-
-  # def update_activity(update_params)
-  #   errors = []
-  #   ActiveRecord::Base.transaction do
-  #     begin
-  #       categories_params = update_params.delete(:categories)
-  #       reference_files = create_params.delete(:reference_files)
-  #       thumbnail_file = create_params.delete(:thumbnail_file)
-
-  #       activity = update_attributes!(update_params)
-  #       activity_categories.destroy_all
-  #       create_activity_categories(activity.id, categories_params)
-  #       upload_files(activity, reference_files, thumbnail_file)
-  #     rescue => ex
-  #       errors << ex.message
-  #       Rails.logger.debug("Exception in updating activity: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
-  #     end
-  #   end
-  #   { errors: errors, data: [] }
-  # end
 
   def deactivate_activity
     errors = []

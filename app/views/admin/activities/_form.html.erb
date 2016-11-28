@@ -2,7 +2,7 @@
    <div class="modal-dialog modal-lg">
      <div class="modal-content">
        <div class="modal-body">
-        <%= form_tag '', class:"web-content-form" do %>
+        <%= form_tag '', id:'activity_creation_form', class:"web-content-form" do %>
           <div class="row">
             <div class="form-group col-md-6">
               <select id="grade" name="activity[master_grade_id]" required class="form-control field">
@@ -61,23 +61,66 @@
               <textarea class="form-control input-field" name="activity[details]" maxlength="1000"></textarea>
             </div>
           </div>
+         <% end %>
+
+         <div id="thumbnailImageUploadSection">
+          <form class="fileDetails uploadFiles_btn_container clearfix" style="display: block;">
+           <input type="hidden" class="activity_id_hidden_input" name="id" />
+           <%= hidden_field_tag :type,  'thumbnail'%>
+           <div class="row">
+             <div class="form-group col-md-6 image-attach">
+               <p class="mandatory">Thumbnail Image</p>
+               <div class="file_upload_files--upload-block">
+                 <div class="fileUpload file_upload_files--fileUploadBtn">
+                   <span><i class="fa fa-cloud-upload"></i> choose file</span>
+                   <input class="fileuploadInput upload" type="file" name="file" data-url="/admin/activities/upload_file" accept="image/*">
+                 </div>
+                 <button class="btn btn-primary text-uppercase disabled uploadBtn hidden">upload</button>
+                 <div class="progressWrap" style="padding: 15px 0px;display: none;">
+                   <div class="progress">
+                     <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                       <span></span>
+                     </div>
+                   </div>
+                 </div>
+                 <table class="selected_files"></table>
+               </div>
+             </div>
+           </div>
+         </form>
+         </div>
+
+         <div id="referenceImageUploadSection">
+            <form class="fileDetails uploadFiles_btn_container clearfix" style="display: block;">
+           <input type="hidden" class="activity_id_hidden_input" name="id" />
+           <%= hidden_field_tag :type,  'reference'%>
           <div class="row">
             <div class="form-group col-md-6 image-attach">
               <p class="mandatory">Reference Image</p>
-              <label for="upload-photo">
-                  <div class="upload-logo">
-                    <img src="<%= asset_path('admin/image_upload.svg') %>">
+                  <div class="file_upload_files--upload-block">
+                      <div class="fileUpload file_upload_files--fileUploadBtn">
+                        <span><i class="fa fa-cloud-upload"></i> choose file</span>
+                        <input class="fileuploadInput upload" type="file" multiple name="file" data-url="/admin/activities/upload_file" accept="image/*">
+                      </div>
+                      <button class="btn btn-primary text-uppercase disabled uploadBtn hidden">upload</button>
+                    <div class="progressWrap" style="padding: 15px 0px;display: none;">
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                          <span></span>
+                        </div>
+                      </div>
+                    </div>
+                    <table class="selected_files"></table>
                   </div>
-                  <input type="file" name="activity[thumbnail_file]" value="" id="upload-photo"/>
-              </label>
-              <input class="form-control input-field" disabled="disabled" placeholder="filename">
             </div>
           </div>
+         </form>
+         </div>
+
           <div class="action-btn">
-            <button type="submit" class="btn btn-primary">ADD ACTIVITY</button>
+            <button id="activitySubmit" type="button" class="btn btn-primary">ADD ACTIVITY</button>
             <button class="btn btn-primary" data-dismiss="modal" aria-label="Cancel">CANCEL</button>
           </div>
-          <% end %>
       </div>
     </div>
   </div>
