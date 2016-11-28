@@ -43,6 +43,16 @@ class Activity < ActiveRecord::Base
 
       subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
       grade = mapping_data[:master_grade_id_grade_id][activity.master_grade.id]
+
+      thumbnail_data = {}
+      activity.get_thumbnail_file.select(:original_filename, :name).each do |file|
+        thumbnail_data[:name] = file.name
+        thumbnail_data[:original_filename] = file.original_filename
+      end
+      reference_files = []
+      activity.get_reference_files.select(:original_filename, :name).each do |file|
+        reference_files << { name: file.name, original_filename: file.original_filename }
+      end
       activities_data << {
         grade_id: grade.id,
         grade_name: grade.name,
@@ -59,8 +69,8 @@ class Activity < ActiveRecord::Base
           title: activity.title,
           details: activity.details,
           pre_requisite: activity.pre_requisite,
-          thumbnail: 'thumbnail',
-          references: [{original_filename: 'name', s3_url: 'http://www.google.com'}, {original_filename: 'name', s3_url: 'http://www.google.com'}]
+          thumbnail: thumbnail_data,
+          references: reference_files
         }
       }
     end
