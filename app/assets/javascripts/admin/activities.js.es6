@@ -4,6 +4,7 @@ class Activities extends SchloopBase {
         let _self = this;
 
         _self.initEventListeners();
+        _self.filters = {};
         return this;
     };
 
@@ -18,6 +19,13 @@ class Activities extends SchloopBase {
             thumbnail_file_upload, reference_file_upload;
 
         $('#select_multiple').multipleSelect({});
+
+
+        $("#content_filter_wrapper select").change(function(){
+            _self.filters = $(this).closest('form').serializeObject();
+            _self.loadActivities();
+        });
+
 
         thumbnail_file_upload = new FileUpload({
             jScope: createWebContentModal.find("#thumbnailImageUploadSection"),
@@ -89,6 +97,7 @@ class Activities extends SchloopBase {
             activitiesListEl = $('#content_list_id');
         $.ajax({
             url: `/admin/activities/all`,
+            data: _self.filters,
             success: function (res) {
                 if(res.success) {
                     html = Mustache.to_html(_self.activitiesListTpl, _self.getProcessedData(res));
