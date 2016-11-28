@@ -55,6 +55,15 @@ class Admin::ActivityService < BaseService
     filtered_activities
   end
 
+  def upload_file(activity, file, type)
+    file_upload_service = FileUploadService.new
+    response = file_upload_service.upload_file_to_s3(file, activity, sub_type: Activity.file_sub_types[type])
+    {
+      errors: response[:errors],
+      data: response[:data]
+    }
+  end
+
   private
 
   def build_search_query(filter_options)
