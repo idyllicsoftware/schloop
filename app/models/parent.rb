@@ -44,5 +44,16 @@
 #
 
 class Parent < User
-	has_many :parent_details
+	has_many :students, :dependent => :destroy
+	has_many :parent_details,  :dependent => :destroy
+	after_create :send_invitaion
+	
+  def send_invitaion
+    parent = Parent.invite!(:email => self.email)
+    parent.deliver_invitation
+  end	
+
+  def password_required?
+    new_record? ? false : super
+  end
 end

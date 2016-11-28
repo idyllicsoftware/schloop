@@ -31,11 +31,13 @@ Rails.application.routes.draw do
   # }
 
   namespace :admin do
-
     resource :teachers do
       get "imports/new" => 'teachers/teacher_imports#new'
       post "imports" => 'teachers/teacher_imports#create'
     end
+
+    resources :parent_imports
+    resources :students
     resource :users do
     end
 
@@ -56,8 +58,11 @@ Rails.application.routes.draw do
 
       end
 
-      resources :grades, only: [:index, :create], shallow: true do
-        resources :subjects,only: [:index, :create, :update, :destroy], shallow: true do
+      resources :grades, only: [:index, :create, :destroy], shallow: true do
+        collection do
+          get :grades_divisions
+        end
+        resources :subjects, only: [:index, :create, :update, :destroy], shallow: true do
 
         end
         resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do

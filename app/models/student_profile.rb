@@ -13,4 +13,6 @@
 
 class StudentProfile < ActiveRecord::Base
 	belongs_to :student
+	belongs_to :division
+	belongs_to :grade
 end
