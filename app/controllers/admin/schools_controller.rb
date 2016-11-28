@@ -17,6 +17,7 @@ class Admin::SchoolsController < ApplicationController
   end
 
   def show
+    @teacher_import = TeacherImport.new({}, @school.id)
     redirect_to admin_schools_path and return if @school.blank?
     @js_data = {
         school_id: params[:id]

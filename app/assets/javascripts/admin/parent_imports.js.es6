@@ -2,7 +2,9 @@ class ParentImports extends SchloopBase {
     init (){
         let _self = this,
             {school_id} = _self._config,
-            file_upload = new FileUpload();
+            file_upload = new FileUpload({
+                jScope: $("#studentUploadWrapperId")
+            });
 
         $(document).on("uploadedFileResponse", function (e, res) {
             let {result} = res;
