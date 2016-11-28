@@ -56,7 +56,7 @@
           <ul class="checkbox_customized">
             <% grade.subjects.each  do |subject| %>
             <div class="col-md-12">
-              <li class="col-md-12"><input type="checkbox"  id="subject<%= subject.id %>">
+              <li class="col-md-12"><input type="checkbox" class="subject_cls" id="subject<%= subject.id %>">
                 <label for="subject<%= subject.id %>"><%= subject.name %></label>
               </li>
               <div class="col-md-12 pl20">

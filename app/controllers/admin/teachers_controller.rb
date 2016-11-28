@@ -153,24 +153,16 @@ class Admin::TeachersController < ApplicationController
     grades_data.each do |grade_id, datas|
       subjects_data = {}
       datas.each do |data|
-        all_divisions = Grade.find(grade_id).divisions.pluck(:id,:name)
         subjects_data[data.subject_id ] ||= {
           subject_id: data.subject_id,
           subject_name: data.subject.name,
           divisions_data: []
         }
-        all_divisions.each do |division|
-          if data.division_id == division[0]
-            check_status = true;
-          else
-            check_status = false;
-          end
-          subjects_data[data.subject_id][:divisions_data] << {
-            division_id: division.first,
-            division_name: division.last,
-            division_checked: check_status
-          }
-        end
+        
+        subjects_data[data.subject_id][:divisions_data] << {
+          division_id: data.division_id,
+          division_name: data.division.name        
+        }
       end
       grade_teacher_data << {
         grade_id: grade_id,

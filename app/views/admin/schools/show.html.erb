@@ -112,7 +112,7 @@
                             <div class="plr20">
                               <ul id="myTab" class="nav nav-tabs division-list">
                                 {{#divisions}}
-                                  <li data-division_id="{{division_id}}" data-division_name="{{division_name}}"><a href="#{{division_id}}" data-toggle="tab">{{division_name}}</a></li>
+                                  <li data-division_id="{{division_id}}" data-division_name="{{division_name}}"><a href="#{{subject_id}}division{{division_id}}" data-toggle="tab">{{division_name}}</a></li>
                                 {{/divisions}}
                               </ul>
                             </div>
@@ -123,7 +123,7 @@
                             </div>
                             <div id="myTabContent" class="tab-content">
                               {{#divisions}}
-                              <div class="tab-pane fade in" id="{{division_id}}">
+                              <div class="tab-pane fade in" id="{{subject_id}}division{{division_id}}">
                                 <div class="teachers-wrapper">
                                   <ul>
                                   {{#teacher}}
