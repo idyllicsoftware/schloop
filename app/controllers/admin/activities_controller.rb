@@ -1,6 +1,6 @@
 class Admin::ActivitiesController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_activity, only: [:deactivate, :upload_file]
+  before_action :load_activity, only: [:show, :deactivate, :upload_file]
 
   def create
     activity_service = Admin::ActivityService.new
@@ -21,6 +21,34 @@ class Admin::ActivitiesController < ApplicationController
       activities: activities
     }
   end
+
+  def show
+    thumbnail_file = {}
+    @activity.get_thumbnail_file.select(:original_filename, :name).each do |file|
+      thumbnail_file[:s3_url] = file.name
+      thumbnail_file[:original_filename] = file.original_filename
+    end
+    reference_files = []
+    @activity.get_reference_files.select(:original_filename, :name).each do |file|
+      reference_files << { s3_url: file.name, original_filename: file.original_filename }
+    end
+    activity_datum = {
+      master_grade_id: @activity.master_grade_id,
+      master_subject_id: @activity.master_subject_id,
+      topic: @activity.topic,
+      title: @activity.title,
+      teaches: @activity.teaches,
+      pre_requisite: @activity.pre_requisite,
+      details: @activity.details,
+      categories: @activity.categories.map(&:id),
+      thumbnail_file: @activity.thumbnail_file,
+      reference_files: @activity.reference_files
+    }
+    render json: {
+      success: true,
+      activity: activity_datum
+    }
+   end
 
   def deactivate
     response = @activity.deactivate_activity
