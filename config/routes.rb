@@ -46,7 +46,7 @@ Rails.application.routes.draw do
         get :all
       end
 
-      resources :ecirculars do
+      resources :ecirculars, only: [:create], shallow: true do
       end
 
       resources :school_admins, only: [:index, :create, :update, :destroy], shallow: true do

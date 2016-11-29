@@ -12,133 +12,42 @@
     </div>
     <div class="history-btn"><a class="pull-right p10px">History</a></div>
 
-    <!-- <div>
-        <textarea class="tinymce"></textarea>
-    </div> -->
-    <div class="circulars-main-form hidden">
-      <%=  form_tag( "/admin/schools/#{@school.id}/ecirculars"	, class:"school-ecircular-form", multipart: true) do %>
+    <div class="circulars-main-form">
+      <%=  form_tag "/admin/schools/#{@school.id}/ecirculars", class:"school-ecircular-form", method: 'post' do %>
         <div class="form-group col-md-12">
-          <input name="school_id" value='<%= @school.id %>' hidden >
-          <input type="text" class="form-control input-field" required name="title" placeholder="Subject" autocomplete="off" maxlength="10" />
-        </div>
-        <div class="form-group col-md-12 upload-photo-wrap">
-          <label for="upload-photo">
-            <div class="upload-logo">
-              <img src="<%= asset_path('admin/image_upload.svg') %>">
-            </div>
-            <input type="file" name="attachments[]" multiple="" accept=".xls,.xlsx,.doc,.docx,.pdf,.csv,.jpg,.jpeg,.png" required id="upload-photo"/>
-          </label>
+          <input type="text" class="form-control input-field" required name="title" placeholder="Subject" autocomplete="off" maxlength="50" />
         </div>
         <div class="form-group col-md-12">
-          <input type="text" class="form-control input-field" name="" placeholder="Body" autocomplete="off" maxlength="10" disabled="disabled"/>
+          <input type="text" class="form-control input-field" placeholder="Body" autocomplete="off" maxlength="10" disabled="disabled"/>
           <textarea class="form-control input-field circular-textarea" required name="body"></textarea>
         </div>
         <div class="col-md-12">
           <div class="col-md-5 border_botm">
-            <a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
+              <a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
 		          	    	<span class="select-recipients">
 						      <p class="select-recipients_name">Select recipients</p>
 						      <p class="fa fa-chevron-down"></p>
 						    </span>
-            </a>
-            <div id="select-recipients-popover-content" class="hidden">
-              <div class="recipients-container-wrap">
-                <!--<ul id="recipients-Tab" class="nav nav-tabs">
-                  <li class="active">
-                    <a href="#all-grade-section-tab" aria-controls="all-grade-section-tab" role="all-grade-section-tab" data-toggle="tab">All grades</a>
-                  </li>
-
-
-                  <li>
-                    <a href="#selected-grade-section-tab" aria-controls="selected-grade-section-tab" role="selected-grade-section-tab" data-toggle="tab">Only Selected Grades</a>
-                  </li>
-
-                </ul>
-                -->
-                <div class="tab-content">
-                  <div class="tab-pane fade in active" id="all-grade-section-tab">
-                    <% @grades.each do |grade|%>
-                      <div class="std_name">
-								      		<span class="col-md-12 checkbox_customized">
-								      			<input class='chek_cls grade_checkbox' value="<%= grade.id %>" type="checkbox" id="<%= grade.name %>" >
-										        <label for="<%= grade.name %>"><%= grade.name %></label>
-										    </span>
-                        <ul class="checkbox_customized">
-                          <% grade.divisions.each do |division| %>
-                            <li class="col-md-2">
-                              <input type="checkbox" class="division_checkbox" name="grades[<%= grade.id %>]division[]" value="<%= division.id %>" id="<%= division.name %>" data-grade_id="<%= grade.id %>">
-                              <label for="<%= division.name %>"><%= division.name %></label>
-                            </li>
-                          <% end %>
-                        </ul>
-                      </div>
-                    <% end %>
-                  </div>
-
-                  <!--
-                  <div class="tab-pane fade in" id="selected-grade-section-tab">
-                    <div class="std_name">
-								      		<span class="col-md-12 checkbox_customized">
-								      			<input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-										        <label for="check1">A</label>
-										    </span>
-                      <ul class="checkbox_customized">
-                        <li class="col-md-2">
-                          <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-                          <label for="check1">A</label>
-                        </li>
-                        <li class="col-md-2">
-                          <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-                          <label for="check1">A</label>
-                        </li>
-                        <li class="col-md-2">
-                          <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-                          <label for="check1">A</label>
-                        </li>
-                        <li class="col-md-2">
-                          <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-                          <label for="check1">A</label>
-                        </li>
-                        <li class="col-md-2">
-                          <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-                          <label for="check1">A</label>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  -->
-                </div>
-              </div>
-            </div>
+              </a>
           </div>
           <div class="col-md-4 border_botm">
-            <a id="select-circular-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-circular-popover-content" data-placement="top">
+              <a id="select-circular-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-circular-popover-content" data-placement="top">
                 <span class="select-recipients">
 						        <p class="selected_circular_tag">Select E-Circular</p>
 						        <input type="hidden" class="cirular_value" name="circular_tag" value="">
 						        <p class="fa fa-chevron-down"></p>
 						    </span>
-            </a>
-
-            <div id="select-circular-popover-content" class="hidden">
-              <div class="select-circular-container">
-                <% @circular_tags.each do |key, value| %>
-                  <div class="radio">
-                    <input type="radio" name="radio_select" value="<%= key %>" id="<%= value %>">
-                    <label for="<%= value %>"> <%= key.humanize %> </label>
-                  </div>
-                <% end %>
-              </div>
-            </div>
+              </a>
           </div>
           <div class="col-md-2">
-            <button type="submit" class="btn btn-primary">SEND</button>
+              <button type="submit" class="btn btn-primary">SEND</button>
           </div>
         </div>
       <% end %>
     </div>
-    <div class="content-wrapper">
+
+
+    <div class="content-wrapper hidden">
       <div class="ecirculars-history-section">
         <ul class="circular-history-list">
           <li class="circular-history-item">
@@ -176,91 +85,90 @@
   </div>
 </div>
 
+<div id="select-recipients-popover-content" class="hidden">
+  <div class="recipients-container-wrap">
+    <!--<ul id="recipients-Tab" class="nav nav-tabs">
+      <li class="active">
+        <a href="#all-grade-section-tab" aria-controls="all-grade-section-tab" role="all-grade-section-tab" data-toggle="tab">All grades</a>
+      </li>
+      <li>
+        <a href="#selected-grade-section-tab" aria-controls="selected-grade-section-tab" role="selected-grade-section-tab" data-toggle="tab">Only Selected Grades</a>
+      </li>
+    </ul>
+    -->
+    <div class="tab-content">
+      <div class="tab-pane fade in active" id="all-grade-section-tab">
+        <% @grades.each do |grade|%>
+            <div class="std_name">
+              <span class="col-md-12 checkbox_customized">
+                <input class='chek_cls grade_checkbox' value="<%= grade.id %>" type="checkbox" id="grade_circular_<%= grade.name %>" >
+                <label for="grade_circular_<%= grade.name %>"><%= grade.name %></label>
+              </span>
+              <ul class="checkbox_customized">
+                <% grade.divisions.each do |division| %>
+                    <li class="col-md-2">
+                      <input type="checkbox" class="division_checkbox" name="grades[<%= grade.id %>]division[]" value="<%= division.id %>" id="div_circular_<%= division.name %>" data-grade_id="<%= grade.id %>">
+                      <label for="div_circular_<%= division.name %>"><%= division.name %></label>
+                    </li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+      </div>
+
+      <!--
+      <div class="tab-pane fade in" id="selected-grade-section-tab">
+        <div class="std_name">
+              <span class="col-md-12 checkbox_customized">
+                <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+                <label for="check1">A</label>
+            </span>
+          <ul class="checkbox_customized">
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      -->
+    </div>
+  </div>
+</div>
+
+<div id="select-circular-popover-content" class="hidden">
+  <div class="select-circular-container">
+    <% @circular_tags.each do |key, value| %>
+        <div class="radio">
+          <input type="radio" name="radio_select" value="<%= key %>" id="circular_tags_<%= value %>">
+          <label for="circular_tags_<%= value %>"> <%= key.humanize %> </label>
+        </div>
+    <% end %>
+  </div>
+</div>
+
 <div class="modal fade" id="circular-history-modal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
           <div class="content-wrapper">
-            <div class="pull-right">
-              <a>Edit</a>
-            </div>
-            <div class="circulars-main-form hidden">
-              <%=  form_tag( "/admin/schools/#{@school.id}/ecirculars"  , class:"school-ecircular-form", multipart: true) do %>
-                <div class="form-group col-md-12">
-                  <input name="school_id" value='<%= @school.id %>' hidden >
-                  <input type="text" class="form-control input-field" required name="title" placeholder="Subject" autocomplete="off" maxlength="10" />
-                </div>
-                <div class="form-group col-md-12 upload-photo-wrap">
-                  <label for="upload-photo">
-                    <div class="upload-logo">
-                      <img src="<%= asset_path('admin/image_upload.svg') %>">
-                    </div>
-                    <input type="file" name="attachments[]" multiple="" accept=".xls,.xlsx,.doc,.docx,.pdf,.csv,.jpg,.jpeg,.png" required id="upload-photo"/>
-                  </label>
-                </div>
-                <div class="form-group col-md-12">
-                  <input type="text" class="form-control input-field" name="" placeholder="Body" autocomplete="off" maxlength="10" disabled="disabled"/>
-                  <textarea class="form-control input-field circular-textarea" required name="body"></textarea>
-                </div>
-                <div class="col-md-12">
-                  <div class="col-md-5 border_botm">
-                    <a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
-                              <span class="select-recipients">
-                          <p class="select-recipients_name">Select recipients</p>
-                          <p class="fa fa-chevron-down"></p>
-                        </span>
-                    </a>
-                    <div id="select-recipients-popover-content" class="hidden">
-                      <div class="recipients-container-wrap">
-                        <div class="tab-content">
-                          <div class="tab-pane fade in active" id="all-grade-section-tab">
-                            <% @grades.each do |grade|%>
-                              <div class="std_name">
-                                  <span class="col-md-12 checkbox_customized">
-                                    <input class='chek_cls grade_checkbox' value="<%= grade.id %>" type="checkbox" id="<%= grade.name %>" >
-                                    <label for="<%= grade.name %>"><%= grade.name %></label>
-                                </span>
-                                <ul class="checkbox_customized">
-                                  <% grade.divisions.each do |division| %>
-                                    <li class="col-md-2">
-                                      <input type="checkbox" class="division_checkbox" name="grades[<%= grade.id %>]division[]" value="<%= division.id %>" id="<%= division.name %>" data-grade_id="<%= grade.id %>">
-                                      <label for="<%= division.name %>"><%= division.name %></label>
-                                    </li>
-                                  <% end %>
-                                </ul>
-                              </div>
-                            <% end %>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 border_botm">
-                    <a id="select-circular-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-circular-popover-content" data-placement="top">
-                        <span class="select-recipients">
-                            <p class="selected_circular_tag">Select E-Circular</p>
-                            <input type="hidden" class="cirular_value" name="circular_tag" value="">
-                            <p class="fa fa-chevron-down"></p>
-                        </span>
-                    </a>
-
-                    <div id="select-circular-popover-content" class="hidden">
-                      <div class="select-circular-container">
-                        <% @circular_tags.each do |key, value| %>
-                          <div class="radio">
-                            <input type="radio" name="radio_select" value="<%= key %>" id="<%= value %>">
-                            <label for="<%= value %>"> <%= key.humanize %> </label>
-                          </div>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary">SEND</button>
-                  </div>
-                </div>
-              <% end %>
-            </div>
             <div class="preview-container">
               <div class="subject-body pb10">
                 <h4>School closed on Monday,Oct 20 2016 due to Diwali</h4>

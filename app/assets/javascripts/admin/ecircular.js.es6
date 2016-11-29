@@ -33,7 +33,7 @@ class SchoolECircular extends SchloopBase {
                 for(var divKey in selectedHash[key]){
                     if(selectedObj.divisions.hasOwnProperty(divKey)) {
                         selectedDivisions = selectedObj.divisions[divKey];
-                        divisions.push(selectedDivisions.name + `<input type="hidden" name="divisions[]" value="${divKey}" />`);
+                        divisions.push(selectedDivisions.name + `<input type="hidden" name="grades[${key}][divisions][]" value="${divKey}" />`);
                     }
                 };
                 if(divisions.length){
@@ -45,7 +45,7 @@ class SchoolECircular extends SchloopBase {
             }
         }
 
-        $(".select-recipients_name").html(arr.join(", "));
+        $(".select-recipients_name").html(arr.join(", ") || 'Select recipients');
     };
 
     initRecipientsSelectPopover (){
@@ -141,18 +141,18 @@ class SchoolECircular extends SchloopBase {
         _self.initCircularHistory();
 
         this.initFormSubmit(eCircularFormEl, {
-            'title': 'title',
-            'attachments[]': 'attachments[]',
+            'title': 'name',
+            'body': 'name',
         }, function (res) {
             if(res.success) {
-               // TO DO..
+                $('.selected_circular_tag').html('Select E-Circular');
+                $('.selected_circular_tag').next().val(null);
+                $(".select-recipients_name").html('Select recipients');
+                toastr.success('E-Circular sent successfully');
+                eCircularFormEl[0].reset();
             }else {
-                self.showErrors(res.errors);
+                _self.showErrors(res.errors);
             }
-        },{
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false
         });
     }
 

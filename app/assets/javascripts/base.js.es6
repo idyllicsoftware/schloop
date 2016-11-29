@@ -193,7 +193,7 @@ class SchloopBase {
                 if(extraParams) {
                     formData = new FormData(jForm[0]);
                 }else{   
-                    formData = jForm.serializeObject();
+                    formData = jForm.serialize();
                 }
                 self.submitData(jForm.attr('action'), jForm, formData, cb, extraParams, btnEl);
             }

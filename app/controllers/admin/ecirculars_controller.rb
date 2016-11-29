@@ -1,35 +1,17 @@
 class Admin::EcircularsController < ApplicationController
-	
-	def index
-		@school_id = params[:school_id]
-		if !params[:q].present?
-				params[:q] = {}
-		end
-		params[:q][:school_id_eq] = @school_id
-		@grades = Grade.where(school_id: @school_id).includes(:divisions)
-		divisions = params[:division]
-		#to filter by grade and division
-		if divisions.present?
-			circulars = []
-			sub_search = EcircularRecipient.search("division_id_eq_any"=>divisions)
-			divisions_ecircular = sub_search.result.select("distinct ecircular_id")
-			divisions_ecircular.each do |ecircular|
-				circulars << ecircular.ecircular_id
-			end
-			params[:q][:id_eq_any] = circulars
-		end
-		@search = Ecircular.search(params[:q])
-		@result = @search.result	
-	end
-
-	def new
-		@school_id = params[:school_id]
-		@grades = Grade.where(school_id: @school_id).includes(:divisions)
-	end
+	before_action :authenticate_user!
+	before_action :find_school, only: [:create]
 
 	def create
 		attachments = params[:attachments]
 		new_circular = Ecircular.create(circular_params)
+		if new_circular.save
+			add_recipients_data(params[:grades], params[:school_id], new_circular.id)
+			render json: { success: true,  circular_id: new_circular.id} and return
+		else
+			errors = new_circular.errors.full_messages
+			render json: { success: false,  errors: errors} and return
+		end
 		if attachments.present?
 			attachments.each  do |file|
 				extension = File.extname(file.original_filename)
@@ -39,21 +21,25 @@ class Admin::EcircularsController < ApplicationController
 				ecircular_file_upload_service.upload_ecircular_file_to_s3(file, file_name, new_circular)
 			end
 		end
-		add_recipients_data(params[:grade], params[:school_id], new_circular.id)
-		redirect_to admin_school_ecirculars_path	
  	end
- 
+
  	def show
-	  @circular=Ecircular.order('id desc').limit(10)
+	  # @circular=Ecircular.order('id desc').limit(10)
  	end
 
 	private
 
-	def add_recipients_data(recipients, school_id, ecircular_id)
-		recipients.each do |grade|
-			grade_id = grade[0][0].to_i
-			grade_data = grade[1]
-			divisions = grade_data[:division]
+	def find_school
+		@school = School.find_by(id: params[:school_id])
+		render json: { success: false, errors: ['School not found'] } and return if @school.blank?
+	end
+
+	def add_recipients_data(grades, school_id, ecircular_id)
+		binding.pry
+		grades.each do |grade_id, datum|
+			divisions = datum[:divisions]
+			grade_id = grade_id.to_i
+			binding.pry
 			if divisions.present?
 				divisions.each do |division|
 					division_id = division.to_i
@@ -64,6 +50,7 @@ class Admin::EcircularsController < ApplicationController
 	end
 
 	def circular_params
+		binding.pry
  		user_type = @current_user.type rescue ''
 		if user_type == 'ProductAdmin'
 		 	created_by_type = Ecircular.created_by_types[:product_admin]
@@ -73,10 +60,10 @@ class Admin::EcircularsController < ApplicationController
 		 	created_by_type = Ecircular.created_by_types[:teacher]
 		end
 		return {
-		 	title: params[:title], 
-		 	body: params[:body], 
-		 	circular_tag: Ecircular.circular_tags[params[:circular_tag].to_sym],
-		 	created_by_type:created_by_type, 
+		 	title: params[:title],
+		 	body: params[:body],
+		 	circular_tag: Ecircular.circular_tags[params[:circular_tag]],
+		 	created_by_type:created_by_type,
 		 	created_by_id: current_user.id,
 		 	school_id: current_user.school_id
 		}
