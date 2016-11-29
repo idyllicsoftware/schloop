@@ -1,7 +1,10 @@
 class Admin::SchoolAdminsController < ApplicationController
+	include ApplicationHelper
 	before_action :authenticate_user!
 	before_action :find_school, only: [:index, :create]
 	before_action :find_school_admin, only: [:update, :destroy]
+	before_filter :authorize_permission
+
 	layout "admin"
 
 	def index
@@ -44,6 +47,7 @@ class Admin::SchoolAdminsController < ApplicationController
 			begin
 				school_admin = create_school_admin!(school, school_admin_datum)
 				if school_admin.save
+					add_user_role(school_admin)
 					Admin::AdminMailer.welcome_message(school_admin.email, school_admin.first_name, school_admin.password).deliver_now
 				else
 					errors += school_admin.errors.full_messages
@@ -105,5 +109,11 @@ class Admin::SchoolAdminsController < ApplicationController
 		params.require(:administrator).permit(:first_name, :last_name, :cell_number)
 	end
 	 
+	private
 
+	def add_user_role(school_admin)
+		user_id = school_admin.id
+		role = Role.find_by(name: school_admin.type)
+		UserRole.create(user_original_id: user_id, role_id: role.id)
+	end	
 end
