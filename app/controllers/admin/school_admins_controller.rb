@@ -108,12 +108,5 @@ class Admin::SchoolAdminsController < ApplicationController
 	def update_school_admin_params
 		params.require(:administrator).permit(:first_name, :last_name, :cell_number)
 	end
-	 
-	private
 
-	def add_user_role(school_admin)
-		user_id = school_admin.id
-		role = Role.find_by(name: school_admin.type)
-		UserRole.create(user_original_id: user_id, role_id: role.id)
-	end	
 end

@@ -43,4 +43,10 @@
 #
 
 class ProductAdmin < User
+  after_create :add_roles
+
+  def add_roles
+    role = Role.find_by(name: "ProductAdmin")
+    UserRole.create(entity_type: self.class.name, entity_id: self.id, role_id: role.id)
+  end
 end

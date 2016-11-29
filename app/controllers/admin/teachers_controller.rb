@@ -126,9 +126,6 @@ class Admin::TeachersController < ApplicationController
   def create_teachers(school, teacher_params)
     teacher_params.merge!(password: Devise.friendly_token.gsub('-','').first(6))
     teacher = school.teachers.create(teacher_params)
-    if teacher.errors.blank?
-      add_user_role(teacher)
-    end
     errors =  teacher.errors.full_messages.join(', ')
 
     return {success: true, teacher_id: teacher.id} if errors.blank?
@@ -217,9 +214,4 @@ class Admin::TeachersController < ApplicationController
     return {success: true, data: {}}
   end
 
-  def add_user_role(teacher)
-    user_id = teacher.id
-    role = Role.find_by(name: teacher.class.name)
-    UserRole.create(user_original_id: user_id, role_id: role.id)
-  end
 end
