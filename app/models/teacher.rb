@@ -57,8 +57,10 @@ class Teacher < ActiveRecord::Base
 
   belongs_to :school
   has_many :grade_teachers, dependent: :destroy
+  has_many :activity_shares
   before_save :set_token
   after_create :send_invitation
+  after_create :populate_roles
 
   def set_token
     return if token.present?
@@ -85,6 +87,10 @@ class Teacher < ActiveRecord::Base
     end
   end
 
+  def add_role
+    role = Role.find_by(name: 'Teacher')
+    UserRole.create(user_original_id: self.id, role_id: role.id)
+  end
 
   def name
     "#{first_name} #{last_name}"
