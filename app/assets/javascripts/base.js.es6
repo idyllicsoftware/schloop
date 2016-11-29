@@ -9,6 +9,7 @@
 //= require tinymce/tinymce.min.js
 //= require tinymceEditor.js
 //= require multiselect.min
+//= require moment
 //= require common
 //= require file_uploads
 //= require_self

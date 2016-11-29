@@ -178,9 +178,9 @@
     <li class="circular-history-item">
       <div class="pb10">
         <h4 class="circular-subject">{{ title }}</h4>
-        <p class="sent-by">{{ created_on }} | Sent by {{#created_by}}{{name}}{{/created_by}}</p>
+        <p class="sent-by">{{ format_created_on }} | Sent by {{#created_by}}{{name}}{{/created_by}}</p>
       </div>
-      <p class="sent-to">Sent to {{#recipients}}{{grade_name}} ({{#divisions}}{{div_name}}, {{/divisions}}), {{/recipients}}</p>
+      <p class="sent-to">Sent to {{formatted_recipients}}</p>
     </li>
   {{/circulars}}
   {{^circulars}}

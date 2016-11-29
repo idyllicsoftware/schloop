@@ -2,6 +2,7 @@ class SchoolECircular extends SchloopBase {
     init (){
         var _self = this;
         _self.initEventListeners();
+        _self._ecirculars = {};
         return this;
     };
 
@@ -164,11 +165,33 @@ class SchoolECircular extends SchloopBase {
         let _self = this, html = '',
             { school_id } = _self._config,
             circularHistoryListEl = $('.ecirculars-history-section ul');
+        _self._ecirculars = {};
         $.ajax({
             url: `/admin/schools/${school_id}/ecirculars/all`,
             success: function (res) {
                 if(res.success) {
-                    html = Mustache.to_html(_self.circularHistoryListTpl, res);
+                    _self._ecirculars = res.circulars.toHash();
+                    html = Mustache.to_html(_self.circularHistoryListTpl, {
+                        circulars: res.circulars,
+                        format_created_on: function () {
+                            return moment(this.created_on).format('MMM D YYYY, h:mm a');
+                        },
+                        formatted_recipients: function () {
+                            var arr = [], divisions,
+                                html = '';
+                            this.recipients.forEach(function (recipient) {
+                                html = recipient.grade_name;
+                                divisions = recipient.divisions.map(x => x.div_name);
+                                if(divisions.length){
+                                    html += " (";
+                                    html += divisions.join(', ');
+                                    html += ")";
+                                }
+                                arr.push(html);
+                            });
+                            return arr.join(", ");
+                        }
+                    });
                 }
                 circularHistoryListEl.html(html);
             }
