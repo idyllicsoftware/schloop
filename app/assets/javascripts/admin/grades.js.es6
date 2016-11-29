@@ -23,6 +23,30 @@ class SchoolGrades extends SchloopBase {
                 jForm.attr('method', 'POST');
                 _self.add_grade(jForm, $(this));
         });
+
+        $(document).on('click', '.delete_grade',function(){
+            var el = $(this),
+                grade_div = el.parent(),
+                grade_id = el.data('grade-id');
+
+                swal({
+                  title: "Are you sure?",
+                  text: "You want delete this grade",
+                  confirmButtonColor: "#25aae1",
+                  confirmButtonText: "Yes, delete it!",
+                  showCancelButton: true
+                },
+                function(){
+                  _self.deleteRequest(`/admin/grades/${grade_id}`, el, null, function (res) {
+                        if(res.success) {
+                            toastr.success('Grade deleted successfully');
+                            grade_div.remove();
+                        }else {
+                            _self.showErrors(res.errors);
+                        }
+                    });
+                });
+        });
     };
 
     get schoolGradesTpl (){
@@ -144,7 +168,7 @@ class SchoolGrades extends SchloopBase {
         					if (current_el.length == '0') {
 							$(this).find('.current_division').remove('.current_division');
         					}else{	
-							$(this).find('.current_division').replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>+Delete Division ' + current_division_name + '</a></span>');
+							$(this).find('.current_division').replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>Delete Division ' + current_division_name + '</a></span>');
 							}
                     });
        			
@@ -153,7 +177,7 @@ class SchoolGrades extends SchloopBase {
         					current_division_name = $(this).data('division_name'),
         					current_division_id = $(this).data('division_id');
 							
-							current_el.replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>+Delete Division ' + current_division_name + '</a></span>');
+							current_el.replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>Delete Division ' + current_division_name + '</a></span>');
         					_self.deleteDivision();
         			});
         			_self.deleteDivision();	
