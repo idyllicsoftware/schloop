@@ -57,7 +57,6 @@ class User < ActiveRecord::Base
 
 
   before_save :set_user_token
-
   def set_user_token
     return if user_token.present?
     self.user_token = generated_user_token
@@ -75,4 +74,12 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def send_password_reset
+    binding.pry
+    token = generated_user_token
+    self.reset_password_token = token
+    self.reset_password_sent_at = Time.zone.now
+    save!
+    UserMailer.password_reset(self).deliver
+  end
 end

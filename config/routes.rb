@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -29,6 +30,9 @@ Rails.application.routes.draw do
   #                        invitations: 'admin/parents/invitations'
   # }
 
+  resources :password_resets do
+   post '/' => 'password_resets#create'
+  end
   namespace :admin do
     resources :parent_imports
     resources :students
