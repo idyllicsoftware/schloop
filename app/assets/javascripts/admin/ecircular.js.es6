@@ -154,7 +154,26 @@ class SchoolECircular extends SchloopBase {
                 _self.showErrors(res.errors);
             }
         });
+    };
+
+    get circularHistoryListTpl (){
+        return $('#circular-history-list-tpl').html();
     }
+
+    loadCircularHistory(){
+        let _self = this, html = '',
+            { school_id } = _self._config,
+            circularHistoryListEl = $('.ecirculars-history-section ul');
+        $.ajax({
+            url: `/admin/schools/${school_id}/ecirculars/all`,
+            success: function (res) {
+                if(res.success) {
+                    html = Mustache.to_html(_self.circularHistoryListTpl, res);
+                }
+                circularHistoryListEl.html(html);
+            }
+        });
+    };
 
     initCircularHistory (){
         let _self = this,
@@ -165,6 +184,14 @@ class SchoolECircular extends SchloopBase {
             circularHistoryModal.modal('show');
         });
 
-        
-    }
+        $(document).on('click', '.history-circular-btn-wrap a', function () {
+            let {type} = $(this).data();
+            if(type == "history"){
+                $("#circulars-tab").removeClass('new_circular_active').addClass('history_active');
+                _self.loadCircularHistory();
+            }else {
+                $("#circulars-tab").removeClass('history_active').addClass('new_circular_active');
+            }
+        });
+    };
 }        

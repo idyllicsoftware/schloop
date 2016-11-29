@@ -28,7 +28,7 @@ class Ecircular < ActiveRecord::Base
 
   validates :title, :created_by_type, :created_by_id , :presence => true
 
-	def self.school_circulars(school, filter_params, offset, page_size)
+	def self.school_circulars(school, filter_params={}, offset=0, page_size=50)
 		circular_data = []
 		circulars = school.ecirculars
 		if filter_params[:from_date].present?
@@ -82,7 +82,7 @@ class Ecircular < ActiveRecord::Base
 				created_on: circular.created_at,
 				circular_tag: {
 					id: Ecircular.circular_tags[circular.circular_tag],
-					name: circular.circular_tag.humanize
+					name: circular.circular_tag.present? ? circular.circular_tag.humanize : ''
 				},
 				recipients: recipients,
 				attachments: attachments

@@ -1,5 +1,5 @@
 
-<div class="tab-pane fade in circulars-container" id="circulars-tab">
+<div class="tab-pane fade in circulars-container new_circular_active" id="circulars-tab">
   <div class="content-wrapper">
     <div class="header-wrapper">
       <div class="home-logo" style="background-image: url('<%= asset_path('school_admin.png') %>');">
@@ -10,7 +10,10 @@
         <p><%= @school.code %></p>
       </div>
     </div>
-    <div class="history-btn"><a class="pull-right p10px">History</a></div>
+    <div class="history-circular-btn-wrap">
+      <a class="pull-right p10px history_btn" data-type="history">History</a>
+      <a class="pull-right p10px new_circular_btn" data-type="new_circular">New Circular</a>
+    </div>
 
     <div class="circulars-main-form">
       <%=  form_tag "/admin/schools/#{@school.id}/ecirculars", class:"school-ecircular-form", method: 'post' do %>
@@ -47,39 +50,10 @@
     </div>
 
 
-    <div class="content-wrapper hidden">
-      <div class="ecirculars-history-section">
-        <ul class="circular-history-list">
-          <li class="circular-history-item">
-            <div class="pb10">
-              <h4 class="circular-subject"> School closed on Monday,Oct 20 2016 due to Diwali  </h4>
-              <p class="sent-by">Oct 18 2016,4:12 PM | Sent by Rita Kaur</p>
-            </div>
-            <p class="sent-to">Sent to Grade 1 (A, B, C, D),Grade 2 (A, B),Grade 3 (A, C ,H)</p>
-          </li>
-          <li class="circular-history-item">
-            <div class="pb10">
-              <h4 class="circular-subject"> School closed on Monday,Oct 20 2016 due to Diwali  </h4>
-              <p class="sent-by">Oct 18 2016,4:12 PM | Sent by Rita Kaur</p>
-            </div>
-            <p class="sent-to">Sent to Grade 1 (A, B, C, D),Grade 2 (A, B),Grade 3 (A, C ,H)</p>
-          </li>
-          <li class="circular-history-item">
-            <div class="pb10">
-              <h4 class="circular-subject"> School closed on Monday,Oct 20 2016 due to Diwali  </h4>
-              <p class="sent-by">Oct 18 2016,4:12 PM | Sent by Rita Kaur</p>
-            </div>
-            <p class="sent-to">Sent to Grade 1 (A, B, C, D),Grade 2 (A, B),Grade 3 (A, C ,H)</p>
-          </li>
-          <li class="circular-history-item">
-            <div class="pb10">
-              <h4 class="circular-subject"> School closed on Monday,Oct 20 2016 due to Diwali  </h4>
-              <p class="sent-by">Oct 18 2016,4:12 PM | Sent by Rita Kaur</p>
-            </div>
-            <p class="sent-to">Sent to Grade 1 (A, B, C, D),Grade 2 (A, B),Grade 3 (A, C ,H)</p>
-          </li> 
-        </ul>
-      </div>
+    <div class="ecirculars-history-section">
+      <ul class="circular-history-list">
+
+      </ul>
     </div>
 
   </div>
@@ -199,5 +173,18 @@
 </div>           
 
 
-                    
-              
+<script id="circular-history-list-tpl" type="text/html">
+  {{#circulars}}
+    <li class="circular-history-item">
+      <div class="pb10">
+        <h4 class="circular-subject">{{ title }}</h4>
+        <p class="sent-by">{{ created_on }} | Sent by {{#created_by}}{{name}}{{/created_by}}</p>
+      </div>
+      <p class="sent-to">Sent to {{#recipients}}{{grade_name}} ({{#divisions}}{{div_name}}, {{/divisions}}), {{/recipients}}</p>
+    </li>
+  {{/circulars}}
+  {{^circulars}}
+      <li>Circulars not available</li>
+  {{/circulars}}
+</script>
+

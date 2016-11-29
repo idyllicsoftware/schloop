@@ -1,6 +1,6 @@
 class Admin::EcircularsController < ApplicationController
 	before_action :authenticate_user!
-	before_action :find_school, only: [:create]
+	before_action :find_school, only: [:all, :create]
 
 	def create
 		attachments = params[:attachments]
@@ -23,8 +23,9 @@ class Admin::EcircularsController < ApplicationController
 		end
  	end
 
- 	def show
-	  # @circular=Ecircular.order('id desc').limit(10)
+ 	def all
+			circular_data, total_records = Ecircular.school_circulars(@school)
+			render json: {success: true, circulars: circular_data, total_records: total_records}
  	end
 
 	private
@@ -63,9 +64,9 @@ class Admin::EcircularsController < ApplicationController
 		 	title: params[:title],
 		 	body: params[:body],
 		 	circular_tag: Ecircular.circular_tags[params[:circular_tag]],
-		 	created_by_type:created_by_type,
+		 	created_by_type: created_by_type,
 		 	created_by_id: current_user.id,
-		 	school_id: current_user.school_id
+		 	school_id: @school.school_id
 		}
 	end
 end

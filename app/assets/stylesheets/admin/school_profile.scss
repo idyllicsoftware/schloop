@@ -408,7 +408,17 @@
 		}
 		.circulars-container {
 			position: relative;
-			.history-btn {
+            &.new_circular_active{
+                .new_circular_btn, .ecirculars-history-section {
+                    display: none;
+                }
+            }
+            &.history_active {
+                .history_btn, .circulars-main-form {
+                    display: none;
+                }
+            }
+			.history-circular-btn-wrap {
 				position: absolute;
 			    right: 20px;
 			    padding: 10px;
