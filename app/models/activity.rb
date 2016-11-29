@@ -50,7 +50,7 @@ class Activity < ActiveRecord::Base
         thumbnail_data[:original_filename] = file.original_filename
       end
       reference_files = []
-      activity.get_reference_files.select(:original_filename, :name).each do |file|
+      activity.attachments.select(:original_filename, :name).each do |file|
         reference_files << { name: file.name, original_filename: file.original_filename }
       end
       activities_data << {
