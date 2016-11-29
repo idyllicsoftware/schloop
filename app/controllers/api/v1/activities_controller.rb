@@ -6,6 +6,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     errors = []
     grade_id = params[:grade_id]
     subject_ids = params[:subject_ids]
+    category_ids = params[:category_ids]
     page = params[:page]
     page_size = 20
 
@@ -27,7 +28,9 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
         search_params.merge!(master_subject_id: master_subject_ids)
         mapping_data[:subjects_by_master_id] = subjects_by_master_id
       end
-      activities_data, total_records = Activity.grade_activities(search_params, mapping_data, page)
+
+      category_ids = category_ids.split(',').map(&:to_i) if category_ids.present?
+      activities_data, total_records = Activity.grade_activities(search_params, mapping_data, page, category_ids)
     end
 
     if errors.blank?
@@ -55,6 +58,15 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
       }
     end
     render json: index_response
+  end
+
+  def get_categories
+    activity_categories = Category.select(:id, :name)
+    render json: {
+      success: true,
+      error: nil,
+      data: activity_categories
+    }
   end
 
 end

@@ -100,6 +100,7 @@ Rails.application.routes.draw do
       post "/ecirculars" => "ecirculars#index"
 
       get  "/activities" => "activities#index"
+      get  "/activity/categories" => "activities#get_categories"
     end
   end
 
