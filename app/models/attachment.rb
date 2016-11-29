@@ -26,6 +26,7 @@ class Attachment < ActiveRecord::Base
 			create_attachment_params = {
 				name: name,
 				file_size: file_params[:file_size],
+				sub_type: file_params[:sub_type],
 				original_filename: file_params[:original_filename]
 			}
 			attachment = Attachment.create(create_attachment_params)

@@ -18,9 +18,11 @@
 #
 
 class Division < ActiveRecord::Base
-	validates :name, :presence => true
-
 	belongs_to :grade
+	has_many :student_profiles
+
+	validates :name, :presence => true
+	has_many :grade_teacher, :dependent => :destroy
 	has_many :ecircular_recipients
 end
 

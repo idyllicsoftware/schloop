@@ -24,6 +24,17 @@ class SchoolTeachers extends SchloopBase {
             jForm.attr('action', `/admin/schools/${school_id}/teachers`);
             jForm.attr('method', 'POST');
             jForm.find('input[name="teacher[email]"]').removeAttr('disabled');
+            
+            $("input[type=checkbox]").change(function(){
+                    var grade_id = $(this).data('grade_id'),
+                        subject_id = $(this).data('subject_id');
+                        
+                    if($("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked")){
+                        $("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked").each(function(i){
+                            $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                        });
+                    }
+             });  
             _self.initForm(jForm, $(this));
         });
 
@@ -32,41 +43,22 @@ class SchoolTeachers extends SchloopBase {
 
     initCsvUpload (){
         var _self = this,
-            uploadTeacherModalEl = $("#upload-teachers-modal");
+            uploadTeacherModalEl = $("#upload-teachers-modal"),
+            file_upload = new FileUpload({
+                jScope: uploadTeacherModalEl
+            });
 
         $(document).on('click','.upload-sheet', function () {
             uploadTeacherModalEl.modal('show');
         });
 
-        $('#upload-csv-file').change(function(){
-            var res=$('#upload-csv-file').val();
-            var arr = res.split("\\");
-            var filename = arr.slice(-1)[0];
-            var filextension = filename.split(".");
-            var filext ="."+filextension.slice(-1)[0];
-            var valid=[".csv",".jpg"];
-
-            if (valid.indexOf(filext.toLowerCase())==1){
-                $('#namefile').css({"color":"green","font-weight":700,"padding":"20px"});
-                $('#namefile').html("You select " + filename + " file.");
+        $(document).on("uploadedFileResponse", function (e, res) {
+            let {result} = res;
+            if(result.success){
+                toastr.success('Upload Successful');
+                uploadTeacherModalEl.modal('hide');
+                _self.loadSchoolsTeachers();
             }
-        });
-
-        $(".upload-teachers-form").submit(function () {
-            var jForm = $(this);
-
-            $.ajax({
-                url: '/admin/teachers/upload',
-                method: 'POST',
-                data: jForm,
-                success: function() {
-                    uploadTeacherModalEl.modal('hide');
-                }
-            });
-        });
-
-        $(document).on('click','.upload-cancel', function () {
-            uploadTeacherModalEl.modal('hide');
         });
     };
 
@@ -74,7 +66,7 @@ class SchoolTeachers extends SchloopBase {
         let _self = this,
             delete_teachers_url = `/admin/teachers/${school_teacher_id}`,
             msg = school_teacher_id ? 'School teacher updated successfully' : 'School teacher added successfully';
-            
+           
         this.initFormSubmit(jForm, {
             'teacher[first_name]': 'name',
             'teacher[last_name]': 'name',
@@ -89,6 +81,10 @@ class SchoolTeachers extends SchloopBase {
                 _self.showErrors(res.errors);
                 popoverEl.popover('hide');
             }
+        },{
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false
         });
 
         jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
@@ -134,12 +130,32 @@ class SchoolTeachers extends SchloopBase {
                         let popupEl = $('#' + $(this).attr('aria-describedby')),
                             school_teacher_id = $(this).data('school_teacher_id'),
                             jForm = popupEl.find('form');
-
+                            
                         if(_self.schoolTeachers.hasOwnProperty(school_teacher_id)){
+                            var grade_teacher_data =  _self.schoolTeachers[school_teacher_id].grade_teacher_data;
                             jForm.fillForm(_self.schoolTeachers[school_teacher_id], 'teacher');
                             jForm.attr('action', `/admin/teachers/${school_teacher_id}`);
                             jForm.attr('method', 'PUT');
                             jForm.find('input[name="teacher[email]"]').attr('disabled', 'disabled');
+                            grade_teacher_data.forEach( function(index){
+                            var grade_data = index.subjects_data,
+                                grade_id = index.grade_id;
+                                grade_data.forEach( function(subjects_id){
+                                    var divisions_data = subjects_id.divisions_data,
+                                        sub_id = subjects_id.subject_id;
+                                    divisions_data.forEach(function(div_id){  
+                                        jForm.find("input[name='grade["+ grade_id +"]subjects["+ sub_id +"]divisions[]']").each(function(){
+                                            var this_EL_val = $(this).val(),
+                                                curr_sub_id = $(this).data('subject_id'),
+                                                division_id = div_id.division_id;
+                                                if(this_EL_val == division_id && curr_sub_id == sub_id){
+                                                        $(this).prop('checked', true);
+                                                        $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                                                }
+                                        });    
+                                    });
+                                });
+                            });
                             _self.initForm(jForm, $(this), school_teacher_id);
                         }
                     });

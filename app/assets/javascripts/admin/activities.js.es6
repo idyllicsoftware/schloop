@@ -4,6 +4,7 @@ class Activities extends SchloopBase {
         let _self = this;
 
         _self.initEventListeners();
+        _self.filters = {};
         return this;
     };
 
@@ -14,18 +15,98 @@ class Activities extends SchloopBase {
     initEventListeners(){
         let _self = this,
             createWebContentModal = $('#create-web-content-modal'),
-            jForm = createWebContentModal.find('form');
+            jForm = createWebContentModal.find('#activity_creation_form'),
+            thumbnail_file_upload, reference_file_upload;
 
         $('#select_multiple').multipleSelect({});
 
+
+        $("#content_filter_wrapper select").change(function(){
+            _self.filters = $(this).closest('form').serializeObject();
+            _self.loadActivities();
+        });
+
+
+        thumbnail_file_upload = new FileUpload({
+            jScope: createWebContentModal.find("#thumbnailImageUploadSection"),
+            isImageUpload: true
+        });
+
+        reference_file_upload = new FileUpload({
+            jScope: createWebContentModal.find("#referenceImageUploadSection"),
+            isImageUpload: true
+        });
+
         $(document).on('click','.web-content-creation-link', function () {
+            thumbnail_file_upload.resetForm();
+            reference_file_upload.resetForm();
             createWebContentModal.modal('show');
             jForm[0].reset();
             jForm.attr('action', `/admin/activities`);
             jForm.attr('method', 'POST');
         });
 
-        _self.initForm(jForm);
+        _self.initForm(jForm, null, $("#activitySubmit"));
+        createWebContentModal.find("#activitySubmit").on('click', function () {
+            if(!createWebContentModal.find(".activity_id_hidden_input").val()) {
+                jForm.submit();
+            }else {
+                createWebContentModal.find("#activitySubmit").attr('disabled', 'disabled');
+                createWebContentModal.find(".uploadBtn").trigger('click');
+            }
+        });
+
+        createWebContentModal.on('hide.bs.modal', function () {
+            thumbnail_file_upload.resetForm();
+            reference_file_upload.resetForm();
+            createWebContentModal.find(".activity_id_hidden_input").val(null);
+            createWebContentModal.find("#activitySubmit").removeAttr('disabled');
+            createWebContentModal.find(".selected_files").html('');
+        });
+
+        $(document).on("uploadedFileResponse", function (event, res) {
+            if(res.result.success) {
+                if (createWebContentModal.find("button.delete[disabled]").length == createWebContentModal.find("button.delete").length) {
+                    createWebContentModal.modal('hide');
+                    _self.loadActivities();
+                }
+            }else {
+                createWebContentModal.find("#activitySubmit").removeAttr('disabled');
+            }
+        });
+
+
+        $(document).on('click', '.deactivate_activity', function(){
+            var el = $(this),
+                activity_id = el.data('activity-id');
+
+            swal({
+                    title: "Are you sure?",
+                    text: "You want deactivate this Activity",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, deactivate it!"
+                },
+                function(){
+                    $.ajax({
+                        url: '/admin/activities/'+activity_id+'/deactivate',
+                        method: 'PUT',
+                        success: function (res) {
+                            if(res.success){
+                                toastr.success('Activity deactivated successfully');
+                                el.removeClass('deactivate_activity').addClass('disabled').html("Deactivated");
+                            } else {
+                                _self.showErrors(res.errors);
+                            }
+                        },
+                        error: function () {
+                            swal({title: "Oops!", text: "Something went wrong. Please try later.", type: "error", confirmButtonText: "OK" });
+                        }
+                    });
+                });
+        });
+
         _self.loadActivities();
 
     };
@@ -48,6 +129,7 @@ class Activities extends SchloopBase {
             activitiesListEl = $('#content_list_id');
         $.ajax({
             url: `/admin/activities/all`,
+            data: _self.filters,
             success: function (res) {
                 if(res.success) {
                     html = Mustache.to_html(_self.activitiesListTpl, _self.getProcessedData(res));
@@ -57,7 +139,7 @@ class Activities extends SchloopBase {
         });
     };
 
-    initForm (jForm, activity_id){
+    initForm (jForm, activity_id, btnEl){
         let _self = this,
             createWebContentModal = $('#create-web-content-modal'),
             msg = activity_id ? 'Activity updated successfully' : 'Activity added successfully';
@@ -69,10 +151,16 @@ class Activities extends SchloopBase {
             if(res.errors && res.errors.length) {
                 _self.showErrors(res.errors);
             }else {
-                toastr.success(msg);
-                createWebContentModal.modal('hide');
-                _self.loadActivities();
+                createWebContentModal.find(".activity_id_hidden_input").val(res.activity_id);
+                if(createWebContentModal.find(".selected_files tr").length){
+                    btnEl.attr('disabled', 'disabled');
+                    createWebContentModal.find(".uploadBtn").trigger('click');
+                }else {
+                    toastr.success(msg);
+                    createWebContentModal.modal('hide');
+                    _self.loadActivities();
+                }
             }
-        });
+        }, null, btnEl);
     };
 }

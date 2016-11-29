@@ -21,6 +21,18 @@
 #  middle_name            :string
 #  last_name              :string
 #  cell_number            :string
+#  invitation_token       :string
+#  invitation_created_at  :datetime
+#  invitation_sent_at     :datetime
+#  invitation_accepted_at :datetime
+#  invitation_limit       :integer
+#  confirmation_token     :string
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string
+#  invited_by_id          :integer
+#  invited_by_type        :string
+#  invitations_count      :integer          default(0)
 #
 # Indexes
 #
@@ -32,24 +44,43 @@
 class Teacher < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  include DeviseInvitable::Inviter
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  validates :cell_number, :presence => true,
+            :numericality => true,
+            :length => {:minimum => 10, :maximum => 15}
 
   belongs_to :school
-
+  has_many :grade_teachers, dependent: :destroy
   before_save :set_token
+  after_create :send_invitation
 
   def set_token
     return if token.present?
     self.token = generated_token
   end
 
+  def send_invitation
+    Admin::AdminMailer.welcome_message(self.email, self.first_name, self.password).deliver_now
+  end
+
+
+  def password_required?
+    new_record? ? false : super
+  end
+
+  def name
+    "#{first_name} #{last_name} #{middle_name}"
+  end
+
   def generated_token
     loop do
-      token = SecureRandom.uuid.gsub(/\-/,'')
+      token = SecureRandom.uuid.gsub(/\-/, '')
       return token unless Teacher.where(token: token).first
     end
   end
+
 
   def name
     "#{first_name} #{last_name}"

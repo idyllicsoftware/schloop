@@ -42,6 +42,31 @@
 </div>
 
 <%= javascript_include_tag 'admin/admin' %>
+
+<script id="selectedFileTr" type="text/html">
+  <tr class='selectedFile'>
+    <td>{{name}}</td>
+    <td class="text-right">
+      <button type='button' class='btn btn-danger delete'>
+        <i class='fa fa-trash f16'></i>
+      </button>
+    </td>
+  </tr>
+</script>
+
+<script id="uploadedFileTr" type="text/html">
+  <tr>
+    <td style="word-wrap: break-word;">
+      <a target='_blank' href="{{url}}">
+        {{name}}
+      </a>
+      <input type="hidden" name="attachment_ids[]" value="{{id}}">
+    </td>
+    <td>{{format}}</td>
+    <td>{{size}}</td>
+  </tr>
+</script>
+
 <script type="text/javascript">
   $(document).on('ready', function() {
     <%

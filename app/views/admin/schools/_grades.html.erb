@@ -1,26 +1,31 @@
-<%
-    default_subjects = ['Science', 'English', 'Marathi', 'Geography', 'Hindi',
-     'Maths', 'Art', 'Biology', 'History', 'Social Science', 'General Knowledge']
-%>
-
 <div id="add-grade-popover-content" class="hidden">
 <%= form_tag "/admin/schools/#{@school.id}/grades", class: 'form-inline add-grade-form', method: 'post' do %>
-  <!-- <form class="form-inline" role="form" action="/admin/schools/<%= @school.id %>/grades" method="post"> -->
     <div class="form-group col-md-12 ">
-      <input type="text" class="form-control input-field" required name="grade_name" placeholder="Name, ex.grade I,grade II" autocomplete="off">
+      <div class="form-group col-md-6">
+        <select id="master_grade" name="grades_data[master_grade_id]" required class="form-control field">
+          <option disabled="disabled" selected="selected">Grade</option>
+          <% master_grades.each do |master_grade|%>
+              <option value="<%= master_grade.id %>"><%= master_grade.name %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="form-group col-md-6 pt15">
+        <input type="text" class="form-control input-field" required name="grades_data[grade_name]" placeholder="Name, ex.grade I,grade II" autocomplete="off">
+      </div>
     </div>
+
     <div class="form-group col-md-12 ">
       <h4>Assign subjects</h4>
       <ul class="checkbox_customized">
-        <% default_subjects.each_with_index do |subject, index|%>
+        <% master_subjects.each_with_index do |subject, index|%>
           <li class="col-md-4">
-            <input type="checkbox" name="subjects[]" value="<%= subject %>" id="<%= "default_subject_#{index}" %>" >
-            <label for="<%= "default_subject_#{index}" %>"><%= subject %></label>
+            <input type="checkbox" name="grades_data[master_subject_ids][]" value="<%= subject.id %>" id="<%= "default_subject_#{index}" %>" >
+            <label for="<%= "default_subject_#{index}" %>"><%= subject.name %></label>
           </li>
         <% end %>
       </ul>
     </div>
- 
+
     <!--
 
     <div class="col-md-12 form-group add-subject">
@@ -42,4 +47,4 @@
 <% end %>
   <!-- </form> -->
 </div>
-         
+

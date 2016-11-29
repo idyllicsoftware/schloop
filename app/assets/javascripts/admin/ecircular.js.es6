@@ -128,62 +128,6 @@ class SchoolECircular extends SchloopBase {
                 gradeEl[0].checked = !!checkedEl.length;
                 processCheckbox(popupEl);
             });
-
-            /*
-            popupEl.find("input[type=checkbox]").change(function(){
-                var selected_grade_id,selected_grade,selected_division, hash = {},
-                    selected_division_id,vall = $(this).data('grade_id'),
-                    tag_El = $('.school-ecircular-form').find('.select-recipients_name');
-
-                if(popupEl.find("input[name='grade["+ vall +"]division[]']:checked") && $(this).parents().eq(2).find('.chek_cls').is(':not(:checked)')){
-                    if($("input[name='grade[]']:checked") && vall == undefined){
-                        return true;
-                    }else{
-                        $(this).parents().eq(2).find('.chek_cls').prop('checked', true);
-                    }
-                }
-                popupEl.find("input[name='grade[]']:checked").each(function(i){
-                    selected_grade = $(this).parent().find('label').html();
-                    selected_grade_id = $(this).val();
-                    hash[selected_grade_id] = selected_grade ;
-                    //    tag_El.parent().append('<input type="hidden" name="grade[]" value="' + selected_grade_id +'">');
-                });
-                for( var grade in hash){
-                    $("input[name='grade["+ grade +"]division[]']:checked").each(function(i){
-                        selected_division = $(this).parent().find('label').html();
-                        selected_division_id = $(this).val();
-                        hash[grade] = {
-                            grade_name : hash[grade],
-                            divisions : {}
-                        };
-                        hash[grade].divisions[selected_division_id] = selected_division;
-                    });
-                }
-                function printData(data) {
-                    var str = '';
-                    for (var key in data) {
-                        if (typeof data[key] == 'object') {
-                            str += printData(data[key]) + ' ';
-                        }else {
-                            str += data[key] + ' ';
-                        }
-                    }
-                    return str;
-                };
-                var ul_list = [];
-                for(var grade in hash){
-                    var li = '<li><input type="hidden" name="grade[]" value="' + grade +'"></li>';
-                    ul_list.push(li);
-                    for(var division in hash[grade].divisions){
-                        ul_list.push('<li><input type="hidden" name="grade['+ grade +']division[]" value="' + hash[grade].divisions[division] +'"></li>');
-                    }
-                }
-                tag_El.parent().find('.input_el').replaceWith('<ul class="input_el hidden">'+ ul_list.join('<br/>') +'</ul>');
-                console.log(hash);
-                tag_El.replaceWith('<p class="select-recipients_name">'+ printData(hash) +'</p>');
-            });
-
-            */
         });
     };
 			

@@ -4,12 +4,13 @@
 //= require bootstrap-sprockets
 //= require sweetalert
 //= require jquery.validate
-//= require jquery-file-upload/jquery.fileupload
 //= require toastr.min
 //= require mustache
 //= require tinymce/tinymce.min.js
 //= require tinymceEditor.js
+//= require multiselect.min
 //= require common
+//= require file_uploads
 //= require_self
 
 class SchloopBase {
@@ -43,10 +44,10 @@ class SchloopBase {
         scope.removeAttr('disabled');
     };
 
-    submitData (url, jFrom, data, cb, extraParams) {
+    submitData (url, jFrom, data, cb, extraParams, otherBtnEl) {
         let self = this,
             params,
-            btnEl = jFrom.find('button[type="submit"]');
+            btnEl = otherBtnEl || jFrom.find('button[type="submit"]');
 
         self.addAjaxLoader(btnEl);
 
@@ -72,8 +73,10 @@ class SchloopBase {
     };
 
     showErrors (errors){
-        let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
-        swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+        if(errors){
+            let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
+            swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
+        }
     };
 
     deleteRequest (url, btnEl, data, cb){
@@ -178,7 +181,7 @@ class SchloopBase {
         });
     };
 
-    initFormSubmit (jForm, fieldsMapping, cb, extraParams){
+    initFormSubmit (jForm, fieldsMapping, cb, extraParams, btnEl){
         let self = this;
 
         self.formValidatorInit(jForm, fieldsMapping);
@@ -192,7 +195,7 @@ class SchloopBase {
                 }else{   
                     formData = jForm.serializeObject();
                 }
-                self.submitData(jForm.attr('action'), jForm, formData, cb, extraParams);
+                self.submitData(jForm.attr('action'), jForm, formData, cb, extraParams, btnEl);
             }
         });
     };
