@@ -55,12 +55,12 @@ class Activity < ActiveRecord::Base
 
       thumbnail_data = {}
       activity.get_thumbnail_file.select(:original_filename, :name).each do |file|
-        thumbnail_data[:name] = file.name
+        thumbnail_data[:s3_url] = file.name
         thumbnail_data[:original_filename] = file.original_filename
       end
       reference_files = []
       activity.attachments.select(:original_filename, :name).each do |file|
-        reference_files << { name: file.name, original_filename: file.original_filename }
+        reference_files << { s3_url: file.name, original_filename: file.original_filename }
       end
       activities_data << {
         grade_id: grade.id,

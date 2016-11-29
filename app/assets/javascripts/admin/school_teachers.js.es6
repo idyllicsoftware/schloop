@@ -150,6 +150,7 @@ class SchoolTeachers extends SchloopBase {
                                                 division_id = div_id.division_id;
                                                 if(this_EL_val == division_id && curr_sub_id == sub_id){
                                                         $(this).prop('checked', true);
+                                                        $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
                                                 }
                                         });    
                                     });
