@@ -19,7 +19,8 @@ Rails.application.routes.draw do
                          sessions: 'admin/teachers/sessions',
                          registrations: 'admin/teachers/registrations',
                          passwords: 'admin/teachers/passwords',
-                         invitations: 'admin/teachers/invitations'
+                         invitations: 'admin/teachers/invitations',
+                         imports: 'admin/teachers/teacher_imports'
   }
 
 
@@ -34,9 +35,12 @@ Rails.application.routes.draw do
    post '/' => 'password_resets#create'
   end
   namespace :admin do
-    resources :parent_imports
+    resources :parent_imports, only: [:new, :create]
     resources :students
-    resource :users do
+    resource :users
+
+    namespace :teachers do
+      resources :teacher_imports, only: [:create], shallow: true
     end
 
     resources :schools do
@@ -53,7 +57,6 @@ Rails.application.routes.draw do
       end
 
       resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
-
       end
 
       resources :grades, only: [:index, :create, :destroy], shallow: true do
@@ -74,9 +77,13 @@ Rails.application.routes.draw do
       get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
     end
 
-    resources :activities, only: [:create, :update] do
+    resources :activities, only: [:create] do
+      member do
+        put :deactivate
+      end
       collection do
         get :all
+        post :upload_file
       end
     end
   end
@@ -97,6 +104,7 @@ Rails.application.routes.draw do
       post "/ecirculars" => "ecirculars#index"
 
       get  "/activities" => "activities#index"
+      get  "/activity/categories" => "activities#get_categories"
     end
   end
 

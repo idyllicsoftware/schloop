@@ -144,6 +144,6 @@ class Api::V1::TeachersController < Api::V1::BaseController
 
   private
   def teacher_params
-    params.require(:teacher).permit(:email, :password, :first_name, :middle_name, :last_name)
+    params.require(:teacher).permit(:email, :password, :first_name, :middle_name, :last_name, :cell_number)
   end
 end

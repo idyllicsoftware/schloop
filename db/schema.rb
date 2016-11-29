@@ -11,22 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20161124111628) do
+ActiveRecord::Schema.define(version: 20161129121728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "activities", force: :cascade do |t|
     t.string   "teaches"
-    t.string   "topic",             null: false
-    t.string   "title",             null: false
-    t.integer  "master_grade_id",   null: false
-    t.integer  "master_subject_id", null: false
+    t.string   "topic",                         null: false
+    t.string   "title",                         null: false
+    t.integer  "master_grade_id",               null: false
+    t.integer  "master_subject_id",             null: false
     t.text     "details"
     t.text     "pre_requisite"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "status",            default: 0, null: false
   end
 
   create_table "activity_categories", force: :cascade do |t|
@@ -42,13 +42,10 @@ ActiveRecord::Schema.define(version: 20161124111628) do
     t.string   "name"
     t.string   "original_filename"
     t.integer  "file_size"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-  end
-
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "sub_type",          default: 0, null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -83,7 +80,6 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   create_table "ecirculars", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-
     t.integer  "circular_tag"
     t.integer  "created_by_type"
     t.integer  "created_by_id"
@@ -160,10 +156,12 @@ ActiveRecord::Schema.define(version: 20161124111628) do
     t.text     "first_name",                                      null: false
     t.text     "last_name",                                       null: false
     t.text     "guardian_type",                                   null: false
+    t.string   "token"
   end
 
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
+  add_index "parents", ["token"], name: "index_parents_on_token", using: :btree
 
   create_table "permissions", force: :cascade do |t|
     t.string   "name"
@@ -193,16 +191,15 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   end
 
   create_table "schools", force: :cascade do |t|
-    t.string   "name",               null: false
-    t.text     "address",            null: false
-    t.string   "zip_code",           null: false
-    t.string   "phone1",             null: false
+    t.string   "name",           null: false
+    t.text     "address",        null: false
+    t.string   "zip_code",       null: false
+    t.string   "phone1",         null: false
     t.string   "phone2"
-    t.string   "website",            null: false
-    t.integer  "school_director_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.string   "code",               null: false
+    t.string   "website",        null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "code",           null: false
     t.string   "board"
     t.string   "principal_name"
     t.string   "logo"
@@ -260,7 +257,6 @@ ActiveRecord::Schema.define(version: 20161124111628) do
     t.string   "first_name"
     t.string   "middle_name"
     t.string   "last_name"
-    t.string   "phone"
     t.string   "cell_number"
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
@@ -285,14 +281,12 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
 
   create_table "user_roles", force: :cascade do |t|
-    t.integer  "user_id"
     t.integer  "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "entity_type"
+    t.integer  "entity_id"
   end
-
-  add_index "user_roles", ["user_id", "role_id"], name: "index_user_roles_on_user_id_and_role_id", unique: true, using: :btree
-  add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",            null: false
@@ -345,7 +339,4 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   add_foreign_key "subjects", "grades"
   add_foreign_key "subjects", "teachers"
   add_foreign_key "user_roles", "roles"
-  add_foreign_key "user_roles", "users"
-  add_foreign_key "subjects", "grades"
-  add_foreign_key "subjects", "teachers"
 end
