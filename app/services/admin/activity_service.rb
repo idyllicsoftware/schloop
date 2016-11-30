@@ -37,11 +37,19 @@ class Admin::ActivityService < BaseService
     filter_options ||= []
     filter_query = build_search_query(filter_options)
     activities = Activity.where(filter_query)
-                         .includes(:categories, :master_grade, :master_subject)
-                         .select(:id, :title, :topic, :master_grade_id, :master_subject_id, :updated_at, :status)
+                         .includes(:categories, :master_grade, :master_subject, :attachments)
                          .order('activities.created_at desc')
     filtered_activities = []
     activities.each do |activity|
+      thumbnail_file = {}
+      activity.get_thumbnail_file.each do |file|
+        thumbnail_file[:s3_url] = file.name
+        thumbnail_file[:original_filename] = file.original_filename
+      end
+      reference_files = []
+      activity.get_reference_files.select(:original_filename, :name).each do |file|
+        reference_files << { s3_url: file.name, original_filename: file.original_filename }
+      end
       filtered_activities << {
         id: activity.id,
         title: activity.title,
@@ -50,7 +58,16 @@ class Admin::ActivityService < BaseService
         grade: activity.master_grade.name,
         subject: activity.master_subject.name,
         categories: activity.categories.map(&:name),
-        status: activity.active? ? true : false
+        status: activity.active? ? true : false,
+        master_grade_id: activity.master_grade_id,
+        master_subject_id: activity.master_subject_id,
+        category_ids: activity.categories.map(&:id),
+        topic: activity.topic,
+        teaches: activity.teaches,
+        pre_requisite: activity.pre_requisite,
+        details: activity.details,
+        thumbnail_file: thumbnail_file,
+        reference_files: reference_files
       }
     end
     filtered_activities
