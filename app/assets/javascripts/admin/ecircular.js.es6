@@ -201,10 +201,37 @@ class SchoolECircular extends SchloopBase {
     initCircularHistory (){
         let _self = this,
         { school_id } = _self._config,
+        html = "",
+        detailTpl = $("#circular-history-detail-tpl").html(),
         circularHistoryModal = $('#circular-history-modal');
 
         $(document).on('click','.circular-history-item', function () {
-            circularHistoryModal.modal('show');
+            let {circular_id} = $(this).data();
+            if(_self._ecirculars.hasOwnProperty(circular_id)) {
+                circularHistoryModal.modal('show');
+                html = Mustache.to_html(detailTpl, {
+                    circular: _self._ecirculars[circular_id],
+                    format_created_on: function () {
+                        return moment(this.created_on).format('MMM D YYYY, h:mm a');
+                    },
+                    formatted_grades: function () {
+                        var arr = [], divisions,
+                            html = '';
+                        this.recipients.forEach(function (recipient) {
+                            html = recipient.grade_name;
+                            divisions = recipient.divisions.map(x => x.div_name);
+                            if(divisions.length){
+                                html += " (";
+                                html += divisions.join(', ');
+                                html += ")";
+                            }
+                            arr.push({name: html});
+                        });
+                        return arr;
+                    }
+                });
+                circularHistoryModal.find('.modal-body').html(html);
+            }
         });
 
         $(document).on('click', '.history-circular-btn-wrap a', function () {

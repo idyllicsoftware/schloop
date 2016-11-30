@@ -142,40 +142,42 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
-          <div class="content-wrapper">
-            <div class="preview-container">
-              <div class="subject-body pb10">
-                <h4>School closed on Monday,Oct 20 2016 due to Diwali</h4>
-                <p>
-                  lgdjhbsdjhvbdljsbfljksbfljkbflkjsbflkjsblkjfblkfjb
-                  jfnlkjfblkjfblkdjbflkjf
-                  lfkn;dkfnlkdjnf
-                  dlkfnkdjfbkj
-                  dlkfjldkfnlkn
-                  mfldknflknf
-                </p>
-              </div>
-              <div class="attachments-list">
-                <h4>Attachments</h4>
-                <p>Image1</p>
-                <p>Image2</p>
-              </div>
-              <div>
-                <h4>Sent to</h4>
-                <p>Grade I (A, B, C)</p>
-                <p>Grade II (A, B, C)</p>
-              </div>
-            </div>
-          </div>
+
       </div>
     </div>
   </div>
 </div>           
 
 
+<script id="circular-history-detail-tpl" type="text/html">
+  {{#circular}}
+  <div class="content-wrapper">
+    <div class="preview-container">
+      <div class="subject-body pb10">
+        <h4>{{ title }}</h4>
+        <p>
+          {{ body }}
+        </p>
+      </div>
+      <div class="attachments-list">
+        <h4>Attachments</h4>
+        <p>Image1</p>
+        <p>Image2</p>
+      </div>
+      <div>
+        <h4>Sent to</h4>
+        {{#formatted_grades}}
+          <p>{{name}}</p>
+        {{/formatted_grades}}
+      </div>
+    </div>
+  </div>
+  {{/circular}}
+</script>
+
 <script id="circular-history-list-tpl" type="text/html">
   {{#circulars}}
-    <li class="circular-history-item">
+    <li class="circular-history-item" data-circular_id="{{id}}">
       <div class="pb10">
         <h4 class="circular-subject">{{ title }}</h4>
         <p class="sent-by">{{ format_created_on }} | Sent by {{#created_by}}{{name}}{{/created_by}}</p>
