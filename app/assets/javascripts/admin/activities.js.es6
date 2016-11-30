@@ -107,7 +107,9 @@ class Activities extends SchloopBase {
                         method: 'PUT',
                         success: function (res) {
                             if(res.success){
-                                toastr.success('Activity deactivated successfully');
+                                toastr.success('Activity deactivated successfully', '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                                });
                                 el.removeClass('deactivate_activity').addClass('disabled').html("Deactivated");
                             } else {
                                 _self.showErrors(res.errors);
@@ -220,7 +222,9 @@ class Activities extends SchloopBase {
                     btnEl.attr('disabled', 'disabled');
                     createWebContentModal.find(".uploadBtn").trigger('click');
                 }else {
-                    toastr.success(msg);
+                    toastr.success(msg, '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
                     createWebContentModal.modal('hide');
                     _self.loadActivities();
                 }

@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="15px" height="10px" viewBox="0 0 15 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
-    <title>Path 2</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Desktop-HD-Copy-5" transform="translate(-784.000000, -1702.000000)" stroke="#FFFFFF">
-            <g id="Group-3-Copy-3" transform="translate(782.000000, 1696.000000)">
-                <polyline id="Path-2" transform="translate(10.359863, 11.220508) rotate(-5.000000) translate(-10.359863, -11.220508) " points="3.5 10.8486328 6.0487793 14.7410156 17.2197266 7.7"></polyline>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="15" height="10"><path fill="none" stroke="#FFF" d="M1.494 5.448l2.878 3.655 10.515-7.988" stroke-linecap="round" stroke-linejoin="round"/></svg>
