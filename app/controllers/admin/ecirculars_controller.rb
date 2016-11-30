@@ -36,11 +36,9 @@ class Admin::EcircularsController < ApplicationController
 	end
 
 	def add_recipients_data(grades, school_id, ecircular_id)
-		binding.pry
 		grades.each do |grade_id, datum|
 			divisions = datum[:divisions]
 			grade_id = grade_id.to_i
-			binding.pry
 			if divisions.present?
 				divisions.each do |division|
 					division_id = division.to_i
@@ -51,8 +49,7 @@ class Admin::EcircularsController < ApplicationController
 	end
 
 	def circular_params
-		binding.pry
- 		user_type = @current_user.type rescue ''
+		user_type = @current_user.type rescue ''
 		if user_type == 'ProductAdmin'
 		 	created_by_type = Ecircular.created_by_types[:product_admin]
 		elsif user_type == 'SchoolAdmin'
