@@ -23,14 +23,18 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.6.0'
+gem 'roo'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.1', group: :doc
 
 gem 'devise'
+gem 'devise_invitable', '~> 1.7.0'
 gem 'aws-sdk'
 gem 'fcm'
 # gem 'rmagick', '2.15.4'
 
+#ransack for filters
+gem 'ransack'
 
 group :development do
   # Using mina for deployment
@@ -44,7 +48,6 @@ group :development do
   gem 'hirb'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-
   gem 'annotate', '~> 2.7.1'
   gem 'quiet_assets'
   gem 'pry'

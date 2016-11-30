@@ -23,13 +23,30 @@
 #  cell_number            :string
 #  user_token             :string
 #  school_id              :integer
+#  invitation_token       :string
+#  invitation_created_at  :datetime
+#  invitation_sent_at     :datetime
+#  invitation_accepted_at :datetime
+#  invitation_limit       :integer
+#  invited_by_id          :integer
+#  invited_by_type        :string
+#  invitations_count      :integer          default(0)
 #
 # Indexes
 #
 #  index_users_on_email                 (email) UNIQUE
+#  index_users_on_invitation_token      (invitation_token) UNIQUE
+#  index_users_on_invitations_count     (invitations_count)
+#  index_users_on_invited_by_id         (invited_by_id)
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_user_token            (user_token)
 #
 
 class ProductAdmin < User
+  after_create :add_roles
+
+  def add_roles
+    role = Role.find_by(name: "ProductAdmin")
+    UserRole.create(entity_type: self.class.name, entity_id: self.id, role_id: role.id)
+  end
 end

@@ -23,6 +23,32 @@ class SchoolGrades extends SchloopBase {
                 jForm.attr('method', 'POST');
                 _self.add_grade(jForm, $(this));
         });
+
+        $(document).on('click', '.delete_grade',function(){
+            var el = $(this),
+                grade_div = el.parent(),
+                grade_id = el.data('grade-id');
+
+                swal({
+                  title: "Are you sure?",
+                  text: "You want delete this grade",
+                  confirmButtonColor: "#25aae1",
+                  confirmButtonText: "Yes, delete it!",
+                  showCancelButton: true
+                },
+                function(){
+                  _self.deleteRequest(`/admin/grades/${grade_id}`, el, null, function (res) {
+                        if(res.success) {
+                            toastr.success('Grade deleted successfully', '', {
+                                positionClass: 'toast-top-right cloud-display'
+                            });
+                            grade_div.remove();
+                        }else {
+                            _self.showErrors(res.errors);
+                        }
+                    });
+                });
+        });
     };
 
     get schoolGradesTpl (){
@@ -41,10 +67,14 @@ class SchoolGrades extends SchloopBase {
             	_self.loadSchoolsGrades();
             	if(jForm.hasClass("add-subject-form")){
                 	current_element.find(".subject-list").append("<li><a href='#subject1-tab' data-toggle='tab'>" + res.subject_name +"</a></li>");
-             		toastr.success('Subject added successfully');
+             		toastr.success('Subject added successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
              	}else{
                  	current_element.parent().find(".division-list").append("<li><a href='#div1-tab' data-toggle='tab'>" + res.division_name +"</a></li>");
-             		toastr.success('Division added successfully');
+             		toastr.success('Division added successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
              	}
                 popoverEl.popover('hide');
             }else {
@@ -68,7 +98,9 @@ class SchoolGrades extends SchloopBase {
         }, function (res) {
             if(res.success) {
                 _self.loadSchoolsGrades();
-                toastr.success(msg);
+                toastr.success(msg, '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
                 popoverEl.popover('hide');
             }else {
                 _self.showErrors(res.errors);
@@ -144,7 +176,7 @@ class SchoolGrades extends SchloopBase {
         					if (current_el.length == '0') {
 							$(this).find('.current_division').remove('.current_division');
         					}else{	
-							$(this).find('.current_division').replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>+Delete Division ' + current_division_name + '</a></span>');
+							$(this).find('.current_division').replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>Delete Division ' + current_division_name + '</a></span>');
 							}
                     });
        			
@@ -153,7 +185,7 @@ class SchoolGrades extends SchloopBase {
         					current_division_name = $(this).data('division_name'),
         					current_division_id = $(this).data('division_id');
 							
-							current_el.replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>+Delete Division ' + current_division_name + '</a></span>');
+							current_el.replaceWith('<span class="current_division" data-division_id="'+ current_division_id +'" ><a>Delete Division ' + current_division_name + '</a></span>');
         					_self.deleteDivision();
         			});
         			_self.deleteDivision();	
@@ -177,7 +209,9 @@ class SchoolGrades extends SchloopBase {
                 	if(current_division_id !== ''){
           				if(rm_El_data == current_division_id){
           				_self.loadSchoolsGrades();
-	                    toastr.success('Division deleted successfully');
+	                    toastr.success('Division deleted successfully', '', {
+                            positionClass: 'toast-top-right cloud-display'
+                        });
 	                    rm_El.remove();
 	                	}
                 	}

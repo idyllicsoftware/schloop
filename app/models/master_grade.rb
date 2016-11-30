@@ -14,6 +14,6 @@
 #
 
 class MasterGrade < ActiveRecord::Base
-  has_many :grades
-  has_many :activities #, dependent: :destroy  #TODO GAURAV
+  has_many :grades, dependent: :destroy
+  has_many :activities, dependent: :destroy
 end

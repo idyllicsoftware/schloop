@@ -18,40 +18,49 @@ Rails.application.routes.draw do
                          sessions: 'admin/teachers/sessions',
                          registrations: 'admin/teachers/registrations',
                          passwords: 'admin/teachers/passwords',
-                         invitations: 'admin/teachers/invitations'
+                         invitations: 'admin/teachers/invitations',
+                         imports: 'admin/teachers/teacher_imports'
   }
 
 
-  devise_for :parents, controllers:{
-                         sessions: 'admin/parents/sessions',
-                         registrations: 'admin/parents/registrations',
-                         passwords: 'admin/parents/passwords',
-                         invitations: 'admin/parents/invitations'
-  }
+  # devise_for :parents, controllers:{
+  #                        sessions: 'admin/parents/sessions',
+  #                        registrations: 'admin/parents/registrations',
+  #                        passwords: 'admin/parents/passwords',
+  #                        invitations: 'admin/parents/invitations'
+  # }
 
   namespace :admin do
-    resource :users do
+    resources :parent_imports, only: [:new, :create]
+    resources :students
+    resource :users
+
+    namespace :teachers do
+      resources :teacher_imports, only: [:create], shallow: true
     end
 
     resources :schools do
-      member do
-      end
       collection do
         get :all
       end
 
-      resources :ecirculars do
+      resources :ecirculars, only: [:create], shallow: true do
+        collection do
+          get :all
+        end
       end
 
       resources :school_admins, only: [:index, :create, :update, :destroy], shallow: true do
       end
 
       resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
-
       end
 
-      resources :grades, only: [:index, :create], shallow: true do
-        resources :subjects,only: [:index, :create, :update, :destroy], shallow: true do
+      resources :grades, only: [:index, :create, :destroy], shallow: true do
+        collection do
+          get :grades_divisions
+        end
+        resources :subjects, only: [:index, :create, :update, :destroy], shallow: true do
 
         end
         resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do
@@ -65,9 +74,13 @@ Rails.application.routes.draw do
       get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
     end
 
-    resources :activities, only: [:create, :update] do
+    resources :activities, only: [:create] do
+      member do
+        put :deactivate
+      end
       collection do
         get :all
+        post :upload_file
       end
     end
   end
@@ -75,17 +88,21 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post "/school_admin/register" => 'school_admin#register'
+
       post "/teacher/register" => 'teachers#register'
       post "/teacher/login" => 'teachers#login'
       post "/teacher/dashboard" => 'teachers#dashboard'
       post "/teacher/reset_password" => "teachers#reset_password"
-      get "/activities/index" => "activities#index"
-      get "/teacher/profile" => "teachers#profile"
+      get  "/teacher/profile" => "teachers#profile"
+
       post "/ecircular/tags" => "ecirculars#tags"
       post "/ecircular/create" => "ecirculars#create"
-      get "/ecirculars" => "ecirculars#index"
+      get  "/ecirculars" => "ecirculars#index"
       post "/ecirculars" => "ecirculars#index"
-      get "/contents/create" => "contents#create"
+
+      get  "/activities" => "activities#index"
+      get  "/activity/categories" => "activities#get_categories"
+      get  "/activity/:activity_id/share" => "activities#share"
     end
   end
 

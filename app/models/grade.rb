@@ -21,9 +21,11 @@
 class Grade < ActiveRecord::Base
 	belongs_to :school
 	belongs_to :master_grade
-	has_many :divisions
-	has_many :subjects
-	has_many :ecircular_recipients
+	has_many :divisions, dependent: :destroy
+	has_many :subjects, dependent: :destroy
+  has_many :student_profiles, dependent: :destroy
+	has_many :ecircular_recipients, dependent: :destroy
+  has_many :activity_shares, dependent: destroy
 
 	validates :name, :presence => true
 
@@ -45,4 +47,14 @@ class Grade < ActiveRecord::Base
     { success: errors.blank?, errors: errors, grade_name: grades_data[:grade_name] }
   end
 
+  def destroy_grade
+    errors = []
+    begin
+      destroy
+    rescue => ex
+      errors << 'Something went wrong. Please contact to support team.'
+      Rails.logger.debug("Exception in destroying grade: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
+    end
+    { success: errors.blank?, errors: errors }
+  end
 end
