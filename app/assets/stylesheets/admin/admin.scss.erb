@@ -1,5 +1,5 @@
 @import "common";
-@import "admin/schools";
+@import "schools";
 @import "admin/activities";
 @import "admin/students";
 @import "admin/school_profile";
@@ -47,7 +47,7 @@
       height: 130px;
       width: 180px;
       &.active {
-        background-image: url(cloud_tab.svg);
+        background-image: url(<%= asset_path('admin/cloud_tab.svg') %>);
         background-repeat: no-repeat;
         height: 130px;
         width: 180px;

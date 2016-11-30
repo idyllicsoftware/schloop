@@ -2,11 +2,12 @@
 #
 # Table name: user_roles
 #
-#  id               :integer          not null, primary key
-#  user_original_id :integer
-#  role_id          :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id          :integer          not null, primary key
+#  role_id     :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  entity_type :string
+#  entity_id   :integer
 #
 # Foreign Keys
 #
@@ -14,6 +15,5 @@
 #
 
 class UserRole < ActiveRecord::Base
-  belongs_to :user
   belongs_to :role
 end

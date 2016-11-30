@@ -60,7 +60,7 @@ class Teacher < ActiveRecord::Base
   has_many :activity_shares
   before_save :set_token
   after_create :send_invitation
-  after_create :populate_roles
+  after_create :add_roles
 
   def set_token
     return if token.present?
@@ -87,9 +87,9 @@ class Teacher < ActiveRecord::Base
     end
   end
 
-  def add_role
+  def add_roles
     role = Role.find_by(name: 'Teacher')
-    UserRole.create(user_original_id: self.id, role_id: role.id)
+    UserRole.create(entity_type: self.class.name, entity_id: self.id, role_id: role.id)
   end
 
   def name

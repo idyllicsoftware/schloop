@@ -20,10 +20,14 @@ class Admin::ParentImportsController < ApplicationController
     if @parent_import.save
       render json: {success: true}
     else
-      render json: {success: false, errors: @parent_import.errors.full_messages}
+      if !@parent_import.errors.full_messages.blank?
+         errors =  @parent_import.errors.full_messages
+      else
+        errors = @parent_import.imported_parents[1]
+      end
+      render json: {success: false, errors: [errors]}
     end
   end
-
   private
   def find_school
     @school = School.find_by(id: params[:school_id])
