@@ -30,18 +30,26 @@ Rails.application.routes.draw do
   #                        invitations: 'admin/parents/invitations'
   # }
 
-  resources :password_resets do
-   post '/' => 'password_resets#create'
-  end
+    post 'password_resets/create_for_teacher' => 'password_resets#create_for_teacher'
+    get 'password_resets/teacher_edit' => 'password_resets#teacher_edit'
+    patch 'password_resets/teacher_update' => 'password_resets#teacher_update'
+    post '/password_resets/create' => 'password_resets#create'
+    get 'password_resets/edit' => 'password_resets#edit'
+    patch 'password_resets/update' => 'password_resets#update'
+
   namespace :admin do
     resources :parent_imports, only: [:new, :create]
     resources :students
     resource :users
 
-    namespace :teachers do
+
+    namespace :teachers do #teachers folder in admin
       resources :teacher_imports, only: [:create], shallow: true
     end
+##############################################################################
+    get 'teachers/forget_password' => 'teachers#forget_password'
 
+############################################################################
     resources :schools do
       member do
       end
@@ -56,6 +64,7 @@ Rails.application.routes.draw do
       end
 
       resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
+          
       end
 
       resources :grades, only: [:index, :create, :destroy], shallow: true do
@@ -69,7 +78,6 @@ Rails.application.routes.draw do
 
         end
       end
-
     end
 
     resource :parents do

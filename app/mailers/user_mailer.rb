@@ -10,4 +10,10 @@ class UserMailer < ApplicationMailer
 
     mail to: @user.email, subject: "password reset"
   end
+
+  def teacher_password_reset(teacher)
+    @teacher = teacher
+
+    mail to: @teacher.email, subject: "password reset"
+  end
 end

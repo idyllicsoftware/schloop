@@ -95,4 +95,11 @@ class Teacher < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def send_password_reset
+    token = generated_token
+    self.reset_password_token = token
+    self.reset_password_sent_at = Time.zone.now
+    save!
+    UserMailer.teacher_password_reset(self).deliver
+  end
 end
