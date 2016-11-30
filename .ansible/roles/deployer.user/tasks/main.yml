@@ -21,6 +21,7 @@
   become_method: sudo
 
 - name: Set up authorized keys for the deployer user
+  tags: 'authorized_keys'
   authorized_key: user={{ deploy_user }} key="{{item}}" manage_dir=yes
   become: yes
   become_user: '{{ deploy_user }}'

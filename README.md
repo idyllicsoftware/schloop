@@ -50,3 +50,8 @@ Please install ansible on your system (on local machine) from [here](http://docs
 
 I guess rest all will follow perfectly well.
 
+8. To only upload authorized key run the ansible-playbook with --tags=authorized_keys. Before running make sure all authorized keys are present in `.ansible/public_keys/authorized_keys`  directory of the project
+  ```
+     cd .ansible
+     ansible-playbook ansible.yml -i hosts --tags=authorized_keys
+  ```
