@@ -1,206 +1,190 @@
 
-<div class="tab-pane fade in circulars-container" id="circulars-tab">
-	<div class="content-wrapper">
-		<div class="header-wrapper">
-            <div class="home-logo" style="background-image: url('<%= asset_path('school_admin.png') %>');">
-            	
-            </div>
-            <div class="heading-wrapper">
-              <h2><%= @school.name %></h2>
-              <p><%= @school.code %></p>
-            </div>
+<div class="tab-pane fade in circulars-container new_circular_active" id="circulars-tab">
+  <div class="content-wrapper">
+    <div class="header-wrapper">
+      <div class="home-logo" style="background-image: url('<%= asset_path('school_admin.png') %>');">
+
+      </div>
+      <div class="heading-wrapper">
+        <h2><%= @school.name %></h2>
+        <p><%= @school.code %></p>
+      </div>
+    </div>
+    <div class="history-circular-btn-wrap">
+      <a class="pull-right p10px history_btn" data-type="history">History</a>
+      <a class="pull-right p10px new_circular_btn" data-type="new_circular">New Circular</a>
+    </div>
+
+    <div class="circulars-main-form">
+      <%=  form_tag "/admin/schools/#{@school.id}/ecirculars", class:"school-ecircular-form", method: 'post' do %>
+        <div class="form-group col-md-12">
+          <input type="text" class="form-control input-field" required name="title" placeholder="Subject" autocomplete="off" maxlength="50" />
         </div>
-	    <!-- <div>
-	        <textarea class="tinymce"></textarea> 
-    	</div> -->
-    	<div class="circulars-main-form">
-    		<%=  form_tag( "admin/schools/#{@school.id}/ecirculars"	, class:"school-ecircular-form", multipart: true) do %>
-    		    <div class="form-group col-md-12">
-    		    	<input name="school_id" value='<%= @school.id %>' hidden >
-                      <input type="text" class="form-control input-field" required name="title" placeholder="Subject" autocomplete="off" maxlength="10" />
-                </div>
-                <div class="form-group col-md-12 upload-photo-wrap">
-                	<label for="upload-photo">
-	                    <div class="upload-logo">
-	                      <img src="<%= asset_path('admin/image_upload.svg') %>">
-	                    </div>
-	                    <input type="file" name="attachments[]" multiple="" accept=".xls,.xlsx,.doc,.docx,.pdf,.csv,.jpg,.jpeg,.png" required id="upload-photo"/>
-                  	</label>
-                </div>
-                <div class="form-group col-md-12">
-                      <input type="text" class="form-control input-field" name="" placeholder="Body" autocomplete="off" maxlength="10" disabled="disabled"/>
-                      <textarea class="form-control input-field circular-textarea" required name="body"></textarea>
-                </div>
-                <div class="col-md-12">
-	          	    <div class="col-md-5 border_botm">
-	          	    	<a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
+        <div class="form-group col-md-12">
+          <input type="text" class="form-control input-field" placeholder="Body" autocomplete="off" maxlength="10" disabled="disabled"/>
+          <textarea class="form-control input-field circular-textarea" required name="body"></textarea>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-5 border_botm">
+              <a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
 		          	    	<span class="select-recipients">
 						      <p class="select-recipients_name">Select recipients</p>
 						      <p class="fa fa-chevron-down"></p>
-						      <ul class="input_el hidden"></ul>
 						    </span>
-					    </a>					      
-				      	<div id="select-recipients-popover-content" class="hidden">
-				      		<div class="recipients-container-wrap">
-								<ul id="recipients-Tab" class="nav nav-tabs">
-						      		<li class="active">
-						        		<a href="#all-grade-section-tab" aria-controls="all-grade-section-tab" role="all-grade-section-tab" data-toggle="tab">All grades</a>
-						      		</li>
-						      		<li>
-						        		<a href="#selected-grade-section-tab" aria-controls="selected-grade-section-tab" role="selected-grade-section-tab" data-toggle="tab">Only Selected Grades</a>
-						      		</li>
-						      	</ul>
-						      	<div class="tab-content">
-						      		<div class="tab-pane fade in active" id="all-grade-section-tab">
-						      			<% @grades.each do |grade|%>
-							      		<div class="std_name">
-								      		<span class="col-md-12 checkbox_customized">
-								      			<input class='chek_cls' type="checkbox" name="grade[]" value="<%= grade.id %>" id="<%= grade.name %>" >
-										        <label for="<%= grade.name %>"><%= grade.name %></label>
-										    </span>        
-								      		<ul class="checkbox_customized">
-								      			<% grade.divisions.each_with_index do |division, index| %>
-										          <li class="col-md-2">
-										            <input type="checkbox" name="grade[<%= grade.id %>]division[]" value="<%= division.id %>" id="<%= "default_division_#{index}"%>" data-grade_id="<%= grade.id %>">
-										            <label for="<%="default_division_#{index}"%>"><%= division.name %></label>
-										          </li>
-										        <% end %>  
-										    </ul>
-										</div>
-										<% end %>
-						      		</div>
-						      		<div class="tab-pane fade in" id="selected-grade-section-tab">
-						      			<div class="std_name">
-								      		<span class="col-md-12 checkbox_customized">
-								      			<input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-										        <label for="check1">A</label>
-										    </span>        
-								      		<ul class="checkbox_customized">
-										          <li class="col-md-2">
-										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-										            <label for="check1">A</label>
-										          </li>
-										          <li class="col-md-2">
-										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-										            <label for="check1">A</label>
-										          </li>
-										          <li class="col-md-2">
-										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-										            <label for="check1">A</label>
-										          </li>
-										          <li class="col-md-2">
-										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-										            <label for="check1">A</label>
-										          </li>
-										          <li class="col-md-2">
-										            <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
-										            <label for="check1">A</label>
-										          </li>
-										    </ul>
-										</div>
-						      		</div>
-						      		</div> 			
-				      		</div>
-				     	</div>
-	                </div>
-	                <div class="col-md-4 border_botm">
-	          	    	<a id="select-circular-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-circular-popover-content" data-placement="top">
-		          	    	<span class="select-recipients">
-						      <p class="selected_circular_tag">Select E-Circular</p>
-						      <input type="hidden" class="cirular_value" name="circular_type" value="">
-						      <p class="fa fa-chevron-down"></p>
+              </a>
+          </div>
+          <div class="col-md-4 border_botm">
+              <a id="select-circular-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-circular-popover-content" data-placement="top">
+                <span class="select-recipients">
+						        <p class="selected_circular_tag">Select E-Circular</p>
+						        <input type="hidden" class="cirular_value" name="circular_tag" value="">
+						        <p class="fa fa-chevron-down"></p>
 						    </span>
-					    </a>
-					    <div id="select-circular-popover-content" class="hidden">
-				      		<div class="select-circular-container">
-				      			<div class="radio">
-				      				<input type="radio" name="radio_select" value="lesson_plan" id="lesson_plan">
-								  	<label for="lesson_plan">Lesson Plan</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="exam_timetable" id="exam_timetable">
-								  <label for="exam_timetable">Exam Timetable</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="my_result" id="my_result">
-								  <label for="my_result">My Result</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="my_attendance" id="my_attendance">
-								  <label for="my_attendance">My Attendance</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="class_timetable" id="class_timetable">
-								  <label for="class_timetable">Class Timetable</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="transport_details" id="transport_details">
-								  <label for="transport_details">Transport Details</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="holiday_circular" id="holiday_circular">
-								  <label for="holiday_circular">Holiday Circular</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="medical_visit_report" id="medical_visit_report">
-								  <label for="medical_visit_report">Medical Visit Report</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="news_and_events" id="news_and_events">
-								  <label for="news_and_events">News And Events</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="important_announcement" id="important_announcement">
-								  <label for="important_announcement">Important Announcement</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="event_circular" id="event_circular">
-								  <label for="event_circular">Event Circular</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="awards_and_achivements" id="awards_and_achivements">
-								  <label for="awards_and_achivements">Awards And Achivements</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="fee_notice" id="fee_notice">
-								  <label for="fee_notice">Fee Notice</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="followup_activity_for_parents" id="radio1">
-								  <label for="radio1">Followup Activity For Parents</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="exhibitions" id="radio2">
-								  <label for="radio2">Exhibitions</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="worksheets" id="radio3">
-								  <label for="radio3">Worksheets</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="extra_curricular_activities_cirular" id="radio4" >
-								  <label for="radio4">Extra Curricular Activities Cirular</label>
-								</div>  
-								<div class="radio">
-									<input type="radio" name="radio_select" value="school_time_change" id="radio5">
-								  <label for="radio5">School Time Change </label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="inter_school_competitions" id="radio6">
-								  <label for="radio6">Inter School Competitions</label>
-								</div>
-								<div class="radio">
-									<input type="radio" name="radio_select" value="olymipiads" id="radio7">
-								  <label for="radio7">Olymipiads</label>
-								</div>
-							</div>
-						</div>		
-	                </div>
-	                <div class="col-md-2">
-	                	<button type="submit" class="btn btn-primary">SEND</button>
-	                </div>
-                </div>
-    		<% end %>
-    	</div>
-	</div>
+              </a>
+          </div>
+          <div class="col-md-2">
+              <button type="submit" class="btn btn-primary">SEND</button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+
+    <div class="ecirculars-history-section">
+      <ul class="circular-history-list">
+
+      </ul>
+    </div>
+
+  </div>
 </div>
+
+<div id="select-recipients-popover-content" class="hidden">
+  <div class="recipients-container-wrap">
+    <!--<ul id="recipients-Tab" class="nav nav-tabs">
+      <li class="active">
+        <a href="#all-grade-section-tab" aria-controls="all-grade-section-tab" role="all-grade-section-tab" data-toggle="tab">All grades</a>
+      </li>
+      <li>
+        <a href="#selected-grade-section-tab" aria-controls="selected-grade-section-tab" role="selected-grade-section-tab" data-toggle="tab">Only Selected Grades</a>
+      </li>
+    </ul>
+    -->
+    <div class="tab-content">
+      <div class="tab-pane fade in active" id="all-grade-section-tab">
+        <% @grades.each do |grade|%>
+            <div class="std_name">
+              <span class="col-md-12 checkbox_customized">
+                <input class='chek_cls grade_checkbox' value="<%= grade.id %>" type="checkbox" id="grade_circular_<%= grade.name %>" >
+                <label for="grade_circular_<%= grade.name %>"><%= grade.name %></label>
+              </span>
+              <ul class="checkbox_customized">
+                <% grade.divisions.each do |division| %>
+                    <li class="col-md-2">
+                      <input type="checkbox" class="division_checkbox" name="grades[<%= grade.id %>]division[]" value="<%= division.id %>" id="div_circular_<%= division.name %>" data-grade_id="<%= grade.id %>">
+                      <label for="div_circular_<%= division.name %>"><%= division.name %></label>
+                    </li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+      </div>
+
+      <!--
+      <div class="tab-pane fade in" id="selected-grade-section-tab">
+        <div class="std_name">
+              <span class="col-md-12 checkbox_customized">
+                <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+                <label for="check1">A</label>
+            </span>
+          <ul class="checkbox_customized">
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+            <li class="col-md-2">
+              <input type="checkbox" name="subjects[]" value="grade1" id="check1" >
+              <label for="check1">A</label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      -->
+    </div>
+  </div>
+</div>
+
+<div id="select-circular-popover-content" class="hidden">
+  <div class="select-circular-container">
+    <% @circular_tags.each do |key, value| %>
+        <div class="radio">
+          <input type="radio" name="radio_select" value="<%= key %>" id="circular_tags_<%= value %>">
+          <label for="circular_tags_<%= value %>"> <%= key.humanize %> </label>
+        </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="modal fade" id="circular-history-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+          <div class="content-wrapper">
+            <div class="preview-container">
+              <div class="subject-body pb10">
+                <h4>School closed on Monday,Oct 20 2016 due to Diwali</h4>
+                <p>
+                  lgdjhbsdjhvbdljsbfljksbfljkbflkjsbflkjsblkjfblkfjb
+                  jfnlkjfblkjfblkdjbflkjf
+                  lfkn;dkfnlkdjnf
+                  dlkfnkdjfbkj
+                  dlkfjldkfnlkn
+                  mfldknflknf
+                </p>
+              </div>
+              <div class="attachments-list">
+                <h4>Attachments</h4>
+                <p>Image1</p>
+                <p>Image2</p>
+              </div>
+              <div>
+                <h4>Sent to</h4>
+                <p>Grade I (A, B, C)</p>
+                <p>Grade II (A, B, C)</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>           
+
+
+<script id="circular-history-list-tpl" type="text/html">
+  {{#circulars}}
+    <li class="circular-history-item">
+      <div class="pb10">
+        <h4 class="circular-subject">{{ title }}</h4>
+        <p class="sent-by">{{ format_created_on }} | Sent by {{#created_by}}{{name}}{{/created_by}}</p>
+      </div>
+      <p class="sent-to">Sent to {{formatted_recipients}}</p>
+    </li>
+  {{/circulars}}
+  {{^circulars}}
+      <li>Circulars not available</li>
+  {{/circulars}}
+</script>
+

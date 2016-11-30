@@ -45,6 +45,7 @@ class Activities extends SchloopBase {
             jForm.attr('action', `/admin/activities`);
             jForm.attr('method', 'POST');
         });
+
         _self.initForm(jForm, null, $("#activitySubmit"));
         createWebContentModal.find("#activitySubmit").on('click', function () {
             if(!createWebContentModal.find(".activity_id_hidden_input").val()) {
@@ -106,7 +107,6 @@ class Activities extends SchloopBase {
                 });
         });
 
-        _self.initForm(jForm);
         _self.loadActivities();
 
     };

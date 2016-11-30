@@ -65,7 +65,7 @@ $.fn.serializeObject = function (options) {
     return json;
 };
 
-Array.prototype.toHash = function(key){
+Array.prototype.toHash = function(key='id'){
     let a = {};
     this.forEach(function (item) {
        a[item[key]] = item;
