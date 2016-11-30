@@ -36,6 +36,21 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "activity_shares", force: :cascade do |t|
+    t.integer  "activity_id", null: false
+    t.integer  "school_id",   null: false
+    t.integer  "teacher_id",  null: false
+    t.integer  "grade_id",    null: false
+    t.integer  "division_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "activity_shares", ["activity_id"], name: "index_activity_shares_on_activity_id", using: :btree
+  add_index "activity_shares", ["grade_id", "division_id"], name: "index_activity_shares_on_grade_id_and_division_id", using: :btree
+  add_index "activity_shares", ["school_id", "activity_id"], name: "index_activity_shares_on_school_id_and_activity_id", using: :btree
+  add_index "activity_shares", ["school_id"], name: "index_activity_shares_on_school_id", using: :btree
+
   create_table "attachments", force: :cascade do |t|
     t.string   "attachable_type"
     t.integer  "attachable_id"
@@ -156,10 +171,12 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.text     "first_name",                                      null: false
     t.text     "last_name",                                       null: false
     t.text     "guardian_type",                                   null: false
+    t.string   "token"
   end
 
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
+  add_index "parents", ["token"], name: "index_parents_on_token", using: :btree
 
   create_table "permissions", force: :cascade do |t|
     t.string   "name"
