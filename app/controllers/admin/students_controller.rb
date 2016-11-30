@@ -19,9 +19,9 @@ class Admin::StudentsController < ApplicationController
 	      					:student_middle_name => student_profile.student.middle_name,
 	      					:student_last_name => student_profile.student.last_name,
 	      					:division => @division.name.capitalize,
-	      					:parent_first_name => student_profile.student.parent.parent_details.first.first_name,
-	      					:parent_middle_name => student_profile.student.parent.parent_details.first.middle_name,
-	      					:parent_last_name => student_profile.student.parent.parent_details.first.last_name,
+	      					:parent_first_name => student_profile.student.parent.parent_details.last.first_name,
+	      					:parent_middle_name => student_profile.student.parent.parent_details.last.middle_name,
+	      					:parent_last_name => student_profile.student.parent.parent_details.last.last_name,
 	      					:parent_email => student_profile.student.parent.email,
 	      					:cell_number => student_profile.student.parent.cell_number
 	      				}
