@@ -85,8 +85,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     }
 
     activity_id = params[:activity_id]
-
-    activity = Activity.find_by(id: )
+    activity = Activity.find_by(id: activity_id)
   end
 
 end
