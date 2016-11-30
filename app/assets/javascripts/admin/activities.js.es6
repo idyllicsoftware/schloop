@@ -44,10 +44,23 @@ class Activities extends SchloopBase {
             jForm[0].reset();
             jForm.attr('action', `/admin/activities`);
             jForm.attr('method', 'POST');
+            jForm.find('input[name], select, textarea').removeAttr('disabled');
+            jForm.find('.ms-drop >ul >li >label >input').each(function(){
+                var inEl = $(this);
+                    inEl.parents().eq(1).removeClass('selected');
+                    inEl.removeAttr('disabled');
+                    inEl.parents().eq(4).find('.placeholder').empty();       
+            });    
+            createWebContentModal.find('.action-btn').show();
+            createWebContentModal.find('.file_upload_files--upload-block').show();
+            createWebContentModal.find('.image-attach img').remove();
+            createWebContentModal.find('.close-form').addClass('hidden');
+            createWebContentModal.find('label.error').addClass('hidden');
         });
 
         _self.initForm(jForm, null, $("#activitySubmit"));
         createWebContentModal.find("#activitySubmit").on('click', function () {
+            createWebContentModal.find('label.error').removeClass('hidden');
             if(!createWebContentModal.find(".activity_id_hidden_input").val()) {
                 jForm.submit();
             }else {
@@ -94,7 +107,9 @@ class Activities extends SchloopBase {
                         method: 'PUT',
                         success: function (res) {
                             if(res.success){
-                                toastr.success('Activity deactivated successfully');
+                                toastr.success('Activity deactivated successfully', '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                                });
                                 el.removeClass('deactivate_activity').addClass('disabled').html("Deactivated");
                             } else {
                                 _self.showErrors(res.errors);
@@ -122,11 +137,12 @@ class Activities extends SchloopBase {
         return {
             activities: activities || []
         };
-    }
+    };
 
     loadActivities(){
         let _self = this, html = '',
             activitiesListEl = $('#content_list_id');
+            
         $.ajax({
             url: `/admin/activities/all`,
             data: _self.filters,
@@ -134,7 +150,57 @@ class Activities extends SchloopBase {
                 if(res.success) {
                     html = Mustache.to_html(_self.activitiesListTpl, _self.getProcessedData(res));
                 }
-                activitiesListEl.html(html);
+                _self.Activities = res.activities.toHash('id');
+                activitiesListEl.html(html);   
+
+                activitiesListEl.find('.activity-preview').on('click', function() {
+                    let curr_pre_El = $(this),
+                        activity_id = curr_pre_El.data('activity-id'),
+                        createWebContentModal = $('#create-web-content-modal'),
+                        //    activityPreviewModal = $('#activity-preview-modal'),
+
+                        jForm = createWebContentModal.find('#activity_creation_form');
+                        createWebContentModal.modal('show');
+                        // if(_self.Activities.hasOwnProperty(activity_id)){
+                        //     var activity_data =  _self.Activities[activity_id];
+                        //     html = Mustache.to_html(_self.activitiesPreviewTpl, activity_data);
+                        // }
+                        //activityPreviewModal.modal('show');
+                        
+                         if(_self.Activities.hasOwnProperty(activity_id)){
+                            var activity_data =  _self.Activities[activity_id],
+                                thumb_img_url = activity_data.thumbnail_file.s3_url,ref_img_list = [];    
+                            jForm.fillForm(_self.Activities[activity_id], 'activity');
+                            jForm.find('input[name], select, textarea').attr('disabled', 'disabled');
+                            jForm.find('.ms-drop >ul >li >label >input').each(function(){
+                                var inEl = $(this),
+                                    inEl_val = inEl.val();
+                                activity_data.category_ids.forEach(function(category){
+                                    if(inEl_val == category){
+                                        inEl.parents().eq(1).addClass('selected');
+                                    }
+                                });
+                                activity_data.categories.split("|").forEach(function(category_name){
+                                    var this_El = $(this);
+                                    inEl.parents().eq(4).find('.placeholder').append(category_name + ',');
+                                }); 
+                                inEl.attr('disabled', 'disabled');       
+                            });
+                            createWebContentModal.find('.thumb_img').append('<img src="'+ thumb_img_url +'" style="width:200px; margin-bottom: 20px;">');
+                            activity_data.reference_files.forEach(function(ref_img){
+                                var ref_img_url = ref_img.s3_url,
+                                    ref_img_tag = '<li><img src="'+ ref_img_url +'" style="width:200px"></li>';
+                                    ref_img_list.push(ref_img_tag);
+                            });
+                            createWebContentModal.find('.ref_img').append('<ul style="padding: 0px; list-style: none;">'+ ref_img_list.join("") +'</ul>');
+                            createWebContentModal.find('.action-btn').hide();
+                            createWebContentModal.find('.file_upload_files--upload-block').hide();
+                            createWebContentModal.find('.close-form').removeClass('hidden');
+                            createWebContentModal.find('.close-form').on('click',function(){
+                                createWebContentModal.modal('hide');
+                            });
+                        }    
+                });
             }
         });
     };
@@ -156,7 +222,9 @@ class Activities extends SchloopBase {
                     btnEl.attr('disabled', 'disabled');
                     createWebContentModal.find(".uploadBtn").trigger('click');
                 }else {
-                    toastr.success(msg);
+                    toastr.success(msg, '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
                     createWebContentModal.modal('hide');
                     _self.loadActivities();
                 }
