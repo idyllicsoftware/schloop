@@ -39,7 +39,9 @@ class SchoolGrades extends SchloopBase {
                 function(){
                   _self.deleteRequest(`/admin/grades/${grade_id}`, el, null, function (res) {
                         if(res.success) {
-                            toastr.success('Grade deleted successfully');
+                            toastr.success('Grade deleted successfully', '', {
+                                positionClass: 'toast-top-right cloud-display'
+                            });
                             grade_div.remove();
                         }else {
                             _self.showErrors(res.errors);
@@ -65,10 +67,14 @@ class SchoolGrades extends SchloopBase {
             	_self.loadSchoolsGrades();
             	if(jForm.hasClass("add-subject-form")){
                 	current_element.find(".subject-list").append("<li><a href='#subject1-tab' data-toggle='tab'>" + res.subject_name +"</a></li>");
-             		toastr.success('Subject added successfully');
+             		toastr.success('Subject added successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
              	}else{
                  	current_element.parent().find(".division-list").append("<li><a href='#div1-tab' data-toggle='tab'>" + res.division_name +"</a></li>");
-             		toastr.success('Division added successfully');
+             		toastr.success('Division added successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
              	}
                 popoverEl.popover('hide');
             }else {
@@ -92,7 +98,9 @@ class SchoolGrades extends SchloopBase {
         }, function (res) {
             if(res.success) {
                 _self.loadSchoolsGrades();
-                toastr.success(msg);
+                toastr.success(msg, '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
                 popoverEl.popover('hide');
             }else {
                 _self.showErrors(res.errors);
@@ -201,7 +209,9 @@ class SchoolGrades extends SchloopBase {
                 	if(current_division_id !== ''){
           				if(rm_El_data == current_division_id){
           				_self.loadSchoolsGrades();
-	                    toastr.success('Division deleted successfully');
+	                    toastr.success('Division deleted successfully', '', {
+                            positionClass: 'toast-top-right cloud-display'
+                        });
 	                    rm_El.remove();
 	                	}
                 	}

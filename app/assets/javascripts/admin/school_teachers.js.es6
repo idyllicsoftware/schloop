@@ -55,7 +55,9 @@ class SchoolTeachers extends SchloopBase {
         $(document).on("uploadedFileResponse", function (e, res) {
             let {result} = res;
             if(result.success){
-                toastr.success('Upload Successful');
+                toastr.success('Upload Successful', '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
                 uploadTeacherModalEl.modal('hide');
                 _self.loadSchoolsTeachers();
             }
@@ -75,7 +77,9 @@ class SchoolTeachers extends SchloopBase {
         }, function (res) {
             if(res.success) {
                 _self.loadSchoolsTeachers();
-                toastr.success(msg);
+                toastr.success(msg, '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
                 popoverEl.popover('hide');
             }else {
                 _self.showErrors(res.errors);
@@ -95,7 +99,9 @@ class SchoolTeachers extends SchloopBase {
             _self.deleteRequest(delete_teachers_url, $(this), null, function (res) {
                 if(res.success) {
                     _self.loadSchoolsTeachers();
-                    toastr.success('School teacher removed successfully');
+                    toastr.success('School teacher removed successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
                     popoverEl.popover('hide');
                 }else {
                     _self.showErrors(res.errors);

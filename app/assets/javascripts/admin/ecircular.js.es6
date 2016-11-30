@@ -149,7 +149,9 @@ class SchoolECircular extends SchloopBase {
                 $('.selected_circular_tag').html('Select E-Circular');
                 $('.selected_circular_tag').next().val(null);
                 $(".select-recipients_name").html('Select recipients');
-                toastr.success('E-Circular sent successfully');
+                toastr.success('E-Circular sent successfully', '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
                 eCircularFormEl[0].reset();
             }else {
                 _self.showErrors(res.errors);

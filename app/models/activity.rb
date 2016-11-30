@@ -22,6 +22,8 @@ class Activity < ActiveRecord::Base
   has_many :categories, through: :activity_categories
   has_many :attachments, as: :attachable, dependent: :destroy
 
+  has_many :activity_shares, dependent: :destroy
+
   enum file_sub_type: { reference: 0, thumbnail: 1 }
   enum status: { active: 0, inactive: 1 }
 

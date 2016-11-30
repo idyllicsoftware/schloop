@@ -45,7 +45,9 @@ class Schools extends SchloopBase {
                 createSchoolFormEl[0].reset();
                 createModalEl.modal('hide');
                 self.loadSchools();
-                toastr.success('School created successfully');
+                toastr.success('School created successfully', '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
             }else {
                 self.showErrors(res.errors);
             }
