@@ -213,4 +213,5 @@ class Admin::TeachersController < ApplicationController
     end
     return {success: true, data: {}}
   end
+
 end

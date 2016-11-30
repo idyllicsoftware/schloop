@@ -1,7 +1,10 @@
 class Admin::SchoolAdminsController < ApplicationController
+	include ApplicationHelper
 	before_action :authenticate_user!
 	before_action :find_school, only: [:index, :create]
 	before_action :find_school_admin, only: [:update, :destroy]
+	before_filter :authorize_permission
+
 	layout "admin"
 
 	def index
@@ -104,6 +107,5 @@ class Admin::SchoolAdminsController < ApplicationController
 	def update_school_admin_params
 		params.require(:administrator).permit(:first_name, :last_name, :cell_number)
 	end
-	 
 
 end

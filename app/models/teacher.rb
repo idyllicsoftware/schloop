@@ -59,6 +59,7 @@ class Teacher < ActiveRecord::Base
   has_many :grade_teachers, dependent: :destroy
   before_save :set_token
   after_create :send_invitation
+  after_create :add_roles
 
   def set_token
     return if token.present?
@@ -85,6 +86,10 @@ class Teacher < ActiveRecord::Base
     end
   end
 
+  def add_roles
+    role = Role.find_by(name: 'Teacher')
+    UserRole.create(entity_type: self.class.name, entity_id: self.id, role_id: role.id)
+  end
 
   def name
     "#{first_name} #{last_name}"

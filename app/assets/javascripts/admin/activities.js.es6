@@ -57,6 +57,7 @@ class Activities extends SchloopBase {
             createWebContentModal.find('.close-form').addClass('hidden');
             createWebContentModal.find('label.error').addClass('hidden');
         });
+
         _self.initForm(jForm, null, $("#activitySubmit"));
         createWebContentModal.find("#activitySubmit").on('click', function () {
             createWebContentModal.find('label.error').removeClass('hidden');
@@ -119,7 +120,6 @@ class Activities extends SchloopBase {
                 });
         });
 
-        _self.initForm(jForm);
         _self.loadActivities();
 
     };

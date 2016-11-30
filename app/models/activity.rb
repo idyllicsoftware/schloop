@@ -27,18 +27,27 @@ class Activity < ActiveRecord::Base
 
   scope :active, -> { where(status: Activity.statuses['active']) }
 
-  def self.grade_activities(search_params, mapping_data, page)
+  def self.grade_activities(search_params, mapping_data, page, category_ids)
     if page.present?
       page = page.to_s.to_i
       page_size = 20
       offset = (page * page_size)
     end
     activities_data = []
-    activities = Activity.where(search_params).includes(:attachments).order(id: :desc)
+    activities = Activity.where(search_params)
+    activities = activities.includes(:attachments, :categories)
+    if category_ids.present?
+      activities= activities.joins("LEFT JOIN activity_categories ON activity_categories.activity_id = activities.id
+                           LEFT JOIN categories ON activity_categories.category_id = categories.id")
+                   .where("categories.id in (?)", category_ids)
+    end
+    activities = activities.order(id: :desc)
+
     total_records = activities.count
     activities = activities.offset(offset).limit(page_size) if page.present?
 
     activities.each do |activity|
+      activity_categories = activity.categories
       master_subject = activity.master_subject
 
       subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
@@ -70,7 +79,8 @@ class Activity < ActiveRecord::Base
           details: activity.details,
           pre_requisite: activity.pre_requisite,
           thumbnail: thumbnail_data,
-          references: reference_files
+          references: reference_files,
+          categories: activity_categories.select(:id, :name)
         }
       }
     end
