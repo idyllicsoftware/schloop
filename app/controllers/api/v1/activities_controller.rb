@@ -69,4 +69,24 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     }
   end
 
+  # recipuets: {
+  # grade_id: [div_id1, div_id2]
+  # grade_id: [div_id1, div_id2]
+  # }
+  # "recipients": {
+  #   "1": [1, 2],
+  #   "2": [3, 4]
+  # }
+  def share
+    render json: {
+      success: true,
+      error: nil,
+      data: {}
+    }
+
+    activity_id = params[:activity_id]
+
+    activity = Activity.find_by(id: )
+  end
+
 end
