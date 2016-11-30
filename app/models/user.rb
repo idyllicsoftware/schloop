@@ -77,7 +77,6 @@ class User < ActiveRecord::Base
   end
 
   def send_password_reset
-    binding.pry
     token = generated_user_token
     self.reset_password_token = token
     self.reset_password_sent_at = Time.zone.now
