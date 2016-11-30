@@ -78,7 +78,15 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
   #   "2": [3, 4]
   # }
   def share
+    render json: {
+      success: true,
+      error: nil,
+      data: {}
+    }
 
+    activity_id = params[:activity_id]
+
+    activity = Activity.find_by(id: )
   end
 
 end
