@@ -8,6 +8,9 @@
 
 Please install ansible on your system (on local machine) from [here](http://docs.ansible.com/ansible/intro_installation.html)
 
+## Note: 
+  Any time you run any ansible task make sure you are inside `.ansible` directory of the application.
+
 ### Steps
 1. Create a server on Amazon
 
