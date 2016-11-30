@@ -63,7 +63,7 @@ class Admin::EcircularsController < ApplicationController
 		 	circular_tag: Ecircular.circular_tags[params[:circular_tag]],
 		 	created_by_type: created_by_type,
 		 	created_by_id: current_user.id,
-		 	school_id: @school.school_id
+		 	school_id: @school.id
 		}
 	end
 end
