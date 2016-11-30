@@ -44,3 +44,15 @@
         margin-top: 14px;
     }
 }
+.form-control[disabled]{
+    background-color: transparent;
+}
+.close-form {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 20px;
+    color: #666;
+    font-weight: 600;
+    cursor: pointer;
+}
