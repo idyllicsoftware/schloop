@@ -9,6 +9,7 @@
 //= require tinymce/tinymce.min.js
 //= require tinymceEditor.js
 //= require multiselect.min
+//= require moment
 //= require common
 //= require file_uploads
 //= require_self
@@ -44,10 +45,10 @@ class SchloopBase {
         scope.removeAttr('disabled');
     };
 
-    submitData (url, jFrom, data, cb, extraParams) {
+    submitData (url, jFrom, data, cb, extraParams, otherBtnEl) {
         let self = this,
             params,
-            btnEl = jFrom.find('button[type="submit"]');
+            btnEl = otherBtnEl || jFrom.find('button[type="submit"]');
 
         self.addAjaxLoader(btnEl);
 
@@ -181,7 +182,7 @@ class SchloopBase {
         });
     };
 
-    initFormSubmit (jForm, fieldsMapping, cb, extraParams){
+    initFormSubmit (jForm, fieldsMapping, cb, extraParams, btnEl){
         let self = this;
 
         self.formValidatorInit(jForm, fieldsMapping);
@@ -193,9 +194,9 @@ class SchloopBase {
                 if(extraParams) {
                     formData = new FormData(jForm[0]);
                 }else{   
-                    formData = jForm.serializeObject();
+                    formData = jForm.serialize();
                 }
-                self.submitData(jForm.attr('action'), jForm, formData, cb, extraParams);
+                self.submitData(jForm.attr('action'), jForm, formData, cb, extraParams, btnEl);
             }
         });
     };

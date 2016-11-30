@@ -1,7 +1,10 @@
 class Admin::SchoolsController < ApplicationController
+  include ApplicationHelper
   before_action :authenticate_user!
   before_action :find_school, only: [:show]
   layout "admin"
+  before_filter :authorize_permission
+
 
   def index
     ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
@@ -24,6 +27,7 @@ class Admin::SchoolsController < ApplicationController
     @grades = Grade.where(school_id: params[:id])
     @master_grades = MasterGrade.all.select(:id, :name)
     @master_subjects = MasterSubject.all.select(:id, :name)
+    @circular_tags = Ecircular.circular_tags
   end
 
 	def create

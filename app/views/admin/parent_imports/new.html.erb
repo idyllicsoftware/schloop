@@ -1,21 +1,17 @@
-
-<div class="school-main-section">
+<div id="studentUploadWrapperId" class="school-main-section">
   <div class="container">
     <div class="text-center mb50">
       <h3>Upload <%= @grade.name %> CSV</h3>
       <p>Uploading  a  file  will  update  an  existing  student  profile  if  it  exists.  <br/>For  new records, they will be added to the current list</p>
     </div>
-
-
-
-    <%= form_tag '', :id => "fileDetails", class:"uploadFiles_btn_container clearfix", novalidate: true do %>
+    <%= form_tag '', class:"fileDetails uploadFiles_btn_container clearfix", novalidate: true do %>
         <%= hidden_field_tag :school_id,  @school.id%>
         <%= hidden_field_tag :grade_id,  @grade.id%>
         <div class="file_upload_files--upload-block">
           <div>
             <div class="fileUpload file_upload_files--fileUploadBtn">
               <span><i class="fa fa-cloud-upload"></i> choose file</span>
-              <input id="fileupload" class="upload" type="file" name="parent_import[file]" data-url="/admin/parent_imports" accept=".csv">
+              <input class="fileuploadInput upload" type="file" name="parent_import[file]" data-url="/admin/parent_imports" accept=".csv">
             </div>
             <button class="btn btn-primary text-uppercase disabled uploadBtn">upload</button>
           </div>
@@ -29,30 +25,5 @@
         <table class="selected_files"></table>
         </div>
     <% end %>
-<br/>
+  </div>
 </div>
-</div>
-
-<script id="selectedFileTr" type="text/html">
-  <tr class='selectedFile'>
-    <td>{{name}}</td>
-    <td class="text-right">
-      <button type='button' class='btn btn-danger delete'>
-        <i class='fa fa-trash f16'></i>
-      </button>
-    </td>
-  </tr>
-</script>
-
-<script id="uploadedFileTr" type="text/html">
-  <tr>
-    <td style="word-wrap: break-word;">
-      <a target='_blank' href="{{url}}">
-        {{name}}
-      </a>
-      <input type="hidden" name="attachment_ids[]" value="{{id}}">
-    </td>
-    <td>{{format}}</td>
-    <td>{{size}}</td>
-  </tr>
-</script>

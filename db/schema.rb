@@ -11,21 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161124111628) do
+ActiveRecord::Schema.define(version: 20161129121728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "activities", force: :cascade do |t|
     t.string   "teaches"
-    t.string   "topic",             null: false
-    t.string   "title",             null: false
-    t.integer  "master_grade_id",   null: false
-    t.integer  "master_subject_id", null: false
+    t.string   "topic",                         null: false
+    t.string   "title",                         null: false
+    t.integer  "master_grade_id",               null: false
+    t.integer  "master_subject_id",             null: false
     t.text     "details"
     t.text     "pre_requisite"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "status",            default: 0, null: false
   end
 
   create_table "activity_categories", force: :cascade do |t|
@@ -160,6 +161,33 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
 
+  create_table "permissions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "controller"
+    t.string   "action"
+    t.text     "flags"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "role_permissions", force: :cascade do |t|
+    t.integer  "role_id"
+    t.integer  "permission_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "role_permissions", ["permission_id"], name: "index_role_permissions_on_permission_id", using: :btree
+  add_index "role_permissions", ["role_id"], name: "index_role_permissions_on_role_id", using: :btree
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.string   "role_map"
+    t.boolean  "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "schools", force: :cascade do |t|
     t.string   "name",           null: false
     t.text     "address",        null: false
@@ -230,6 +258,14 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
 
+  create_table "user_roles", force: :cascade do |t|
+    t.integer  "role_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "entity_type"
+    t.integer  "entity_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",            null: false
     t.string   "encrypted_password",     default: "",            null: false
@@ -275,5 +311,10 @@ ActiveRecord::Schema.define(version: 20161124111628) do
   add_foreign_key "grade_teachers", "subjects"
   add_foreign_key "grade_teachers", "teachers"
   add_foreign_key "grades", "schools"
+  add_foreign_key "role_permissions", "permissions"
+  add_foreign_key "role_permissions", "roles"
+  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
+  add_foreign_key "subjects", "teachers"
+  add_foreign_key "user_roles", "roles"
 end

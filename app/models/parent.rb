@@ -46,11 +46,13 @@
 class Parent < User
 	has_many :students, :dependent => :destroy
 	has_many :parent_details,  :dependent => :destroy
-	after_create :send_invitaion
+  validates :cell_number, :presence => true,
+            :numericality => true,
+            :length => {:minimum => 10, :maximum => 15}
+	after_create :send_invitation
 	
-  def send_invitaion
-    parent = Parent.invite!(:email => self.email)
-    parent.deliver_invitation
+  def send_invitation
+    Admin::AdminMailer.welcome_message(self.email, self.first_name, self.password).deliver_now
   end	
 
   def password_required?
