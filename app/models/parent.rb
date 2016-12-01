@@ -50,6 +50,17 @@ class Parent < User
             :numericality => true,
             :length => {:minimum => 10, :maximum => 15}
 	after_create :send_invitation
+
+
+   validate do |parent|
+    parent.students.each do |student|
+      next if student.valid?
+      student.errors.full_messages.each do |message|
+        # you can customize the error message here:
+        errors.add :base, "#{message}"
+      end
+    end
+  end
 	
   def send_invitation
     Admin::AdminMailer.welcome_message(self.email, self.first_name, self.password).deliver_now
