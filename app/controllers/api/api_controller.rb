@@ -12,6 +12,7 @@ class Api::ApiController < ApplicationController
       @current_user = User.find_by(user_token: token)
       @current_user = Teacher.find_by(token: token) if @current_user.nil?
     end
+    return @current_user
   end
 
   def render_unauthorized
