@@ -79,6 +79,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
     students.each do |student|
       student_profile = student.student_profiles.last
       students_data << {
+        id: student.id,
         school_id: student.school_id,
         first_name: student.first_name,
         last_name: student.last_name,
