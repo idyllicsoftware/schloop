@@ -150,7 +150,65 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
 
   def activities
+    errors, circular_data = [], []
 
+    @student = Student.find(id: params[:student_id])
+    errors << "Student not found" if student.blank?
+
+    school = @student.school
+    errors << "Student School not found" if school.blank?
+
+    @student_profile = @student.student_profiles.last
+    errors << "Student Grade Division information not found" if student_profile.blank?
+
+    page = params[:page]
+    page_size = 20
+
+    student_grade = @student_profile.grade
+
+    associated_activity_ids = ActivityShare.where(
+      school_id: school.id,
+      grade_id: student_grade.id,
+      division_id: @student_profile.division_id).pluck(:activity_id)
+
+
+    if errors.blank?
+      search_params = {master_grade_id: student_grade.master_grade_id}
+      mapping_data = {
+        master_grade_id_grade_id: {student_grade.master_grade_id => student_grade}
+      }
+
+      search_params[:id] = associated_activity_ids
+
+      category_ids = category_ids.split(',').map(&:to_i) if category_ids.present?
+      activities_data, total_records = Activity.grade_activities(search_params, mapping_data, page, category_ids)
+    end
+
+    if errors.blank?
+      index_response = {
+        success: true,
+        error: nil,
+        data: {
+          pagination_data: {
+            page_size: page_size,
+            record_count: total_records,
+            total_pages: (total_records/page_size.to_f).ceil,
+            current_page: (page || 0)
+          },
+          activities: activities_data
+        }
+      }
+    else
+      index_response = {
+        success: false,
+        error:  {
+          code: 0,
+          message: errors.flatten
+        },
+        data: nil
+      }
+    end
+    render json: index_response
   end
 
     private
