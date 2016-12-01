@@ -15,4 +15,5 @@ class StudentProfile < ActiveRecord::Base
 	belongs_to :student
 	belongs_to :division
 	belongs_to :grade
+	validates :division_id, :presence => true
 end
