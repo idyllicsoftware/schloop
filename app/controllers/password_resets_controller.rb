@@ -1,4 +1,5 @@
 class PasswordResetsController < ApplicationController
+  # for user (PA or SA)
   def create
   	user = User.find_by_email(params[:user][:email])
   	user.send_password_reset if user
@@ -26,6 +27,7 @@ class PasswordResetsController < ApplicationController
 	  end
   end
 
+  # for teacher
   def create_for_teacher
     teacher = Teacher.find_by_email(params[:email])
     teacher.send_password_reset if teacher
@@ -53,4 +55,18 @@ class PasswordResetsController < ApplicationController
     end
   end
 
+  #for parent
+  def parent_new
+  end
+  def create_for_create
+    
+  end
+  
+  def parent_edit
+    
+  end
+  
+  def parent_update
+    
+  end
 end
