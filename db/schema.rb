@@ -36,6 +36,21 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "activity_shares", force: :cascade do |t|
+    t.integer  "activity_id", null: false
+    t.integer  "school_id",   null: false
+    t.integer  "teacher_id",  null: false
+    t.integer  "grade_id",    null: false
+    t.integer  "division_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "activity_shares", ["activity_id"], name: "index_activity_shares_on_activity_id", using: :btree
+  add_index "activity_shares", ["grade_id", "division_id"], name: "index_activity_shares_on_grade_id_and_division_id", using: :btree
+  add_index "activity_shares", ["school_id", "activity_id"], name: "index_activity_shares_on_school_id_and_activity_id", using: :btree
+  add_index "activity_shares", ["school_id"], name: "index_activity_shares_on_school_id", using: :btree
+
   create_table "attachments", force: :cascade do |t|
     t.string   "attachable_type"
     t.integer  "attachable_id"

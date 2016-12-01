@@ -57,6 +57,7 @@ class Teacher < ActiveRecord::Base
 
   belongs_to :school
   has_many :grade_teachers, dependent: :destroy
+  has_many :activity_shares
   before_save :set_token
   after_create :send_invitation
   after_create :add_roles
