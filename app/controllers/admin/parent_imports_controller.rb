@@ -23,9 +23,9 @@ class Admin::ParentImportsController < ApplicationController
       if !@parent_import.errors.full_messages.blank?
          errors =  @parent_import.errors.full_messages
       else
-        errors = @parent_import.imported_parents[1]
+        errors = [@parent_import.imported_parents[1]]
       end
-      render json: {success: false, errors: [errors]}
+      render json: {success: false, errors: errors}
     end
   end
   private
