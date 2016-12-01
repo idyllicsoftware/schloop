@@ -62,7 +62,7 @@ class Ecircular < ActiveRecord::Base
 				recipient = {grade_id: grade_id, grade_name: (grades_by_id[grade_id].name rescue "-")}
 				recipient[:divisions] = []
 				recipients_data.each do |rec|
-					recipient[:divisions] << {div_id: rec.division_id, div_name: rec.division.name}
+					recipient[:divisions] << {div_id: rec.division_id, div_name: (rec.division.name rescue "-")}
 				end
 				recipients << recipient
 			end

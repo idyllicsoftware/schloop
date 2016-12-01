@@ -171,12 +171,10 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.text     "first_name",                                      null: false
     t.text     "last_name",                                       null: false
     t.text     "guardian_type",                                   null: false
-    t.string   "token"
   end
 
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
-  add_index "parents", ["token"], name: "index_parents_on_token", using: :btree
 
   create_table "permissions", force: :cascade do |t|
     t.string   "name"
@@ -245,14 +243,10 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "grade_id"
-    t.integer  "teacher_id"
-    t.integer  "division_id"
     t.integer  "master_subject_id", default: 0, null: false
   end
 
-  add_index "subjects", ["division_id"], name: "index_subjects_on_division_id", using: :btree
   add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
-  add_index "subjects", ["teacher_id"], name: "index_subjects_on_teacher_id", using: :btree
 
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -350,8 +344,6 @@ ActiveRecord::Schema.define(version: 20161129121728) do
   add_foreign_key "grades", "schools"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
-  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
-  add_foreign_key "subjects", "teachers"
   add_foreign_key "user_roles", "roles"
 end
