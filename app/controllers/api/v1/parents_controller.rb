@@ -13,7 +13,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
           id: parent.id,
           first_name: parent.first_name,
           last_name: parent.last_name,
-          token: parent.token,
+          token: parent.user_token,
           first_sign_in: (parent.sign_in_count <= 1)
         }
       }
