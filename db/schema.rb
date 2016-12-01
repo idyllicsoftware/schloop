@@ -171,12 +171,10 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.text     "first_name",                                      null: false
     t.text     "last_name",                                       null: false
     t.text     "guardian_type",                                   null: false
-    t.string   "token"
   end
 
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
   add_index "parents", ["reset_password_token"], name: "index_parents_on_reset_password_token", unique: true, using: :btree
-  add_index "parents", ["token"], name: "index_parents_on_token", using: :btree
 
   create_table "permissions", force: :cascade do |t|
     t.string   "name"

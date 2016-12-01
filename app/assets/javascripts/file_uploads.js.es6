@@ -85,7 +85,7 @@ class FileUpload {
     isFileTypeAllowed (fileExt) {
         let oUpload = this,
             {isImageUpload=false, allowedFileTypes} = oUpload._config,
-            msg = !isImageUpload ? `Please only upload files with doc, docx, pdf, xls, xlsx, or csv extensions.` : `Please only upload files with jpg, jpeg, or png extensions.`;
+            msg = !isImageUpload ? `Please upload correct CSV file.` : `Please only upload files with jpg, jpeg, or png extensions.`;
 
         if (allowedFileTypes.indexOf(fileExt.toLowerCase()) < 0) {
             $(`<div class='errorMessage'>${msg}</div>`).appendTo(oUpload.uploadsBlock).fadeIn();
