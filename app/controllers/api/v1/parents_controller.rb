@@ -71,79 +71,36 @@ class Api::V1::ParentsController < Api::V1::BaseController
     }
   end
 
-
   def profile
     parent = @current_user
-    render json: {
+
+    students_data = []
+    students = parent.students.includes(:student_profiles)
+    students.each do |student|
+      student_profile = student.student_profiles.last
+      students_data << {
+        school_id: student.school_id,
+        first_name: student.first_name,
+        last_name: student.last_name,
+        middle_name: student.middle_name,
+        grade: {id: student_profile.grade.id, name: student_profile.grade.name},
+        division: {id: student_profile.division.id, name: student_profile.division.name}
+      }
+    end
+
+    parent_profile = {
       id: parent.id,
       first_name: parent.first_name,
       last_name: parent.last_name,
       email: parent.email,
       phone: parent.cell_number,
-      students: [
-        {
-          id: 1,
-          first_name: "Kapil",
-          last_name: "Bhosale",
-          grade: {id: 1, name: 'Grade one'},
-          division: {id:2, name: 'A'}
-        },
-        {
-          id: 2,
-          first_name: "Radhe",
-          last_name: "Nazarkar",
-          grade: {id: 2, name: 'Grade Two'},
-          division: {id:4, name: 'Z'}
-        }
-      ]
+      students: students_data
     }
-
-    # grades_data = parent.grade_teachers.includes(:grade).group_by do |x| x.grade_id end
-    #
-    # profile_data ={}
-    # grades_data.each do |grade_id, datas|
-    #   divisions, subjects = {}, {}
-    #   datas.each do |data|
-    #     profile_data[grade_id]||= {
-    #       grade_id: grade_id,
-    #       grade_name: data.grade.name
-    #     }
-    #     divisions[data.division.id] = { id: data.division.id, name: data.division.name }
-    #     subjects[data.subject.id] = { id: data.subject.id, name: data.subject.name }
-    #   end
-    #   profile_data[grade_id][:divisions] = divisions.values
-    #   profile_data[grade_id][:subjects] = subjects.values
-    # end
-    #
-    # students_data = []
-    # students = parent.students.includes(:student_profiles)
-    # students.each do |student|
-    #   students_data << {
-    #     school_id: student.school_id,
-    #     first_name: student.first_name,
-    #     last_name: student.last_name,
-    #     middle_name: student.middle_name
-    #   }
-    # end
-    #
-    # profile_data = {
-    #   id: parent.id,
-    #   first_name: parent.first_name,
-    #   last_name: parent.last_name,
-    #   email: parent.email,
-    #   phone: parent.cell_number,
-    #   school_id: parent.school_id,
-    #   grade_divisions: profile_data.values
-    # }
-    #
-    # render json: {
-    #   success: true,
-    #   error: nil,
-    #   data: {
-    #     profile: profile_data
-    #   }
-    # }
-
+    render json: {
+      success: true,
+      error: nil,
+      data: parent_profile
+    }
   end
 
   private
