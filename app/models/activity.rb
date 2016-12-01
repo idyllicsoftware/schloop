@@ -41,7 +41,7 @@ class Activity < ActiveRecord::Base
     if category_ids.present?
       activities= activities.joins("LEFT JOIN activity_categories ON activity_categories.activity_id = activities.id
                            LEFT JOIN categories ON activity_categories.category_id = categories.id")
-                   .where("categories.id in (?)", category_ids)
+                    .where("categories.id in (?)", category_ids)
     end
     activities = activities.order(id: :desc)
 
@@ -117,12 +117,45 @@ class Activity < ActiveRecord::Base
     { success: errors.blank?, errors: errors }
   end
 
-   def get_thumbnail_file
+  def get_thumbnail_file
     attachments.where(sub_type: Activity.file_sub_types['thumbnail'])
   end
 
   def get_reference_files
     attachments.where(sub_type: Activity.file_sub_types['reference'])
+  end
+
+  def share(user, recipients)
+    errors = []
+    school = user.school
+    errors << "No associated school found, please try again." if school.blank?
+    return {success: false, errors: errors, data: nil} if errors.present?
+
+    errors << "No recipients found" if recipients.blank?
+    return {success: false, errors: errors, data: nil} if errors.present?
+
+    errors << "Invalid teacher" unless user.is_a?(Teacher)
+    return {success: false, errors: errors, data: nil} if errors.present?
+
+    share_params = []
+    recipients.each do |grade_id, divisions|
+      divisions.each do |division_id|
+        share_params << {
+          activity_id: self.id,
+          school_id: school.id,
+          teacher_id: user.id,
+          grade_id: grade_id,
+          division_id: division_id
+        }
+      end
+    end
+
+    begin
+      ActivityShare.create(share_params)
+    rescue Exception => ex
+      errors << ex.message
+    end
+    return {success: errors.blank?, errors: errors, data: {}}
   end
 
   private

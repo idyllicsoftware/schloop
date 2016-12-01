@@ -102,7 +102,7 @@ Rails.application.routes.draw do
 
       get  "/activities" => "activities#index"
       get  "/activity/categories" => "activities#get_categories"
-      get  "/activity/:activity_id/share" => "activities#share"
+      post  "/activity/:activity_id/share" => "activities#share"
     end
   end
 
