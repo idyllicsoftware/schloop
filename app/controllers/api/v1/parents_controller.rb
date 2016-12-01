@@ -107,14 +107,14 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def circulars
     errors, circular_data = [], []
 
-    @student = Student.find(id: params[:student_id])
+    @student = Student.find_by(id: params[:student_id])
     errors << "Student not found" if @student.blank?
 
     school = @student.school
     errors << "Student School not found" if school.blank?
 
     @student_profile = @student.student_profiles.last
-    errors << "Student Grade Division information not found" if student_profile.blank?
+    errors << "Student Grade Division information not found" if @student_profile.blank?
 
     page = params[:page].to_s.to_i
     page_size = 20
