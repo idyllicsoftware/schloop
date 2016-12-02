@@ -13,6 +13,8 @@ class Api::V1::ParentsController < Api::V1::BaseController
           id: parent.id,
           first_name: parent.first_name,
           last_name: parent.last_name,
+          email: parent.email,
+          phone: parent.cell_number,
           token: parent.user_token,
           first_sign_in: (parent.sign_in_count <= 1)
         }
@@ -153,14 +155,14 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def activities
     errors, circular_data = [], []
 
-    @student = Student.find(id: params[:student_id])
-    errors << "Student not found" if student.blank?
+    @student = Student.find_by(id: params[:student_id])
+    errors << "Student not found" if @student.blank?
 
     school = @student.school
     errors << "Student School not found" if school.blank?
 
     @student_profile = @student.student_profiles.last
-    errors << "Student Grade Division information not found" if student_profile.blank?
+    errors << "Student Grade Division information not found" if @student_profile.blank?
 
     page = params[:page]
     page_size = 20
