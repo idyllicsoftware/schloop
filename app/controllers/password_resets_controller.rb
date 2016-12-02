@@ -66,7 +66,7 @@ class PasswordResetsController < ApplicationController
   end
   
   def parent_edit
-    
+      @parent = Parent.find_by_reset_password_token!(params[:format])
   end
   
   def parent_update
