@@ -21,12 +21,12 @@ Rails.application.configure do
       :address              => "smtp.gmail.com",
       :port                 => 587,
       :user_name            => "support@schloop.co",
-      :password             => "SchloopSupport01",
+      :password             => "Anagmba01!",
       :authentication       => "plain",
       :enable_starttls_auto => true
   }
 
-  MAILER_HOST = "http://52.23.232.204/"
+  MAILER_HOST = "http://schloop.co/"
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

@@ -47,7 +47,6 @@ class Admin::SchoolAdminsController < ApplicationController
 			begin
 				school_admin = create_school_admin!(school, school_admin_datum)
 				if school_admin.save
-					binding.pry
 					Admin::AdminMailer.welcome_message(school_admin.email, school_admin.first_name, school_admin.password).deliver_now
 				else
 					errors += school_admin.errors.full_messages
