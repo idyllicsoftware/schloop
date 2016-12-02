@@ -9,12 +9,6 @@
 </head>
 <body>
 
-<% if notice %>
-  <p class="alert alert-success"><%= notice %></p>
-<% end %>
-<% if alert %>
-  <p class="alert alert-danger"><%= alert %></p>
-<% end %>
 
 
 <div class="product-admin-dashborad">
@@ -31,7 +25,8 @@
 				<div class="profile-photo"></div>
 			</div>
 			<div class="admin-profile-manu">
-				<p><%= current_user.name %></p>
+				<p><%= current_user.first_name %></p>
+        <p><%= current_user.last_name %></p>
 				<p><a href='/users/sign_out'>Sign Out</a></p>
 			</div>
 		</div>

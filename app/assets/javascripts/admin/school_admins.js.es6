@@ -94,7 +94,7 @@ class SchoolAdmins extends SchloopBase {
                         let popupEl = $('#' + $(this).attr('aria-describedby')),
                             school_admin_id = $(this).data('school_admin_id'),
                             jForm = popupEl.find('form');
-
+                            
                         if(_self.schoolAdmins.hasOwnProperty(school_admin_id)){
                             jForm.fillForm(_self.schoolAdmins[school_admin_id], 'administrator');
                             jForm.attr('action', `/admin/school_admins/${school_admin_id}`);
