@@ -51,6 +51,9 @@ class Teacher < ActiveRecord::Base
   include DeviseInvitable::Inviter
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  validates :first_name, :presence => true, :length => { :maximum => 30 }
+  validates :middle_name,  :length => { :maximum => 30 }
+  validates :last_name, :presence => true, :length => { :maximum => 30 }
   validates :cell_number, :presence => true,
             :numericality => true,
             :length => {:minimum => 10, :maximum => 15}
