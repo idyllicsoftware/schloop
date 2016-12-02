@@ -69,4 +69,38 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     }
   end
 
+  # recipients: {
+  # grade_id: [div_id1, div_id2]
+  # grade_id: [div_id1, div_id2]
+  # }
+  # "recipients": {
+  #   "1": [1, 2],
+  #   "2": [3, 4]
+  # }
+  def share
+    errors = []
+    activity_id = params[:activity_id]
+    activity = Activity.find_by(id: activity_id)
+
+    errors << "Invalid activity, please try again." if activity.blank?
+    share_response = activity.share(@current_user, params[:recipients]) if errors.blank?
+
+    if share_response[:success]
+      render json: {
+        success: true,
+        error: nil,
+        data: {}
+      }
+    else
+      render json: {
+        success: false,
+        error:  {
+          code: 0,
+          message: errors
+        },
+        data: nil
+      }
+    end
+  end
+
 end

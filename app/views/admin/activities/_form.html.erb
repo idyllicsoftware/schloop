@@ -2,6 +2,7 @@
    <div class="modal-dialog modal-lg">
      <div class="modal-content">
        <div class="modal-body">
+       <div class="close-form hidden">X</div>
         <%= form_tag '', id:'activity_creation_form', class:"web-content-form" do %>
           <div class="row">
             <div class="form-group col-md-6">
@@ -35,8 +36,9 @@
           </div>
           <div class="row">
             <div class="form-group col-md-6 mb25 mt25">
+              <p>Category :</p>
               <select id="select_multiple" multiple name="activity[categories][]" required class="form-control input-field">
-                <option disabled="disabled" value="" selected="selected">Category :</option>
+                <!-- <option disabled="disabled" value="" selected="selected">Category :</option> -->
                 <% @categories.each do |category|%>
                     <option value="<%= category.id %>"><%= category.name %></option>
                 <% end %>
@@ -68,7 +70,7 @@
            <input type="hidden" class="activity_id_hidden_input" name="id" />
            <%= hidden_field_tag :type,  'thumbnail'%>
            <div class="row">
-             <div class="form-group col-md-6 image-attach">
+             <div class="form-group col-md-6 image-attach thumb_img">
                <p class="mandatory">Thumbnail Image</p>
                <div class="file_upload_files--upload-block">
                  <div class="fileUpload file_upload_files--fileUploadBtn">
@@ -95,7 +97,7 @@
            <input type="hidden" class="activity_id_hidden_input" name="id" />
            <%= hidden_field_tag :type,  'reference'%>
           <div class="row">
-            <div class="form-group col-md-6 image-attach">
+            <div class="form-group col-md-6 image-attach ref_img">
               <p class="mandatory">Reference Image</p>
                   <div class="file_upload_files--upload-block">
                       <div class="fileUpload file_upload_files--fileUploadBtn">
@@ -116,7 +118,6 @@
           </div>
          </form>
          </div>
-
           <div class="action-btn">
             <button id="activitySubmit" type="button" class="btn btn-primary">ADD ACTIVITY</button>
             <button class="btn btn-primary" data-dismiss="modal" aria-label="Cancel">CANCEL</button>

@@ -52,13 +52,14 @@ Rails.application.routes.draw do
 
 ############################################################################
     resources :schools do
-      member do
-      end
       collection do
         get :all
       end
 
-      resources :ecirculars do
+      resources :ecirculars, only: [:create], shallow: true do
+        collection do
+          get :all
+        end
       end
 
       resources :school_admins, only: [:index, :create, :update, :destroy], shallow: true do
@@ -113,6 +114,7 @@ Rails.application.routes.draw do
 
       get  "/activities" => "activities#index"
       get  "/activity/categories" => "activities#get_categories"
+      post  "/activity/:activity_id/share" => "activities#share"
     end
   end
 

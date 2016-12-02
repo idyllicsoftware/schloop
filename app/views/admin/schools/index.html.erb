@@ -78,6 +78,7 @@
       {{#status}}
         <a class="deactivate_activity pull-right ml10" data-activity-id="{{id}}">Deactivate</a>
       {{/status}}
+      <a class="pull-right ml10 activity-preview" data-activity-id="{{id}}">Preview</a>
       {{^status}}
         <a class="pull-right ml10 disabled">Deactivated</a>
       {{/status}}
@@ -126,6 +127,5 @@
       </div>
   {{/schools}}
 </script>
-
 
 <%= render :partial => "admin/activities/form" %>

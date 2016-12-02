@@ -1,5 +1,5 @@
 class PasswordResetsController < ApplicationController
-  # for user (PA or SA)
+
   def create
   	user = User.find_by_email(params[:user][:email])
   	user.send_password_reset if user
@@ -13,6 +13,7 @@ class PasswordResetsController < ApplicationController
   def update
   	errors = []
 	  @user = User.find_by_reset_password_token!(params[:format])
+
 	  if @user.reset_password_sent_at < 2.hours.ago
 	    redirect_to new_password_reset_path, :alert => "Password reset has expired."
 	  else
@@ -59,7 +60,6 @@ class PasswordResetsController < ApplicationController
   def parent_new
   end
   def create_for_parent
-    binding.pry
     parent = Parent.find_by_email(params[:email])
     parent.send_password_reset if parent
     redirect_to root_url,:notice => "Email sent with password reset instructions."    
@@ -72,4 +72,5 @@ class PasswordResetsController < ApplicationController
   def parent_update
     
   end
+
 end
