@@ -65,8 +65,8 @@ class Activity < ActiveRecord::Base
         reference_files << { s3_url: file.name, original_filename: file.original_filename }
       end
       activities_data << {
-        grade_id: grade.id,
-        grade_name: grade.name,
+        grade_id: (grade.id rescue nil),
+        grade_name: (grade.name rescue nil),
         master_grade_id: activity.master_grade.id,
         master_grade_name: activity.master_grade.name,
         subject_id: (subject.id rescue nil) ,
