@@ -54,11 +54,14 @@ class ParentImport
         row["password"] = password
         division = Division.where(:grade_id => @@grade_id, :name => row["division"])
         division_id = division.first.id rescue ""
-        parent_data = {"first_name" => row["first_name"], "last_name" => row["last_name"], "email" => row["email"], "cell_number" => row["cell_number"], "school_id" =>  row["school_id"], "password" => row["password"]}      
+        parent_data = {"first_name" => row["first_name"], "last_name" => row["last_name"], "email" => row["email"], "cell_number" => row["cell_number"], "school_id" =>  row["school_id"]}
         student_data = {"first_name" => row["student_first_name"], "last_name" => row["student_last_name"], "school_id" =>  row["school_id"]}
         student_profile_data = {"grade_id" => @@grade_id, "division_id"=> division_id}
         parent_detail_data = {"school_id" => @@school_id, "first_name" => row["first_name"], "last_name" => row["last_name"]}
         parent = Parent.find_by(email: row["email"]) || Parent.new(parent_data)
+        if parent.id.blank?
+           parent_data.merge("password" => row["password"])
+        end
         parent_detail = parent.parent_details.last ||  parent.parent_details.build(parent_detail_data)
         student =  parent.students.find_by(first_name: row["student_first_name"], :school_id => row["school_id"]) || parent.students.build(student_data)
         student_profile = student.student_profiles.first || student.student_profiles.build(student_profile_data)

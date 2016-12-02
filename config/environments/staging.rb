@@ -26,8 +26,8 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     :address              => "smtp.gmail.com",
     :port                 => 587,
-    :user_name            => "rian.rodreiguez@gmail.com",
-    :password             => "schloop11",
+    :user_name            => "support@schloop.co",
+    :password             => "Anagmba01!",
     :authentication       => "plain",
     :enable_starttls_auto => true
   }
@@ -56,7 +56,7 @@ Rails.application.configure do
   # Set to :debug to see everything in the log.
   config.log_level = :info
 
-  MAILER_HOST = "http://52.23.232.204/"
+  MAILER_HOST = "http://staging.schloop.co/"
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]

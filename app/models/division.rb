@@ -19,11 +19,11 @@
 
 class Division < ActiveRecord::Base
 	belongs_to :grade
-	has_many :student_profiles
+	has_many :student_profiles, dependent: :destroy
 	has_many :activity_shares, dependent: :destroy
 
 	validates :name, :presence => true
-	has_many :grade_teacher, :dependent => :destroy
-	has_many :ecircular_recipients
+	has_many :grade_teacher, dependent: :destroy
+	has_many :ecircular_recipientsstudent_profiles, dependent: :destroy
 end
 
