@@ -49,7 +49,7 @@ class Admin::EcircularsController < ApplicationController
 	end
 
 	def circular_params
-		user_type = @current_user.type rescue ''
+		user_type = current_user.type rescue ''
 		if user_type == 'ProductAdmin'
 		 	created_by_type = Ecircular.created_by_types[:product_admin]
 		elsif user_type == 'SchoolAdmin'
