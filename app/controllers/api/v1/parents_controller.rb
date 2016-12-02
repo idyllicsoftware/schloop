@@ -83,6 +83,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
       students_data << {
         id: student.id,
         school_id: student.school_id,
+        school_name: student.school.name,
         first_name: student.first_name,
         last_name: student.last_name,
         middle_name: student.middle_name,
