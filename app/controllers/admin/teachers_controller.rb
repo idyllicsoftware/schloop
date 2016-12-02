@@ -1,66 +1,15 @@
-=begin
-[
-  {
-    grade_id: '1',
-    grade_name: 'grade_one',
-    subjects_data: [
-      {
-        subject_id: '1',
-        subject_name: 'maths',
-        divisions_data: [
-          {division_id: '1', division_name: 'A', check:status: true},
-          {division_id: '2', division_name: 'B', check:status: false},
-        ]
-      },
-      {
-        subject_id: '2',
-        subject_name: 'Sci',
-        divisions_data: [
-          {division_id: '1', division_name: 'A', check:status: true},
-          {division_id: '2', division_name: 'B', check:status: true},
-        ]
-      }
-    ]
-  },
-  {
-    grade_id: '2',
-    grade_name: 'grade_two',
-    subjects_data: [
-      {
-        subject_id: '1',
-        subject_name: 'maths',
-        divisions_data: [
-          {division_id: '1', division_name: 'A', check:status: false},
-          {division_id: '2', division_name: 'B', check:status: false},
-        ]
-      },
-      {
-        subject_id: '2',
-        subject_name: 'Sci',
-        divisions_data: [
-          {division_id: '1', division_name: 'A', check:status: false},
-          {division_id: '2', division_name: 'B', check:status: true},
-        ]
-      }
-    ]
-  }
-]
-
-=end
 class Admin::TeachersController < ApplicationController
-
   before_action :authenticate_user!
   before_action :find_school, only: [:index, :create]
   before_action :find_teacher, only: [:update, :destroy]
   layout "admin"
-
 
   def index
     school_teachers = []
     @school_teachers =@school.teachers.order(:id)
     #@school_teachers.order(:created_at)
 
-   # @school_teachers.sort_by { |m| [ m.updated_at,m.created_at].max}.reverse!
+    # @school_teachers.sort_by { |m| [ m.updated_at,m.created_at].max}.reverse!
     @school_teachers.each do |teacher|
       grade_teacher_data = get_grade_teacher_data(teacher.id)
       school_teachers << {
@@ -148,7 +97,7 @@ class Admin::TeachersController < ApplicationController
   end
 
   def update_school_teacher_params
-      params.require(:teacher).permit(:first_name, :last_name, :cell_number)
+    params.require(:teacher).permit(:first_name, :last_name, :cell_number)
   end
 
 =begin
@@ -175,10 +124,10 @@ class Admin::TeachersController < ApplicationController
           subject_name: data.subject.name,
           divisions_data: []
         }
-        
+
         subjects_data[data.subject_id][:divisions_data] << {
           division_id: data.division_id,
-          division_name: data.division.name        
+          division_name: data.division.name
         }
       end
       grade_teacher_data << {

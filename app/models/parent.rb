@@ -44,15 +44,14 @@
 #
 
 class Parent < User
-	has_many :students, :dependent => :destroy
-	has_many :parent_details,  :dependent => :destroy
+  has_many :students, dependent: :destroy
+  has_many :parent_details,  dependent: :destroy
   validates :cell_number, :presence => true,
             :numericality => true,
             :length => {:minimum => 10, :maximum => 15}
-	after_create :send_invitation
+  after_create :send_invitation
 
-
-   validate do |parent|
+  validate do |parent|
     parent.students.each do |student|
       next if student.valid?
       student.errors.full_messages.each do |message|
@@ -61,10 +60,10 @@ class Parent < User
       end
     end
   end
-	
+
   def send_invitation
     Admin::AdminMailer.welcome_message(self.email, self.first_name, self.password).deliver_now
-  end	
+  end
 
   def password_required?
     new_record? ? false : super

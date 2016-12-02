@@ -59,10 +59,10 @@ class Ecircular < ActiveRecord::Base
 			grouped_circulars = circular.ecircular_recipients.group_by do |x| x.grade_id end
 			grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
 			grouped_circulars.each do |grade_id, recipients_data|
-				recipient = {grade_id: grade_id, grade_name: grades_by_id[grade_id].name}
+				recipient = {grade_id: grade_id, grade_name: (grades_by_id[grade_id].name rescue "-")}
 				recipient[:divisions] = []
 				recipients_data.each do |rec|
-					recipient[:divisions] << {div_id: rec.division_id, div_name: rec.division.name}
+					recipient[:divisions] << {div_id: rec.division_id, div_name: (rec.division.name rescue "-")}
 				end
 				recipients << recipient
 			end

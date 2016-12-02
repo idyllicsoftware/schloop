@@ -103,6 +103,13 @@ Rails.application.routes.draw do
       get  "/activities" => "activities#index"
       get  "/activity/categories" => "activities#get_categories"
       post  "/activity/:activity_id/share" => "activities#share"
+
+
+      post "/parent/login" => 'parents#login'
+      post "/parent/reset_password" => 'parents#reset_password'
+      get "/parent/profile" => 'parents#profile'
+      post "/parent/ecirculars" => 'parents#circulars'
+      post "/parent/activities" => 'parents#activities'
     end
   end
 
