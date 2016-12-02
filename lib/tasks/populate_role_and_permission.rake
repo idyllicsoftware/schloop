@@ -1,4 +1,3 @@
-
 namespace :seed do
   desc "create roles"
   task :populate_roles => :environment do
