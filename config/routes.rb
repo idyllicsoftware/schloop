@@ -36,7 +36,8 @@ Rails.application.routes.draw do
     post '/password_resets/create' => 'password_resets#create'
     get 'password_resets/edit' => 'password_resets#edit'
     patch 'password_resets/update' => 'password_resets#update'
-
+    get 'password_resets/parent_new' => 'password_resets#parent_new'
+    post 'password_resets/create_for_parent' => 'password_resets#create_for_parent'
   namespace :admin do
     resources :parent_imports, only: [:new, :create]
     resources :students

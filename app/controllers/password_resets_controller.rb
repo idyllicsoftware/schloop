@@ -58,8 +58,11 @@ class PasswordResetsController < ApplicationController
   #for parent
   def parent_new
   end
-  def create_for_create
-    
+  def create_for_parent
+    binding.pry
+    parent = Parent.find_by_email(params[:email])
+    parent.send_password_reset if parent
+    redirect_to root_url,:notice => "Email sent with password reset instructions."    
   end
   
   def parent_edit
