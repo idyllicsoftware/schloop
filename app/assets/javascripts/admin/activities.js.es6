@@ -49,13 +49,15 @@ class Activities extends SchloopBase {
                 var inEl = $(this);
                     inEl.parents().eq(1).removeClass('selected');
                     inEl.removeAttr('disabled');
-                    inEl.parents().eq(4).find('.placeholder').empty();       
+                    inEl.parents().closest('div').find('.placeholder').empty();
             });    
             createWebContentModal.find('.action-btn').show();
             createWebContentModal.find('.file_upload_files--upload-block').show();
             createWebContentModal.find('.image-attach img').remove();
             createWebContentModal.find('.close-form').addClass('hidden');
             createWebContentModal.find('label.error').addClass('hidden');
+            createWebContentModal.find('.thumb_img').show();
+            createWebContentModal.find('.ref_img').show();
         });
 
         _self.initForm(jForm, null, $("#activitySubmit"));
@@ -164,12 +166,17 @@ class Activities extends SchloopBase {
                         //     html = Mustache.to_html(_self.activitiesPreviewTpl, activity_data);
                         // }
                         //activityPreviewModal.modal('show');
-                        
+                       
                          if(_self.Activities.hasOwnProperty(activity_id)){
                             var activity_data =  _self.Activities[activity_id],
-                                thumb_img_url = activity_data.thumbnail_file.s3_url,ref_img_list = [];    
+                                thumb_img_url = activity_data.thumbnail_file.s3_url,ref_img_list = [],category_list = [];    
                             jForm.fillForm(_self.Activities[activity_id], 'activity');
                             jForm.find('input[name], select, textarea').attr('disabled', 'disabled');
+                            jForm.find('.ms-drop >ul >li').each(function(){
+                                if($(this).hasClass('selected')){
+                                    $(this).removeClass('selected');
+                                }
+                            });
                             jForm.find('.ms-drop >ul >li >label >input').each(function(){
                                 var inEl = $(this),
                                     inEl_val = inEl.val();
@@ -177,23 +184,36 @@ class Activities extends SchloopBase {
                                     if(inEl_val == category){
                                         inEl.parents().eq(1).addClass('selected');
                                     }
-                                });
-                                activity_data.categories.split("|").forEach(function(category_name){
-                                    var this_El = $(this);
-                                    inEl.parents().eq(4).find('.placeholder').append(category_name + ',');
                                 }); 
                                 inEl.attr('disabled', 'disabled');       
                             });
-                            createWebContentModal.find('.thumb_img').append('<img src="'+ thumb_img_url +'" style="width:200px; margin-bottom: 20px;">');
-                            activity_data.reference_files.forEach(function(ref_img){
-                                var ref_img_url = ref_img.s3_url,
-                                    ref_img_tag = '<li><img src="'+ ref_img_url +'" style="width:200px"></li>';
-                                    ref_img_list.push(ref_img_tag);
+                            activity_data.categories.split("|").forEach(function(category_name){
+                                var this_El = category_name;
+                                    category_list.push(this_El);
                             });
-                            createWebContentModal.find('.ref_img').append('<ul style="padding: 0px; list-style: none;">'+ ref_img_list.join("") +'</ul>');
+                            jForm.find('.ms-choice >.placeholder').replaceWith('<span class="placeholder">'+ category_list.join(',') +'</span>');
+                            createWebContentModal.find('.thumb_img').show();
+                            createWebContentModal.find('.ref_img').show();
+                            createWebContentModal.find('.file_upload_files--upload-block').show();
+                            if(thumb_img_url) {
+                                createWebContentModal.find('.thumb_img >.thumb_img_list').replaceWith('<img src="'+ thumb_img_url +'" style="width:200px; margin-bottom: 20px;">');
+                            }else{
+                                createWebContentModal.find('.thumb_img').hide();
+                            }
+                            activity_data.reference_files.forEach(function(ref_img){
+                                    var ref_img_url = ref_img.s3_url,
+                                        ref_img_tag = '<li><img src="'+ ref_img_url +'" style="width:200px"></li>';
+                                        ref_img_list.push(ref_img_tag);
+                            });
+                            if(!ref_img_list.length == 0){
+                                createWebContentModal.find('.ref_img >.ref_img_list').replaceWith('<ul style="padding: 0px; list-style: none;">'+ ref_img_list.join("") +'</ul>');
+                            }else{
+                                createWebContentModal.find('.ref_img').hide();
+                            }
                             createWebContentModal.find('.action-btn').hide();
                             createWebContentModal.find('.file_upload_files--upload-block').hide();
                             createWebContentModal.find('.close-form').removeClass('hidden');
+                            createWebContentModal.find('label.error').addClass('hidden');
                             createWebContentModal.find('.close-form').on('click',function(){
                                 createWebContentModal.modal('hide');
                             });
