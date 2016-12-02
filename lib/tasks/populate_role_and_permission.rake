@@ -1,5 +1,22 @@
 
 namespace :seed do
+  #Rake task to populate roles
+  desc "rake seed:populate_roles RAILS_ENV=<environment_name> --trace #Task for creating roles"
+  task populate_roles: :environment do
+    puts "Creating Roles..."
+    User.reset_column_information
+
+    default_user = User.first_or_create(:email => "admin@schloop.co",
+                                         :password => "Test123",
+                                         :type => "ProductAdmin")
+
+    require Rails.root.join('db','role_permission_data','roles_data.rb').to_s
+    roles_data_hash = ROLES
+
+    puts "Roles created..."
+
+
+namespace :seed do
   desc "create roles"
   task :populate_roles => :environment do
     puts "creating roles..."
