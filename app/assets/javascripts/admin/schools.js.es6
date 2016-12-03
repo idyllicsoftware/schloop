@@ -22,6 +22,11 @@ class Schools extends SchloopBase {
             
         $(document).on('click','#create-school-btn', function () {
             createModalEl.modal('show');
+            createModalEl.find('label.error').addClass('hidden');
+        });
+
+        $(document).on('click','.add-school', function () {
+            createModalEl.find('label.error').removeClass('hidden');
         });
 
         self.loadSchools();
@@ -58,6 +63,7 @@ class Schools extends SchloopBase {
 
         $(document).on('click','.cancel-creation', function (e) {
             createModalEl.modal('hide');
+            createSchoolFormEl[0].reset();
             e.preventDefault();
         });
     };
