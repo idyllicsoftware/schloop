@@ -167,6 +167,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
     page = params[:page]
     page_size = 20
+    category_ids = params[:category_ids]
 
     student_grade = @student_profile.grade
 
