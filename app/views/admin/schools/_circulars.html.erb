@@ -21,10 +21,10 @@
           <input type="text" class="form-control input-field" required name="title" placeholder="Subject" autocomplete="off" maxlength="50" />
         </div>
         <div class="form-group col-md-12">
-          <input type="text" class="form-control input-field" placeholder="Body" autocomplete="off" maxlength="10" disabled="disabled"/>
+          <p class="circular-body">Body</p>
           <textarea class="form-control input-field circular-textarea" required name="body"></textarea>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 mt20">
           <div class="col-md-5 border_botm">
               <a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
 		          	    	<span class="select-recipients">
@@ -42,11 +42,40 @@
 						    </span>
               </a>
           </div>
-          <div class="col-md-2">
-              <button type="submit" class="btn btn-primary">SEND</button>
+        </div>  
+      <% end %>
+      <div class="pl15 pr15" id="file-attachment">
+        <div class="col-md-12 border-botm">
+          <div id="col-md-6 mb0">
+            <form class="fileDetails uploadFiles_btn_container clearfix" style="display: block;">
+              <input type="hidden" class="circular_id_hidden_input" name="id" />
+              <%= hidden_field_tag :type,  'reference'%>
+              <div class="row">
+                <div class="form-group col-md-6 image-attach">
+                  <div class="file_upload_files--upload-block">
+                      <div class="fileUpload file_upload_files--fileUploadBtn">
+                        <span><i class="fa fa-cloud-upload"></i> choose file</span>
+                        <input class="fileuploadInput upload" type="file" multiple name="file" data-url="/admin/schools/:school_id/ecirculars/upload_file" accept="image/*">
+                      </div>
+                      <button class="btn btn-primary text-uppercase disabled uploadBtn hidden">upload</button>
+                      <div class="progressWrap" style="padding: 15px 0px;display: none;">
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                            <span></span>
+                          </div>
+                        </div>
+                      </div>
+                      <table class="selected_files"></table>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
-      <% end %>
+      </div>
+      <div class="col-md-2 send-btn">
+          <button id="circularSubmit" class="btn btn-primary">SEND</button>
+      </div>
     </div>
 
 
