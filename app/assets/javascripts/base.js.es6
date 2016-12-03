@@ -184,7 +184,7 @@ class SchloopBase {
 
     initFormSubmit (jForm, fieldsMapping, cb, extraParams, btnEl){
         let self = this;
-
+        
         self.formValidatorInit(jForm, fieldsMapping);
 
         jForm.submit(function (e) {
