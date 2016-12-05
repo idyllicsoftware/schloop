@@ -17,13 +17,18 @@ class PasswordResetsController < ApplicationController
   	  if @user.reset_password_sent_at < 2.hours.ago
   	    redirect_to new_password_reset_path, :alert => "Password reset has expired."
   	  else
-  	    @user.password = params[:school_admin][:password]
-  	    @user.save!
-  	    errors << "Invalid old password" unless @user.valid_password?(params[:school_admin][:password])
-  	    if errors.blank?
+        begin
+    	    @user.password = params[:school_admin][:password]
+    	    @user.save!
+        rescue Exception => ex 
+          errors << ex.message
+  	    end 
+        errors << "Invalid old password" unless @user.valid_password?(params[:school_admin][:password])
+
+        if errors.blank?
   	    	redirect_to root_url, :notice => "Password has been reset!"
   	  	else
-  	    	redirect_to new_password_reset_path, :alert => "Password  is not valid"
+  	    	render :edit, :alert => "Password  is not valid"
   	  	end
   	  end
     else
@@ -45,17 +50,26 @@ class PasswordResetsController < ApplicationController
   def teacher_update
     errors = []
     @teacher = Teacher.find_by_reset_password_token!(params[:format])
-    if @teacher.reset_password_sent_at < 2.hours.ago
-      redirect_to new_password_reset_path, :alert => "Password reset has expired."
-    else
-      @teacher.password = params[:teacher][:password]
-      @teacher.save!
-      errors << "Invalid old password" unless @teacher.valid_password?(params[:teacher][:password])
-      if errors.blank?
-        redirect_to root_url, :notice => "Password has been reset!"
+    if params[:teacher][:password] == params[:teacher][:password_confirmation]
+      if @teacher.reset_password_sent_at < 2.hours.ago
+        redirect_to new_password_reset_path, :alert => "Password reset has expired."
       else
-        redirect_to new_password_reset_path, :alert => "Password  is not valid"
+        begin
+          @teacher.password = params[:teacher][:password]
+          @teacher.save!  
+        rescue Exception => ex
+          errors << ex.message
+        end
+        errors << "Invalid old password" unless @teacher.valid_password?(params[:teacher][:password])
+        
+        if errors.blank?
+          redirect_to root_url, :notice => "Password has been reset!"
+        else
+          render :edit, :alert => "Password  is not valid"
+        end
       end
+    else
+      redirect_to root_url, :notice => "Password does not match. Try again"
     end
   end
 
@@ -75,18 +89,26 @@ class PasswordResetsController < ApplicationController
   def parent_update
     errors = []
     @parent = Parent.find_by_reset_password_token!(params[:format])
-    if @parent.reset_password_sent_at < 2.hours.ago
-      redirect_to new_password_reset_path, :alert => "Password reset has expired."
-    else
-      @parent.password = params[:parent][:password]
-      @parent.save!
-      errors << "Invalid old password" unless @parent.valid_password?(params[:parent][:password])
-      if errors.blank?
-        redirect_to root_url, :notice => "Password has been reset!"
+    if params[:parent][:password] == params[:parent][:password_confirmation]
+      if @parent.reset_password_sent_at < 2.hours.ago
+        redirect_to new_password_reset_path, :alert => "Password reset has expired."
       else
-        redirect_to new_password_reset_path, :alert => "Password  is not valid"
+        begin
+          @parent.password = params[:parent][:password]
+          @parent.save!
+        rescue Exception => e
+          errors << ex.message
+        end
+        errors << "Invalid old password" unless @parent.valid_password?(params[:parent][:password])
+        
+        if errors.blank?
+          redirect_to root_url, :notice => "Password has been reset!"
+        else
+          redirect_to new_password_reset_path, :alert => "Password  is not valid"
+        end
       end
+    else
+      redirect_to root_url, :notice => "Password does not match. Try again"
     end
   end
-
 end

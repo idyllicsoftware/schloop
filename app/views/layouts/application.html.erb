@@ -12,6 +12,14 @@
 <% if notice == "Password does not match. Try again" %>
   <p>Password does not match. Try again</p>
 <% end %>
+<% if notice == "Password has been reset!" %>
+  <p>Password has been reset!</p>
+<% end %>
+<% if alert == "Password is not valid" %>
+  <p>Password is not valid</p>
+<% end %>
+
+
   <%= yield %>
 
   <%= javascript_include_tag 'application' %>
