@@ -59,6 +59,9 @@ class Admin::TeachersController < ApplicationController
     render json: {success: true}
   end
 
+  def forget_password 
+  end
+
   private
 
   def find_school
