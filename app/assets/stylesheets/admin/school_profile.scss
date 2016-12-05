@@ -563,12 +563,23 @@
 
 #circular-history-modal {
 	color: #666666;
-	.attachments-list, .subject-body {
-		border-bottom: 1px solid #ccc;
-	}
-	h4{
-		font-weight: 600;
-	}
+	.preview-container {
+		.subject-body {
+			border-bottom: 1px solid #ccc;
+		}
+		h4{
+			font-weight: 600;
+		}
+		ul {
+			list-style: none;
+    		padding: 10px 10px 20px 10px;
+    		border-bottom: 1px solid #ccc;
+    		img {
+    			width: 200px;
+    			height: 200px;
+    		}
+		}
+	}	
 	.circulars-main-form {
 		.upload-photo-wrap {
 	      #upload-photo {
