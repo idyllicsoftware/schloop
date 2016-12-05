@@ -112,7 +112,7 @@ Rails.application.routes.draw do
       get "/parent/profile" => 'parents#profile'
       post "/parent/ecirculars" => 'parents#circulars'
       post "/parent/activities" => 'parents#activities'
-      get  "/parent/forgot_password" => "parent#forgot_password"
+      get  "/parent/forgot_password" => "parents#forgot_password"
     end
   end
 
