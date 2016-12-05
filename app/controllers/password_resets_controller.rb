@@ -13,19 +13,22 @@ class PasswordResetsController < ApplicationController
   def update
   	errors = []
 	  @user = User.find_by_reset_password_token!(params[:format])
-
-	  if @user.reset_password_sent_at < 2.hours.ago
-	    redirect_to new_password_reset_path, :alert => "Password reset has expired."
-	  else
-	    @user.password = params[:school_admin][:password]
-	    @user.save!
-	    errors << "Invalid old password" unless @user.valid_password?(params[:school_admin][:password])
-	    if errors.blank?
-	    	redirect_to root_url, :notice => "Password has been reset!"
-	  	else
-	    	redirect_to new_password_reset_path, :alert => "Password  is not valid"
-	  	end
-	  end
+    if params[:school_admin][:password] == params[:school_admin][:password_confirmation]
+  	  if @user.reset_password_sent_at < 2.hours.ago
+  	    redirect_to new_password_reset_path, :alert => "Password reset has expired."
+  	  else
+  	    @user.password = params[:school_admin][:password]
+  	    @user.save!
+  	    errors << "Invalid old password" unless @user.valid_password?(params[:school_admin][:password])
+  	    if errors.blank?
+  	    	redirect_to root_url, :notice => "Password has been reset!"
+  	  	else
+  	    	redirect_to new_password_reset_path, :alert => "Password  is not valid"
+  	  	end
+  	  end
+    else
+      redirect_to root_url, :notice => "Password does not match. Try again"
+    end
   end
 
   # for teacher
