@@ -152,7 +152,7 @@
           </div>
 
           <div id="forgotPasswordDiv" class="hidden mt30" >
-            <%= form_tag '/users/password', id:"forgot-password-form", novalidate:true do %>
+            <%= form_tag 'password_resets/create' , id:"forgot-password-form", novalidate:true do %>
                 <div class="form-group">
                   <input type="email" class="form-control input-field" required name="user[email]" autocomplete="off" placeholder="Email Address"  maxlength="40" />
                 </div>

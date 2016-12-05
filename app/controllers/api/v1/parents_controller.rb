@@ -1,5 +1,5 @@
 class Api::V1::ParentsController < Api::V1::BaseController
-  skip_before_filter :authenticate, only: [:register, :login]
+  skip_before_filter :authenticate, only: [:register, :login, :forgot_password]
 
   def login
     parent = Parent.find_by_email(params[:parent][:email])

@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   root 'home#index'
-
   devise_for :users, controllers:{
                          sessions: 'admin/users/sessions',
                          registrations: 'admin/users/registrations',
@@ -30,15 +30,30 @@ Rails.application.routes.draw do
   #                        invitations: 'admin/parents/invitations'
   # }
 
+    post 'password_resets/create_for_teacher' => 'password_resets#create_for_teacher'
+    get 'password_resets/teacher_edit' => 'password_resets#teacher_edit'
+    patch 'password_resets/teacher_update' => 'password_resets#teacher_update'
+    post '/password_resets/create' => 'password_resets#create'
+    get 'password_resets/edit' => 'password_resets#edit'
+    patch 'password_resets/update' => 'password_resets#update'
+    get 'password_resets/parent_new' => 'password_resets#parent_new'
+    post 'password_resets/create_for_parent' => 'password_resets#create_for_parent'
+    get 'password_resets/parent_edit' => 'password_resets#parent_edit'
+    patch 'password_resets/parent_update' => 'password_resets#parent_update'
+
   namespace :admin do
     resources :parent_imports, only: [:new, :create]
     resources :students
     resource :users
 
-    namespace :teachers do
+
+    namespace :teachers do #teachers folder in admin
       resources :teacher_imports, only: [:create], shallow: true
     end
+##############################################################################
+    get 'teachers/forget_password' => 'teachers#forget_password'
 
+############################################################################
     resources :schools do
       collection do
         get :all
@@ -55,6 +70,7 @@ Rails.application.routes.draw do
       end
 
       resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
+          
       end
 
       resources :grades, only: [:index, :create, :destroy], shallow: true do
@@ -68,7 +84,6 @@ Rails.application.routes.draw do
 
         end
       end
-
     end
 
     resource :parents do
@@ -112,7 +127,7 @@ Rails.application.routes.draw do
       get "/parent/profile" => 'parents#profile'
       post "/parent/ecirculars" => 'parents#circulars'
       post "/parent/activities" => 'parents#activities'
-      get  "/parent/forgot_password" => "parent#forgot_password"
+      get  "/parent/forgot_password" => "parents#forgot_password"
     end
   end
 

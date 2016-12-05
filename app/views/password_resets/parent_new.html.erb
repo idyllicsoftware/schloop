@@ -1,0 +1,4 @@
+<%= form_tag '/password_resets/create_for_parent' , novalidate:true do %>
+    <input type="email" required name="email" autocomplete="off" placeholder="Email Address"  maxlength="40" />
+    <button type="submit"> send a rest password link </button>
+<% end %>
