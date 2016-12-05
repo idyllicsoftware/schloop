@@ -199,7 +199,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
             page_size: page_size,
             record_count: total_records,
             total_pages: (total_records/page_size.to_f).ceil,
-            current_page: (page || 0)
+            current_page: (page || 0).to_i
           },
           activities: activities_data
         }
