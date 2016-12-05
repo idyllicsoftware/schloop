@@ -70,7 +70,20 @@ class PasswordResetsController < ApplicationController
   end
   
   def parent_update
-    
+    errors = []
+    @parent = Parent.find_by_reset_password_token!(params[:format])
+    if @parent.reset_password_sent_at < 2.hours.ago
+      redirect_to new_password_reset_path, :alert => "Password reset has expired."
+    else
+      @parent.password = params[:parent][:password]
+      @parent.save!
+      errors << "Invalid old password" unless @parent.valid_password?(params[:parent][:password])
+      if errors.blank?
+        redirect_to root_url, :notice => "Password has been reset!"
+      else
+        redirect_to new_password_reset_path, :alert => "Password  is not valid"
+      end
+    end
   end
 
 end

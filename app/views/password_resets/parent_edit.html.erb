@@ -1,9 +1,9 @@
-<%= form_for @teacher, :url => password_resets_parent_update_path (params[:format]) do |f| %>
-  <% if @teacher.errors.any? %>
+<%= form_for @parent, :url => password_resets_parent_update_path(params[:format]) do |f| %>
+  <% if @parent.errors.any? %>
     <div class="error_messages">
       <h2>Form is invalid</h2>
       <ul>
-        <% for message in @teacher.errors.full_messages %>
+        <% for message in @parent.errors.full_messages %>
           <li><%= message %></li>
         <% end %>
       </ul>
