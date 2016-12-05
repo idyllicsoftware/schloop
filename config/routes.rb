@@ -62,6 +62,7 @@ Rails.application.routes.draw do
       resources :ecirculars, only: [:create], shallow: true do
         collection do
           get :all
+          post :upload_file
         end
       end
 

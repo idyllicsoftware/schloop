@@ -22,10 +22,15 @@ class Schools extends SchloopBase {
             
         $(document).on('click','#create-school-btn', function () {
             createModalEl.modal('show');
+            createModalEl.find('label.error').addClass('hidden');
+        });
+
+        $(document).on('click','.add-school', function () {
+            createModalEl.find('label.error').removeClass('hidden');
         });
 
         self.loadSchools();
-
+        
         this.initFormSubmit(createSchoolFormEl, {
             'school[name]': 'name',
             'school[photo]': 'photo',
@@ -36,7 +41,6 @@ class Schools extends SchloopBase {
             'school[website]': 'website',
             'school[logo]': 'logo',
             'administrator[first_name]': 'name',
-
             'administrator[last_name]': 'name',
             'administrator[cell_number]': 'phone',
             'administrator[email]': 'email',
@@ -57,8 +61,10 @@ class Schools extends SchloopBase {
             processData: false
         });
 
-        $(document).on('click','.cancel-creation', function () {
+        $(document).on('click','.cancel-creation', function (e) {
             createModalEl.modal('hide');
+            createSchoolFormEl[0].reset();
+            e.preventDefault();
         });
     };
 

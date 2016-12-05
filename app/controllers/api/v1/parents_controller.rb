@@ -83,6 +83,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
       students_data << {
         id: student.id,
         school_id: student.school_id,
+        school_name: student.school.name,
         first_name: student.first_name,
         last_name: student.last_name,
         middle_name: student.middle_name,
@@ -153,7 +154,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
 
   def activities
-    errors, circular_data = [], []
+    errors, search_params = [], {}
 
     @student = Student.find_by(id: params[:student_id])
     errors << "Student not found" if @student.blank?
@@ -166,19 +167,21 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
     page = params[:page]
     page_size = 20
+    category_ids = params[:category_ids]
 
     student_grade = @student_profile.grade
 
     associated_activity_ids = ActivityShare.where(
       school_id: school.id,
       grade_id: student_grade.id,
-      division_id: @student_profile.division_id).pluck(:activity_id)
-
+      division_id: @student_profile.division_id).pluck(:activity_id).uniq
 
     if errors.blank?
-      search_params = {master_grade_id: student_grade.master_grade_id}
+      subjects_by_master_id = student_grade.subjects.index_by(&:master_subject_id)
+
       mapping_data = {
-        master_grade_id_grade_id: {student_grade.master_grade_id => student_grade}
+        master_grade_id_grade_id: {student_grade.master_grade_id => student_grade},
+        subjects_by_master_id: subjects_by_master_id
       }
 
       search_params[:id] = associated_activity_ids

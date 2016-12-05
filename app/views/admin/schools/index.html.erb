@@ -9,7 +9,7 @@
         <a href="#schools-tab" data-toggle="tab">Schools</a>
       </li>
       <li>
-        <a href="#contents-tab" data-toggle="tab">Content</a>
+        <a href="#contents-tab" data-toggle="tab">Activity</a>
       </li>
     </ul>
 
@@ -101,7 +101,7 @@
     {{#schools}}
       <div class="col-md-4">
         <div class="schools-profile">
-          <a href="/admin/schools/{{ id }}">
+          <a href="/admin/schools/{{ id }}" target="_blank">
             <div class="schools-profile-active">
               <img src="<%= asset_path('home/star.png') %>">
             </div>

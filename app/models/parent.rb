@@ -68,4 +68,19 @@ class Parent < User
   def password_required?
     new_record? ? false : super
   end
+
+  def generated_token
+    loop do
+      token = SecureRandom.uuid.gsub(/\-/, '')
+      return token unless Teacher.where(token: token).first
+    end
+  end
+
+  def send_password_reset
+    token = generated_token
+    self.reset_password_token = token
+    self.reset_password_sent_at = Time.zone.now
+    save!
+    UserMailer.teacher_password_reset(self).deliver
+  end
 end

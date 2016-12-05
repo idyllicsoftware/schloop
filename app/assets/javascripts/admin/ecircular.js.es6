@@ -135,26 +135,57 @@ class SchoolECircular extends SchloopBase {
     initEventListeners (){
         let _self = this,
         { school_id } = _self._config,
-        eCircularFormEl = $(".school-ecircular-form");
+        eCircularFormEl = $(".school-ecircular-form"),
+        circular_container = $('.circulars-container'),
+        file_attachment = circular_container.find("#file-attachment"),
+        btnEl = $('#circularSubmit'),
+        file_upload = new FileUpload({
+                jScope: file_attachment,
+                isImageUpload: true
+        });
 
         _self.initCircularTagPopover();
         _self.initRecipientsSelectPopover();
         _self.initCircularHistory();
 
+
         this.initFormSubmit(eCircularFormEl, {
             'title': 'name',
             'body': 'name',
         }, function (res) {
-            if(res.success) {
+            if(res.errors && res.errors.length) {
+                _self.showErrors(res.errors);
+            }else {
                 $('.selected_circular_tag').html('Select E-Circular');
                 $('.selected_circular_tag').next().val(null);
                 $(".select-recipients_name").html('Select recipients');
-                toastr.success('E-Circular sent successfully', '', {
-                    positionClass: 'toast-top-right cloud-display'
-                });
-                eCircularFormEl[0].reset();
+                circular_container.find(".circular_id_hidden_input").val(res.circular_id);
+                if(circular_container.find(".selected_files tr").length){
+                    btnEl.attr('disabled', 'disabled');
+                    circular_container.find(".uploadBtn").trigger('click');
+                }else {
+                    toastr.success('E-Circular sent successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
+                    eCircularFormEl[0].reset();
+                }
+            }
+        }, null, btnEl);
+
+        circular_container.find("#circularSubmit").on('click', function () {
+            if(!circular_container.find(".circular_id_hidden_input").val()) {
+                eCircularFormEl.submit();
             }else {
-                _self.showErrors(res.errors);
+                circular_container.find("#circularSubmit").attr('disabled', 'disabled');
+                circular_container.find(".uploadBtn").trigger('click');
+            }
+        });
+
+        $(document).on("uploadedFileResponse", function (event, res) {
+            if(res.result.success) {
+                _self.loadCircularHistory();
+            }else {
+                circular_container.find("#circularSubmit").removeAttr('disabled');
             }
         });
     };

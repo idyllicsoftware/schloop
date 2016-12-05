@@ -24,6 +24,6 @@ class Division < ActiveRecord::Base
 
 	validates :name, :presence => true
 	has_many :grade_teacher, dependent: :destroy
-	has_many :ecircular_recipientsstudent_profiles, dependent: :destroy
+	has_many :ecircular_recipients, dependent: :destroy
 end
 
