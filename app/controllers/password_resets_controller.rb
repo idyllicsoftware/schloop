@@ -1,5 +1,5 @@
 class PasswordResetsController < ApplicationController
-
+  
   def create
   	user = User.find_by_email(params[:user][:email])
   	user.send_password_reset if user
@@ -32,7 +32,7 @@ class PasswordResetsController < ApplicationController
   	  	end
   	  end
     else
-      redirect_to root_url, :notice => "Password does not match. Try again"
+      render :edit, :notice => "Password does not match. Try again"
     end
   end
 
