@@ -95,6 +95,7 @@ Rails.application.routes.draw do
       post "/teacher/dashboard" => 'teachers#dashboard'
       post "/teacher/reset_password" => "teachers#reset_password"
       get  "/teacher/profile" => "teachers#profile"
+      get  "/teacher/forgot_password" => "teachers#forgot_password"
 
       post "/ecircular/tags" => "ecirculars#tags"
       post "/ecircular/create" => "ecirculars#create"
@@ -111,6 +112,7 @@ Rails.application.routes.draw do
       get "/parent/profile" => 'parents#profile'
       post "/parent/ecirculars" => 'parents#circulars'
       post "/parent/activities" => 'parents#activities'
+      get  "/parent/forgot_password" => "parent#forgot_password"
     end
   end
 
