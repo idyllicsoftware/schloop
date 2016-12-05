@@ -107,6 +107,16 @@ class Api::V1::ParentsController < Api::V1::BaseController
     }
   end
 
+  def forgot_password
+    render json: {
+      success: true,
+      error: nil,
+      data: {
+        message: "Password reset instruction sent to your email"
+      }
+    }
+  end
+
   def circulars
     errors, circular_data = [], []
 

@@ -92,6 +92,16 @@ class Api::V1::TeachersController < Api::V1::BaseController
     end
   end
 
+  def forgot_password
+    render json: {
+      success: true,
+      error: nil,
+      data: {
+        message: "Password reset instruction sent to your email"
+      }
+    }
+  end
+
   def dashboard
     render json: {
       success: true,
