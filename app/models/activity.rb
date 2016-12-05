@@ -41,7 +41,7 @@ class Activity < ActiveRecord::Base
     if category_ids.present?
       activities= activities.joins("LEFT JOIN activity_categories ON activity_categories.activity_id = activities.id
                            LEFT JOIN categories ON activity_categories.category_id = categories.id")
-                    .where("categories.id in (?)", category_ids)
+                    .where("categories.id in (?)", category_ids).distinct
     end
     activities = activities.order(id: :desc)
 
