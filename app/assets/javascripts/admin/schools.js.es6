@@ -29,6 +29,19 @@ class Schools extends SchloopBase {
             createModalEl.find('label.error').removeClass('hidden');
         });
 
+        $(":file").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = imageIsLoaded;
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        function imageIsLoaded(e) {
+            $('.upload-logo').css('background-image', 'url(' + e.target.result +')');
+            $('.upload-logo').find('img').css('z-index','-1');
+        };
+
         self.loadSchools();
         
         this.initFormSubmit(createSchoolFormEl, {
