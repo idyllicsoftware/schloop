@@ -1,5 +1,5 @@
 class Api::V1::TeachersController < Api::V1::BaseController
-  skip_before_filter :authenticate, only: [:register, :login]
+  skip_before_filter :authenticate, only: [:register, :login, :forgot_password]
 
   def register
     errors = []
