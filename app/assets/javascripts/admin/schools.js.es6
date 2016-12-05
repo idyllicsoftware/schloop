@@ -22,7 +22,25 @@ class Schools extends SchloopBase {
             
         $(document).on('click','#create-school-btn', function () {
             createModalEl.modal('show');
+            createModalEl.find('label.error').addClass('hidden');
         });
+
+        $(document).on('click','.add-school', function () {
+            createModalEl.find('label.error').removeClass('hidden');
+        });
+
+        $(":file").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = imageIsLoaded;
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        function imageIsLoaded(e) {
+            $('.upload-logo').css('background-image', 'url(' + e.target.result +')');
+            $('.upload-logo').find('img').css('z-index','-1');
+        };
 
         self.loadSchools();
         
@@ -58,6 +76,7 @@ class Schools extends SchloopBase {
 
         $(document).on('click','.cancel-creation', function (e) {
             createModalEl.modal('hide');
+            createSchoolFormEl[0].reset();
             e.preventDefault();
         });
     };
