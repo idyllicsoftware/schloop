@@ -32,7 +32,8 @@ class PasswordResetsController < ApplicationController
   	  	end
   	  end
     else
-      render :edit, :notice => "Password does not match. Try again"
+      flash[:password_mismatch] = "Password does not match. Try again"
+      render :edit
     end
   end
 
@@ -69,8 +70,8 @@ class PasswordResetsController < ApplicationController
         end
       end
     else
-      redirect_to root_url, :notice => "Password does not match. Try again"
-    end
+      flash[:password_mismatch] = "Password does not match. Try again"
+      render :edit    end
   end
 
   #for parent
@@ -108,7 +109,8 @@ class PasswordResetsController < ApplicationController
         end
       end
     else
-      redirect_to root_url, :notice => "Password does not match. Try again"
+      flash[:password_mismatch] = "Password does not match. Try again"
+      render :edit
     end
   end
 end
