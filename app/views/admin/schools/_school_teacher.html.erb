@@ -62,33 +62,35 @@
     <label>Assign Grades & Subjects </label>
     <div class="scroll-grade">
       <% @school.grades.each do |grade| %>
-      <div class="col-md-12 form-group assign-grade">
-        <label><%= grade.name %> </label>
-        <input type="hidden" name="grade_id[]" value="<%= grade.id %>">
-        <div>
-          <label>SUBJECTS</label>
-          <ul class="checkbox_customized">
-            <% grade.subjects.each  do |subject| %>
-            <div class="col-md-12">
-              <li class="col-md-12"><input type="checkbox" class="subject_cls" id="subject<%= subject.id %>">
-                <label for="subject<%= subject.id %>"><%= subject.name %></label>
-              </li>
-              <div class="col-md-12 pl20">
-                <label>DIVISIONS</label>
-                <ul class="checkbox_customized">
-                  <% grade.divisions.each do |division| %>
-                  <li class="col-md-6"><input type="checkbox" name="grade[<%= grade.id %>]subjects[<%= subject.id %>]divisions[]" value="<%= division.id %>" id="subject<%= subject.id %>division<%= division.id %>" data-grade_id="<%= grade.id %>"
-                    data-subject_id="<%= subject.id %>">
-                    <label for="subject<%= subject.id %>division<%= division.id %>"><%= division.name %></label>
-                  </li>
-                  <% end %>
-                </ul>
-              </div>
-              </div>
-            <% end %>
-          </ul>
-        </div>
-      </div>
+        <% if grade.divisions.count != 0 %>
+          <div class="col-md-12 form-group assign-grade">
+            <label><%= grade.name %> </label>
+            <input type="hidden" name="grade_id[]" value="<%= grade.id %>">
+            <div>
+              <label>SUBJECTS</label>
+              <ul class="checkbox_customized">
+                <% grade.subjects.each  do |subject| %>
+                  <div class="col-md-12">
+                    <li class="col-md-12"><input type="checkbox" class="subject_cls" id="subject<%= subject.id %>">
+                      <label for="subject<%= subject.id %>"><%= subject.name %></label>
+                    </li>
+                    <div class="col-md-12 pl20">
+                      <label>DIVISIONS</label>
+                      <ul class="checkbox_customized">
+                        <% grade.divisions.each do |division| %>
+                        <li class="col-md-6"><input type="checkbox" name="grade[<%= grade.id %>]subjects[<%= subject.id %>]divisions[]" value="<%= division.id %>" id="subject<%= subject.id %>division<%= division.id %>" data-grade_id="<%= grade.id %>"
+                          data-subject_id="<%= subject.id %>">
+                          <label for="subject<%= subject.id %>division<%= division.id %>"><%= division.name %></label>
+                        </li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
       <% end %>
     </div>
     <div class="assign-grade-btn">

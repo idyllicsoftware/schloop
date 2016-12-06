@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  has_many :user_roles, dependent: :destroy
+  has_many :user_roles
   has_many :roles, :through => :user_roles
 
   belongs_to :school
@@ -57,9 +57,7 @@ class User < ActiveRecord::Base
 #  validates :work_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
 #  validates :cell_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
 
-
   before_save :set_user_token
-
   def set_user_token
     return if user_token.present?
     self.user_token = generated_user_token
@@ -75,6 +73,14 @@ class User < ActiveRecord::Base
 
   def name
     "#{first_name} #{last_name}"
+  end
+
+  def send_password_reset
+    token = generated_user_token
+    self.reset_password_token = token
+    self.reset_password_sent_at = Time.zone.now
+    save!
+    UserMailer.password_reset(self).deliver
   end
 
 end

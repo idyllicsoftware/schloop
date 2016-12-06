@@ -1,5 +1,5 @@
 class Api::V1::TeachersController < Api::V1::BaseController
-  skip_before_filter :authenticate, only: [:register, :login]
+  skip_before_filter :authenticate, only: [:register, :login, :forgot_password]
 
   def register
     errors = []
@@ -90,6 +90,16 @@ class Api::V1::TeachersController < Api::V1::BaseController
         data: nil
       }
     end
+  end
+
+  def forgot_password
+    render json: {
+      success: true,
+      error: nil,
+      data: {
+        message: "Password reset instruction sent to your email"
+      }
+    }
   end
 
   def dashboard

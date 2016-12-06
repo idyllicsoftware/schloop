@@ -42,7 +42,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
             page_size: page_size,
             record_count: total_records,
             total_pages: (total_records/page_size.to_f).ceil,
-            current_page: (page || 0)
+            current_page: (page || 0).to_i
           },
           activities: activities_data
         }
@@ -67,6 +67,40 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
       error: nil,
       data: activity_categories
     }
+  end
+
+  # recipients: {
+  # grade_id: [div_id1, div_id2]
+  # grade_id: [div_id1, div_id2]
+  # }
+  # "recipients": {
+  #   "1": [1, 2],
+  #   "2": [3, 4]
+  # }
+  def share
+    errors = []
+    activity_id = params[:activity_id]
+    activity = Activity.find_by(id: activity_id)
+
+    errors << "Invalid activity, please try again." if activity.blank?
+    share_response = activity.share(@current_user, params[:recipients]) if errors.blank?
+
+    if share_response[:success]
+      render json: {
+        success: true,
+        error: nil,
+        data: {}
+      }
+    else
+      render json: {
+        success: false,
+        error:  {
+          code: 0,
+          message: errors
+        },
+        data: nil
+      }
+    end
   end
 
 end

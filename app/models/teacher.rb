@@ -51,12 +51,16 @@ class Teacher < ActiveRecord::Base
   include DeviseInvitable::Inviter
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  validates :first_name, :presence => true, :length => { :maximum => 30 }
+  validates :middle_name,  :length => { :maximum => 30 }
+  validates :last_name, :presence => true, :length => { :maximum => 30 }
   validates :cell_number, :presence => true,
             :numericality => true,
             :length => {:minimum => 10, :maximum => 15}
 
   belongs_to :school
   has_many :grade_teachers, dependent: :destroy
+  has_many :activity_shares
   before_save :set_token
   after_create :send_invitation
   after_create :add_roles
@@ -95,4 +99,11 @@ class Teacher < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def send_password_reset
+    token = generated_token
+    self.reset_password_token = token
+    self.reset_password_sent_at = Time.zone.now
+    save!
+    UserMailer.teacher_password_reset(self).deliver
+  end
 end

@@ -28,6 +28,17 @@ class Admin::EcircularsController < ApplicationController
 			render json: {success: true, circulars: circular_data, total_records: total_records}
  	end
 
+ 	def upload_file
+ 		ecircular_id = params[:id]
+ 		ecircular = Ecircular.find(ecircular_id)
+ 		file = params[:file]
+    file_upload_service = FileUploadService.new
+    response = file_upload_service.upload_file_to_s3(file, ecircular, sub_type: 0)
+    render json: {
+      errors: response[:errors],
+      data: response[:data]
+    }
+ 	end
 	private
 
 	def find_school
@@ -49,7 +60,7 @@ class Admin::EcircularsController < ApplicationController
 	end
 
 	def circular_params
-		user_type = @current_user.type rescue ''
+		user_type = current_user.type rescue ''
 		if user_type == 'ProductAdmin'
 		 	created_by_type = Ecircular.created_by_types[:product_admin]
 		elsif user_type == 'SchoolAdmin'

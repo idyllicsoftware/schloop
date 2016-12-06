@@ -40,7 +40,9 @@ class SchoolAdmins extends SchloopBase {
         }, function (res) {
             if(res.success) {
                 _self.loadSchoolsAdmins();
-                toastr.success(msg);
+                toastr.success(msg, '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
                 popoverEl.popover('hide');
             }else {
                 _self.showErrors(res.errors);
@@ -55,7 +57,9 @@ class SchoolAdmins extends SchloopBase {
             _self.deleteRequest(delete_admin_url, $(this), null, function (res) {
                 if(res.success) {
                     _self.loadSchoolsAdmins();
-                    toastr.success('School admin removed successfully');
+                    toastr.success('School admin removed successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
                     popoverEl.popover('hide');
                 }else {
                     _self.showErrors(res.errors);
@@ -90,7 +94,7 @@ class SchoolAdmins extends SchloopBase {
                         let popupEl = $('#' + $(this).attr('aria-describedby')),
                             school_admin_id = $(this).data('school_admin_id'),
                             jForm = popupEl.find('form');
-
+                            
                         if(_self.schoolAdmins.hasOwnProperty(school_admin_id)){
                             jForm.fillForm(_self.schoolAdmins[school_admin_id], 'administrator');
                             jForm.attr('action', `/admin/school_admins/${school_admin_id}`);

@@ -17,10 +17,20 @@ class Student < ActiveRecord::Base
 	belongs_to :parent
 	has_many :student_profiles, :dependent => :destroy
 	validates :first_name, :presence => true, :length => { :maximum => 30 }
-  	validates :middle_name,  :length => { :maximum => 30 }
-  	validates :last_name, :presence => true, :length => { :maximum => 30 }
+	validates :middle_name,  :length => { :maximum => 30 }
+	validates :last_name, :presence => true, :length => { :maximum => 30 }
 
-  	def name
+	validate do |student|
+		student.student_profiles.each do |student|
+			next if student.valid?
+			student.errors.full_messages.each do |message|
+				# you can customize the error message here:
+				errors.add :base, "#{message}"
+			end
+		end
+	end
+
+	def name
 		"#{self.first_name} #{self.middle_name} #{self.last_name}"
 	end
 # 
