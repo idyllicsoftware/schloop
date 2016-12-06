@@ -31,6 +31,7 @@ gem 'devise'
 gem 'devise_invitable', '~> 1.7.0'
 gem 'aws-sdk'
 gem 'fcm'
+gem 'sidekiq'
 # gem 'rmagick', '2.15.4'
 
 #ransack for filters
