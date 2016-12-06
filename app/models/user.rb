@@ -51,6 +51,7 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles
 
   belongs_to :school
+  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates :first_name, :presence => true, :length => { :maximum => 30 }
   validates :middle_name,  :length => { :maximum => 30 }
   validates :last_name, :presence => true, :length => { :maximum => 30 }
