@@ -26,8 +26,8 @@
       %>
       schloop = new Schloop(<%= raw(js_obj.to_json) %>);
       var notice = '<%= notice %>';
-      if(notice == 'Password has been reset!'){
-        toastr.success('Password has been reset!', '', {
+      if(notice){
+        toastr.success(notice, '', {
                     positionClass: 'toast-top-right cloud-display'
                 });
       }
