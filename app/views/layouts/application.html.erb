@@ -10,17 +10,6 @@
 </head>
 <body>
 
-<% if notice == "Password does not match. Try again" %>
-  <p>Password does not match. Try again</p>
-<% end %>
-<% if notice == "Password has been reset!" %>
-  <p>Password has been reset!</p>
-<% end %>
-<% if alert == "Password is not valid" %>
-  <p>Password is not valid</p>
-<% end %>
-
-
   <%= yield %>
 
   <%= javascript_include_tag 'application' %>
@@ -36,6 +25,12 @@
         end
       %>
       schloop = new Schloop(<%= raw(js_obj.to_json) %>);
+      var notice = '<%= notice %>';
+      if(notice == 'Password has been reset!'){
+        toastr.success('Password has been reset!', '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
+      }
     });
   </script>
 

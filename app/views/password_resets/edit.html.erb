@@ -1,4 +1,4 @@
-<%= flash[:password_mismatch] %>
+
 <div class="pass-reset-scrn">
   <div class="cloud-banner">
     <img src="<%= asset_path('admin/cloud_bannr1.svg') %>">
@@ -28,7 +28,8 @@
           <input type="password" class="form-control input-field" required name="school_admin[password_confirmation]" autocomplete="off" placeholder="New Password"  maxlength="6" />
           <a class="pull-right">show</a>
         </div>
-        <div class="pt30">
+        <p class="show_err"><%= flash[:password_mismatch] %></p>
+        <div class="pt20">
           <button type="submit" class="btn btn-primary btn-full-width text-uppercase"> reset & continue </button>          
         </div>
       <% end %>
