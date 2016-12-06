@@ -7,8 +7,8 @@ class Admin::Users::SessionsController < Devise::SessionsController
       school_id = user.school.id rescue ''
       "/admin/schools/#{school_id}"
     else
-      "/"
-     end
+      root_path
+    end
   end
 
   # GET /resource/sign_in
