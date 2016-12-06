@@ -28,7 +28,8 @@ class PasswordResetsController < ApplicationController
         if errors.blank?
   	    	redirect_to root_url, :notice => "Password has been reset!"
   	  	else
-  	    	render :edit, :alert => "Password  is not valid"
+          flash[:invalid_password] = "passowrd is not valid"
+  	    	render :edit
   	  	end
   	  end
     else
