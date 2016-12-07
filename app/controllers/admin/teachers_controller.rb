@@ -11,7 +11,8 @@ class Admin::TeachersController < ApplicationController
 
     # @school_teachers.sort_by { |m| [ m.updated_at,m.created_at].max}.reverse!
     @school_teachers.each do |teacher|
-      grade_teacher_data = get_grade_teacher_data(teacher.id)
+      grade_teacher_data_service = GradeTeachersDataService.new
+      grade_teacher_data = grade_teacher_data_service.get_grade_teacher_data(teacher.id)
       school_teachers << {
         id: teacher.id,
         first_name: teacher.first_name,
@@ -114,33 +115,6 @@ class Admin::TeachersController < ApplicationController
     return response
   end
 =end
-  def get_grade_teacher_data(teacher_id)
-    grade_teacher_data = []
-    teacher = Teacher.find(teacher_id)
-    grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
-
-    grades_data.each do |grade_id, datas|
-      subjects_data = {}
-      datas.each do |data|
-        subjects_data[data.subject_id ] ||= {
-          subject_id: data.subject_id,
-          subject_name: data.subject.name,
-          divisions_data: []
-        }
-
-        subjects_data[data.subject_id][:divisions_data] << {
-          division_id: data.division_id,
-          division_name: data.division.name
-        }
-      end
-      grade_teacher_data << {
-        grade_id: grade_id,
-        grade_name: datas.first.grade.name,
-        subjects_data: subjects_data.values
-      }
-    end
-    return grade_teacher_data
-  end
 
   def create_grade_teacher_association(teacher_id)
     errors, create_grade_teacher_params = [], []

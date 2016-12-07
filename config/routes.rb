@@ -90,6 +90,8 @@ Rails.application.routes.draw do
       get "/dashboards/parents_dashboard" => 'parents/dashboards#parents_dashboard'
     end
 
+    resources :topics do
+    end
     resources :activities, only: [:create] do
       member do
         put :deactivate
