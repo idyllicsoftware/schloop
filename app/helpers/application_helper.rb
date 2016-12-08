@@ -10,4 +10,16 @@ module ApplicationHelper
 
 		redirect_to root_path if is_valid_access.empty?
 	end
+
+	def after_sign_in_path_for(user)
+		if user.type == "ProductAdmin"
+		  '/admin/schools'
+		elsif user.type == "SchoolAdmin"
+		  school_id = user.school.id rescue ''
+		  "/admin/schools/#{school_id}"
+		else
+		  root_path
+		end
+	end
 end
+
