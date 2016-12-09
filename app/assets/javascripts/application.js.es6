@@ -14,7 +14,7 @@ class Schloop extends SchloopBase {
     };
     initEventListeners(){
     	let self = this;
-    
+
     	$(document).on('click','.pass-show', function() {
     		 if ($(this).html() === "Show") {
 		        $(this).html("Hide")
