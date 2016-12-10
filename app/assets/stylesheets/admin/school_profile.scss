@@ -3,6 +3,7 @@
 
 .school-main-section {
 	.container {
+		margin: 30px auto;
 		.school-profile-main-section {
 			  	.data-title{
 					font-weight: bold;
@@ -456,6 +457,9 @@
 		      .border_botm {
 		      	border-bottom: 1px solid #ccc;
 		      	margin-right: 20px;
+		      	.select-recipients_name, .selected_circular_tag {
+		      		color: #999999;
+		      	}
 		      	.popover {
 		      		padding: 20px;
 		      	}

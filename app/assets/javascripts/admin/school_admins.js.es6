@@ -52,19 +52,32 @@ class SchoolAdmins extends SchloopBase {
         jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
             popoverEl.popover('hide');
         });
-
+        
         jForm.find('.removeUserBtn').off('click').on('click', function () {
-            _self.deleteRequest(delete_admin_url, $(this), null, function (res) {
-                if(res.success) {
-                    _self.loadSchoolsAdmins();
-                    toastr.success('School admin removed successfully', '', {
-                        positionClass: 'toast-top-right cloud-display'
-                    });
-                    popoverEl.popover('hide');
-                }else {
-                    _self.showErrors(res.errors);
-                }
-            })
+            var removeUserBtn = $(this);
+            swal({
+                    title: "Are you sure?",
+                    text: "You want delete school admin",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!"
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        _self.deleteRequest(delete_admin_url, removeUserBtn, null, function (res) {
+                            if(res.success) {
+                                _self.loadSchoolsAdmins();
+                                toastr.success('School admin removed successfully', '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                                });
+                                popoverEl.popover('hide');
+                            }else {
+                                _self.showErrors(res.errors);
+                            }
+                        })
+                    }    
+                });
         });
     };
 

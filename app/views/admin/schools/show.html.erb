@@ -1,4 +1,7 @@
 <div class="school-main-section">
+  <div class="cloud_image">
+    <img class="img-responsive" src="<%= asset_path('home/cloud_3.png') %>">
+  </div>
   <div class="container">
     <ul id="school-Tab" class="nav nav-tabs">
       <li class="active">
@@ -33,7 +36,7 @@
               </div>
               <div class="col-md-4">
                 <span class="data-title">Website</span>
-                <span class="data-attr"><a href="<%= @school.website %>"><%= @school.website %></a></span>
+                <span class="data-attr"><a href="<%= @school.website %>" target="_blank"><%= @school.website %></a></span>
               </div>
             </div>
             <div class="row mt40">
