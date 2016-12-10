@@ -36,7 +36,7 @@ class Activity < ActiveRecord::Base
       offset = (page * page_size)
     end
     activities_data = []
-    activities = Activity.where(search_params)
+    activities = Activity.active.where(search_params)
     activities = activities.includes(:attachments, :categories)
     if category_ids.present?
       activities= activities.joins("LEFT JOIN activity_categories ON activity_categories.activity_id = activities.id
