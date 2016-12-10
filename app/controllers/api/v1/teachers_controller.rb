@@ -93,13 +93,19 @@ class Api::V1::TeachersController < Api::V1::BaseController
   end
 
   def forgot_password
-    render json: {
-      success: true,
-      error: nil,
-      data: {
-        message: "Password reset instruction sent to your email"
-      }
-    }
+    errors = []
+    teacher = Teacher.find_by(email: params[:email])
+    if teacher.present?
+      teacher.send_password_reset 
+      response =  { success: true, 
+                    error: errors,
+                    data: { message: "Password reset instruction sent to your email" }
+                  }
+    else
+      errors << "teacher with given email id not found"
+      response = { success: false, error: errors }
+    end
+    render json: response
   end
 
   def dashboard

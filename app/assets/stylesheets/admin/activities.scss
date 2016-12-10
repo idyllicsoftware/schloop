@@ -44,15 +44,30 @@
         margin-top: 14px;
     }
 }
-.form-control[disabled]{
-    background-color: transparent;
+.activity-preview-container {
+    p {
+        color: #666666;
+    }
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    img {
+            width: 200px;
+        }
+    span:after{
+        content: ',';
+    }
+    span:last-child:after{
+        content:'';
+    }    
 }
 .close-form {
     position: absolute;
     right: 20px;
     top: 15px;
-    font-size: 20px;
-    color: #666;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 300;
+    color: #25aae1;
     cursor: pointer;
 }

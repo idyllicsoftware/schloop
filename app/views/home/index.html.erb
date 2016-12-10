@@ -1,3 +1,4 @@
+
 <div class="sign-up-main-section">
 		<div class="teachers">
 					<div class="teachers-subsection">
@@ -29,7 +30,12 @@
         %>
 
         <div class="sign-in-lnk-section">
-          <button class="btn btn-link sign-in-link" data-toggle="modal" data-target="#signInModal" >Sign In</button>
+        <% if current_user.blank? %>
+          	<button class="btn btn-primary sign-in-link" data-toggle="modal" data-target="#signInModal" >	
+        		Sign In</button>
+        	<% else %>
+       			<a href="<%= after_sign_in_path_for(current_user) %>" class="btn btn-primary">View Profile</a>
+       		<% end %>
         </div>
 
 			</div>
@@ -144,7 +150,7 @@
                 <div>
                   <label id="labelForgotPassword" class="text-color btn btn-link pl0" >Forgot Password</label>
                 </div>
-
+                <p class="show_err"></p>
                 <div class="form-group mt20">
                   <button type="submit" class="btn btn-primary btn-full-width text-uppercase">sign in</button>
                 </div>
@@ -156,6 +162,7 @@
                 <div class="form-group">
                   <input type="email" class="form-control input-field" required name="user[email]" autocomplete="off" placeholder="Email Address"  maxlength="40" />
                 </div>
+                <p class="show_error"></p>
                 <div class="form-group mt50">
                   <button type="submit" class="btn btn-primary btn-full-width text-uppercase"> send a rest password link </button>
                 </div>

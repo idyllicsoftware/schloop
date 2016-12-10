@@ -1,21 +1,40 @@
-<%= form_for @user, :url => password_resets_update_path(params[:format]) do |f| %>
-  <% if @user.errors.any? %>
-    <div class="error_messages">
-      <h2>Form is invalid</h2>
-      <ul>
-        <% for message in @user.errors.full_messages %>
-          <li><%= message %></li>
+
+<div class="pass-reset-scrn">
+  <div class="cloud-banner">
+    <img src="<%= asset_path('admin/cloud_bannr1.svg') %>">
+    <img class="cloud-bannr" src="<%= asset_path('admin/cloud_bannr22.png') %>">
+  </div>
+  <div class="pass-reset-main-section">
+    <div class="pass-reset-subsection">
+      <div class="schloop-logo-sec">
+        <img class="schloop-img" src="<%= asset_path('home/schloop.png') %>">
+      </div>
+      <%= form_for @user, :url => password_resets_update_path(params[:format]) do |f| %>
+        <% if @user.errors.any? %>
+          <div class="error_messages">
+            <h2>Form is invalid</h2>
+            <ul>
+              <% for message in @user.errors.full_messages %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
-      </ul>
+        <div class="form-group">
+          <input type="password" class="form-control input-field" id="password" required name="school_admin[password]" autocomplete="off" placeholder="New Password"  minlength="6" maxlength="15"/>
+          <a class="pull-right pass-show">Show</a>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control input-field" required name="school_admin[password_confirmation]" autocomplete="off" placeholder="Confirm Password"  minlength="6" maxlength="15"/>
+          <a class="pull-right pass-show">Show</a>
+        </div>
+        <p class="show_err"><%= flash[:password_mismatch] %></p>
+        <div class="pt20">
+          <button type="submit" class="btn btn-primary btn-full-width text-uppercase"> reset & continue </button>          
+        </div>
+      <% end %>
     </div>
-  <% end %>
-  <div class="field">
-    <%= f.label :password %>
-    <%= f.password_field :password %>
   </div>
-  <div class="field">
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation %>
-  </div>
-  <div class="actions"><%= f.submit "Update Password" %></div>
-<% end %>
+</div>
+<div class="footer-section">
+</div>

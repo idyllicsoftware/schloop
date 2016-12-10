@@ -44,18 +44,14 @@ class Activities extends SchloopBase {
             jForm[0].reset();
             jForm.attr('action', `/admin/activities`);
             jForm.attr('method', 'POST');
-            jForm.find('input[name], select, textarea').removeAttr('disabled');
+            createWebContentModal.find('label.error').addClass('hidden');
+            createWebContentModal.find('.ms-choice >span').empty();
             jForm.find('.ms-drop >ul >li >label >input').each(function(){
                 var inEl = $(this);
                     inEl.parents().eq(1).removeClass('selected');
                     inEl.removeAttr('disabled');
-                    inEl.parents().eq(4).find('.placeholder').empty();       
-            });    
-            createWebContentModal.find('.action-btn').show();
-            createWebContentModal.find('.file_upload_files--upload-block').show();
-            createWebContentModal.find('.image-attach img').remove();
-            createWebContentModal.find('.close-form').addClass('hidden');
-            createWebContentModal.find('label.error').addClass('hidden');
+                    inEl.parents().closest('div').find('.placeholder').empty();
+            });
         });
 
         _self.initForm(jForm, null, $("#activitySubmit"));
@@ -141,7 +137,9 @@ class Activities extends SchloopBase {
 
     loadActivities(){
         let _self = this, html = '',
-            activitiesListEl = $('#content_list_id');
+            activitiesListEl = $('#content_list_id'),
+            activityPreviewModal = $('#activity-preview-modal'),
+            detailTpl = $("#activity-preview-detail-tpl").html();
             
         $.ajax({
             url: `/admin/activities/all`,
@@ -152,54 +150,39 @@ class Activities extends SchloopBase {
                 }
                 _self.Activities = res.activities.toHash('id');
                 activitiesListEl.html(html);   
-
-                activitiesListEl.find('.activity-preview').on('click', function() {
-                    let curr_pre_El = $(this),
-                        activity_id = curr_pre_El.data('activity-id'),
-                        createWebContentModal = $('#create-web-content-modal'),
-                        //    activityPreviewModal = $('#activity-preview-modal'),
-
-                        jForm = createWebContentModal.find('#activity_creation_form');
-                        createWebContentModal.modal('show');
-                        // if(_self.Activities.hasOwnProperty(activity_id)){
-                        //     var activity_data =  _self.Activities[activity_id];
-                        //     html = Mustache.to_html(_self.activitiesPreviewTpl, activity_data);
-                        // }
-                        //activityPreviewModal.modal('show');
-                        
-                         if(_self.Activities.hasOwnProperty(activity_id)){
-                            var activity_data =  _self.Activities[activity_id],
-                                thumb_img_url = activity_data.thumbnail_file.s3_url,ref_img_list = [];    
-                            jForm.fillForm(_self.Activities[activity_id], 'activity');
-                            jForm.find('input[name], select, textarea').attr('disabled', 'disabled');
-                            jForm.find('.ms-drop >ul >li >label >input').each(function(){
-                                var inEl = $(this),
-                                    inEl_val = inEl.val();
-                                activity_data.category_ids.forEach(function(category){
-                                    if(inEl_val == category){
-                                        inEl.parents().eq(1).addClass('selected');
-                                    }
+            
+                $(document).on('click','.activity-preview', function() {
+                    let {activityId} = $(this).data();
+                      
+                    if(_self.Activities.hasOwnProperty(activityId)) {    
+                        activityPreviewModal.modal('show');
+            
+                        html = Mustache.to_html(detailTpl, {
+                            activity: _self.Activities[activityId],
+                            category: function() {
+                                var cat = [], cat_html = '';
+                                this.categories.split('|').forEach(function(category) {
+                                    cat_html = category ;
+                                    cat.push({name: cat_html});
                                 });
-                                activity_data.categories.split("|").forEach(function(category_name){
-                                    var this_El = $(this);
-                                    inEl.parents().eq(4).find('.placeholder').append(category_name + ',');
-                                }); 
-                                inEl.attr('disabled', 'disabled');       
-                            });
-                            createWebContentModal.find('.thumb_img').append('<img src="'+ thumb_img_url +'" style="width:200px; margin-bottom: 20px;">');
-                            activity_data.reference_files.forEach(function(ref_img){
-                                var ref_img_url = ref_img.s3_url,
-                                    ref_img_tag = '<li><img src="'+ ref_img_url +'" style="width:200px"></li>';
-                                    ref_img_list.push(ref_img_tag);
-                            });
-                            createWebContentModal.find('.ref_img').append('<ul style="padding: 0px; list-style: none;">'+ ref_img_list.join("") +'</ul>');
-                            createWebContentModal.find('.action-btn').hide();
-                            createWebContentModal.find('.file_upload_files--upload-block').hide();
-                            createWebContentModal.find('.close-form').removeClass('hidden');
-                            createWebContentModal.find('.close-form').on('click',function(){
-                                createWebContentModal.modal('hide');
-                            });
-                        }    
+                                return cat;
+                            },
+                            attachment: function() {
+                                var att = [],html = '',html_url = '';
+                                this.reference_files.forEach(function(attachment) {
+                                    html = attachment.original_filename;
+                                    html_url = attachment.s3_url
+                                    att.push({original_filename: html, s3_url: html_url});
+                                });
+                                return att;
+                            },
+                        });
+                    }
+                    activityPreviewModal.find('.modal-body').html(html);
+                });
+
+                $(document).on('click','.close-form', function(){
+                    activityPreviewModal.modal('hide');
                 });
             }
         });

@@ -25,6 +25,12 @@
         end
       %>
       schloop = new Schloop(<%= raw(js_obj.to_json) %>);
+      var notice = '<%= notice %>';
+      if(notice){
+        toastr.success(notice, '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
+      }
     });
   </script>
 
