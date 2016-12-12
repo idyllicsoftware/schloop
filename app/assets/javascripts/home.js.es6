@@ -18,17 +18,15 @@ class Main extends SchloopBase {
             login_form = $('#login-form'),
             signInModal = $('#signInModal'),
             forgot_password_form = $('#forgot-password-form');
-
+            
         $("#labelForgotPassword").click(function (){
             $("#loginDiv").addClass('hidden');
             $("#forgotPasswordDiv").removeClass('hidden');
-            self.initForm(forgot_password_form);
+            self.initForm();
         });
 
-        $(document).on('click','.sign-in-link', function () {
-            var jForm = signInModal.find('form'),
-                login_form = $('#login-form'),
-                teacher_login = $(this).data('teacher_login');
+        $(document).on('click','.sign-in-link', function (e) {
+            var teacher_login = $(this).data('teacher_login');
             signInModal.modal('show');
             $("#loginDiv").removeClass('hidden');
             $("#login-form")[0].reset();
@@ -39,7 +37,7 @@ class Main extends SchloopBase {
             if (teacher_login) {
                 login_form.removeAttr('action');
                 login_form.attr('action','/teachers/sign_in');
-
+                e.preventDefault();
                 self.initFormSubmit(login_form, {
                    'user[email]': 'email' ,
                    'user[password]': 'password'
@@ -62,20 +60,7 @@ class Main extends SchloopBase {
             signInModal = $('#signInModal'),
             forgot_password_form = $('#forgot-password-form');
 
-        // this.initFormSubmit(jForm, {
-        //    'user[email]': 'email' ,
-        //    'user[password]': 'password'
-        // }, function (res) {
-        //     debugger;
-        //    if (res.errors){
-        //         login_form.find('.show_err').text(res.errors);
-        //    }else {
-        //         window.location = res.redirect_url;
-        //         signInModal.modal('hide');
-        //    }
-        // });
-
-        this.initFormSubmit(login_form, {
+            this.initFormSubmit(login_form, {
                'user[email]': 'email' ,
                'user[password]': 'password'
             }, function (res) {
