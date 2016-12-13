@@ -24,7 +24,7 @@ class Main extends SchloopBase {
             $("#forgotPasswordDiv").removeClass('hidden');
             self.initForm();
         });
-
+       
         $(document).on('click','.sign-in-link', function (e) {
             var teacher_login = $(this).data('teacher_login');
             signInModal.modal('show');
@@ -37,24 +37,20 @@ class Main extends SchloopBase {
             if (teacher_login) {
                 login_form.removeAttr('action');
                 login_form.attr('action','/teachers/sign_in');
-                e.preventDefault();
-                self.initFormSubmit(login_form, {
-                   'user[email]': 'email' ,
-                   'user[password]': 'password'
-                }, function (res) {
-                   if (res.errors){
-                        login_form.find('.show_err').text(res.errors);
-                   }else {
-                        window.location = res.redirect_url;
-                        signInModal.modal('hide');
-                   }
-                });                
+                login_form.find('input[type=email]').attr('name','teacher[email]');
+                login_form.find('input[type=password]').attr('name','teacher[password]'); 
+                forgot_password_form.removeAttr('action');
+                forgot_password_form.find('input[type=email]').attr('name','teacher[email]');
+                forgot_password_form.attr('action','/admin/teachers/forget_password');
+                e.preventDefault();  
+                self.initTeacherLoginForm(login_form, forgot_password_form);              
             }else {
-                self.initForm();
+                self.initUserLoginForm();
             }
         }); 
     };
-    initForm () {
+
+    initUserLoginForm () {
         let self = this,
             login_form = $('#login-form'),
             signInModal = $('#signInModal'),
@@ -74,6 +70,39 @@ class Main extends SchloopBase {
             
             this.initFormSubmit(forgot_password_form, {
                'user[email]': 'email'
+            }, function (res) {
+               if(res.success){
+                signInModal.modal('hide');
+                toastr.success('please check your email inbox!', '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
+            }else{
+                forgot_password_form.find('.show_error').text('User is not available. Enter correct email address.');
+                }
+            });
+    };
+
+    initTeacherLoginForm (login_form, forgot_password_form) {
+        let self = this,
+            signInModal = $('#signInModal');
+
+            self.initFormSubmit(login_form, {
+               'teacher[email]': 'email' ,
+               'teacher[password]': 'password'
+            }, function (res) {
+               if (res.errors){
+                    login_form.find('.show_err').text(res.errors);
+               }else {
+                    window.location = res.redirect_url;
+                    signInModal.modal('hide');
+                    toastr.success('Sign in Successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
+               }
+            });
+
+            this.initFormSubmit(forgot_password_form, {
+               'teacher[email]': 'email'
             }, function (res) {
                if(res.success){
                 signInModal.modal('hide');

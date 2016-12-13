@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Schloop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <%= stylesheet_link_tag 'admin/admin', media: 'all' %>
+  <link rel="shortcut icon" type="image/ico" href="<%= asset_path('favicon.ico') %>" />
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+
+
+<div class="product-admin-dashborad">
+	<div class="cloud-banner">
+		<img src="<%= asset_path('admin/cloud_bannr1.svg') %>">
+		<img class="cloud-bannr" src="<%= asset_path('admin/cloud_bannr22.png') %>">
+	</div>
+	<div class="admin-header-section">
+		<div class="schloop-logo-align">
+			<img class="img-responsive schloop-img" src="<%= asset_path('home/schloop.png') %>">
+		</div>
+		<div class="admin-profile-header">
+			<div class="admin-profile">
+				<div class="profile-photo"></div>
+			</div>
+			<div class="admin-profile-manu">
+				<p><%= current_teacher.first_name %></p>
+        <p><%= current_teacher.last_name %></p>
+				<p><a href='/teachers/sign_out'>Sign Out</a></p>
+			</div>
+		</div>
+	</div>
+	<%= yield %> 
+  <div class="footer-img">
+      <img class="tree6-img" src="<%= asset_path('home/tree_green1.png') %>">
+      <img class="tree7-img" src="<%= asset_path('home/tree_green3.png') %>">
+      <img class="bag-img" src="<%= asset_path('home/bag.png') %>">      
+      <img class="school-img" src="<%= asset_path('home/school1.png') %>">
+      <img class="tree10-img" src="<%= asset_path('home/tree_green2.png') %>">   
+      <img class="scloopy-img" src="<%= asset_path('home/schloopy.png') %>">   
+      <img class="bench-img" src="<%= asset_path('home/bench.png') %>">
+      <img class="tree8-img" src="<%= asset_path('home/tree_green2.png') %>">    
+      <img class="tree9-img" src="<%= asset_path('home/tree_green.png') %>">
+  </div>
+  <div class="oval"></div>
+	<div class="footer-section">
+	</div>
+</div>
+
+<%= javascript_include_tag 'admin/admin' %>
+
+<script id="selectedFileTr" type="text/html">
+  <tr class='selectedFile'>
+    <td>{{name}}</td>
+    <td class="text-right">
+      <button type='button' class='btn btn-danger delete'>
+        <i class='fa fa-trash f16'></i>
+      </button>
+    </td>
+  </tr>
+</script>
+
+<script id="uploadedFileTr" type="text/html">
+  <tr>
+    <td style="word-wrap: break-word;">
+      <a target='_blank' href="{{url}}">
+        {{name}}
+      </a>
+      <input type="hidden" name="attachment_ids[]" value="{{id}}">
+    </td>
+    <td>{{format}}</td>
+    <td>{{size}}</td>
+  </tr>
+</script>
+
+<script type="text/javascript">
+  $(document).on('ready', function() {
+    <%
+     js_obj = {
+       :controller => params[:controller],
+       :action => params[:action]
+     }
+     if @js_data.present?
+        js_obj.merge!(@js_data);
+     end
+     if Rails.env != 'production'
+       js_obj[:env] = Rails.env
+     end
+   %>
+  });
+</script>
+
+
+</body>
+</html>
