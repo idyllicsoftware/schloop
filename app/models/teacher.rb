@@ -84,12 +84,16 @@ class Teacher < ActiveRecord::Base
   end
 
   def associated_students(search_params = {})
+    filtered_student_ids = []
     division_ids = self.grade_teachers.pluck(:division_id).uniq
     student_ids = StudentProfile.where(division_id: division_ids).pluck(:student_id)
     associated_students = Student.where(id: student_ids)
     if search_params.present?
-      associated_students = associated_students.where("first_name ILIKE ?", "%#{search_params[:first_name]}%")
-      associated_students = associated_students.where("last_name ILIKE ?", "%#{search_params[:last_name]}%") if search_params[:last_name].present?
+      search_params[:names].each do |name|
+        filtered_student_ids += associated_students.where("first_name ILIKE ?", "%#{name}%").ids
+        filtered_student_ids += associated_students.where("last_name ILIKE ?", "%#{name}%").ids
+      end
+      associated_students = Student.where(id: filtered_student_ids.uniq)
     end
     return associated_students
   end
@@ -98,16 +102,14 @@ class Teacher < ActiveRecord::Base
     parents_data, search_params = [], {}
     if student_name.present?
       student_name = student_name.strip
-      first_name = student_name.split(" ")[0] rescue nil
-      last_name = student_name.split(" ")[1] rescue nil
-      search_params[:first_name] = first_name
-      search_params[:last_name] = last_name
+      names = student_name.split(" ")
+      search_params[:names] = names
       searched_students = associated_students(search_params)
     else
       searched_students = associated_students
     end
 
-    students = searched_students.includes(:parent)
+    students = searched_students.includes(:parent, student_profiles: [:grade, :division]).order(:first_name, :last_name).limit(50)
 
     students.each do |student|
       parents_data << {
@@ -115,7 +117,16 @@ class Teacher < ActiveRecord::Base
         parent_id: student.parent.id,
         student_name: student.name,
         parent_name: student.parent.name,
-        parent_mobile: student.parent.cell_number
+        parent_mobile: student.parent.cell_number,
+        parent_email: student.parent.email,
+        grade: {
+          grade_id: student.student_profiles.last.grade_id,
+          grade_name: student.student_profiles.last.grade.name
+        },
+        division: {
+          division_id: student.student_profiles.last.division_id,
+          division_name: student.student_profiles.last.division.name
+        }
       }
     end
 
