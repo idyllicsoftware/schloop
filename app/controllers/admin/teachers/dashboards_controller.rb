@@ -9,4 +9,5 @@ class Admin::Teachers::DashboardsController < ApplicationController
     @topics = Topic.where(teacher_id: [params[:id],-1]).where(master_grade_id: grade_id).where(masater_subject_id: subject_id)
     @bookmarsk = Bookmark.where(teacher_id: params[:id]).where(grade_id: grade_id.master_grade_id).where(subject_id: subject_id.master_subject_id)
   end
+ 
 end
