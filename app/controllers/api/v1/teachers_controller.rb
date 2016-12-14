@@ -120,6 +120,18 @@ class Api::V1::TeachersController < Api::V1::BaseController
     }
   end
 
+  def index
+    teacher = @current_user
+    student_name = params[:q]
+    parents = teacher.associated_parents(student_name)
+    render json: {
+      success: true,
+      error: nil,
+      data: {
+        parents: parents
+      }
+    }
+  end
 
   def profile
     teacher = @current_user

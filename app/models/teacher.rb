@@ -83,6 +83,45 @@ class Teacher < ActiveRecord::Base
     "#{first_name} #{last_name} #{middle_name}"
   end
 
+  def associated_students(search_params = {})
+    division_ids = self.grade_teachers.pluck(:division_id).uniq
+    student_ids = StudentProfile.where(division_id: division_ids).pluck(:student_id)
+    associated_students = Student.where(id: student_ids)
+    if search_params.present?
+      associated_students = associated_students.where("first_name ILIKE ?", "%#{search_params[:first_name]}%")
+      associated_students = associated_students.where("last_name ILIKE ?", "%#{search_params[:last_name]}%") if search_params[:last_name].present?
+    end
+    return associated_students
+  end
+
+  def associated_parents(student_name = nil)
+    parents_data, search_params = [], {}
+    if student_name.present?
+      student_name = student_name.strip
+      first_name = student_name.split(" ")[0] rescue nil
+      last_name = student_name.split(" ")[1] rescue nil
+      search_params[:first_name] = first_name
+      search_params[:last_name] = last_name
+      searched_students = associated_students(search_params)
+    else
+      searched_students = associated_students
+    end
+
+    students = searched_students.includes(:parent)
+
+    students.each do |student|
+      parents_data << {
+        student_id: student.id,
+        parent_id: student.parent.id,
+        student_name: student.name,
+        parent_name: student.parent.name,
+        parent_mobile: student.parent.cell_number
+      }
+    end
+
+    return parents_data
+  end
+
   def generated_token
     loop do
       token = SecureRandom.uuid.gsub(/\-/, '')
