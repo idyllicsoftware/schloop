@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161210105918) do
+ActiveRecord::Schema.define(version: 20161213133007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,29 @@ ActiveRecord::Schema.define(version: 20161210105918) do
     t.integer  "sub_type",          default: 0, null: false
   end
 
+  create_table "bookmarks", force: :cascade do |t|
+    t.string   "title",                          null: false
+    t.text     "data",                           null: false
+    t.integer  "data_type",                      null: false
+    t.text     "caption",           default: "", null: false
+    t.integer  "teacher_id",                     null: false
+    t.integer  "topic_id",                       null: false
+    t.string   "preview_image_url", default: "", null: false
+    t.integer  "views",             default: 0,  null: false
+    t.integer  "likes",             default: 0,  null: false
+    t.integer  "grade_id",                       null: false
+    t.integer  "subject_id",                     null: false
+    t.integer  "school_id",                      null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "bookmarks", ["grade_id"], name: "index_bookmarks_on_grade_id", using: :btree
+  add_index "bookmarks", ["school_id"], name: "index_bookmarks_on_school_id", using: :btree
+  add_index "bookmarks", ["subject_id"], name: "index_bookmarks_on_subject_id", using: :btree
+  add_index "bookmarks", ["teacher_id"], name: "index_bookmarks_on_teacher_id", using: :btree
+  add_index "bookmarks", ["topic_id"], name: "index_bookmarks_on_topic_id", using: :btree
+
   create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.string   "name_map",                  null: false
@@ -71,6 +94,15 @@ ActiveRecord::Schema.define(version: 20161210105918) do
   end
 
   add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
+
+  create_table "collaborations", force: :cascade do |t|
+    t.integer  "bookmark_id",                        null: false
+    t.string   "collaboration_message", default: "", null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  add_index "collaborations", ["bookmark_id"], name: "index_collaborations_on_bookmark_id", using: :btree
 
   create_table "divisions", force: :cascade do |t|
     t.string   "name",       null: false
@@ -102,6 +134,15 @@ ActiveRecord::Schema.define(version: 20161210105918) do
     t.datetime "updated_at",      null: false
     t.integer  "school_id"
   end
+
+  create_table "followups", force: :cascade do |t|
+    t.integer  "bookmark_id",                   null: false
+    t.string   "followup_message", default: "", null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "followups", ["bookmark_id"], name: "index_followups_on_bookmark_id", using: :btree
 
   create_table "grade_teachers", force: :cascade do |t|
     t.datetime "created_at",  null: false
@@ -289,6 +330,20 @@ ActiveRecord::Schema.define(version: 20161210105918) do
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
 
+  create_table "topics", force: :cascade do |t|
+    t.string   "title",                                 null: false
+    t.integer  "master_grade_id",                       null: false
+    t.integer  "master_subject_id",                     null: false
+    t.integer  "teacher_id",            default: -1
+    t.boolean  "is_created_by_teacher", default: false, null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
+  add_index "topics", ["master_grade_id"], name: "index_topics_on_master_grade_id", using: :btree
+  add_index "topics", ["master_subject_id"], name: "index_topics_on_master_subject_id", using: :btree
+  add_index "topics", ["teacher_id"], name: "index_topics_on_teacher_id", using: :btree
+
   create_table "user_roles", force: :cascade do |t|
     t.integer  "role_id"
     t.datetime "created_at",  null: false
@@ -335,8 +390,15 @@ ActiveRecord::Schema.define(version: 20161210105918) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
+  add_foreign_key "bookmarks", "grades"
+  add_foreign_key "bookmarks", "schools"
+  add_foreign_key "bookmarks", "subjects"
+  add_foreign_key "bookmarks", "teachers"
+  add_foreign_key "bookmarks", "topics"
+  add_foreign_key "collaborations", "bookmarks"
   add_foreign_key "divisions", "grades"
   add_foreign_key "ecircular_recipients", "ecirculars"
+  add_foreign_key "followups", "bookmarks"
   add_foreign_key "grade_teachers", "divisions"
   add_foreign_key "grade_teachers", "grades"
   add_foreign_key "grade_teachers", "subjects"
@@ -345,5 +407,8 @@ ActiveRecord::Schema.define(version: 20161210105918) do
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "subjects", "grades"
+  add_foreign_key "topics", "master_grades"
+  add_foreign_key "topics", "master_subjects"
+  add_foreign_key "topics", "teachers"
   add_foreign_key "user_roles", "roles"
 end
