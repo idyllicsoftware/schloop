@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161210105918) do
+ActiveRecord::Schema.define(version: 20161214135510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,21 +156,21 @@ ActiveRecord::Schema.define(version: 20161210105918) do
   end
 
   create_table "parents", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  limit: 100, default: "", null: false
+    t.string   "encrypted_password",                 default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",                      default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.text     "first_name",                          null: false
-    t.text     "last_name",                           null: false
-    t.text     "guardian_type",                       null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.text     "first_name",                                      null: false
+    t.text     "last_name",                                       null: false
+    t.text     "guardian_type",                                   null: false
   end
 
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
@@ -222,9 +222,9 @@ ActiveRecord::Schema.define(version: 20161210105918) do
     t.integer  "student_id"
     t.integer  "grade_id"
     t.integer  "division_id"
-    t.string   "status"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "status",      default: 0, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "students", force: :cascade do |t|
