@@ -19,13 +19,15 @@ class Ecircular < ActiveRecord::Base
 	#										 event_circular: 11, awards_and_achievements: 12, fee_notice: 13, #follow_up_activity_for_parents: 14,
 	#										 exhibitions: 15, worksheets: 16, extra_curricular_activities_circular: 17, #school_time_change: 18,
 	#										 inter_school_competitions: 19, intra_school_competitions: 20, olympiads: #21 }
-  enum circular_tag: { circular: 0, assignment: 1, lesson_plan: 2, from_notice_board: 3, 	                   teachers_message: 4, year_plan: 5, time_table: 6, attendance: 7, holiday: 8                   , health_report: 9
-                      }
+  enum circular_tag: { circular: 0, assignment: 1, lesson_plan: 2, from_notice_board: 3,
+											 teachers_message: 4, year_plan: 5, time_table: 6, attendance: 7, holiday: 8,
+											 health_report: 9 }
  	enum created_by_type: { teacher: 0, school_admin: 1, product_admin: 2 }
 
   belongs_to :school
   has_many :attachments, as: :attachable
   has_many :ecircular_recipients
+	has_many :ecircular_parents
 
   validates :title, :created_by_type, :created_by_id , :presence => true
 

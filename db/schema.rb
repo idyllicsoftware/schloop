@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161210105918) do
+ActiveRecord::Schema.define(version: 20161215063453) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,16 @@ ActiveRecord::Schema.define(version: 20161210105918) do
   end
 
   add_index "divisions", ["grade_id"], name: "index_divisions_on_grade_id", using: :btree
+
+  create_table "ecircular_parents", force: :cascade do |t|
+    t.integer  "ecircular_id"
+    t.integer  "student_id"
+    t.integer  "parent_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "ecircular_parents", ["ecircular_id", "student_id"], name: "index_ecircular_parents_on_ecircular_id_and_student_id", unique: true, using: :btree
 
   create_table "ecircular_recipients", force: :cascade do |t|
     t.integer  "school_id"
