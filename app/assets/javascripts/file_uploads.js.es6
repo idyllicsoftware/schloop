@@ -170,7 +170,7 @@ class FileUpload {
     initFileUploadWidget(){
         var oUpload = this,
             {isImageUpload=false, jScope=$(document)} = oUpload._config;
-
+        
         oUpload.fileUpload.fileupload({
             dataType: 'json',
             acceptFileTypes: !isImageUpload ? /(\.|\/)(doc|docx|pdf|xls|xlsx|csv)$/i : /(\.|\/)(gif|jpe?g|png)$/i,
@@ -189,6 +189,7 @@ class FileUpload {
             add: function (e, data) {
                 var currentFile = data.files[0];
                 oUpload.clearErrorMessages();
+                e.preventDefault();
                 if (!oUpload.addFileAllowed(currentFile)) {
                     return false;
                 }

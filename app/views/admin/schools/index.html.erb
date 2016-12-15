@@ -101,7 +101,7 @@
     {{#schools}}
       <div class="col-md-4">
         <div class="schools-profile">
-          <a href="/admin/schools/{{ id }}" target="_blank">
+          <a href="/admin/schools/{{ id }}">
             <div class="schools-profile-active">
               <img src="<%= asset_path('home/star.png') %>">
             </div>
@@ -127,5 +127,98 @@
       </div>
   {{/schools}}
 </script>
+
+<div class="modal fade" id="activity-preview-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script id="activity-preview-detail-tpl" type="text/html">
+  <div class="content-wrapper">
+    <div class="close-form">X</div>
+    {{#activity}}
+    <div class="activity-preview-container">
+      <div class="col-md-12 p0 mb10">
+        <div class="col-md-6">
+          <label>Grade</label>
+          <p>{{grade}}</p>
+        </div>
+        <div class="col-md-6">
+          <label>Subject</label>
+          <p>{{subject}}</p>
+        </div>
+      </div>  
+      <div class="col-md-12 mb10">
+        <label>Topic</label>
+        <p>{{topic}}</p>
+      </div>
+      <div class="col-md-12 mb10">
+        <label>Activity Title</label>
+        <p>{{title}}</p>
+      </div>
+      <div class="col-md-12 mb10">
+        <label>Category</label>
+            <p>
+            {{#category}}
+              <span>{{name}}</span>
+            {{/category}}
+            </p>
+      </div>
+      <div class="col-md-12 mb10">
+        {{#teaches}}
+          <label>Teaches</label>
+          <p>{{teaches}}</p>
+        {{/teaches}}  
+      </div>
+      <div class="col-md-12 mb10">
+        {{#pre_requisite}}
+          <label>Pre Requisites</label>
+          <p>{{pre_requisite}}</p>
+        {{/pre_requisite}}  
+      </div>
+      <div class="col-md-12 mb10">
+        {{#details}}
+          <label>Steps to follow</label>
+          <p>{{details}}</p>
+        {{/details}}
+      </div>
+      <div class="row pl15 pr15 mb10">    
+          <label class="col-md-12">Thumbnail Image</label>
+          {{#thumbnail_file}}  
+            <div class="col-md-6">
+              {{#s3_url}}
+              <img src="{{s3_url}}">
+              {{/s3_url}}
+              {{^s3_url}}
+              <p>Thumbnail Image Not Available</p>
+              {{/s3_url}}
+            </div>
+          {{/thumbnail_file}}
+      </div>
+      <div class="row pl15 pr15">
+        <label class="pl15">Reference Image</label>
+        <ul class="col-md-12">
+          {{#attachment}}
+          <li class="col-md-4">
+            <img src="{{s3_url}}">
+          </li>
+          {{/attachment}}
+          {{^attachment}}
+          <li class="col-md-4">
+            <p>Reference Image Not Available</p>
+          </li>
+          {{/attachment}}
+        </ul>
+      </div>
+    </div>
+  {{/activity}}  
+  </div>
+</script>
+
 
 <%= render :partial => "admin/activities/form" %>

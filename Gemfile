@@ -14,6 +14,7 @@ gem 'uglifier', '>= 3.0.2'
 
 gem 'font-awesome-sass'
 
+gem 'link_thumbnailer'
 # Use Javascript ES6 Feature
 gem 'sprockets'
 gem 'sprockets-es6'
