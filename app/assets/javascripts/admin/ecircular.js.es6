@@ -141,7 +141,7 @@ class SchoolECircular extends SchloopBase {
         btnEl = $('#circularSubmit'),data_id = 0,
         file_upload = new FileUpload({
                 jScope: file_attachment,
-                isImageUpload: true
+                isImageUpload: false
         });
 
         _self.initCircularTagPopover();
@@ -248,7 +248,7 @@ class SchoolECircular extends SchloopBase {
         html = "",
         detailTpl = $("#circular-history-detail-tpl").html(),
         circularHistoryModal = $('#circular-history-modal');
-        
+    
         $(document).on('click','.circular-history-item', function () {
             let {circular_id} = $(this).data();
             if(_self._ecirculars.hasOwnProperty(circular_id)) {
@@ -273,12 +273,24 @@ class SchoolECircular extends SchloopBase {
                         });
                         return arr;
                     },
-                    attachment: function() {
+                    attachment_file: function() {
                         var att = [],html = '',html_url = '';
                         this.attachments.forEach(function(attachment) {
                             html = attachment.original_filename;
-                            html_url = attachment.s3_url
+                            html_url = attachment.s3_url;
                             att.push({original_filename: html, s3_url: html_url});
+                        });
+                        return att;
+                    },
+                    attachment_img: function() {
+                        var att = [],html_url = '', len, no,allowedFileTypes = ['jpg', 'jpeg', 'png', 'gif'];
+                        this.attachments.forEach(function(attachment) {
+                            html_url = attachment.s3_url;
+                            len = attachment.s3_url.split('/').slice(-1)[0].split(".");
+                            no  = len[len.length-1];
+                            if (allowedFileTypes.indexOf(no.toLowerCase()) >= 0) {
+                                att.push({s3_url: html_url});       
+                            }
                         });
                         return att;
                     },

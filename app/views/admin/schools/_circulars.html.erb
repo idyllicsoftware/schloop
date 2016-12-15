@@ -54,7 +54,7 @@
                   <div class="file_upload_files--upload-block">
                       <div class="fileUpload file_upload_files--fileUploadBtn">
                         <span><i class="fa fa-cloud-upload"></i> choose file</span>
-                        <input class="fileuploadInput upload" type="file" multiple name="file" data-url="/admin/schools/:school_id/ecirculars/upload_file" accept="image/*">
+                        <input class="fileuploadInput upload" type="file" multiple name="file" data-url="/admin/schools/:school_id/ecirculars/upload_file" accept="image/* , .xls, .xlsx, .doc, .docx, .pdf">
                       </div>
                       <button class="btn btn-primary text-uppercase disabled uploadBtn hidden">upload</button>
                       <div class="progressWrap" style="padding: 15px 0px;display: none;">
@@ -191,12 +191,17 @@
       </div>
       <div class="attachments-list">
         <h4>Attachments</h4>
-        <ul class="col-md-12">
-        {{#attachment}}
+        {{#attachment_file}}
+        <ul>
+          <li><a href="{{s3_url}}" target="_blank">{{original_filename}}</a></li>
+        </ul>  
+        {{/attachment_file}}
+        <ul class="col-md-12 att-list">
+        {{#attachment_img}}
           <li class="col-md-4">
-          <img src="{{s3_url}}">
+           <img src="{{s3_url}}">
           </li>
-        {{/attachment}}
+        {{/attachment_img}}
         </ul>
       </div>
       <div>
