@@ -21,14 +21,14 @@
           </div>
         <% end %>
         <div class="form-group">
-          <input type="password" class="form-control input-field" id="password" required name="school_admin[password]" autocomplete="off" placeholder="New Password"  minlength="6" maxlength="15"/>
+          <input type="password" class="form-control input-field new" id="password" required name="school_admin[password]" autocomplete="off" placeholder="New Password"  minlength="6" maxlength="15"/>
           <a class="pull-right pass-show">Show</a>
         </div>
         <div class="form-group">
-          <input type="password" class="form-control input-field" required name="school_admin[password_confirmation]" autocomplete="off" placeholder="Confirm Password"  minlength="6" maxlength="15"/>
+          <input type="password" class="form-control input-field confirm" required name="school_admin[password_confirmation]" autocomplete="off" placeholder="Confirm Password"  minlength="6" maxlength="15"/>
           <a class="pull-right pass-show">Show</a>
         </div>
-        <p class="show_err"><%= flash[:password_mismatch] %></p>
+        <p class="show_err hidden">Password does not match. Try again</p>
         <div class="pt20">
           <button type="submit" class="btn btn-primary btn-full-width text-uppercase"> reset & continue </button>          
         </div>
