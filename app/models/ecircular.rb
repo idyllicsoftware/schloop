@@ -57,8 +57,11 @@ class Ecircular < ActiveRecord::Base
 		total_records = circulars.count
 
 		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
+
+		circular_parents_by_ecircular_id = EcircularParent.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
+
 		circulars.each do |circular|
-			recipients, attachments = [], []
+			recipients, attachments, students_data = [], [], []
 			grouped_circulars = circular.ecircular_recipients.group_by do |x| x.grade_id end
 			grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
 			grouped_circulars.each do |grade_id, recipients_data|
@@ -74,6 +77,24 @@ class Ecircular < ActiveRecord::Base
 				attachments << {original_filename: attachment.original_filename, s3_url: attachment.name}
 			end
 			created_by = (circular.created_by_type || 'teacher').classify.safe_constantize.find_by(id: circular.created_by_id)
+			student_ids = circular_parents_by_ecircular_id[circular.id].collect(&:student_id) rescue []
+			students = Student.where(id: student_ids).includes(student_profiles: [:grade, :division]) || []
+
+			students.each do |student|
+				students_data << {
+					id: student.id,
+					name: student.name,
+					grade: {
+						id: (student.student_profiles.last.grade.id rescue 0),
+						name: (student.student_profiles.last.grade.name rescue '')
+					},
+					division: {
+						id: (student.student_profiles.last.division.id rescue 0),
+						name: (student.student_profiles.last.division.name rescue '')
+					}
+				}
+			end
+
 			circular_data << {
 				id: circular.id,
 				title: circular.title,
@@ -88,6 +109,7 @@ class Ecircular < ActiveRecord::Base
 					name: circular.circular_tag.present? ? circular.circular_tag.humanize : ''
 				},
 				recipients: recipients,
+				students: students_data,
 				attachments: attachments
 			}
 		end
