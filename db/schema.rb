@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161213133007) do
+ActiveRecord::Schema.define(version: 20161215121706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -338,7 +338,6 @@ ActiveRecord::Schema.define(version: 20161213133007) do
     t.string   "title",                                 null: false
     t.integer  "master_grade_id",                       null: false
     t.integer  "master_subject_id",                     null: false
-    t.integer  "teacher_id",            default: -1
     t.boolean  "is_created_by_teacher", default: false, null: false
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
@@ -346,7 +345,6 @@ ActiveRecord::Schema.define(version: 20161213133007) do
 
   add_index "topics", ["master_grade_id"], name: "index_topics_on_master_grade_id", using: :btree
   add_index "topics", ["master_subject_id"], name: "index_topics_on_master_subject_id", using: :btree
-  add_index "topics", ["teacher_id"], name: "index_topics_on_teacher_id", using: :btree
 
   create_table "user_roles", force: :cascade do |t|
     t.integer  "role_id"
@@ -415,6 +413,5 @@ ActiveRecord::Schema.define(version: 20161213133007) do
   add_foreign_key "subjects", "teachers"
   add_foreign_key "topics", "master_grades"
   add_foreign_key "topics", "master_subjects"
-  add_foreign_key "topics", "teachers"
   add_foreign_key "user_roles", "roles"
 end
