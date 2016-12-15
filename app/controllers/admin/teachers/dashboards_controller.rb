@@ -3,7 +3,6 @@ class Admin::Teachers::DashboardsController < ApplicationController
 	layout "teacher"
 	
   def create
-    binding.pry
     errors = []
     begin
       teacher = Teacher.find_by(id: params[:id])
@@ -26,7 +25,6 @@ class Admin::Teachers::DashboardsController < ApplicationController
   end
  
   def show
-    binding.pry
   #@grades = GradeTeacher.select("distict grade_id,subject_id").where(teacher_id: params[:id]) 
   teacher_id= params[:id]
 
