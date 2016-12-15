@@ -26,7 +26,33 @@
 	      </div>
 	      <div class="tab-pane fade in active" id="my-topics">
 	        <div class="content-wrapper">
-	          <h1>teacher dashboard my topics</h1>
+	          	<div class="col-md-3 sidebar">
+		          	<div class="select-filter-tag-section">
+		          		<span>Grade I | Science<a id="select-filter-tag-popover" data-toggle="popover" data-value="select-filter-tag-popover-content" data-placement="bottom"><i class="fa fa-chevron-down"></i></a></span>
+		          		<div id="select-filter-tag-popover-content" class="hidden">
+						  <div class="form-group">
+						    <input type="text" class="form-control input-field" required name="div_name" placeholder="division A,B,C etc." autocomplete="off" maxlength="20">
+						    <input type="text" name="grade_id" value="{{id}}" hidden %>
+						    <div class="add-division-btn">
+						      <button  class="btn btn-primary" type="submit">ADD</button>
+						      <button  class="btn btn-primary cancelPopoverBtn">CANCEL</button>
+						    </div>
+						  </div>
+						</div>
+		          	</div>
+		          	<ul class="nav nav-sidebar">
+		          		<li><a href="#">Our Universe</a></li>
+		          		<li><a href="#">Plants</a></li>
+		          		<li><a href="#">Earth</a></li>
+		          		<li><a href="#">Soil & Minerals</a></li>
+		          	</ul>
+		          	<div class="new-topic mt20">
+		          		<a>+ Add New Topic</a>
+		          	</div>
+	          	</div>
+	          	<div class="col-md-9">
+	          		<h1>TO DO</h1>
+	          	</div>
 	        </div>
 	      </div>
 	      <div class="tab-pane fade in" id="collaboration">
