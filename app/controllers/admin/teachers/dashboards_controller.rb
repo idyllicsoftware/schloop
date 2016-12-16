@@ -2,8 +2,7 @@ class Admin::Teachers::DashboardsController < ApplicationController
 
 	layout "teacher"
 	
-  def create
-     errors = []
+  def create 
     begin
       teacher = Teacher.find_by(id: params[:id])
       bookmark_data = {
@@ -24,9 +23,9 @@ class Admin::Teachers::DashboardsController < ApplicationController
     render json: {success: errors.blank?, errors: errors}
   end
  
-
-   def show
-  binding.pry
+ 
+  def show
+>>>>>>> f4396719259d229b675692b3a503d67dcd69a7c4
   #@grades = GradeTeacher.select("distict grade_id,subject_id").where(teacher_id: params[:id]) 
   teacher_id= params[:id]
 
