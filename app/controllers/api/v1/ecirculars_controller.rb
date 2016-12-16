@@ -110,7 +110,12 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     circular = Ecircular.create(circular_params.merge!(created_by_type: created_by_type, created_by_id: @current_user.id, school_id: @current_user.school_id ))
     if circular.persisted?
       begin
-        circular.ecircular_recipients.create!(recipients_params)
+        # add ecircular recipients
+        circular.ecircular_recipients.create!(recipients_params) if recipients_params.present?
+
+        # add ecircular parent recipents
+        circular.ecircular_parents.create!(parents_params) if parents_params.present?
+
         Attachment.create!(attachments_params(circular))
       rescue Exception => ex
         errors << ex.message
@@ -171,6 +176,19 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         end
       end
       return create_params
+    end
+
+    def parents_params
+      create_parent_params = []
+      return create_parent_params if params[:students].blank?
+      students = Student.where(id: params[:students])
+      students.each do |student|
+        create_parent_params << {
+            student_id: student.id,
+            parent_id: student.parent_id
+          }
+      end
+      return create_parent_params
     end
 
     def attachments_params(circular)

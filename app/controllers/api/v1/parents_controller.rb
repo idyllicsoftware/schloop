@@ -238,8 +238,9 @@ class Api::V1::ParentsController < Api::V1::BaseController
       filters = params[:filter]
       return {} if filters.blank?
       divisions = [@student_profile.division_id]
-
+      circular_ids = EcircularParent.where(parent_id: @current_user.id).pluck(:ecircular_id)
       {
+        id: circular_ids,
         from_date: filters[:from_date],
         to_date: filters[:to_date],
         divisions: divisions,
