@@ -98,17 +98,30 @@ class SchoolTeachers extends SchloopBase {
         });
 
         jForm.find('.removeTeacherBtn').off('click').on('click', function () {
-            _self.deleteRequest(delete_teachers_url, $(this), null, function (res) {
-                if(res.success) {
-                    _self.loadSchoolsTeachers();
-                    toastr.success('School teacher removed successfully', '', {
-                        positionClass: 'toast-top-right cloud-display'
-                    });
-                    popoverEl.popover('hide');
-                }else {
-                    _self.showErrors(res.errors);
-                }
-            })
+            var removeUserBtn = $(this);
+            swal({
+                    title: "Are you sure?",
+                    text: "You want delete school teacher",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!"
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                         _self.deleteRequest(delete_teachers_url, removeUserBtn, null, function (res) {
+                            if(res.success) {
+                                _self.loadSchoolsTeachers();
+                                toastr.success('School teacher removed successfully', '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                                });
+                                popoverEl.popover('hide');
+                            }else {
+                                _self.showErrors(res.errors);
+                            }
+                        })
+                    }    
+                });
         });
     };
 
@@ -127,7 +140,7 @@ class SchoolTeachers extends SchloopBase {
                     html = Mustache.to_html(_self.schoolTeachersTpl, res);
                     _self.schoolTeachers = res.school_teachers.toHash('id');
                     schoolTeacherContainerEl.find('li.saved_teacher').remove();
-                    schoolTeacherContainerEl.prepend(html);
+                    schoolTeacherContainerEl.append(html);
                     _self.popoverInit(false, schoolTeacherContainerEl);
 
                     schoolTeacherContainerEl.find("li.saved_teacher").on('show.bs.popover', function () {
@@ -166,6 +179,17 @@ class SchoolTeachers extends SchloopBase {
                             });
                             _self.initForm(jForm, $(this), school_teacher_id);
                         }
+                        
+                        $("input[type=checkbox]").change(function(){
+                                var grade_id = $(this).data('grade_id'),
+                                    subject_id = $(this).data('subject_id');
+                                    
+                                if($("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked")){
+                                    $("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked").each(function(i){
+                                        $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                                    });
+                                }
+                         });
                     });
                 }
             }
