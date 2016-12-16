@@ -75,7 +75,7 @@ class SchloopBase {
 
     showErrors (errors){
         if(typeof errors === 'string'){
-            let msg = "Something went wrong. Please try later.";
+            let msg = errors + '<br/>' || "Something went wrong. Please try later.";
             swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
         } else if (typeof errors === 'array'){
             let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
