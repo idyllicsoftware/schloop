@@ -148,7 +148,6 @@ class SchoolECircular extends SchloopBase {
         _self.initRecipientsSelectPopover();
         _self.initCircularHistory();
 
-
         this.initFormSubmit(eCircularFormEl, {
             'title': 'name',
             'body': 'name',
@@ -171,10 +170,25 @@ class SchoolECircular extends SchloopBase {
                 }
             }
         }, null, btnEl);
-
+    
         circular_container.find("#circularSubmit").on('click', function () {
+            var rec_name = circular_container.find('.select-recipients_name').html(),
+                rec_tag = circular_container.find('.selected_circular_tag').html();
+                
+            circular_container.find('label.error').removeClass('hidden');            
+            if ( rec_name === 'Select recipients') {
+             circular_container.find('.req-filed').append("<label class='recipient-error'>This field is required</label>");   
+            } else {
+                circular_container.find('.req-filed >.recipient-error').remove();
+            }
+            if ( rec_tag === 'Select E-Circular') {
+             circular_container.find('.req-filed').append("<label class='recipient-tag-error'>This field is required</label>");   
+            } else {
+                circular_container.find('.req-filed >.recipient-tag-error').remove();
+            }
+
             if(!circular_container.find(".circular_id_hidden_input").val()) {
-                eCircularFormEl.submit();
+                    eCircularFormEl.submit();
             }else {
                 circular_container.find("#circularSubmit").attr('disabled', 'disabled');
                 circular_container.find(".uploadBtn").trigger('click');
@@ -298,14 +312,18 @@ class SchoolECircular extends SchloopBase {
                 circularHistoryModal.find('.modal-body').html(html);
             }
         });
-
+        
         $(document).on('click', '.history-circular-btn-wrap a', function () {
-            let {type} = $(this).data();
+            let {type} = $(this).data(),
+                circulars_main_form = $('.circulars-main-form'),
+                school_ecircular_form = $('.school-ecircular-form');
             if(type == "history"){
                 $("#circulars-tab").removeClass('new_circular_active').addClass('history_active');
                 _self.loadCircularHistory();
             }else {
                 $("#circulars-tab").removeClass('history_active').addClass('new_circular_active');
+                school_ecircular_form[0].reset();
+                circulars_main_form.find('label.error, .recipient-error , .recipient-tag-error').addClass('hidden');
             }
         });
     };

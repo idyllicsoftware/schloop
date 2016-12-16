@@ -101,7 +101,7 @@ class SchoolTeachers extends SchloopBase {
             var removeUserBtn = $(this);
             swal({
                     title: "Are you sure?",
-                    text: "You want delete school admin",
+                    text: "You want delete school teacher",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
@@ -179,6 +179,17 @@ class SchoolTeachers extends SchloopBase {
                             });
                             _self.initForm(jForm, $(this), school_teacher_id);
                         }
+                        
+                        $("input[type=checkbox]").change(function(){
+                                var grade_id = $(this).data('grade_id'),
+                                    subject_id = $(this).data('subject_id');
+                                    
+                                if($("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked")){
+                                    $("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked").each(function(i){
+                                        $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                                    });
+                                }
+                         });
                     });
                 }
             }

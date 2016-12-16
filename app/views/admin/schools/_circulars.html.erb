@@ -23,7 +23,7 @@
         <div class="form-group col-md-12">
           <textarea class="form-control input-field circular-textarea" name="body" placeholder="Body"></textarea>
         </div>
-        <div class="col-md-12 mt20">
+        <div class="col-md-12 mt20 req-filed">
           <div class="col-md-5 border_botm">
               <a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
 		          	    	<span class="select-recipients">
@@ -110,8 +110,8 @@
                 <ul class="checkbox_customized">
                   <% grade.divisions.each do |division| %>
                       <li class="col-md-2">
-                        <input type="checkbox" class="division_checkbox" name="grades[<%= grade.id %>]division[]" value="<%= division.id %>" id="div_circular_<%= division.name %>" data-grade_id="<%= grade.id %>">
-                        <label for="div_circular_<%= division.name %>"><%= division.name %></label>
+                        <input type="checkbox" class="division_checkbox" name="grades[<%= grade.id %>]division[]" value="<%= division.id %>" id="<%= grade.id %>div_circular_<%= division.name %>" data-grade_id="<%= grade.id %>">
+                        <label for="<%= grade.id %>div_circular_<%= division.name %>"><%= division.name %></label>
                       </li>
                   <% end %>
                 </ul>
