@@ -3,8 +3,8 @@
 # Table name: collaborations
 #
 #  id                    :integer          not null, primary key
-#  bookmark_id           :integer          not null
-#  collaboration_message :string           default(""), not null
+#  bookmark_id           :integer
+#  collaboration_message :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #

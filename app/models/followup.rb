@@ -3,8 +3,8 @@
 # Table name: followups
 #
 #  id               :integer          not null, primary key
-#  bookmark_id      :integer          not null
-#  followup_message :string           default(""), not null
+#  bookmark_id      :integer
+#  followup_message :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

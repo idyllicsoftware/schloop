@@ -3,18 +3,18 @@
 # Table name: bookmarks
 #
 #  id                :integer          not null, primary key
-#  title             :string           not null
-#  data              :text             not null
-#  data_type         :integer          not null
-#  caption           :text             default(""), not null
-#  teacher_id        :integer          not null
-#  topic_id          :integer          not null
-#  preview_image_url :string           default(""), not null
-#  views             :integer          default(0), not null
-#  likes             :integer          default(0), not null
-#  grade_id          :integer          not null
-#  subject_id        :integer          not null
-#  school_id         :integer          not null
+#  title             :string
+#  data              :text
+#  data_type         :integer
+#  caption           :text
+#  teacher_id        :integer
+#  topic_id          :integer
+#  preview_image_url :string
+#  views             :integer
+#  likes             :integer
+#  grade_id          :integer
+#  subject_id        :integer
+#  school_id         :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

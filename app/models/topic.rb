@@ -4,9 +4,10 @@
 #
 #  id                    :integer          not null, primary key
 #  title                 :string           not null
-#  master_grade_id       :integer          not null
-#  master_subject_id     :integer          not null
-#  is_created_by_teacher :boolean          default(FALSE), not null
+#  master_grade_id       :integer
+#  master_subject_id     :integer
+#  teacher_id            :integer          default(0)
+#  is_created_by_teacher :boolean
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #
@@ -14,6 +15,7 @@
 #
 #  index_topics_on_master_grade_id    (master_grade_id)
 #  index_topics_on_master_subject_id  (master_subject_id)
+#  index_topics_on_teacher_id         (teacher_id)
 #
 # Foreign Keys
 #
