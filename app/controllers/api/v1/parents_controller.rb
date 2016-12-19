@@ -235,11 +235,13 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
     private
     def filter_params
-      filters = params[:filter]
-      return {} if filters.blank?
-      divisions = [@student_profile.division_id]
       circular_ids = EcircularParent.where(parent_id: @current_user.id).pluck(:ecircular_id)
-      {
+      filter_hash = {id: circular_ids}
+      
+      filters = params[:filter]
+      return filter_hash if filters.blank?
+      divisions = [@student_profile.division_id] 
+      return {
         id: circular_ids,
         from_date: filters[:from_date],
         to_date: filters[:to_date],

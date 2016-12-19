@@ -56,7 +56,7 @@ class Ecircular < ActiveRecord::Base
 
 		if filter_params[:id].present?
 			circular_ids = circulars.ids + filter_params[:id]
-			circulars = circulars.where(id: circular_ids)	
+			circulars = Ecircular.where(id: circular_ids)	
 		end
 		total_records = circulars.count
 
