@@ -24,48 +24,37 @@ class Admin::Teachers::DashboardsController < ApplicationController
   end
  
  
-  def show
->>>>>>> f4396719259d229b675692b3a503d67dcd69a7c4
-  #@grades = GradeTeacher.select("distict grade_id,subject_id").where(teacher_id: params[:id]) 
-  teacher_id= params[:id]
-
-  grade_teacher_data = []
-  topic_data= []
-  teacher = Teacher.find(teacher_id)
-  grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
+  def show 
+    binding.pry
+ grade_teacher_data = []
+    @teacher = Teacher.find_by(id: params[:id])
+   grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
 
    grades_data.each do |grade_id, datas|
-    subjects_data = {}
-
+     subjects_data = {}
      datas.each do |data|
        subjects_data[data.subject_id ] ||= {
          subject_id: data.subject_id,
          subject_name: data.subject.name,
-         topic_data: []
+         divisions_data: []
        }
-
-       subjects_data[data.subject_id][:topic_data] << {
-         topic_id: data.topic_id,
-         topic_name: data.topic.name
-       } 
 
        subjects_data[data.subject_id][:divisions_data] << {
          division_id: data.division_id,
          division_name: data.division.name
        }
-               
-
+     end
      grade_teacher_data << {
        grade_id: grade_id,
        grade_name: datas.first.grade.name,
        subjects_data: subjects_data.values
      }
-
    end
-end
    return grade_teacher_data
- end 
 end
+
+end
+
 
 
 
