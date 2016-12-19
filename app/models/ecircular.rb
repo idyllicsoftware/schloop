@@ -54,6 +54,10 @@ class Ecircular < ActiveRecord::Base
 			circulars = circulars.where(id: circular_ids)
 		end
 
+		if filter_params[:id].present?
+			circulars += Ecircular.where(id: filter_params[:id])	
+		end
+		circulars = circulars.uniq
 		total_records = circulars.count
 
 		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
