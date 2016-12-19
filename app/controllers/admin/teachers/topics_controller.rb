@@ -2,8 +2,7 @@ class Admin::Teachers::TopicsController < ApplicationController
 	layout "teacher"
 
  def show 
- 	binding.pry
- 	topic=Topic.where(master_grade_id: params[:master_grade_id],master_subject_id:params[:master_subject_id],is_created_by_teacher:params[:is_created_by_teacher])
+  	topic=Topic.where(master_grade_id: params[:master_grade_id],master_subject_id:params[:master_subject_id],is_created_by_teacher:params[:is_created_by_teacher])
 	topic_data ={}
 	topic.each do|data|
 	   {

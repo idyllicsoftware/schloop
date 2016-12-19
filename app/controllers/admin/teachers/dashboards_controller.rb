@@ -25,9 +25,8 @@ class Admin::Teachers::DashboardsController < ApplicationController
  
  
   def show 
-    binding.pry
- grade_teacher_data = []
-    @teacher = Teacher.find_by(id: params[:id])
+  grade_teacher_data = []
+  teacher = Teacher.find_by(id: params[:id])
    grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
 
    grades_data.each do |grade_id, datas|
