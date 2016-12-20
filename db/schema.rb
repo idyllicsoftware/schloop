@@ -299,20 +299,6 @@ ActiveRecord::Schema.define(version: 20161215063453) do
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
 
-  create_table "topics", force: :cascade do |t|
-    t.string   "title"
-    t.integer  "grade_id"
-    t.integer  "subject_id"
-    t.integer  "teacher_id"
-    t.boolean  "is_master"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "topics", ["grade_id"], name: "index_topics_on_grade_id", using: :btree
-  add_index "topics", ["subject_id"], name: "index_topics_on_subject_id", using: :btree
-  add_index "topics", ["teacher_id"], name: "index_topics_on_teacher_id", using: :btree
-
   create_table "user_roles", force: :cascade do |t|
     t.integer  "role_id"
     t.datetime "created_at",  null: false
@@ -369,8 +355,5 @@ ActiveRecord::Schema.define(version: 20161215063453) do
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
   add_foreign_key "subjects", "grades"
-  add_foreign_key "topics", "grades"
-  add_foreign_key "topics", "subjects"
-  add_foreign_key "topics", "teachers"
   add_foreign_key "user_roles", "roles"
 end
