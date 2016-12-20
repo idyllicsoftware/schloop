@@ -63,10 +63,6 @@ class User < ActiveRecord::Base
     self.user_token = generated_user_token
   end
 
-  def name
-    return "#{first_name} #{last_name}"
-  end
-
   def generated_user_token
     SecureRandom.uuid.gsub(/\-/,'')
   end
