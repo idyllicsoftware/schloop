@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161215063453) do
+ActiveRecord::Schema.define(version: 20161220072158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,28 @@ ActiveRecord::Schema.define(version: 20161215063453) do
     t.datetime "updated_at",                    null: false
     t.integer  "sub_type",          default: 0, null: false
   end
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.string   "title"
+    t.text     "data"
+    t.text     "caption"
+    t.string   "url"
+    t.string   "preview_image_url"
+    t.integer  "likes",             default: 0, null: false
+    t.integer  "views",             default: 0, null: false
+    t.integer  "topic_id"
+    t.integer  "data_type",         default: 0, null: false
+    t.integer  "school_id"
+    t.integer  "grade_id"
+    t.integer  "subject_id"
+    t.integer  "teacher_id"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "bookmarks", ["grade_id", "subject_id"], name: "index_bookmarks_on_grade_id_and_subject_id", using: :btree
+  add_index "bookmarks", ["school_id"], name: "index_bookmarks_on_school_id", using: :btree
+  add_index "bookmarks", ["teacher_id"], name: "index_bookmarks_on_teacher_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -302,6 +324,18 @@ ActiveRecord::Schema.define(version: 20161215063453) do
   add_index "teachers", ["invited_by_id"], name: "index_teachers_on_invited_by_id", using: :btree
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
+
+  create_table "topics", force: :cascade do |t|
+    t.string   "title",                         null: false
+    t.integer  "master_grade_id"
+    t.integer  "master_subject_id"
+    t.integer  "teacher_id",        default: 0
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "topics", ["master_grade_id", "master_subject_id"], name: "index_topics_on_master_grade_id_and_master_subject_id", using: :btree
+  add_index "topics", ["teacher_id"], name: "index_topics_on_teacher_id", using: :btree
 
   create_table "user_roles", force: :cascade do |t|
     t.integer  "role_id"

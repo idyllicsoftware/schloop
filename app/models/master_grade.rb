@@ -16,4 +16,5 @@
 class MasterGrade < ActiveRecord::Base
   has_many :grades, dependent: :destroy
   has_many :activities, dependent: :destroy
+  has_many :topics, dependent: :destroy
 end
