@@ -254,9 +254,9 @@ ActiveRecord::Schema.define(version: 20161220072158) do
     t.integer  "student_id"
     t.integer  "grade_id"
     t.integer  "division_id"
-    t.integer  "status",      default: 0, null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.string   "status"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "students", force: :cascade do |t|

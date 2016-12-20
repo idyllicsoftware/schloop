@@ -129,6 +129,10 @@ Rails.application.routes.draw do
       post "/parent/ecirculars" => 'parents#circulars'
       post "/parent/activities" => 'parents#activities'
       get  "/parent/forgot_password" => "parents#forgot_password"
+
+      get  "/teacher/topics" => 'teachers#topics'
+      post "/teacher/topics" => 'teachers#create_topic'
+
     end
   end
 
