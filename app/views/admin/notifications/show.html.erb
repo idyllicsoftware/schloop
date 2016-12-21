@@ -1,0 +1,62 @@
+
+<%= form_tag '/admin/notifications' , method: :post, class: "form-horizontal" do %>
+    <fieldset>
+
+    <!-- Form Name -->
+    <legend>Notification Sender</legend>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="textinput">Notification Title</label>
+      <div class="col-md-4">
+        <input id="textinput" name="title" placeholder="Notification Title" class="form-control input-md" required="" type="text">
+
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="textinput">Notification Body</label>
+      <div class="col-md-4">
+        <input id="textinput" name="body" placeholder="Notification Body" class="form-control input-md" required="" type="text">
+
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="textinput">Type</label>
+      <div class="col-md-4">
+        <input id="textinput" name="type" placeholder="type" class="form-control input-md" required="" type="text">
+
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="id">ID</label>
+      <div class="col-md-4">
+        <input id="id" name="id" placeholder="Id" class="form-control input-md" type="text">
+
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="token">Token</label>
+      <div class="col-md-4">
+        <input id="token" name="token" placeholder="token" class="form-control input-md" required="" type="text">
+
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="send"></label>
+      <div class="col-md-4">
+        <button id="send" name="send" class="btn btn-success">Send</button>
+      </div>
+    </div>
+
+  </fieldset>
+<% end %>

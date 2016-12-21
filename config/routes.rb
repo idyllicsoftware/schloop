@@ -136,4 +136,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get  "/admin/notifications" => 'admin/notifications#show', as: :admin_show_nofifcation
+  post "/admin/notifications" => 'admin/notifications#send_notification'
+
 end
