@@ -167,6 +167,74 @@ class Api::V1::TeachersController < Api::V1::BaseController
         profile: profile_data
       }
     }
+  end
+
+  def topics
+    errors = []
+    grade  = Grade.find_by(id: params[:grade_id])
+    errors << "Please provide valid grade." if grade.nil?
+
+    subject = Subject.find_by(id: params[:subject_id])
+    errors << "Please provide valid subject." if subject.nil?
+
+    if errors.blank?
+      master_grade_id = grade.master_grade_id
+      master_subject_id = subject.master_subject_id
+
+      topics = Topic.index(@current_user, master_grade_id, master_subject_id)
+      render json: {
+          success: true,
+          error: nil,
+          data: {
+              topics: topics
+          }
+      }
+    else
+      render json: {
+          success: false,
+          error:  {
+              code: 0,
+              message: errors
+          },
+          data: nil
+      }
+    end
+  end
+
+  def create_topic
+    errors = []
+    grade  = Grade.find_by(id: params[:grade_id])
+    errors << "Please provide valid grade." if grade.nil?
+
+    subject = Subject.find_by(id: params[:subject_id])
+    errors << "Please provide valid subject." if subject.nil?
+
+    errors << "Topic cannot be blank." if params[:topic].blank?
+
+    if errors.blank?
+      master_grade_id = grade.master_grade_id
+      master_subject_id = subject.master_subject_id
+
+      topic = Topic.create(title: params[:topic], master_grade_id: master_grade_id,
+      master_subject_id: master_subject_id, teacher_id: @current_user.id)
+
+      render json: {
+          success: true,
+          error: nil,
+          data: {
+              topic: topic
+          }
+      }
+    else
+      render json: {
+          success: false,
+          error:  {
+              code: 0,
+              message: errors
+          },
+          data: nil
+      }
+    end
 
   end
 
