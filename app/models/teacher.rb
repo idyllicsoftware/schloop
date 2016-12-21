@@ -84,6 +84,56 @@ class Teacher < ActiveRecord::Base
     "#{first_name} #{last_name} #{middle_name}"
   end
 
+  def associated_students(search_params = {})
+    filtered_student_ids = []
+    division_ids = self.grade_teachers.pluck(:division_id).uniq
+    student_ids = StudentProfile.where(division_id: division_ids).pluck(:student_id)
+    associated_students = Student.where(id: student_ids)
+    if search_params.present?
+      search_params[:names].each do |name|
+        filtered_student_ids += associated_students.where("first_name ILIKE ?", "%#{name}%").ids
+        filtered_student_ids += associated_students.where("last_name ILIKE ?", "%#{name}%").ids
+      end
+      associated_students = Student.where(id: filtered_student_ids.uniq)
+    end
+    return associated_students
+  end
+
+  def associated_parents(student_name = nil)
+    parents_data, search_params = [], {}
+    if student_name.present?
+      student_name = student_name.strip
+      names = student_name.split(" ")
+      search_params[:names] = names
+      searched_students = associated_students(search_params)
+    else
+      searched_students = associated_students
+    end
+
+    students = searched_students.includes(:parent, student_profiles: [:grade, :division]).order(:first_name, :last_name).limit(50)
+
+    students.each do |student|
+      parents_data << {
+        student_id: student.id,
+        parent_id: student.parent.id,
+        student_name: student.name,
+        parent_name: student.parent.name,
+        parent_mobile: student.parent.cell_number,
+        parent_email: student.parent.email,
+        grade: {
+          grade_id: student.student_profiles.last.grade_id,
+          grade_name: student.student_profiles.last.grade.name
+        },
+        division: {
+          division_id: student.student_profiles.last.division_id,
+          division_name: student.student_profiles.last.division.name
+        }
+      }
+    end
+
+    return parents_data
+  end
+
   def generated_token
     loop do
       token = SecureRandom.uuid.gsub(/\-/, '')

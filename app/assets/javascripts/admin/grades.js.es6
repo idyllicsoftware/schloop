@@ -202,23 +202,36 @@ class SchoolGrades extends SchloopBase {
 				url = '/admin/divisions/'+ current_division_id,
 				rm_El = $(this).parent().parent().find(".division-list > li.active"),
 				rm_El_data = rm_El.data('division_id'),
+                removeUserBtn = $(this),
 				msg = 'Division deleted successfully';
 
-            _self.deleteRequest(url, $(this), null, function (res) {
-                if(res.success) {
-                	if(current_division_id !== ''){
-          				if(rm_El_data == current_division_id){
-          				_self.loadSchoolsGrades();
-	                    toastr.success('Division deleted successfully', '', {
-                            positionClass: 'toast-top-right cloud-display'
-                        });
-	                    rm_El.remove();
-	                	}
-                	}
-                }else {
-                    _self.showErrors(res.errors);
-                }
-            })
+            swal({
+                    title: "Are you sure?",
+                    text: "You want delete division",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!"
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        _self.deleteRequest(url, removeUserBtn, null, function (res) {
+                            if(res.success) {
+                                if(current_division_id !== ''){
+                                    if(rm_El_data == current_division_id){
+                                    _self.loadSchoolsGrades();
+                                    toastr.success('Division deleted successfully', '', {
+                                        positionClass: 'toast-top-right cloud-display'
+                                    });
+                                    rm_El.remove();
+                                    }
+                                }
+                            }else {
+                                _self.showErrors(res.errors);
+                            }
+                        })
+                    }    
+                });
         });
     };
 }        

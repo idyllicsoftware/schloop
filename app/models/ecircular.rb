@@ -19,13 +19,15 @@ class Ecircular < ActiveRecord::Base
 	#										 event_circular: 11, awards_and_achievements: 12, fee_notice: 13, #follow_up_activity_for_parents: 14,
 	#										 exhibitions: 15, worksheets: 16, extra_curricular_activities_circular: 17, #school_time_change: 18,
 	#										 inter_school_competitions: 19, intra_school_competitions: 20, olympiads: #21 }
-  enum circular_tag: { circular: 0, assignment: 1, lesson_plan: 2, from_notice_board: 3, 	                   teachers_message: 4, year_plan: 5, time_table: 6, attendance: 7, holiday: 8                   , health_report: 9
-                      }
+  enum circular_tag: { circular: 0, assignment: 1, lesson_plan: 2, from_notice_board: 3,
+											 teachers_message: 4, year_plan: 5, time_table: 6, attendance: 7, holiday: 8,
+											 health_report: 9 }
  	enum created_by_type: { teacher: 0, school_admin: 1, product_admin: 2 }
 
   belongs_to :school
   has_many :attachments, as: :attachable
   has_many :ecircular_recipients
+	has_many :ecircular_parents
 
   validates :title, :created_by_type, :created_by_id , :presence => true
 
@@ -55,8 +57,11 @@ class Ecircular < ActiveRecord::Base
 		total_records = circulars.count
 
 		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
+
+		circular_parents_by_ecircular_id = EcircularParent.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
+
 		circulars.each do |circular|
-			recipients, attachments = [], []
+			recipients, attachments, students_data = [], [], []
 			grouped_circulars = circular.ecircular_recipients.group_by do |x| x.grade_id end
 			grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
 			grouped_circulars.each do |grade_id, recipients_data|
@@ -72,6 +77,24 @@ class Ecircular < ActiveRecord::Base
 				attachments << {original_filename: attachment.original_filename, s3_url: attachment.name}
 			end
 			created_by = (circular.created_by_type || 'teacher').classify.safe_constantize.find_by(id: circular.created_by_id)
+			student_ids = circular_parents_by_ecircular_id[circular.id].collect(&:student_id) rescue []
+			students = Student.where(id: student_ids).includes(student_profiles: [:grade, :division]) || []
+
+			students.each do |student|
+				students_data << {
+					id: student.id,
+					name: student.name,
+					grade: {
+						id: (student.student_profiles.last.grade.id rescue 0),
+						name: (student.student_profiles.last.grade.name rescue '')
+					},
+					division: {
+						id: (student.student_profiles.last.division.id rescue 0),
+						name: (student.student_profiles.last.division.name rescue '')
+					}
+				}
+			end
+
 			circular_data << {
 				id: circular.id,
 				title: circular.title,
@@ -86,6 +109,7 @@ class Ecircular < ActiveRecord::Base
 					name: circular.circular_tag.present? ? circular.circular_tag.humanize : ''
 				},
 				recipients: recipients,
+				students: students_data,
 				attachments: attachments
 			}
 		end

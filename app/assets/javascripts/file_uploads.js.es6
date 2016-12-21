@@ -6,7 +6,12 @@ class FileUpload {
         let oUpload = this,
             {isImageUpload=false} = config;
         oUpload._config = config;
-        oUpload._config.allowedFileTypes = !isImageUpload ? ["doc", "docx", "pdf", "xls", "xlsx", "csv", "xlsm"] : ['jpg', 'jpeg', 'png', 'gif'];
+    
+        if (isImageUpload) {
+                oUpload._config.allowedFileTypes = ['jpg', 'jpeg', 'png', 'gif'];
+        } else {
+            oUpload._config.allowedFileTypes = ["doc", "docx", "pdf", "xls", "xlsx", "csv", "xlsm", 'jpg', 'jpeg', 'png', 'gif'];
+        }
         oUpload.limitMultiFileUploadSize = (typeof config !== 'undefined' && config.limitMultiFileUploadSize) ? config.limitMultiFileUploadSize : 10000000;
         oUpload.file_ids = [];
 
