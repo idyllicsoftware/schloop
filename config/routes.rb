@@ -52,6 +52,7 @@ Rails.application.routes.draw do
       resources :dashboards do 
         collection do
           get :get_topics
+          post :add_topic
         end
       end
       resources :topics, only: [:show],shallow: true

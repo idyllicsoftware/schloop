@@ -2,9 +2,9 @@ class Admin::Teachers::DashboardsController < ApplicationController
 
 	layout "teacher"
   def index
-    grade_teacher_data = []
+    @grade_teacher_data = []
     teacher = current_teacher
-    grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
+    grades_data = teacher.grade_teachers.group_by do |record| record.grade_id end
 
     grades_data.each do |grade_id, datas|
       subjects_data = {}
@@ -14,13 +14,12 @@ class Admin::Teachers::DashboardsController < ApplicationController
           subject_name: data.subject.name
         }
       end
-      grade_teacher_data << {
+      @grade_teacher_data << {
         grade_id: grade_id,
         grade_name: datas.first.grade.name,
         subjects_data: subjects_data.values
       }
     end
-    render json: { success: true, grade_taecher_data: grade_teacher_data }
   end
 	
   def create 
@@ -44,7 +43,7 @@ class Admin::Teachers::DashboardsController < ApplicationController
     render json: {success: errors.blank?, errors: errors}
   end
  
- 
+=begin
   def show 
     grade_teacher_data = []
     teacher = Teacher.find_by(id: params[:id])
@@ -72,16 +71,29 @@ class Admin::Teachers::DashboardsController < ApplicationController
     end
     return grade_teacher_data
   end
-  
+=end
   def get_topics
-    params[:grade]= 1
-    params[:subject]= 2
     grade  = Grade.find_by(id: params[:grade])
     subject = Subject.find_by(id: params[:subject])
     master_grade_id = grade.master_grade_id
     master_subject_id = subject.master_subject_id
     topics = Topic.index(current_teacher, master_grade_id, master_subject_id)
-    render json: {success: true, topics: topics}
+    render json: {topics: topics}
+  end
+
+  def add_topic
+    errors = []
+    topic_datum = {}
+    begin
+      topic_datum[:title] = params[:title]
+      topic_datum[:master_grade_id] = Grade.find_by(id: params[:grade_id]).master_grade_id
+      topic_datum[:master_subject_id] = Subject.find_by(id: params[:subject_id]).master_subject_id
+      topic_datum[:teacher_id] = current_teacher
+      Topic.create(topic_datum)
+    rescue Exception => e
+      errors << "error occured while inserting new topic"
+    end
+    render json: { success: errors.blank?, errors: errors }
   end
 end
 
