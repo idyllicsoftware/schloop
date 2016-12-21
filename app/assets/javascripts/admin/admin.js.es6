@@ -1,7 +1,7 @@
 //= require base
 //= require admin/schools
 //= require admin/parent_imports
-//= require admin/teachers/dashboards
+//= require admin/teachers/teacher_dashboard
 
 class SchloopAdmin extends SchloopBase {
     init (){
@@ -9,7 +9,7 @@ class SchloopAdmin extends SchloopBase {
             subController = controller.split("/").join('_');
             
         if(['admin_teachers_dashboards'].includes(subController)){
-            this._teachers = new Teachers(this._config);
+            this._teacher_dashboard = new TeacherDashboard(this._config);
         }
 
         if(['admin_schools'].includes(subController)){

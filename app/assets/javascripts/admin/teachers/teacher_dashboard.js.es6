@@ -3,7 +3,7 @@
 
 //= require_self
 //= base
-class Teachers extends SchloopBase {
+class TeacherDashboard extends SchloopBase {
     init (){
     	let {action} = this._config,
         	_self = this,
