@@ -14,3 +14,17 @@ product_admin = ProductAdmin.first_or_create!(
   work_number: '+91-1235 987 123',
   cell_number: '+91-1235 987 123'
 )
+
+
+csv_text = File.read(Rails.root.join('lib', 'seeds', 'topics.csv'))
+csv = CSV.parse(csv_text, :headers => true, :encoding => 'UTF-8')
+csv.each do |row|
+  t = Topic.new
+  t.title = row['title']
+  t.master_grade_id = row['master_grade_id']
+  t.master_subject_id = row['master_subject_id']
+  t.teacher_id = row['teacher_id']
+  t.is_created_by_teacher = row['is_created_by_teacher']
+  t.save
+  puts "#{t.title}, saved"
+end 

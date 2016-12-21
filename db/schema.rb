@@ -94,6 +94,15 @@ ActiveRecord::Schema.define(version: 20161220072158) do
 
   add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
 
+  create_table "collaborations", force: :cascade do |t|
+    t.integer  "bookmark_id"
+    t.string   "collaboration_message"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "collaborations", ["bookmark_id"], name: "index_collaborations_on_bookmark_id", using: :btree
+
   create_table "divisions", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
@@ -134,6 +143,15 @@ ActiveRecord::Schema.define(version: 20161220072158) do
     t.datetime "updated_at",      null: false
     t.integer  "school_id"
   end
+
+  create_table "followups", force: :cascade do |t|
+    t.integer  "bookmark_id"
+    t.string   "followup_message"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "followups", ["bookmark_id"], name: "index_followups_on_bookmark_id", using: :btree
 
   create_table "grade_teachers", force: :cascade do |t|
     t.datetime "created_at",  null: false
@@ -254,9 +272,9 @@ ActiveRecord::Schema.define(version: 20161220072158) do
     t.integer  "student_id"
     t.integer  "grade_id"
     t.integer  "division_id"
-    t.string   "status"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "status",      default: 0, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "students", force: :cascade do |t|
@@ -379,8 +397,15 @@ ActiveRecord::Schema.define(version: 20161220072158) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
+  add_foreign_key "bookmarks", "grades"
+  add_foreign_key "bookmarks", "schools"
+  add_foreign_key "bookmarks", "subjects"
+  add_foreign_key "bookmarks", "teachers"
+  add_foreign_key "bookmarks", "topics"
+  add_foreign_key "collaborations", "bookmarks"
   add_foreign_key "divisions", "grades"
   add_foreign_key "ecircular_recipients", "ecirculars"
+  add_foreign_key "followups", "bookmarks"
   add_foreign_key "grade_teachers", "divisions"
   add_foreign_key "grade_teachers", "grades"
   add_foreign_key "grade_teachers", "subjects"

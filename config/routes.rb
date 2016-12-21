@@ -49,7 +49,10 @@ Rails.application.routes.draw do
 
     namespace :teachers do #teachers folder in admin
       resources :teacher_imports, only: [:create], shallow: true
+      resources :dashboards
+      resources :topics, only: [:show],shallow: true
     end
+
 ##############################################################################
     get 'teachers/forget_password' => 'teachers#forget_password'
 
