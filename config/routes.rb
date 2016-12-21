@@ -49,7 +49,11 @@ Rails.application.routes.draw do
 
     namespace :teachers do #teachers folder in admin
       resources :teacher_imports, only: [:create], shallow: true
-      resources :dashboards
+      resources :dashboards do 
+        collection do
+          get :get_topics
+        end
+      end
       resources :topics, only: [:show],shallow: true
     end
 

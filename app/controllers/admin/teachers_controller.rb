@@ -115,6 +115,7 @@ class Admin::TeachersController < ApplicationController
   end
 =end
   def get_grade_teacher_data(teacher_id)
+    binding.pry
     grade_teacher_data = []
     teacher = Teacher.find(teacher_id)
     grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
@@ -139,6 +140,7 @@ class Admin::TeachersController < ApplicationController
         subjects_data: subjects_data.values
       }
     end
+    binding.pry
     return grade_teacher_data
   end
 
