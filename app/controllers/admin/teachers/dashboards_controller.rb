@@ -73,8 +73,8 @@ class Admin::Teachers::DashboardsController < ApplicationController
   end
 =end
   def get_topics
-    grade  = Grade.find_by(id: params[:grade])
-    subject = Subject.find_by(id: params[:subject])
+    grade  = Grade.find_by(id: params[:grade_id])
+    subject = Subject.find_by(id: params[:subject_id])
     master_grade_id = grade.master_grade_id
     master_subject_id = subject.master_subject_id
     topics = Topic.index(current_teacher, master_grade_id, master_subject_id)

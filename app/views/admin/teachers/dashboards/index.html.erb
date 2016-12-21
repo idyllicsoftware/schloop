@@ -1,4 +1,3 @@
-
 <div class="teacher-schloopmarking-main-section">
 	<div class="cloud_image">
     	<img class="img-responsive" src="<%= asset_path('home/cloud_3.png') %>">
@@ -32,58 +31,25 @@
 		          		<div id="select-filter-tag-popover-content" class="hidden">
 		          			<form action="/admin/teachers/dashboards/get_topics" method="POST" class="grade-subject-form">
 							  <div class="grade-selection">
-							  	<div class="col-md-12 select-grade-subject p0 mb10">
-						            <label data-grade_id="grade_id1">Grade1</label>
-				                      <ul class="radio_customized">
-				                        <li class="col-md-3 pl10 pr10">
-				                        	<input type="radio" name="subjects" value="subject1" id="subject1" checked data-grade_id="grade.id "
-				                          data-subject_id="">
-				                          <label for="subject1">division1</label>
-				                        </li>
-				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject2" id="subject2" data-grade_id="grade.id "
-				                          data-subject_id="">
-				                          <label for="subject2">division2</label>
-				                        </li>
-				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject3" id="subject3" data-grade_id="grade.id "
-				                          data-subject_id="">
-				                          <label for="subject3">division3</label>
-				                        </li>
-				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject4" id="subject4" data-grade_id="grade.id "
-				                          data-subject_id="">
-				                          <label for="subject4">division4</label>
-				                        </li>
-				                      </ul>
-					            </div>
-					            <div class="col-md-12 select-grade-subject p0 mb10">
-						            <label data-grade_id="grade_id1">Grade2</label>
-				                      <ul class="radio_customized">
-				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject5" id="s5" data-grade_id="grade.id "
-				                          data-subject_id="">
-				                          <label for="s5">division</label>
-				                        </li>
-				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject6" id="s6" data-grade_id="grade.id "
-				                          data-subject_id="">
-				                          <label for="s6">division</label>
-				                        </li>
-				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject7" id="s7" data-grade_id="grade.id "
-				                          data-subject_id="">
-				                          <label for="s7">division</label>
-				                        </li>
-				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject8" id="s8" data-grade_id="grade.id "
-				                          data-subject_id="">
-				                          <label for="s8">division</label>
-				                        </li>
-				                      </ul>
-					            </div>
+							 	<% @grade_teacher_data.each do |grade| %>
+								  	<div class="col-md-12 select-grade-subject p0 mb10">
+							            <label data-grade_id="<%= grade[:grade_id] %>"><%= grade[:grade_name] %></label>
+					                      <ul class="radio_customized">
+					                      	<% grade[:subjects_data].each  do |subject| %>
+						                        <li class="col-md-4 pl10 pr10">
+						                        	<input type="radio" name="subjects" value="<%= subject[:subject_id] %>" id="<%= subject[:subject_id] %>">
+						                          <label for="<%= subject[:subject_id] %>"><%= subject[:subject_name] %></label>
+						                        </li>
+					                     	<% end %>
+					                      </ul>
+						            </div>
+					        	<% end %>    
 							  </div>
 						  	</form>
 						</div>
 		          	</div>
-		          	<ul class="nav nav-sidebar">
-		          		<li><a href="#">Our Universe</a></li>
-		          		<li><a href="#">Plants</a></li>
-		          		<li><a href="#">Earth</a></li>
-		          		<li><a href="#">Soil & Minerals</a></li>
+		          	<ul class="nav nav-sidebar topics-list">
+
 		          	</ul>
 		          	<div class="new-topic mt20">
 		          		<a class="add-topic">+ Add New Topic</a>
@@ -151,15 +117,17 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-      	<label>GRADE I - SCIENCE | Add New Topic</label>
-      	<div class="input-form-group">
-			<input type="text" class="caption-field" required name="teacher[cell_number]" placeholder="Add a caption" autocomplete="off"  maxlength="15" />
-		</div>
-		<div class="clearfix">
-			<button class="btn btn-primary pull-right mt20">Save</button>
-			<button class="btn btn-primary pull-right mt20 cancelModal">cancel</button>
-		</div>	
-      </div>
+      	<%= form_tag '', class:"add-topic-form", novalidate: true do %>
+	      	<label>GRADE I - SCIENCE | Add New Topic</label>
+	      	<div class="input-form-group">
+				<input type="text" class="caption-field" required name="title" placeholder="Add a caption" autocomplete="off"  maxlength="15" />
+			</div>
+			<div class="clearfix">
+				<button class="btn btn-primary pull-right mt20 add-topic-btn" type="button">Save</button>
+				<button class="btn btn-primary pull-right mt20 cancelModal">cancel</button>
+			</div>
+		<% end %>	
+	  </div>
     </div>
   </div>
 </div>      
