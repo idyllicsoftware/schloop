@@ -87,7 +87,7 @@ class TeacherDashboard extends SchloopBase {
         let _self = this;
 
         $.ajax({
-                url: `/admin/teachers/topics/`,
+                url: `/admin/teachers/dashboards/get_topics`,
                 data: _self.filters,
                 success: function (res) {
                    //TO DO...
