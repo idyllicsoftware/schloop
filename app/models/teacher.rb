@@ -50,7 +50,7 @@ class Teacher < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   include DeviseInvitable::Inviter
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :invitable, :invite_for => 2.weeks
   validates :first_name, :presence => true, :length => { :maximum => 30 }
   validates :middle_name,  :length => { :maximum => 30 }
   validates :last_name, :presence => true, :length => { :maximum => 30 }
@@ -71,7 +71,8 @@ class Teacher < ActiveRecord::Base
   end
 
   def send_invitation
-    Admin::AdminMailer.welcome_message(self.email, self.first_name, self.password).deliver_now
+    teacher = Teacher.invite!(:email => self.email)
+    teacher.deliver_invitation
   end
 
 

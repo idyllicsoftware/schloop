@@ -44,9 +44,15 @@
 
 class SchoolAdmin < User
   after_create :add_roles
+  after_create :send_invitation
 
   def add_roles
     role = Role.find_by(name: "SchoolAdmin")
     UserRole.create(entity_type: self.class.name, entity_id: self.id, role_id: role.id)
+  end
+
+  def send_invitation
+    school_admin = SchoolAdmin.invite!(:email => self.email)
+    school_admin.deliver_invitation
   end
 end
