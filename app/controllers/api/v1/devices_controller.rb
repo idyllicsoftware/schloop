@@ -3,7 +3,12 @@ class Api::V1::DevicesController < Api::V1::BaseController
     errors = []
     errors << "Token must be present" if params[:token].blank?
     begin
-      Device.create!(register_params) if errors.blank?
+      device = Device.inactive.where(deviceable: register_params[:deviceable], device_type: register_params[:device_type], token: register_params[:token]).last
+      if device.present?
+        device.active!
+      else
+        Device.create!(register_params) if errors.blank?
+      end
     rescue Exception => ex
       errors << ex.message
     end

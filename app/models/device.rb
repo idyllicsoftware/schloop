@@ -18,6 +18,8 @@
 #
 
 class Device < ActiveRecord::Base
+  validates_uniqueness_of :deviceable_id, :scope => [:deviceable_type, :device_type, :token, :status]
+
   belongs_to :deviceable, polymorphic: true
 
   enum status: {active: 0, inactive: 1}
