@@ -73,12 +73,19 @@ class Admin::Teachers::DashboardsController < ApplicationController
   end
 =end
   def get_topics
-    grade  = Grade.find_by(id: params[:grade_id])
-    subject = Subject.find_by(id: params[:subject_id])
-    master_grade_id = grade.master_grade_id
-    master_subject_id = subject.master_subject_id
-    topics = Topic.index(current_teacher, master_grade_id, master_subject_id)
-    render json: {topics: topics}
+    errors = []
+    begin
+      grade  = Grade.find_by(id: params[:grade_id])
+      subject = Subject.find_by(id: params[:subject_id])
+      master_grade_id = grade.master_grade_id
+      master_subject_id = subject.master_subject_id
+      topics = Topic.index(current_teacher, master_grade_id, master_subject_id)
+      render json: {success:true, topics: topics}
+    rescue Exception => e
+      errors << "errors while fetching topics"
+      render json: {success:false, errors: errors}
+    end  
+   
   end
 
   def add_topic
