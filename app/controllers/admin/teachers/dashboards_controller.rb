@@ -88,7 +88,7 @@ class Admin::Teachers::DashboardsController < ApplicationController
       topic_datum[:title] = params[:title]
       topic_datum[:master_grade_id] = Grade.find_by(id: params[:grade_id]).master_grade_id
       topic_datum[:master_subject_id] = Subject.find_by(id: params[:subject_id]).master_subject_id
-      topic_datum[:teacher_id] = current_teacher
+      topic_datum[:teacher_id] = current_teacher.id
       Topic.create(topic_datum)
     rescue Exception => e
       errors << "error occured while inserting new topic"
