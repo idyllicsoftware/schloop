@@ -55,6 +55,9 @@
 					<!-- <p><span></span> Lorem Ipsum is simply dummy text</p>
 					<p><span></span> Lorem Ipsum is dummy text</p> -->
 				</div>
+				<div class="teacher-sign-in">
+					<button class="btn btn-primary sign-in-link" data-toggle="modal" data-target="#signInModal" data-teacher_login="true">Sign In</button>
+				</div>
 				<div class="store-btn-section">
 					<a href="#"><img src="<%= asset_path('home/app_store.png') %>"></a>
 					<a href="#"><img src="<%= asset_path('home/play_store.png') %>"></a>
@@ -149,7 +152,7 @@
                   <input type="password" class="form-control input-field" required name="user[password]" autocomplete="off" placeholder="Password"  maxlength="12" />
                 </div>
                 <div>
-                  <label id="labelForgotPassword" class="text-color btn btn-link pl0" >Forgot Password</label>
+                  <label id="labelForgotPassword" class="text-color btn btn-link pl0" data-teacher_login="true">Forgot Password</label>
                 </div>
                 <p class="show_err"></p>
                 <div class="form-group mt20">

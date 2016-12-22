@@ -16,4 +16,5 @@
 class MasterSubject < ActiveRecord::Base
   has_many :subjects, dependent: :destroy
   has_many :activities, dependent: :destroy
+  has_many :topics, dependent: :destroy
 end
