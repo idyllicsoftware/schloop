@@ -72,6 +72,7 @@ class Admin::Teachers::DashboardsController < ApplicationController
     return grade_teacher_data
   end
 =end
+=begin
   def get_topics
     errors = []
     begin
@@ -86,7 +87,8 @@ class Admin::Teachers::DashboardsController < ApplicationController
       render json: {success:false, errors: errors}
     end  
   end
-
+=end
+=begin
   def add_topic
     errors = []
     topic_datum = {}
@@ -101,6 +103,7 @@ class Admin::Teachers::DashboardsController < ApplicationController
     end
     render json: { success: errors.blank?, errors: errors }
   end
+=end
 end
 
 

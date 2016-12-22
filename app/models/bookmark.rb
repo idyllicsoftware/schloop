@@ -36,4 +36,10 @@ class Bookmark < ActiveRecord::Base
 #  index_bookmarks_on_school_id                (school_id)
 #  index_bookmarks_on_teacher_id               (teacher_id)
 #
+  def self.index(user, topic_id)
+    bookmarks = self.where("topic_id = ? AND (teacher_id = 0 OR teacher_id = ?)",
+                                topic_id, user.id)
+    return bookmarks
+  end
+
 end

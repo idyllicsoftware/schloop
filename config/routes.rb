@@ -51,11 +51,19 @@ Rails.application.routes.draw do
       resources :teacher_imports, only: [:create], shallow: true
       resources :dashboards do 
         collection do
-          get :get_topics
-          post :add_topic
+         
         end
       end
-      resources :topics, only: [:show],shallow: true
+      resources :bookmarks do
+        collection do
+          
+        end
+      end
+      resources :topics do
+        collection do
+           get :get_topics
+        end
+      end
     end
 
 ##############################################################################
