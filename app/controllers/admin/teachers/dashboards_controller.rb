@@ -85,7 +85,6 @@ class Admin::Teachers::DashboardsController < ApplicationController
       errors << "errors while fetching topics"
       render json: {success:false, errors: errors}
     end  
-   
   end
 
   def add_topic

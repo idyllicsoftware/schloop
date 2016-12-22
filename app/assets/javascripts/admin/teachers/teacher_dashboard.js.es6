@@ -31,8 +31,8 @@ class TeacherDashboard extends SchloopBase {
                     
                    $('.select-filter-tag-section a').text(curr_grade_name + ' | ' + curr_sub_name);
                     _self.filters = {
-                        'grade' : curr_grade_val,
-                        'subject' : curr_sub_val
+                        'grade_id' : curr_grade_val,
+                        'subject_id' : curr_sub_val
                     }
                     _self.loadMyTopics();
 
@@ -119,13 +119,16 @@ class TeacherDashboard extends SchloopBase {
                 data: _self.filters,
                 success: function (res) {
                    if(res.success) {
-                        $('.topics-list').empty();
                         if(res.topics.length !== 0) {
                            var topics_hash = res.topics.toHash('id');
+                           var topics_list_tag = [];
 
                            for(var topic in  topics_hash) {
-                                $('.topics-list').append('<li><a href="#">' + topics_hash[topic].title + '</a></li>');
-                           } 
+                                var li_tag = '<li><a href="#">' + topics_hash[topic].title + '</a></li>';
+                                topics_list_tag.push(li_tag);
+                           }
+
+                           $('.topics-list').replaceWith('<ul class="nav nav-sidebar topics-list">' + topics_list_tag.join(' ') + '</u>'); 
                         } else {
                             $('.topics-list').empty();
                         }    
