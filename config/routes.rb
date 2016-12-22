@@ -135,6 +135,9 @@ Rails.application.routes.draw do
       get  "/teacher/topics" => 'teachers#topics'
       post "/teacher/topics" => 'teachers#create_topic'
 
+      post "device/register" => 'devices#register'
+      post "device/deregister" => 'devices#de_register'
+
     end
   end
 
