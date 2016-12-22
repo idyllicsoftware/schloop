@@ -21,6 +21,9 @@ class Admin::NotificationsController < ApplicationController
 
     fcm = FCM.new(key)
     response = fcm.send(reg_ids, options)
+    Rails.logger.info("=================================================")
+    Rails.logger.info(response)
+    Rails.logger.info("=================================================")
     flash[:alert] = "Notification send successfully."
     redirect_to :admin_show_nofifcation
   end
