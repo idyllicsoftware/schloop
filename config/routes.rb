@@ -127,7 +127,9 @@ Rails.application.routes.draw do
       post "/parent/reset_password" => 'parents#reset_password'
       get  "/parent/profile" => 'parents#profile'
       post "/parent/ecirculars" => 'parents#circulars'
+      post "/parent/ecirculars/:id" => 'parents#circular'
       post "/parent/activities" => 'parents#activities'
+      post "/parent/activities/:id" => 'parents#activity'
       get  "/parent/forgot_password" => "parents#forgot_password"
 
       get  "/teacher/topics" => 'teachers#topics'

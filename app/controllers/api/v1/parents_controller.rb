@@ -168,6 +168,51 @@ class Api::V1::ParentsController < Api::V1::BaseController
     render json: index_response
   end
 
+  def circular
+    errors = []
+
+    @student = Student.find_by(id: params[:student_id])
+    errors << "Student not found" if @student.blank?
+
+    school = @student.school
+    errors << "Student School not found" if school.blank?
+
+    @student_profile = @student.student_profiles.last
+    errors << "Student Grade Division information not found" if @student_profile.blank?
+
+    ecircular = Ecircular.find_by(id: params[:id])
+    errors << "Ecircular not found" if ecircular.blank?
+
+    is_circular_for_parent = EcircularParent.where(parent_id: @current_user.id).where(ecircular_id: params[:id]).present?
+    is_circular_for_student = EcircularRecipient.where(division_id: @student_profile.division_id).present?
+
+    unless is_circular_for_parent || is_circular_for_student
+      errors << "Specified Circular is not available for you"
+    end
+
+    circular_parents_by_ecircular_id = EcircularParent.where(ecircular_id: params[:id]).group_by{|x| x.ecircular_id}
+    circular_data = ecircular.data_for_circular(circular_parents_by_ecircular_id)
+
+    if errors.blank?
+      show_response = {
+        success: true,
+        error: nil,
+        data: {
+            circulars: circular_data
+        }
+      }
+    else
+      show_response = {
+        success: false,
+        error:  {
+            code: 0,
+            message: errors.flatten
+        },
+        data: nil
+      }
+    end
+    render json: show_response
+  end
 
   def activities
     errors, search_params = [], {}
@@ -231,6 +276,58 @@ class Api::V1::ParentsController < Api::V1::BaseController
       }
     end
     render json: index_response
+  end
+
+  def activity
+    errors = []
+
+    @student = Student.find_by(id: params[:student_id])
+    errors << "Student not found" if @student.blank?
+
+    school = @student.school
+    errors << "Student School not found" if school.blank?
+
+    @student_profile = @student.student_profiles.last
+    errors << "Student Grade Division information not found" if @student_profile.blank?
+
+    student_grade = @student_profile.grade
+
+    activity = Activity.find_by(id: params[:id])
+    errors << "Specified Activity not found" if activity.blank?
+
+    errors << "Specified Activity not active" if activity.inactive?
+
+    is_activity_shared = ActivityShare.where(activity_id: params[:id]).present?
+    errors << "Specified Activity not available for you" unless is_activity_shared
+
+    if errors.blank?
+      subjects_by_master_id = student_grade.subjects.index_by(&:master_subject_id)
+      mapping_data = {
+          master_grade_id_grade_id: {student_grade.master_grade_id => student_grade},
+          subjects_by_master_id: subjects_by_master_id
+      }
+      activities_data =  activity.data_for_activity(mapping_data)
+    end
+
+    if errors.blank?
+      show_response = {
+          success: true,
+          error: nil,
+          data: {
+              activities: activities_data
+          }
+      }
+    else
+      show_response = {
+          success: false,
+          error:  {
+              code: 0,
+              message: errors.flatten
+          },
+          data: nil
+      }
+    end
+    render json: show_response
   end
 
     private
