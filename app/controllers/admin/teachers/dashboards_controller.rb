@@ -21,7 +21,7 @@ class Admin::Teachers::DashboardsController < ApplicationController
       }
     end
   end
-	
+=begin	
   def create 
     begin
       teacher = Teacher.find_by(id: params[:id])
@@ -42,7 +42,7 @@ class Admin::Teachers::DashboardsController < ApplicationController
     end
     render json: {success: errors.blank?, errors: errors}
   end
- 
+ =end
 =begin
   def show 
     grade_teacher_data = []
