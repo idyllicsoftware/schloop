@@ -139,7 +139,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
     page_size = 20
     offset = (page * page_size)
 
-    circular_data, total_records = Ecircular.school_circulars(school, filter_params, offset, page_size) if errors.blank?
+    circular_data, total_records = Ecircular.school_circulars(school, @current_user, filter_params, offset, page_size) if errors.blank?
 
     if errors.blank?
       index_response = {
@@ -328,6 +328,20 @@ class Api::V1::ParentsController < Api::V1::BaseController
       }
     end
     render json: show_response
+  end
+
+  def circular_read
+    errors = []
+    circular_id = params[:id]
+    circular = Ecircular.find_by(id: circular_id)
+
+    errors << "Invalid circular to track" if circular.blank?
+    errors += Tracker.track(circular, @current_user, 'read') if errors.blank?
+    render json: {
+        success: errors.blank?,
+        error:  errors,
+        data: nil
+    }
   end
 
     private

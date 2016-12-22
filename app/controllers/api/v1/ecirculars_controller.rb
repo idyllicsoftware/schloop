@@ -51,7 +51,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     if @school.blank?
       errors << "school not found."
     else
-      circular_data, total_records = Ecircular.school_circulars(@school, filter_params, offset, page_size)
+      circular_data, total_records = Ecircular.school_circulars(@school, @current_user, filter_params, offset, page_size)
     end
 
     if errors.blank?

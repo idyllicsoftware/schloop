@@ -31,7 +31,7 @@ class Ecircular < ActiveRecord::Base
 
   validates :title, :created_by_type, :created_by_id , :presence => true
 
-	def self.school_circulars(school, filter_params={}, offset=0, page_size=50)
+	def self.school_circulars(school, user, filter_params={}, offset=0, page_size=50)
 		circular_data = []
 		circulars = school.ecirculars
 		if filter_params[:from_date].present?
@@ -64,13 +64,18 @@ class Ecircular < ActiveRecord::Base
 
 		circular_parents_by_ecircular_id = EcircularParent.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
 
+    circular_tracker_data_by_ecircular_id = Tracker.where(trackable_id: circulars.ids,
+                                                          trackable_type: "Ecircular",
+                                                          user_id: user.id,
+                                                          user_type: user.type).index_by(&:trackable_id)
+
 		circulars.each do |circular|
-			circular_data << circular.data_for_circular(circular_parents_by_ecircular_id)
+			circular_data << circular.data_for_circular(circular_parents_by_ecircular_id, circular_tracker_data_by_ecircular_id)
 		end
 		return circular_data, total_records
 	end
 
-	def data_for_circular(circular_parents_by_ecircular_id)
+	def data_for_circular(circular_parents_by_ecircular_id, circular_tracker_data_by_ecircular_id = {})
 		recipients, attachments, students_data = [], [], []
 		grouped_circulars = self.ecircular_recipients.group_by do |x| x.grade_id end
 		grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
@@ -109,6 +114,7 @@ class Ecircular < ActiveRecord::Base
 				id: id,
 				title: title,
 				body: body,
+        is_read: circular_tracker_data_by_ecircular_id[id].present?,
 				created_by: {
 						id: (created_by.id rescue 0),
 						name: (created_by.name rescue '-')

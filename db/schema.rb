@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161222092313) do
+ActiveRecord::Schema.define(version: 20161222115456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -349,6 +349,20 @@ ActiveRecord::Schema.define(version: 20161222092313) do
 
   add_index "topics", ["master_grade_id", "master_subject_id"], name: "index_topics_on_master_grade_id_and_master_subject_id", using: :btree
   add_index "topics", ["teacher_id"], name: "index_topics_on_teacher_id", using: :btree
+
+  create_table "trackers", force: :cascade do |t|
+    t.integer  "trackable_id"
+    t.string   "trackable_type"
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.integer  "event"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "trackers", ["trackable_type", "trackable_id", "user_type", "user_id", "event"], name: "index_all", unique: true, using: :btree
+  add_index "trackers", ["trackable_type", "trackable_id"], name: "index_trackers_on_trackable_type_and_trackable_id", using: :btree
+  add_index "trackers", ["user_type", "user_id"], name: "index_trackers_on_user_type_and_user_id", using: :btree
 
   create_table "user_roles", force: :cascade do |t|
     t.integer  "role_id"

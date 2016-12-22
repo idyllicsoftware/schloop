@@ -28,7 +28,8 @@ class Admin::EcircularsController < ApplicationController
  	end
 
  	def all
-			circular_data, total_records = Ecircular.school_circulars(@school)
+			#TODO::Omkar pls check this code.
+			# circular_data, total_records = Ecircular.school_circulars(@school)
 			render json: {success: true, circulars: circular_data, total_records: total_records}
  	end
 
