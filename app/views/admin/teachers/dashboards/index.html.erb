@@ -119,11 +119,10 @@
       	<%= form_tag '', class:"add-topic-form", novalidate: true do %>
 	      	<label>GRADE I - SCIENCE | Add New Topic</label>
 	      	<div class="input-form-group">
-				<input type="text" class="caption-field" required name="title" placeholder="Add a caption" autocomplete="off"  maxlength="15" />
+				<input type="text" class="caption-field" required name="title" placeholder="Add a caption" autocomplete="off"  maxlength="100" />
 			</div>
 			<div class="clearfix">
 				<button class="btn btn-primary pull-right mt20 add-topic-btn" type="button">Save</button>
-				<button class="btn btn-primary pull-right mt20 cancelModal">cancel</button>
 			</div>
 		<% end %>	
 	  </div>

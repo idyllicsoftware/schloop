@@ -20,8 +20,9 @@ class TeacherDashboard extends SchloopBase {
 
             _self.InitDocument();
         
-        $(".open-popover, #select-filter-tag-popover").on('shown.bs.popover', function () {
-            var popoverEl = $('#' + $(this).attr('aria-describedby'));   
+        $("#select-filter-tag-popover").on('shown.bs.popover', function () {
+            var popoverEl = $('#' + $(this).attr('aria-describedby')),
+                selected_subject = $('.grade-selection').find('.select-grade-subject').find('li > input');   
             
                 popoverEl.find('input[type=radio]').change( function() {
                     var curr_sub_val = $(this).val(),
@@ -32,12 +33,21 @@ class TeacherDashboard extends SchloopBase {
                    $('.select-filter-tag-section a').text(curr_grade_name + ' | ' + curr_sub_name);
                     _self.filters = {
                         'grade_id' : curr_grade_val,
-                        'subject_id' : curr_sub_val
+                        'subject_id' : curr_sub_val,
+                        'subject_name' : curr_sub_name,
+                        'grade_name' : curr_grade_name
                     }
                     _self.loadMyTopics();
 
                      popoverEl.popover('hide');
                 });
+
+                selected_subject.each( function () {
+                    var val = $(this).val();
+                    if( _self.filters.subject_id === val) {
+                        $(this).attr('checked','checked');
+                    }
+                });    
         });           
     };
 
@@ -50,11 +60,14 @@ class TeacherDashboard extends SchloopBase {
                 subject_filter_name = $('.select-filter-tag-section li >label:first').html(),
                 grade_filter_val = $('.select-filter-tag-section label:first').data('grade_id'),
                 subject_filter_val = $('.select-filter-tag-section li input').val();
-
+                
             $('.select-filter-tag-section a').text(grade_filter_name + ' | ' + subject_filter_name);
+
              _self.filters = {
                         'grade_id' : grade_filter_val,
-                        'subject_id' : subject_filter_val
+                        'subject_id' : subject_filter_val,
+                        'grade_name' : grade_filter_name,
+                        'subject_name' : subject_filter_name
                     }
                     _self.loadMyTopics();
                 
@@ -74,11 +87,13 @@ class TeacherDashboard extends SchloopBase {
             $('div[contenteditable=true]').parent().css('border','1px solid #ccc');
             $('div[contenteditable=true]').parent().find('button').css('color','#dddddd');
         });
-
+        
         $(document).on('click','.add-topic', function () {
             var add_topic_form = $('.add-topic-form');
             addTopicModalEl.modal('show');
-        
+            add_topic_form[0].reset();
+            addTopicModalEl.find('label').replaceWith('<label>' + _self.filters.grade_name + ' - ' + _self.filters.subject_name + ' | Add New Topic</label>');        
+            
             $('.add-topic-btn').on('click', function () {
                 var key_value = add_topic_form.serializeObject(),
                     topic_data = {};
@@ -105,9 +120,6 @@ class TeacherDashboard extends SchloopBase {
                     }
                 });
             });
-        });
-        $(document).on('click','.cancelModal', function () {
-            addTopicModalEl.modal('hide');
         });
     };
 
