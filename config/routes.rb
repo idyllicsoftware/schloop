@@ -32,11 +32,21 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :parent_imports, only: [:new, :create]
-    resources :students
+    resources :students do
+      collection do
+        post :deactivate
+      end
+    end
     resource :users
 
     namespace :teachers do
       resources :teacher_imports, only: [:create], shallow: true
+      resources :dashboards do
+        collection do
+          get :get_topics
+          get :get_bookmarks
+        end
+      end
     end
 
     resources :schools do

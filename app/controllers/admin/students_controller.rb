@@ -17,7 +17,9 @@ class Admin::StudentsController < ApplicationController
 	    student_data = []
 	    students_profiles.each do |student_profile|
 	    	if student_profile.student[:activation_status] == true
-		      student_data << {:student_first_name => student_profile.student.first_name,
+		      student_data << {
+		      					:student_id => student_profile.student_id,
+		      					:student_first_name => student_profile.student.first_name,
 		      					:student_middle_name => student_profile.student.middle_name,
 		      					:student_last_name => student_profile.student.last_name,
 		      					:division => division.name.capitalize,
@@ -36,7 +38,7 @@ class Admin::StudentsController < ApplicationController
 		errors = []
 		begin
 			student_id = params[:student_id]
-			student = Student.where(id: student_id)
+			student = Student.find_by(id: student_id)
 			student.activation_status = false
 			student.save
 		rescue Exception => e

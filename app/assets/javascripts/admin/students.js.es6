@@ -106,7 +106,6 @@ class Students extends SchloopBase {
                 _self.studentsData = res.student_data.toHash('student_id');
                 studentListWrapperEl.html(html);
                 _self.popoverInit(false, studentListWrapperEl);
-                
                 studentListWrapperEl.find('td #student-edit-popover').on('shown.bs.popover', function (){
                     let popupEl = $('#' + $(this).attr('aria-describedby')),
                         student_id = $(this).data('student_id'),
@@ -124,8 +123,11 @@ class Students extends SchloopBase {
         });
     };
 
-    initForm (jForm, popoverEl, student_id){
+    initForm (jForm, popoverEl, student_id){ 
         let _self = this,
+            student_id_hash = {
+                'student_id': student_id
+            },
             msg = student_id ? 'School student updated successfully' : 'School student added successfully',
             deactivate_student_url = `/admin/students/deactivate`;
            
@@ -153,7 +155,7 @@ class Students extends SchloopBase {
 
         jForm.find('.deActivateStudentBtn').off('click').on('click', function() {
             var el = $(this),
-                student_row = $(this).parent();
+                student_row = popoverEl.parent();
             
             swal({
                   title: "Are you sure?",
@@ -166,13 +168,14 @@ class Students extends SchloopBase {
                   $.ajax({
                         url: '/admin/students/deactivate',
                         method: 'POST',
-                        data: student_id,
+                        data: student_id_hash,
                         success: function (res) {
                             if(res.success) {
                                 toastr.success('Student deactivated successfully', '', {
                                     positionClass: 'toast-top-right cloud-display'
                                 });
                                 student_row.remove();
+                                _self.loadStudents();
                                 popoverEl.popover('hide');
                             }else {
                                 _self.showErrors(res.errors);
@@ -183,6 +186,6 @@ class Students extends SchloopBase {
                         }
                     });
             });
-        });
+        })
     };
 }
