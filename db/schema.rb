@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161129121728) do
+ActiveRecord::Schema.define(version: 20161223113611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,21 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "activity_shares", force: :cascade do |t|
+    t.integer  "activity_id", null: false
+    t.integer  "school_id",   null: false
+    t.integer  "teacher_id",  null: false
+    t.integer  "grade_id",    null: false
+    t.integer  "division_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "activity_shares", ["activity_id"], name: "index_activity_shares_on_activity_id", using: :btree
+  add_index "activity_shares", ["grade_id", "division_id"], name: "index_activity_shares_on_grade_id_and_division_id", using: :btree
+  add_index "activity_shares", ["school_id", "activity_id"], name: "index_activity_shares_on_school_id_and_activity_id", using: :btree
+  add_index "activity_shares", ["school_id"], name: "index_activity_shares_on_school_id", using: :btree
+
   create_table "attachments", force: :cascade do |t|
     t.string   "attachable_type"
     t.integer  "attachable_id"
@@ -46,6 +61,28 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.datetime "updated_at",                    null: false
     t.integer  "sub_type",          default: 0, null: false
   end
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.string   "title"
+    t.text     "data"
+    t.text     "caption"
+    t.string   "url"
+    t.string   "preview_image_url"
+    t.integer  "likes",             default: 0, null: false
+    t.integer  "views",             default: 0, null: false
+    t.integer  "topic_id"
+    t.integer  "data_type",         default: 0, null: false
+    t.integer  "school_id"
+    t.integer  "grade_id"
+    t.integer  "subject_id"
+    t.integer  "teacher_id"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "bookmarks", ["grade_id", "subject_id"], name: "index_bookmarks_on_grade_id_and_subject_id", using: :btree
+  add_index "bookmarks", ["school_id"], name: "index_bookmarks_on_school_id", using: :btree
+  add_index "bookmarks", ["teacher_id"], name: "index_bookmarks_on_teacher_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -65,6 +102,16 @@ ActiveRecord::Schema.define(version: 20161129121728) do
   end
 
   add_index "divisions", ["grade_id"], name: "index_divisions_on_grade_id", using: :btree
+
+  create_table "ecircular_parents", force: :cascade do |t|
+    t.integer  "ecircular_id"
+    t.integer  "student_id"
+    t.integer  "parent_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "ecircular_parents", ["ecircular_id", "student_id"], name: "index_ecircular_parents_on_ecircular_id_and_student_id", unique: true, using: :btree
 
   create_table "ecircular_recipients", force: :cascade do |t|
     t.integer  "school_id"
@@ -207,9 +254,9 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.integer  "student_id"
     t.integer  "grade_id"
     t.integer  "division_id"
-    t.string   "status"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "status",      default: 0, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "students", force: :cascade do |t|
@@ -217,9 +264,10 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "middle_name"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "parent_id"
+    t.boolean  "activation_status"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -252,11 +300,39 @@ ActiveRecord::Schema.define(version: 20161129121728) do
     t.string   "middle_name"
     t.string   "last_name"
     t.string   "cell_number"
+    t.string   "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer  "invitation_limit"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.integer  "invited_by_id"
+    t.string   "invited_by_type"
+    t.integer  "invitations_count",      default: 0
   end
 
+  add_index "teachers", ["confirmation_token"], name: "index_teachers_on_confirmation_token", unique: true, using: :btree
   add_index "teachers", ["email"], name: "index_teachers_on_email", unique: true, using: :btree
+  add_index "teachers", ["invitation_token"], name: "index_teachers_on_invitation_token", unique: true, using: :btree
+  add_index "teachers", ["invitations_count"], name: "index_teachers_on_invitations_count", using: :btree
+  add_index "teachers", ["invited_by_id"], name: "index_teachers_on_invited_by_id", using: :btree
   add_index "teachers", ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true, using: :btree
   add_index "teachers", ["token"], name: "index_teachers_on_token", using: :btree
+
+  create_table "topics", force: :cascade do |t|
+    t.string   "title",                         null: false
+    t.integer  "master_grade_id"
+    t.integer  "master_subject_id"
+    t.integer  "teacher_id",        default: 0
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "topics", ["master_grade_id", "master_subject_id"], name: "index_topics_on_master_grade_id_and_master_subject_id", using: :btree
+  add_index "topics", ["teacher_id"], name: "index_topics_on_teacher_id", using: :btree
 
   create_table "user_roles", force: :cascade do |t|
     t.integer  "role_id"
@@ -313,8 +389,6 @@ ActiveRecord::Schema.define(version: 20161129121728) do
   add_foreign_key "grades", "schools"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
-  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
-  add_foreign_key "subjects", "teachers"
   add_foreign_key "user_roles", "roles"
 end

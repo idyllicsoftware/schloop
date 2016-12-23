@@ -2,14 +2,15 @@
 #
 # Table name: students
 #
-#  id          :integer          not null, primary key
-#  school_id   :integer
-#  first_name  :string
-#  last_name   :string
-#  middle_name :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  parent_id   :integer
+#  id                :integer          not null, primary key
+#  school_id         :integer
+#  first_name        :string
+#  last_name         :string
+#  middle_name       :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  parent_id         :integer
+#  activation_status :boolean
 #
 
 class Student < ActiveRecord::Base
