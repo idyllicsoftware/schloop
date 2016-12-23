@@ -16,7 +16,8 @@ class Admin::NotificationsController < ApplicationController
         },
         data: {
           type: params[:type],
-          id: params[:id]
+          id: params[:id],
+          student_id: params[:student_id]
         }
     }
 
