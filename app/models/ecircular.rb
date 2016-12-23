@@ -67,7 +67,7 @@ class Ecircular < ActiveRecord::Base
     circular_tracker_data_by_ecircular_id = Tracker.where(trackable_id: circulars.ids,
                                                           trackable_type: "Ecircular",
                                                           user_id: user.id,
-                                                          user_type: user.type).index_by(&:trackable_id)
+                                                          user_type: user.class.name).index_by(&:trackable_id)
 
 		circulars.each do |circular|
 			circular_data << circular.data_for_circular(circular_parents_by_ecircular_id, circular_tracker_data_by_ecircular_id)
