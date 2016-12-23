@@ -56,7 +56,7 @@ Rails.application.routes.draw do
       end
       resources :bookmarks do
         collection do
-          
+          get :get_bookmarks
         end
       end
       resources :topics do
