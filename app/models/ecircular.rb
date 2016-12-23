@@ -138,9 +138,6 @@ class Ecircular < ActiveRecord::Base
     student_ids.each do |student_id|
       NotificationWorker.perform_async(self.id, student_id)
     end
-
-
-
   end
 
 end

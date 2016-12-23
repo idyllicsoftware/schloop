@@ -3,6 +3,7 @@ require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rvm'    # for rvm support. (http://rvm.io)
+require 'mina_sidekiq/tasks'
 
 user = %x(git config user.name).delete("\n")
 
