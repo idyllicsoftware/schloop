@@ -1,12 +1,36 @@
 class Admin::StudentsController < ApplicationController
 	before_action :authenticate_user!
 
-	def update		
-		student = Student.find(params[:student_id])
-		student.update_attributes(params[:student])
-		parent_detail = student.parent.parent_details.find_by_school_id(s.school_id)
-		parent_detail.update_attributes(prams[:parent_detail])
-		render json: {success: true}
+	def update
+		errors = []
+		begin
+			student_datum = {
+				id: params[:student][:student_id],
+				first_name: params[:student][:student_first_name],
+				middle_name: params[:student][:student_middle_name],
+				last_name: params[:student][:student_last_name]
+			}
+			parent_details_datum = {
+				first_name: params[:student][:parent_first_name],
+				middle_name: params[:student][:parent_middle_name],
+				last_name: params[:student][:parent_last_name]
+			}
+			parent_datum = {
+				first_name: params[:student][:parent_first_name],
+				middle_name: params[:student][:parent_middle_name],
+				last_name: params[:student][:parent_last_name],
+				cell_number: params[:student][:cell_number]
+			}
+			student = Student.find(params[:student][:student_id])
+			student.update_attributes(student_datum)
+			parent_detail = student.parent.parent_details.find_by_school_id(student.school_id)
+			parent_detail.update_attributes(parent_details_datum)
+			parent = student.parent
+			parent.update_attributes(parent_datum)	
+		rescue Exception => e
+			errors << "error occured while updating student"
+		end
+		render json: {success: errors.blank?, errors: errors}
 	end
 
 

@@ -140,7 +140,9 @@ class Students extends SchloopBase {
         }, function (res) {
             if(res.success) {
                 _self.loadStudents(division_id);
-                toastr.success(msg);
+                toastr.success(msg, '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                                });
                 popoverEl.popover('hide');
             }else {
                 _self.showErrors(res.errors);
