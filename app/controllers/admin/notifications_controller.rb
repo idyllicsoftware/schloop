@@ -12,6 +12,7 @@ class Admin::NotificationsController < ApplicationController
         notification: {
             title: params[:title],
             body: params[:body],
+            sound: 'default'
         },
         data: {
           type: params[:type],
