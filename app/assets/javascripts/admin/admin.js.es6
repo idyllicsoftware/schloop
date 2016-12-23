@@ -7,7 +7,7 @@ class SchloopAdmin extends SchloopBase {
     init (){
         let {controller, action} = this._config,
             subController = controller.split("/").join('_');
-            
+
         if(['admin_teachers_dashboards'].includes(subController)){
             this._teacher_dashboard = new TeacherDashboard(this._config);
         }
@@ -19,6 +19,7 @@ class SchloopAdmin extends SchloopBase {
         if(['admin_parent_imports'].includes(subController)) {
             this._parentImports = new ParentImports(this._config);
         }
+        this.initUserChangePasswordForm();
         return this;
     }
 }

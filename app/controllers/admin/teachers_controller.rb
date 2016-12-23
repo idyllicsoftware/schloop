@@ -1,5 +1,5 @@
 class Admin::TeachersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:update_password]
   before_action :find_school, only: [:index, :create]
   before_action :find_teacher, only: [:update, :destroy]
   layout "admin"
@@ -59,7 +59,22 @@ class Admin::TeachersController < ApplicationController
     render json: {success: true}
   end
 
-  def forget_password 
+  def forget_password
+  end
+
+  def update_password
+    @teacher = current_teacher
+    errors = []
+    if @teacher.update_with_password(change_password_params)
+      # Sign in the teacher by passing validation in case their password changed
+      bypass_sign_in(@teacher)
+    else
+      errors = @teacher.errors.full_messages.join(",\n")
+    end
+    render json: {
+        success: errors.blank?,
+        errors: errors
+      }
   end
 
   private
@@ -164,6 +179,10 @@ class Admin::TeachersController < ApplicationController
       return {success: false, errors: errors}
     end
     return {success: true, data: {}}
+  end
+
+  def change_password_params
+    params.require(:user).permit(:password, :password_confirmation, :current_password)
   end
 
 end

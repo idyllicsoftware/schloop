@@ -102,6 +102,19 @@ Rails.application.routes.draw do
         post :upload_file
       end
     end
+
+    resource :user, only: [] do
+      collection do
+        patch 'update_password'
+      end
+    end
+
+  resource :teacher, only: [] do
+    collection do
+      patch 'update_password'
+    end
+  end
+
   end
 
   namespace :api do
