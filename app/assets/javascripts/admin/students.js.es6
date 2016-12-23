@@ -116,20 +116,19 @@ class Students extends SchloopBase {
                             jForm.attr('action', `/admin/students/${student_id}`);
                             jForm.attr('method', 'PUT');
                             jForm.find('input[name="student[parent_email]"]').attr('disabled', 'disabled');
-                            _self.initForm(jForm, $(this), student_id);
+                            _self.initForm(jForm, $(this), student_id, division_id);
                         }
                 });
             }
         });
     };
 
-    initForm (jForm, popoverEl, student_id){ 
+    initForm (jForm, popoverEl, student_id, division_id){ 
         let _self = this,
             student_id_hash = {
                 'student_id': student_id
             },
-            msg = student_id ? 'School student updated successfully' : 'School student added successfully',
-            deactivate_student_url = `/admin/students/deactivate`;
+            msg = student_id ? 'School student updated successfully' : 'School student added successfully';
            
         this.initFormSubmit(jForm, {
             'student[student_first_name]': 'name',
@@ -140,7 +139,7 @@ class Students extends SchloopBase {
             'student[cell_number]': 'phone'
         }, function (res) {
             if(res.success) {
-                _self.loadStudents();
+                _self.loadStudents(division_id);
                 toastr.success(msg);
                 popoverEl.popover('hide');
             }else {
@@ -175,7 +174,7 @@ class Students extends SchloopBase {
                                     positionClass: 'toast-top-right cloud-display'
                                 });
                                 student_row.remove();
-                                _self.loadStudents();
+                                _self.loadStudents(division_id);
                                 popoverEl.popover('hide');
                             }else {
                                 _self.showErrors(res.errors);
