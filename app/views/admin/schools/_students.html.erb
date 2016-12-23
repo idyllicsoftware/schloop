@@ -54,7 +54,7 @@
            <td>{{ parent_first_name }} {{ parent_middle_name }} {{parent_last_name}} </td>
            <td>{{ parent_email }}</td>
            <td>{{ cell_number }}</td>
-           <td><span data-student_id="{{}}" class="student-edit-btn" id="student-edit-popover" data-toggle="popover" data-value="student-edit-popover-content" data-placement="left">Edit</span></td>
+           <td><span data-student_id="{{student_id}}" class="student-edit-btn" id="student-edit-popover" data-toggle="popover" data-value="student-edit-popover-content" data-placement="left">Edit</span></td>
          </tr>
      {{ /student_data }}
    </table>
@@ -67,22 +67,22 @@
         <div class="row">
           <div class="col-md-12 form-group">
             <label>Student</label>
-            <input type="text" class="col-md-4 form-control input-field" required name="student[first_name]" placeholder="First Name" autocomplete="off"  maxlength="20" />
-            <input type="text" class="col-md-4 form-control input-field" name="student[middle_name]" placeholder="Middle Name" autocomplete="off"  maxlength="20" />
-            <input type="text" class="col-md-4 form-control input-field" required name="student[last_name]" placeholder="Last Name" autocomplete="off"  maxlength="20" />
+            <input type="text" class="col-md-4 form-control input-field" required name="student[student_first_name]" placeholder="First Name" autocomplete="off"  maxlength="20" />
+            <input type="text" class="col-md-4 form-control input-field" name="student[student_middle_name]" placeholder="Middle Name" autocomplete="off"  maxlength="20" />
+            <input type="text" class="col-md-4 form-control input-field" required name="student[student_last_name]" placeholder="Last Name" autocomplete="off"  maxlength="20" />
           </div>
         </div>
         <div class="form-group">
           <label>Parent</label>
-          <input type="text" class="form-control input-field" required name="parent[first_name]" placeholder="First Name" autocomplete="off"  maxlength="20" />
-          <input type="text" class="form-control input-field" name="parent[middle_name]" placeholder="Middle Name" autocomplete="off"  maxlength="20" />
-          <input type="text" class="form-control input-field" required name="parent[last_name]" placeholder="Last Name" autocomplete="off"  maxlength="20" />
+          <input type="text" class="form-control input-field" required name="student[parent_first_name]" placeholder="First Name" autocomplete="off"  maxlength="20" />
+          <input type="text" class="form-control input-field" name="student[parent_middle_name]" placeholder="Middle Name" autocomplete="off"  maxlength="20" />
+          <input type="text" class="form-control input-field" required name="student[parent_last_name]" placeholder="Last Name" autocomplete="off"  maxlength="20" />
         </div>
         <div class="form-group">
-          <input type="email" class="form-control input-field" required name="parent[email]" placeholder="Email" autocomplete="off"  maxlength="30" />
+          <input type="email" class="form-control input-field" required name="student[parent_email]" placeholder="Email" autocomplete="off"  maxlength="30" />
         </div>
         <div class="form-group">
-          <input type="text" class="form-control input-field" required name="parent[cell_number]" placeholder="Phone" autocomplete="off"  maxlength="15" />
+          <input type="text" class="form-control input-field" required name="student[cell_number]" placeholder="Phone" autocomplete="off"  maxlength="15" />
         </div>
         <div class="student-edit-btn">
           <div class="update-student">
