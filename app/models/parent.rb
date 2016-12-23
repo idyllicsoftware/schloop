@@ -31,6 +31,7 @@
 #  invited_by_id          :integer
 #  invited_by_type        :string
 #  invitations_count      :integer          default(0)
+#  activation_status      :boolean
 #
 # Indexes
 #
@@ -40,6 +41,7 @@
 #  index_users_on_invited_by_id         (invited_by_id)
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_user_token            (user_token)
+#
 
 #
 

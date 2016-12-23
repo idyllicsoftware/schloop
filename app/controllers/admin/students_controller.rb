@@ -1,7 +1,7 @@
 class Admin::StudentsController < ApplicationController
 	before_action :authenticate_user!
 
-	def update
+	def update		
 		student = Student.find(params[:student_id])
 		student.update_attributes(params[:student])
 		parent_detail = student.parent.parent_details.find_by_school_id(s.school_id)
@@ -41,6 +41,14 @@ class Admin::StudentsController < ApplicationController
 			student = Student.find_by(id: student_id)
 			student.activation_status = false
 			student.save
+			school_id = student.school_id
+			parent = student.parent
+			childs= Student.where(parent_id: parent.id).where(activation_status: true)
+			if childs.empty?
+				parent.activation_status = false
+				parent.save
+			end
+
 		rescue Exception => e
 			errors << "error while deactivating student"
 		end
