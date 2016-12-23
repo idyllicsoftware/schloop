@@ -11,11 +11,13 @@ class Admin::StudentsController < ApplicationController
 
 
 	def index
-	    @grades = Grade.where(school_id: params[:school_id]).includes(:divisions)
+	    #@grades = Grade.where(school_id: params[:school_id]).includes(:divisions)
 	    @division =  Division.includes("student_profiles").find(params[:division_id])
 	    student_data = []
 	    @division.student_profiles.each do |student_profile|
-	      student_data << {:student_first_name => student_profile.student.first_name,
+	      student_data << {
+	      					:student_id => student_profile.student_id,
+	      					:student_first_name => student_profile.student.first_name,
 	      					:student_middle_name => student_profile.student.middle_name,
 	      					:student_last_name => student_profile.student.last_name,
 	      					:division => @division.name.capitalize,

@@ -103,8 +103,7 @@ class Students extends SchloopBase {
                         student_data_present: res.student_data.length
                     });
                 }
-
-               // _self.studentsData = res.students.toHash('id');
+                _self.studentsData = res.student_data.toHash('student_id');
                 studentListWrapperEl.html(html);
                 _self.popoverInit(false, studentListWrapperEl);
                 
@@ -112,43 +111,68 @@ class Students extends SchloopBase {
                     let popupEl = $('#' + $(this).attr('aria-describedby')),
                         student_id = $(this).data('student_id'),
                         jForm = popupEl.find('form');
-                    // //TO DO...
-                    // if(_self.studentsData.hasOwnProperty(student_id)){
-                    //         jForm.fillForm(_self.studentsData[student_id], 'student_data');
-                    //         jForm.attr('action', `/admin/students/${student_id}`);
-                    //         jForm.attr('method', 'PUT');
-                    //         jForm.find('input[name="student[email]"]').attr('disabled', 'disabled');
-                    //         _self.initForm(jForm, $(this), student_id);
-                    //     }
+                    if(_self.studentsData.hasOwnProperty(student_id)){
+                            jForm.fillForm(_self.studentsData[student_id], 'student');
+                            jForm.attr('action', `/admin/students/${student_id}`);
+                            jForm.attr('method', 'PUT');
+                            jForm.find('input[name="student[parent_email]"]').attr('disabled', 'disabled');
+                            _self.initForm(jForm, $(this), student_id);
+                        }
                 });
             }
         });
     };
 
-    // initForm (jForm, popoverEl, student_id){
-    //     let _self = this,
-    //         msg = student_id ? 'School student updated successfully' : 'School student added successfully';
+    initForm (jForm, popoverEl, student_id){
+        let _self = this,
+            msg = student_id ? 'School student updated successfully' : 'School student added successfully',
+            deactivate_student_url = `/admin/students/deactivate`;
            
-    //     this.initFormSubmit(jForm, {
-    //         'student[first_name]': 'name',
-    //         'student[last_name]': 'name',
-    //         'parent[first_name]': 'name',
-    //         'parent[last_name]': 'name',
-    //         'parent[email]': 'email',
-    //         'parent[cell_number]': 'phone'
-    //     }, function (res) {
-    //         if(res.success) {
-    //             _self.loadStudents();
-    //             toastr.success(msg);
-    //             popoverEl.popover('hide');
-    //         }else {
-    //             _self.showErrors(res.errors);
-    //             popoverEl.popover('hide');
-    //         }
-    //     });
+        this.initFormSubmit(jForm, {
+            'student[student_first_name]': 'name',
+            'student[student_last_name]': 'name',
+            'student[parent_first_name]': 'name',
+            'student[parent_last_name]': 'name',
+            'student[parent_email]': 'email',
+            'student[cell_number]': 'phone'
+        }, function (res) {
+            if(res.success) {
+                _self.loadStudents();
+                toastr.success(msg);
+                popoverEl.popover('hide');
+            }else {
+                _self.showErrors(res.errors);
+                popoverEl.popover('hide');
+            }
+        });
 
-    //     jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
-    //         popoverEl.popover('hide');
-    //     });
-    // };
+        jForm.find('.cancelPopoverBtn').off('click').on('click', function () {
+            popoverEl.popover('hide');
+        });
+
+        jForm.find('.deActivateStudentBtn').off('click').on('click', function() {
+            var el = $(this),
+                student_row = $(this).parent();
+            swal({
+                  title: "Are you sure?",
+                  text: "You want deactivate this student",
+                  confirmButtonColor: "#25aae1",
+                  confirmButtonText: "Yes, deactivate it!",
+                  showCancelButton: true
+                },
+                function(){
+                  _self.deleteRequest(`/admin/students/deactivate`, el, null, function (res) {
+                        if(res.success) {
+                            toastr.success('Student deactivated successfully', '', {
+                                positionClass: 'toast-top-right cloud-display'
+                            });
+                            student_row.remove();
+                            popoverEl.popover('hide');
+                        }else {
+                            _self.showErrors(res.errors);
+                        }
+                    });
+                });
+        });
+    };
 }
