@@ -60,7 +60,7 @@ class TeacherDashboard extends SchloopBase {
                 subject_filter_name = $('.select-filter-tag-section li >label:first').html(),
                 grade_filter_val = $('.select-filter-tag-section label:first').data('grade_id'),
                 subject_filter_val = $('.select-filter-tag-section li input').val();
-                
+
             $('.select-filter-tag-section a').text(grade_filter_name + ' | ' + subject_filter_name);
 
              _self.filters = {
@@ -76,7 +76,7 @@ class TeacherDashboard extends SchloopBase {
                     var trimmedString = $('.content-view-section').find('p').text().substring(0, 200);
                     $('.content-view-section').find('p').text(trimmedString);
                     $('.content-view-section').find('p').append("<a class='read-more'> More...</a>");
-                }        
+                }     
         });
 
         $('div[contenteditable=true]').on('focusin', function() {
@@ -87,7 +87,13 @@ class TeacherDashboard extends SchloopBase {
             $('div[contenteditable=true]').parent().css('border','1px solid #ccc');
             $('div[contenteditable=true]').parent().find('button').css('color','#dddddd');
         });
-        
+        _self.addTopic();
+    };
+
+    addTopic() {
+        var _self = this,
+            addTopicModalEl = $('#add-topic-modal');
+
         $(document).on('click','.add-topic', function () {
             var add_topic_form = $('.add-topic-form');
             addTopicModalEl.modal('show');
@@ -134,18 +140,101 @@ class TeacherDashboard extends SchloopBase {
                         if(res.topics.length !== 0) {
                            var topics_hash = res.topics.toHash('id');
                            var topics_list_tag = [];
-
+                           
                            for(var topic in  topics_hash) {
-                                var li_tag = '<li><a href="#">' + topics_hash[topic].title + '</a></li>';
+                                var li_tag = '<li><span data-topic_id="' + topics_hash[topic].id + '">' + topics_hash[topic].title + '</span></li>';
                                 topics_list_tag.push(li_tag);
                            }
-
                            $('.topics-list').replaceWith('<ul class="nav nav-sidebar topics-list">' + topics_list_tag.join(' ') + '</u>'); 
+                           $('.topics-list > li:first').addClass('active');
+                           
+                           $(".nav li").on("click", function(e) {
+                                e.preventDefault();
+                                $(".nav").find(".active").removeClass("active");
+                                $(this).addClass("active");
+                                _self.loadTopicBookmarks($(this));
+                            });   
                         } else {
                             $('.topics-list').empty();
                         }    
                    }
                 }
         });
+    };
+
+    get topicBookmarksTpl (){
+        return $("#topic_bookmarks_tpl").html();
+    };
+
+    loadTopicBookmarks(thisEl) {
+        let _self = this,
+            topic_data = {},
+            bookmarksEl = $('.bookmarks-section'),
+            key_value = thisEl.find('span').data('topic_id'),
+            topic_id_tag = {
+                'topic_id' : key_value
+            };
+        var fun = function jsonConcat(o1, o2) {
+            for (var key in o2) {
+                o1[key] = o2[key];
+            }
+            return o1;
+        }
+        topic_data = fun(topic_data, _self.filters);
+        topic_data = fun (topic_data, topic_id_tag); 
+
+        $.ajax({
+            url: `/admin/teachers/bookmarks/get_bookmarks`,
+            data: topic_data,
+            method: 'GET',
+            success: function (res) {
+               if(res.success) {
+                var html = Mustache.to_html(_self.topicBookmarksTpl, res);
+                    _self.topicBookmarks = res.bookmarks.toHash('id'); 
+                    bookmarksEl.html(html);
+                   _self.addTopicContent(topic_data, thisEl);
+               }
+            }
+        });
+    };
+
+    addTopicContent(topic_content_data, thisEl) {
+        let _self = this,
+            add_topic_content_form = $('.add-topic-content-form'),
+            content_editor = $('.content-editor');
+            
+            add_topic_content_form.submit( function (e) {
+                var formData = new FormData($(this)[0]),
+                    topic_data = {}, content_val = content_editor.html(),
+                    key_value = {
+                        'datum' : content_val
+                    };
+                    e.preventDefault();
+                    // formData.append('datum', content_editor.html());
+                
+                var fun = function jsonConcat(o1, o2) {
+                                for (var key in o2) {
+                                    o1[key] = o2[key];
+                                }
+                             return o1;
+                            }
+
+                topic_data = fun(topic_data, topic_content_data);
+                topic_data = fun(topic_data, key_value);
+                
+                $.ajax({
+                    url: "/admin/teachers/bookmarks",
+                    data: topic_data,
+                    method: "POST",
+                    success: function (res) {
+                       if(res.success) {
+                         _self.loadTopicBookmarks(thisEl);      
+                       }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
     };
 }
