@@ -51,7 +51,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     if @school.blank?
       errors << "school not found."
     else
-      circular_data, total_records = Ecircular.school_circulars(@school, filter_params, offset, page_size)
+      circular_data, total_records = Ecircular.school_circulars(@school, @current_user, filter_params, offset, page_size)
     end
 
     if errors.blank?
@@ -206,8 +206,10 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     end
 
     def filter_params
+      default_division_ids = @current_user.grade_teachers.pluck(:division_id)
       filters = params[:filter]
-      return {} if filters.blank?
+      return {divisions: default_division_ids} if filters.blank?
+
       divisions = []
       filters[:grades].each do |_, division_ids|
         divisions << division_ids
@@ -216,7 +218,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
       {
         from_date: filters[:from_date],
         to_date: filters[:to_date],
-        divisions: divisions.flatten,
+        divisions: divisions.flatten || default_division_ids,
         tags: filters[:tags]
       }
     end
