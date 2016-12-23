@@ -111,6 +111,7 @@ class Students extends SchloopBase {
                     let popupEl = $('#' + $(this).attr('aria-describedby')),
                         student_id = $(this).data('student_id'),
                         jForm = popupEl.find('form');
+                
                     if(_self.studentsData.hasOwnProperty(student_id)){
                             jForm.fillForm(_self.studentsData[student_id], 'student');
                             jForm.attr('action', `/admin/students/${student_id}`);
@@ -153,6 +154,7 @@ class Students extends SchloopBase {
         jForm.find('.deActivateStudentBtn').off('click').on('click', function() {
             var el = $(this),
                 student_row = $(this).parent();
+            
             swal({
                   title: "Are you sure?",
                   text: "You want deactivate this student",
@@ -161,18 +163,26 @@ class Students extends SchloopBase {
                   showCancelButton: true
                 },
                 function(){
-                  _self.deleteRequest(`/admin/students/deactivate`, el, null, function (res) {
-                        if(res.success) {
-                            toastr.success('Student deactivated successfully', '', {
-                                positionClass: 'toast-top-right cloud-display'
-                            });
-                            student_row.remove();
-                            popoverEl.popover('hide');
-                        }else {
-                            _self.showErrors(res.errors);
+                  $.ajax({
+                        url: '/admin/students/deactivate',
+                        method: 'POST',
+                        data: student_id,
+                        success: function (res) {
+                            if(res.success) {
+                                toastr.success('Student deactivated successfully', '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                                });
+                                student_row.remove();
+                                popoverEl.popover('hide');
+                            }else {
+                                _self.showErrors(res.errors);
+                            }
+                        },
+                        error: function () {
+                            swal({title: "Oops!", text: "Something went wrong. Please try later.", type: "error", confirmButtonText: "OK" });
                         }
                     });
-                });
+            });
         });
     };
 }
