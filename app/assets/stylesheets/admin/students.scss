@@ -40,6 +40,11 @@
       td {
           border: 0px;
           padding: 15px;
+          &:last-child {
+            span {
+              cursor: pointer;
+            }
+          }
       }
       .student-edit-btn{
         font-weight: 600;

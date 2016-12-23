@@ -111,6 +111,7 @@ class Students extends SchloopBase {
                     let popupEl = $('#' + $(this).attr('aria-describedby')),
                         student_id = $(this).data('student_id'),
                         jForm = popupEl.find('form');
+                
                     if(_self.studentsData.hasOwnProperty(student_id)){
                             jForm.fillForm(_self.studentsData[student_id], 'student');
                             jForm.attr('action', `/admin/students/${student_id}`);
