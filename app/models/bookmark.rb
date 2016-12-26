@@ -36,6 +36,13 @@ class Bookmark < ActiveRecord::Base
 #  index_bookmarks_on_school_id                (school_id)
 #  index_bookmarks_on_teacher_id               (teacher_id)
 #
+
+  validates :grade_id, presence: true
+  validates :subject_id, presence: true
+  validates :topic_id, presence: true
+  validates :teacher_id, presence: true
+  #validates :school_id: presence: true 
+
   enum data_type: { text:0, url:1 }
   def self.index(user, topic_id)
     bookmarks = self.where("topic_id = ? AND (teacher_id = 0 OR teacher_id = ?)",

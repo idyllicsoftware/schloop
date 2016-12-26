@@ -146,7 +146,6 @@ class TeacherDashboard extends SchloopBase {
                                 topics_list_tag.push(li_tag);
                            }
                            $('.topics-list').replaceWith('<ul class="nav nav-sidebar topics-list">' + topics_list_tag.join(' ') + '</u>');
-                           
                            $(".topics-list li").on("click", function(e) {
                                 e.preventDefault();
                                 $(".topics-list").find(".active").removeClass("active");
@@ -195,8 +194,9 @@ class TeacherDashboard extends SchloopBase {
                     bookmarksEl.html(html);
                     $("time.timeago").timeago();
                     //$.timeago(new Date());
-                   _self.addTopicContent(tag_hash, thisEl);
+                   //_self.addTopicContent(tag_hash, thisEl);
                }
+               _self.addTopicContent(tag_hash, thisEl);
             }
         });
     };
@@ -205,7 +205,6 @@ class TeacherDashboard extends SchloopBase {
         let _self = this,
             add_topic_content_form = $('.add-topic-content-form'),
             content_editor = $('.content-editor');
-            
             add_topic_content_form.submit( function (e) {
                 var formData = new FormData($(this)[0]),
                     topic_data = {}, content_val = content_editor.html(),

@@ -35,9 +35,11 @@ class Admin::Teachers::BookmarksController < ApplicationController
     bookmark_datum[:teacher_id] = teacher.id
     bookmark_datum[:school_id] = teacher.school_id
     ### default title for temporary purpose
-    bookmark_datum[:title] = "new schloopmark added"
     if data_type == :url 
-      bookmark_datum[:preview_image_url] = get_preview_image_url(params[:datum])
+    #  preview_image_data = get_preview_image_url(params[:datum])
+     # preview_image_data[:title].present? ? (bookmark_datum[:title] = preview_image_data[:title]) : (bookmark_datum[:title] = "new schloopmark added")
+      #bookmark[:preview_image_url] preview_image_data[:preview_image_url]
+      bookmark[:preview_image_url] = get_preview_image_url(params[:datum])
     end
     return bookmark_datum
   end
@@ -60,7 +62,8 @@ class Admin::Teachers::BookmarksController < ApplicationController
   def get_preview_image_url(url)
     require 'link_thumbnailer'
     preview_object = LinkThumbnailer.generate(url)
+    title = preview_object.title
     preview_object.images.present? ? preview_image_url = preview_object.images.first.src : preview_image_url = "image not found"
-    return preview_image_url
+    return { titel: title, preview_image_url: preview_image_url }
   end
 end
