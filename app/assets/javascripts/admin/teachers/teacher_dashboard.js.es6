@@ -152,7 +152,7 @@ class TeacherDashboard extends SchloopBase {
                                 $(this).addClass("active");
                                 _self.loadTopicBookmarks($(this));
                             }); 
-                            $('.topics-list li:first-child').click().addClass('active');  
+                           // $('.topics-list li:first-child').click().addClass('active');  
                         } else {
                             $('.topics-list').empty();
                         }    
@@ -205,7 +205,7 @@ class TeacherDashboard extends SchloopBase {
         let _self = this,
             add_topic_content_form = $('.add-topic-content-form'),
             content_editor = $('.content-editor');
-            add_topic_content_form.submit( function (e) {
+            add_topic_content_form.on('click', '.add-topic-content-btn', function (e) {
                 var formData = new FormData($(this)[0]),
                     topic_data = {}, content_val = content_editor.html(),
                     bookmarks_hash = {},
