@@ -28,6 +28,7 @@ class Ecircular < ActiveRecord::Base
   has_many :attachments, as: :attachable
   has_many :ecircular_recipients
 	has_many :ecircular_parents
+	has_many :ecircular_teachers
 
   validates :title, :created_by_type, :created_by_id , :presence => true
 
