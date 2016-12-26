@@ -60,24 +60,23 @@ class Ecircular < ActiveRecord::Base
 			circulars = Ecircular.where(id: circular_ids)	
 		end
 		total_records = circulars.count
-
 		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
 
 		circular_parents_by_ecircular_id = EcircularParent.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
+		circular_teachers_by_ecircular_id = EcircularTeacher.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
 
     circular_tracker_data_by_ecircular_id = Tracker.where(trackable_id: circulars.ids,
                                                           trackable_type: "Ecircular",
                                                           user_id: user.id,
                                                           user_type: user.class.name).index_by(&:trackable_id)
-
 		circulars.each do |circular|
-			circular_data << circular.data_for_circular(circular_parents_by_ecircular_id, circular_tracker_data_by_ecircular_id)
+			circular_data << circular.data_for_circular(circular_parents_by_ecircular_id, circular_teachers_by_ecircular_id, circular_tracker_data_by_ecircular_id)
 		end
 		return circular_data, total_records
 	end
 
-	def data_for_circular(circular_parents_by_ecircular_id, circular_tracker_data_by_ecircular_id = {})
-		recipients, attachments, students_data = [], [], []
+	def data_for_circular(circular_parents_by_ecircular_id, circular_teachers_by_ecircular_id, circular_tracker_data_by_ecircular_id = {})
+		recipients, attachments, students_data, teachers_data = [], [], [], []
 		grouped_circulars = self.ecircular_recipients.group_by do |x| x.grade_id end
 		grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
 		grouped_circulars.each do |grade_id, recipients_data|
@@ -111,6 +110,18 @@ class Ecircular < ActiveRecord::Base
 			}
 		end
 
+		teacher_ids = circular_teachers_by_ecircular_id[id].collect(&:teacher_id) rescue []
+		teachers = Student.where(id: teacher_ids).includes(student_profiles: [:grade, :division]) || []
+
+		teachers.each do |teacher|
+			teachers_data << {
+					id: teacher.id,
+					first_name: teacher.first_name,
+					last_name: teacher.last_name
+			}
+		end
+
+
 		return {
 				id: id,
 				title: title,
@@ -127,6 +138,7 @@ class Ecircular < ActiveRecord::Base
 				},
 				recipients: recipients,
 				students: students_data,
+				teachers: teachers_data,
 				attachments: attachments
 		}
 	end

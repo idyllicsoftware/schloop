@@ -230,9 +230,9 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     end
 
     def filter_params
-      default_division_ids = @current_user.grade_teachers.pluck(:division_id)
+      # default_division_ids = @current_user.grade_teachers.pluck(:division_id)
       filters = params[:filter]
-      return {divisions: default_division_ids} if filters.blank?
+      return {} if filters.blank?
 
       divisions = []
       filters[:grades].each do |_, division_ids|
