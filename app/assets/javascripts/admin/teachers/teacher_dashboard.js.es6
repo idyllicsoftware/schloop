@@ -119,10 +119,15 @@ class TeacherDashboard extends SchloopBase {
                     data: topic_data,
                     method: 'POST',
                     success: function (res) {
-                       if(res.success) {
-                           _self.loadMyTopics();
+                        if(res.success) {
+                            _self.loadMyTopics();
                             addTopicModalEl.modal('hide');
-                       }
+                            toastr.success('New topic added successfully', '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                            });      
+                        } else {
+                            _self.showErrors(res.errors);
+                        }
                     }
                 });
             });
@@ -183,20 +188,20 @@ class TeacherDashboard extends SchloopBase {
     loadTopicBookmarks(filters_data, thisEl) {
         let _self = this,
             bookmarksEl = $('.bookmarks-section');
-
+        
         $.ajax({
             url: `/admin/teachers/bookmarks/get_bookmarks`,
             data: filters_data,
             method: 'GET',
             success: function (res) {
-               if(res.success) {
-                var html = Mustache.to_html(_self.topicBookmarksTpl, res);
-                    _self.topicBookmarks = res.bookmarks.toHash('id'); 
-                    bookmarksEl.html(html);
-                    $("time.timeago").timeago();
-                    //$.timeago(new Date());
-                   //_self.addTopicContent(tag_hash, thisEl);
-               }
+                if(res.success) {
+                    var html = Mustache.to_html(_self.topicBookmarksTpl, res);
+                        _self.topicBookmarks = res.bookmarks.toHash('id');
+                        bookmarksEl.html(html);
+                        $("time.timeago").timeago();
+                } else {
+                    _self.showErrors(res.errors);
+                }
             }
         });
     };
@@ -232,7 +237,13 @@ class TeacherDashboard extends SchloopBase {
                     method: "POST",
                     success: function (res) {
                        if(res.success) {
-                         _self.loadTopicBookmarks(topic_content_data, thisEl);      
+                        content_editor.html('');
+                         _self.loadTopicBookmarks(topic_content_data, thisEl);
+                         toastr.success('New schloopmarked added successfully', '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                                });      
+                       } else {
+                            _self.showErrors(res.errors);
                        }
                     }
                 });

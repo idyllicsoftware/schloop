@@ -104,6 +104,11 @@
 </div> 
 
 <script type="text/html" id="topic_bookmarks_tpl">
+	{{^bookmarks}}
+		<div class="bookmark-not-found">
+			<h4>No schloopmark found...</h4>
+		</div>
+	{{/bookmarks}}
 	{{#bookmarks}}
   		<div class="topics-list-section">
   			<div class="title-of-topic">
@@ -123,7 +128,12 @@
 				    </div>
   				</div>
   				<div class="content-view-section">
-  					<p>{{data}}</p>
+  					{{#data}}
+  						<p>{{{data}}}</p>
+  					{{/data}}
+  					{{#preview_image_url}}
+  						<img src="{{preview_image_url}}" style="width: 300px; height: 150px">
+  					{{/preview_image_url}}	
   				</div>
   				<div class="share-topic-section">
   					<div class="share-topic">
