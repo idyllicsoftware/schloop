@@ -166,7 +166,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     grade_teachers = teacher.grade_teachers
     render json: { success: false, error: 'Grades not present', data: [] } and return unless grade_teachers.present?
     teachers_data = Teacher.where(id: grade_teachers.ids).select(:id, :first_name, :last_name)
-    render json: { success: true, error: nil, data: teachers_data }
+    render json: { success: true, error: nil, data: { teachers_data: teachers_data }}
   end
 
   private
