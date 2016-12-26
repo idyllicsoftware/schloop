@@ -21,6 +21,18 @@ class Admin::Teachers::BookmarksController < ApplicationController
     end  
   end
 
+  def add_caption
+    errors = []
+    begin
+      bookmark = Bookmark.find_by(id: params[:bookmark_id])
+      bookmark.caption = params[:caption]
+      bookmark.save
+    rescue Exception => e
+      errors << "error occured while adding caption"
+    end
+    render json: { success: errors.blank?, errors: errors }
+  end
+
   private
 
   def bookmark_params
@@ -61,7 +73,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
   end
 
   private
-  
+
   def get_preview_image_url(url)
     require 'link_thumbnailer'
     preview_object = LinkThumbnailer.generate(url)

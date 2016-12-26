@@ -57,6 +57,7 @@ Rails.application.routes.draw do
       resources :bookmarks do
         collection do
           get :get_bookmarks
+          post :add_caption
         end
       end
       resources :topics do
