@@ -13,7 +13,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
   def get_bookmarks
     errors = []
     begin
-      bookmarks = Bookmark.index(current_teacher, params[:topic_id])
+      bookmarks = Bookmark.index(current_teacher || Teacher.first, params[:topic_id])
       render json: {success:true, bookmarks: bookmarks}
     rescue Exception => e
       errors << "errors while fetching bookmarks"
@@ -24,7 +24,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
   private
 
   def bookmark_params
-    teacher = current_teacher
+    teacher = current_teacher || Teacher.first
     data_type = get_data_type(params[:datum])
     bookmark_datum = {}
     (data_type == :url) ? (bookmark_datum[:url] = params[:datum]) : (bookmark_datum[:data] = params[:datum])
@@ -36,6 +36,9 @@ class Admin::Teachers::BookmarksController < ApplicationController
     bookmark_datum[:school_id] = teacher.school_id
     ### default title for temporary purpose
     bookmark_datum[:title] = "new schloopmark added"
+    if data_type == :url 
+      bookmark_datum[:preview_image_url] = get_preview_image_url(params[:datum])
+    end
     return bookmark_datum
   end
 
@@ -53,4 +56,11 @@ class Admin::Teachers::BookmarksController < ApplicationController
     return :text
   end
 
+  private
+  def get_preview_image_url(url)
+    require 'link_thumbnailer'
+    preview_object = LinkThumbnailer.generate(url)
+    preview_object.images.present? ? preview_image_url = preview_object.images.first.src : preview_image_url = "image not found"
+    return preview_image_url
+  end
 end
