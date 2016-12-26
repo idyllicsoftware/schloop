@@ -116,6 +116,9 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         # add ecircular parent recipents
         circular.ecircular_parents.create!(parents_params) if parents_params.present?
 
+        # add ecircular teachers recipents
+        circular.ecircular_teachers.create!(teachers_params) if teachers_params.present?
+
         Attachment.create!(attachments_params(circular))
       rescue Exception => ex
         errors << ex.message
@@ -158,6 +161,14 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     }
   end
 
+  def circular_teachers
+    teacher = @current_user
+    grade_teachers = teacher.grade_teachers
+    render json: { success: false, error: 'Grades not present', data: [] } and return unless grade_teachers.present?
+    teachers_data = Teacher.where(id: grade_teachers.ids).select(:id, :first_name, :last_name)
+    render json: { success: true, error: nil, data: teachers_data }
+  end
+
   private
     def circular_params
       params.permit(:title, :body, :circular_tag)
@@ -189,6 +200,19 @@ class Api::V1::EcircularsController < Api::V1::BaseController
           }
       end
       return create_parent_params
+    end
+
+    def teachers_params
+      create_teachers_params = []
+      return create_teachers_params if params[:teachers].blank?
+      teachers = Teacher.where(id: params[:teachers])
+      teachers.each do |teacher|
+        create_teachers_params << {
+            teacher_id: teacher.id,
+            school_id: teacher.school_id
+        }
+      end
+      return create_teachers_params
     end
 
     def attachments_params(circular)
