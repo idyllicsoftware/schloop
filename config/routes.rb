@@ -128,6 +128,7 @@ Rails.application.routes.draw do
       get  "/teacher/profile" => "teachers#profile"
       get  "/teacher/forgot_password" => "teachers#forgot_password"
       get  "/teacher/parents" => "teachers#index"
+      get  "/teacher/ecirculars/:id/read" => 'teachers#circular_read'
 
       post "/ecircular/tags" => "ecirculars#tags"
       post "/ecircular/create" => "ecirculars#create"
