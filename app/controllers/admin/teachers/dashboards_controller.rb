@@ -1,51 +1,54 @@
 class Admin::Teachers::DashboardsController < ApplicationController
-  
-  def index
-    topics =get_topics
-  end
-  def show
-    topics = get_topics
-    render json: {topics: topics}
-  end
-  def create
-    bookmark_datum = {}
-    errors = []
-    teacher = Teacher.find_by(id: params[:teacher_id])
+	layout "teacher"
+	
+  def create 
     begin
+      teacher = Teacher.find_by(id: params[:id])
       bookmark_data = {
         title: params[:title],
-        data:  params[:data],
-        caption:  params[:caption],
-        url: params[:url],
-        preview_image_url: params[:preview_image_url],
-        topic_id:  params[:topic_id],
-        data_type: params[:data_type],
-        school_id:  School.find_by(id: teacher.school_id).id,
-        grade_id:  params[:grade_id],
         subject_id: params[:subject_id],
-        teacher_id:  teacher.id
-      }
-      Bookmark.create(bookmark_datum)
+        grade_id:  params[:grade_id],
+        topic_id:  params[:topic_id],
+        data:  params[:data],
+        data_type: params[:data_type],
+        caption:  params[:caption],
+        teacher_id:  Teacher.find_by(id: params[:id]).id,
+        school_id:  School.find_by(id: teacher.school_id).id
+       }
+       Bookmark.create(bookmark_data)
     rescue Exception => e
-      errors << "error occured while creating new bookmark"
+      errors << "error while creating new bookmark"
     end
-    render json: {success: !errors.present?, errors: errors}
+    render json: {success: errors.blank?, errors: errors}
   end
+ 
+ 
+  def show 
+  grade_teacher_data = []
+  teacher = Teacher.find_by(id: params[:id])
+   grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
 
-  def get_topics
-    teacher = current_teacher
-    grade  = Grade.find_by(id: params[:grade_id])
-    subject = Subject.find_by(id: params[:subject_id])
-    master_grade_id = grade.master_grade_id
-    master_subject_id = subject.master_subject_id
+   grades_data.each do |grade_id, datas|
+     subjects_data = {}
+     datas.each do |data|
+       subjects_data[data.subject_id ] ||= {
+         subject_id: data.subject_id,
+         subject_name: data.subject.name,
+         divisions_data: []
+       }
 
-    topics = Topic.index(teacher, master_grade_id, master_subject_id)
-    render json: {success: true, topics: topics}
-  end
+       subjects_data[data.subject_id][:divisions_data] << {
+         division_id: data.division_id,
+         division_name: data.division.name
+       }
+     end
+     grade_teacher_data << {
+       grade_id: grade_id,
+       grade_name: datas.first.grade.name,
+       subjects_data: subjects_data.values
+     }
+   end
+   return grade_teacher_data
+end
 
-  def get_bookmarks
-    topic_id = params[:topic_id]
-    teacher = current_teacher
-    bookmarks = Bookmark.where(topic_id: topic, teacher_id: teacher.id)
-  end
 end

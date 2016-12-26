@@ -27,20 +27,21 @@
 			<div class="admin-profile-manu">
 				<p><%= current_user.first_name %></p>
         <p><%= current_user.last_name %></p>
+        <p class="change-pwd-link" data-toggle="modal" data-target="#changePasswordModal"><a>Change password</a></p>
 				<p><a href='/users/sign_out'>Sign Out</a></p>
 			</div>
 		</div>
 	</div>
-	<%= yield %> 
+	<%= yield %>
   <div class="footer-img">
       <img class="tree6-img" src="<%= asset_path('home/tree_green1.png') %>">
       <img class="tree7-img" src="<%= asset_path('home/tree_green3.png') %>">
-      <img class="bag-img" src="<%= asset_path('home/bag.png') %>">      
+      <img class="bag-img" src="<%= asset_path('home/bag.png') %>">
       <img class="school-img" src="<%= asset_path('home/school1.png') %>">
-      <img class="tree10-img" src="<%= asset_path('home/tree_green2.png') %>">   
-      <img class="scloopy-img" src="<%= asset_path('home/schloopy.png') %>">   
+      <img class="tree10-img" src="<%= asset_path('home/tree_green2.png') %>">
+      <img class="scloopy-img" src="<%= asset_path('home/schloopy.png') %>">
       <img class="bench-img" src="<%= asset_path('home/bench.png') %>">
-      <img class="tree8-img" src="<%= asset_path('home/tree_green2.png') %>">    
+      <img class="tree8-img" src="<%= asset_path('home/tree_green2.png') %>">
       <img class="tree9-img" src="<%= asset_path('home/tree_green.png') %>">
   </div>
   <div class="oval"></div>
@@ -49,6 +50,8 @@
 </div>
 
 <%= javascript_include_tag 'admin/admin' %>
+
+<%= render partial: "layouts/change_password", locals: { update_password_url: '/admin/user/update_password' } %>
 
 <script id="selectedFileTr" type="text/html">
   <tr class='selectedFile'>

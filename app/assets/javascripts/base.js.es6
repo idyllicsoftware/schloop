@@ -113,6 +113,14 @@ class SchloopBase {
                     required: true,
                     minlength: 6
                 },
+                current_password: {
+                    required: true,
+                    minlength: 6
+                },
+                password_confirmation: {
+                    required: true,
+                    minlength: 6
+                },
                 zip_code: {
                     required: true,
                     digits: true,
@@ -140,6 +148,14 @@ class SchloopBase {
                     required: "This field is required",
                 },
                 password: {
+                    required: "Please enter correct password",
+                    minlength: jQuery.validator.format("At least {0} characters password required!")
+                },
+                current_password: {
+                    required: "Please enter correct password",
+                    minlength: jQuery.validator.format("At least {0} characters password required!")
+                },
+                password_confirmation: {
                     required: "Please enter correct password",
                     minlength: jQuery.validator.format("At least {0} characters password required!")
                 },
@@ -187,16 +203,18 @@ class SchloopBase {
 
     initFormSubmit (jForm, fieldsMapping, cb, extraParams, btnEl){
         let self = this;
-        
+
         self.formValidatorInit(jForm, fieldsMapping);
 
         jForm.submit(function (e) {
             e.preventDefault();
+            e.stopPropagation();
             let jForm = $(this), formData;
+            console.log(2);
             if(jForm.valid()) {
                 if(extraParams) {
                     formData = new FormData(jForm[0]);
-                }else{   
+                }else{
                     formData = jForm.serialize();
                 }
                 self.submitData(jForm.attr('action'), jForm, formData, cb, extraParams, btnEl);
@@ -223,5 +241,33 @@ class SchloopBase {
                 return $("#" + data_content).html();
             }
         });
-    }
+    };
+
+    initUserChangePasswordForm() {
+        let self = this,
+            change_pwd_form = $('#change-password-form'),
+            changePasswordModal = $('#changePasswordModal');
+
+        $('.change-pwd-link').on('click', function(){
+            change_pwd_form[0].reset();
+            changePasswordModal.find('.show_err').text('');
+        });
+
+        this.initFormSubmit(change_pwd_form, {
+           'user[current_password]': 'current_password',
+           'user[password]': 'password',
+           'user[password_confirmation]': 'password_confirmation'
+        }, function (res) {
+           if (res.success){
+                toastr.success('Password changed successfully', '', {
+                    positionClass: 'toast-top-right cloud-display'
+                });
+                changePasswordModal.modal('hide');
+                change_pwd_form[0].reset();
+                changePasswordModal.find('.show_err').text('');
+           }else {
+                change_pwd_form.find('.show_err').text(res.errors);
+           }
+        });
+    };
 }

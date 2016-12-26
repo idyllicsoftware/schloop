@@ -49,7 +49,10 @@ Rails.application.routes.draw do
 
     namespace :teachers do #teachers folder in admin
       resources :teacher_imports, only: [:create], shallow: true
+      resources :dashboards
+      resources :topics, only: [:show],shallow: true
     end
+
 ##############################################################################
     get 'teachers/forget_password' => 'teachers#forget_password'
 
@@ -99,6 +102,19 @@ Rails.application.routes.draw do
         post :upload_file
       end
     end
+
+    resource :user, only: [] do
+      collection do
+        patch 'update_password'
+      end
+    end
+
+  resource :teacher, only: [] do
+    collection do
+      patch 'update_password'
+    end
+  end
+
   end
 
   namespace :api do
@@ -117,6 +133,7 @@ Rails.application.routes.draw do
       post "/ecircular/create" => "ecirculars#create"
       get  "/ecirculars" => "ecirculars#index"
       post "/ecirculars" => "ecirculars#index"
+      get "/ecirculars/circular_teachers" => "ecirculars#circular_teachers"
 
       get  "/activities" => "activities#index"
       get  "/activity/categories" => "activities#get_categories"
@@ -127,13 +144,22 @@ Rails.application.routes.draw do
       post "/parent/reset_password" => 'parents#reset_password'
       get  "/parent/profile" => 'parents#profile'
       post "/parent/ecirculars" => 'parents#circulars'
+      post "/parent/ecirculars/:id" => 'parents#circular'
       post "/parent/activities" => 'parents#activities'
+      post "/parent/activities/:id" => 'parents#activity'
       get  "/parent/forgot_password" => "parents#forgot_password"
+      get  "/parent/ecirculars/:id/read" => 'parents#circular_read'
 
       get  "/teacher/topics" => 'teachers#topics'
       post "/teacher/topics" => 'teachers#create_topic'
 
+      post "device/register" => 'devices#register'
+      post "device/deregister" => 'devices#de_register'
+
     end
   end
+
+  get  "/admin/notifications" => 'admin/notifications#show', as: :admin_show_nofifcation
+  post "/admin/notifications" => 'admin/notifications#send_notification'
 
 end

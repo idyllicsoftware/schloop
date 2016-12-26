@@ -26,4 +26,5 @@ class Topic < ActiveRecord::Base
                                 master_grade_id, master_subject_id, user.id)
     return topics
   end
+
 end

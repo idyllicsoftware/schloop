@@ -1,0 +1,165 @@
+
+<div class="teacher-schloopmarking-main-section">
+	<div class="cloud_image">
+    	<img class="img-responsive" src="<%= asset_path('home/cloud_3.png') %>">
+  	</div>
+	<div class="container">
+	    <ul id="schloopmarking-Tab" class="nav nav-tabs">
+	      <li>
+	        <a href="#feeds" aria-controls="feeds-tab" role="feeds-tab" data-toggle="tab"  data-tab-name="feeds">Feeds</a>
+	      </li>
+	      <li class="active">
+	        <a href="#my-topics" aria-controls="my-topics-tab" role="my-topics-tab"  data-toggle="tab" data-tab-name="my_topics">My Topics</a>
+	      </li>
+	      <li>
+	        <a href="#collaboration" aria-controls="collaboration-tab" role="collaboration-tab"  data-toggle="tab"  data-tab-name="collaboration">Collaboration</a>
+	      </li>
+	      <li>
+	        <a href="#followups" aria-controls="followups-tab" role="followups-tab"  data-toggle="tab"  data-tab-name="followups">Followups</a>
+	      </li>
+	    </ul>
+	    <div class="tab-content">
+	      <div class="tab-pane fade in" id="feeds">
+	        <div class="content-wrapper">
+	          <h1>teacher dashboard feed</h1>
+	        </div>
+	      </div>
+	      <div class="tab-pane fade in active" id="my-topics">
+	        <div class="content-wrapper">
+	          	<div class="col-md-3 sidebar">
+		          	<div class="select-filter-tag-section">
+		          		<span><a id="select-filter-tag-popover" data-toggle="popover" data-value="select-filter-tag-popover-content" data-placement="bottom"></a><i class="fa fa-chevron-down"></i></span>
+		          		<div id="select-filter-tag-popover-content" class="hidden">
+		          			<form action="/admin/teachers/topics/" method="POST" class="grade-subject-form">
+							  <div class="grade-selection">
+							  	<div class="col-md-12 select-grade-subject p0 mb10">
+						            <label data-grade_id="grade_id1">Grade1</label>
+				                      <ul class="radio_customized">
+				                        <li class="col-md-3 pl10 pr10">
+				                        	<input type="radio" name="subjects" value="subject1" id="subject1" checked data-grade_id="grade.id "
+				                          data-subject_id="">
+				                          <label for="subject1">division1</label>
+				                        </li>
+				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject2" id="subject2" data-grade_id="grade.id "
+				                          data-subject_id="">
+				                          <label for="subject2">division2</label>
+				                        </li>
+				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject3" id="subject3" data-grade_id="grade.id "
+				                          data-subject_id="">
+				                          <label for="subject3">division3</label>
+				                        </li>
+				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject4" id="subject4" data-grade_id="grade.id "
+				                          data-subject_id="">
+				                          <label for="subject4">division4</label>
+				                        </li>
+				                      </ul>
+					            </div>
+					            <div class="col-md-12 select-grade-subject p0 mb10">
+						            <label data-grade_id="grade_id1">Grade2</label>
+				                      <ul class="radio_customized">
+				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject5" id="s5" data-grade_id="grade.id "
+				                          data-subject_id="">
+				                          <label for="s5">division</label>
+				                        </li>
+				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject6" id="s6" data-grade_id="grade.id "
+				                          data-subject_id="">
+				                          <label for="s6">division</label>
+				                        </li>
+				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject7" id="s7" data-grade_id="grade.id "
+				                          data-subject_id="">
+				                          <label for="s7">division</label>
+				                        </li>
+				                        <li class="col-md-3 pl10 pr10"><input type="radio" name="subjects" value="subject8" id="s8" data-grade_id="grade.id "
+				                          data-subject_id="">
+				                          <label for="s8">division</label>
+				                        </li>
+				                      </ul>
+					            </div>
+							  </div>
+						  	</form>
+						</div>
+		          	</div>
+		          	<ul class="nav nav-sidebar">
+		          		<li><a href="#">Our Universe</a></li>
+		          		<li><a href="#">Plants</a></li>
+		          		<li><a href="#">Earth</a></li>
+		          		<li><a href="#">Soil & Minerals</a></li>
+		          	</ul>
+		          	<div class="new-topic mt20">
+		          		<a class="add-topic">+ Add New Topic</a>
+		          	</div>
+	          	</div>
+	          	<div class="col-md-9 topics-view-section p0">
+	          		<div class="create-topic-content">
+	          			<div class="content-editor-section col-md-12">
+	          				<div class="col-md-10 content-editor" contenteditable="true" placeholder="Paste a url of an image, video, file or paste any note to add comment..."></div>
+	          				<div class="col-md-2 p0">
+	          			    	<button role="button">Add</button>
+	          				</div>
+	          			</div>
+	          		</div>
+	          		<div class="topics-list-section">
+	          			<div class="title-of-topic">
+	          				<div class="created-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
+	          					<!-- <div class="home-logo" "></div> -->
+	          				</div>
+	          				<div class="created-by-teacher-detail">
+	          					<p>Title of the image</p>
+	          					<span>20 mins ago</span>
+	          				</div>
+	          			</div>
+	          			<div class="content-of-topic">
+	          				<div class="content-caption-section">
+	          					<div class="input-form-group">
+							      <input type="text" class="caption-field" required name="teacher[cell_number]" placeholder="Add a caption" autocomplete="off"  maxlength="15" />
+							      <button>Save</button>
+							    </div>
+	          				</div>
+	          				<div class="content-view-section">
+	          					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+	          				</div>
+	          				<div class="share-topic-section">
+	          					<div class="share-topic">
+	          						<img src="<%= asset_path('admin/collaboration.svg') %>">
+	          						<a href="">Share for collaboration</a>
+	          					</div>
+	          					<div class="share-topic">
+	          						<img src="<%= asset_path('admin/follow_up.svg') %>">
+	          						<a href="">Followup for parents</a>
+	          					</div>
+	          				</div>
+	          			</div>
+	          		</div>
+	          	</div>
+	        </div>
+	      </div>
+	      <div class="tab-pane fade in" id="collaboration">
+	        <div class="content-wrapper">
+	          <h1>teacher dashboard collaboration</h1>
+	        </div>
+	      </div>
+	      <div class="tab-pane fade in" id="followups">
+	        <div class="content-wrapper">
+	          <h1>teacher dashboard followups</h1>
+	        </div>
+	      </div>
+	    </div>
+	</div>        
+</div>
+
+<div class="modal fade" id="add-topic-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+      	<label>GRADE I - SCIENCE | Add New Topic</label>
+      	<div class="input-form-group">
+			<input type="text" class="caption-field" required name="teacher[cell_number]" placeholder="Add a caption" autocomplete="off"  maxlength="15" />
+		</div>
+		<div class="clearfix">
+			<button class="btn btn-primary pull-right mt20">Save</button>
+			<button class="btn btn-primary pull-right mt20 cancelModal">cancel</button>
+		</div>	
+      </div>
+    </div>
+  </div>
+</div>      
