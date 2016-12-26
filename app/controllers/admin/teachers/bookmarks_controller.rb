@@ -63,7 +63,13 @@ class Admin::Teachers::BookmarksController < ApplicationController
     require 'link_thumbnailer'
     preview_object = LinkThumbnailer.generate(url)
     title = preview_object.title
-    preview_object.images.present? ? preview_image_url = preview_object.images.first.src : preview_image_url = "image not found"
+    if preview_object.images.present?  
+      preview_image_url = preview_object.images.first.src  
+    elsif preview_object.url.present?
+      preview_image_url = preview_object.url.to_s
+    else
+      preview_image_url = "image not found"
+    end
     return { title: title, preview_image_url: preview_image_url }
   end
 end

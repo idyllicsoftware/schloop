@@ -145,14 +145,29 @@ class TeacherDashboard extends SchloopBase {
                                 var li_tag = '<li><span data-topic_id="' + topics_hash[topic].id + '">' + topics_hash[topic].title + '</span></li>';
                                 topics_list_tag.push(li_tag);
                            }
+                           
                            $('.topics-list').replaceWith('<ul class="nav nav-sidebar topics-list">' + topics_list_tag.join(' ') + '</u>');
                            $(".topics-list li").on("click", function(e) {
+                                var topic_data = {},tag_hash = {},
+                                    key_value = $(this).find('span').data('topic_id'),
+                                    topic_id_tag = {
+                                        'topic_id' : key_value
+                                    };
                                 e.preventDefault();
+                                var fun = function jsonConcat(o1, o2) {
+                                    for (var key in o2) {
+                                        o1[key] = o2[key];
+                                    }
+                                    return o1;
+                                }
+                                
+                                topic_data = fun(topic_data, _self.filters);
+                                tag_hash = fun (topic_data, topic_id_tag);
                                 $(".topics-list").find(".active").removeClass("active");
                                 $(this).addClass("active");
-                                _self.loadTopicBookmarks($(this));
+                                _self.loadTopicBookmarks(tag_hash, $(this));
+                                _self.addTopicContent(tag_hash, $(this));
                             }); 
-                           // $('.topics-list li:first-child').click().addClass('active');  
                         } else {
                             $('.topics-list').empty();
                         }    
@@ -165,27 +180,13 @@ class TeacherDashboard extends SchloopBase {
         return $("#topic_bookmarks_tpl").html();
     };
 
-    loadTopicBookmarks(thisEl) {
+    loadTopicBookmarks(filters_data, thisEl) {
         let _self = this,
-            topic_data = {},tag_hash = {},
-            bookmarksEl = $('.bookmarks-section'),
-            key_value = thisEl.find('span').data('topic_id'),
-            topic_id_tag = {
-                'topic_id' : key_value
-            };
-        
-        var fun = function jsonConcat(o1, o2) {
-            for (var key in o2) {
-                o1[key] = o2[key];
-            }
-            return o1;
-        }
-        topic_data = fun(topic_data, _self.filters);
-        tag_hash = fun (topic_data, topic_id_tag); 
+            bookmarksEl = $('.bookmarks-section');
 
         $.ajax({
             url: `/admin/teachers/bookmarks/get_bookmarks`,
-            data: tag_hash,
+            data: filters_data,
             method: 'GET',
             success: function (res) {
                if(res.success) {
@@ -196,7 +197,6 @@ class TeacherDashboard extends SchloopBase {
                     //$.timeago(new Date());
                    //_self.addTopicContent(tag_hash, thisEl);
                }
-               _self.addTopicContent(tag_hash, thisEl);
             }
         });
     };
@@ -205,6 +205,7 @@ class TeacherDashboard extends SchloopBase {
         let _self = this,
             add_topic_content_form = $('.add-topic-content-form'),
             content_editor = $('.content-editor');
+
             add_topic_content_form.on('click', '.add-topic-content-btn', function (e) {
                 var formData = new FormData($(this)[0]),
                     topic_data = {}, content_val = content_editor.html(),
@@ -231,7 +232,7 @@ class TeacherDashboard extends SchloopBase {
                     method: "POST",
                     success: function (res) {
                        if(res.success) {
-                         _self.loadTopicBookmarks(thisEl);      
+                         _self.loadTopicBookmarks(topic_content_data, thisEl);      
                        }
                     }
                 });
