@@ -23,8 +23,8 @@ class Tracker < ActiveRecord::Base
   validates_uniqueness_of :trackable_id, :scope => [:trackable_type, :user_id, :user_type, :event]
 
   enum events: {read: 0}
-  def self.track(entity, user, event)
-    tracked_data = self.create(trackable: entity, user_id: user.id, user_type: user.type, event: Tracker.events[event.to_sym])
+  def self.track(entity, user, event, user_type = user.type)
+    tracked_data = self.create(trackable: entity, user_id: user.id, user_type: user_type, event: Tracker.events[event.to_sym])
     return tracked_data.errors.full_messages
   end
 end
