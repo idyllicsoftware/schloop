@@ -164,6 +164,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
   def circular_teachers
     teacher = @current_user
     grade_teacher_ids = teacher.grade_teachers.pluck(:teacher_id)
+    grade_teacher_ids.delete(teacher.id)
     render json: { success: false, error: 'Grades not present', data: [] } and return unless grade_teacher_ids.present?
     teachers_data = Teacher.where(id: grade_teacher_ids).select(:id, :first_name, :last_name)
     render json: { success: true, error: nil, data: { teachers_data: teachers_data }}
