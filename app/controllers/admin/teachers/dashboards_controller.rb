@@ -1,5 +1,4 @@
 class Admin::Teachers::DashboardsController < ApplicationController
-
 	layout "teacher"
   def index
     @grade_teacher_data = []
@@ -105,7 +104,3 @@ class Admin::Teachers::DashboardsController < ApplicationController
   end
 =end
 end
-
-
-
-

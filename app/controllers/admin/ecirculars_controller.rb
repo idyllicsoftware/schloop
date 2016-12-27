@@ -28,7 +28,7 @@ class Admin::EcircularsController < ApplicationController
  	end
 
  	def all
-			circular_data, total_records = Ecircular.school_circulars(@school)
+			circular_data, total_records = Ecircular.school_circulars(@school, current_user)
 			render json: {success: true, circulars: circular_data, total_records: total_records}
  	end
 

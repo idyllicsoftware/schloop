@@ -62,6 +62,8 @@ class Teacher < ActiveRecord::Base
   has_many :grade_teachers, dependent: :destroy
   has_many :activity_shares
   has_many :topics, dependent: :destroy
+  has_many :devices, as: :deviceable, dependent: :destroy
+
   before_save :set_token
   after_create :send_invitation
   after_create :add_roles
@@ -78,10 +80,6 @@ class Teacher < ActiveRecord::Base
 
   def password_required?
     new_record? ? false : super
-  end
-
-  def name
-    "#{first_name} #{last_name} #{middle_name}"
   end
 
   def associated_students(search_params = {})

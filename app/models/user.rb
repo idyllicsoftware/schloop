@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_many :user_roles
   has_many :roles, :through => :user_roles
+  has_many :devices, as: :deviceable
 
   belongs_to :school
   validates :first_name, :presence => true, :length => { :maximum => 30 }

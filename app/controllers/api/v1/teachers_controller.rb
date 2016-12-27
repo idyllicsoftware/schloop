@@ -238,6 +238,20 @@ class Api::V1::TeachersController < Api::V1::BaseController
 
   end
 
+  def circular_read
+    errors = []
+    circular_id = params[:id]
+    circular = Ecircular.find_by(id: circular_id)
+
+    errors << "Invalid circular to track" if circular.blank?
+    errors += Tracker.track(circular, @current_user, 'read', @current_user.class.to_s) if errors.blank?
+    render json: {
+        success: errors.blank?,
+        error:  errors,
+        data: nil
+    }
+  end
+
   private
   def teacher_params
     params.require(:teacher).permit(:email, :password, :first_name, :middle_name, :last_name, :cell_number)
