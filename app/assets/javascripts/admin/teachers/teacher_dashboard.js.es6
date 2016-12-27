@@ -115,11 +115,11 @@ class TeacherDashboard extends SchloopBase {
                     $('.content-view-section').find('p').append("<a class='read-more'> More...</a>");
                 }
 
-        $('div[contenteditable=true]').on('focusin', function() {
+        $('.content-editor-section > div[contenteditable=true]').on('focusin', function() {
             $('div[contenteditable=true]').parent().css('border','1px solid #25aae1');
             $('div[contenteditable=true]').parent().find('button').css('color','#25aae1');
         });
-        $('div[contenteditable=true]').on('focusout', function() {
+        $('.content-editor-section > div[contenteditable=true]').on('focusout', function() {
             $('div[contenteditable=true]').parent().css('border','1px solid #ccc');
             $('div[contenteditable=true]').parent().find('button').css('color','#dddddd');
         });
@@ -196,7 +196,8 @@ class TeacherDashboard extends SchloopBase {
 
     loadTopicBookmarks(filters_data, thisEl) {
         let _self = this,
-            bookmarksEl = $('.bookmarks-section');
+            bookmarksEl = $('.bookmarks-section'),
+            bookmarkEditModal = $('#bookmark-edit-modal');
         $.ajax({
             url: `/admin/teachers/bookmarks/get_bookmarks`,
             data: filters_data,
@@ -216,11 +217,74 @@ class TeacherDashboard extends SchloopBase {
                             $(this).css('border-bottom','1px solid #ccc');
                             $(this).find('button').css('color','#dddddd');
                         });
+                        
+                        bookmarksEl.find(".bookmark-edit").on('click', function() {
+                            var bookmark_id = $(this).data('bookmark_id'),
+                                jForm = bookmarkEditModal.find('form');
+                                bookmarkEditModal.modal('show');
+                                if(_self.topicBookmarks.hasOwnProperty(bookmark_id)){
+                                   var curr_bookmark = _self.topicBookmarks[bookmark_id];
+                                    jForm.fillForm(_self.topicBookmarks[bookmark_id], 'bookmark');
+                                    jForm.find('.content-editor-update').html(curr_bookmark.data);
+                                    _self.bookmarkEdit(jForm, bookmark_id, $(this));
+                                }
+                        });
+                        bookmarksEl.find('.bookmark-delete').on('click', function() {
+                            var curr_bookmark_El = $(this).closest('.topics-list-section'),
+                                bookmark_id = $(this).data('bookmark_id');
 
+                            if(_self.topicBookmarks.hasOwnProperty(bookmark_id)){
+
+                                $.ajax({
+                                    url: "/admin/teachers/bookmarks/destroy?bookmark_id="+bookmark_id,
+                                    method: "DELETE",
+                                    success: function (res) {
+                                       if(res.success) {
+                                        debugger;
+                                         toastr.success('schloopmarked deleted successfully', '', {
+                                                    positionClass: 'toast-top-right cloud-display'
+                                                });      
+                                       } else {
+                                            _self.showErrors(res.errors);
+                                       }
+                                    }
+                                });
+                            }
+                        });
                 } else {
                     _self.showErrors(res.errors);
                 }
             }
+        });
+    };
+
+    bookmarkEdit(jForm, bookmark_id, thisEl) {
+        let _self = this;
+
+        jForm.on('click', '.bookmark-edit-btn', function() {
+            var content_val = $('.content-editor-update').html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ''),
+                bookmarks_hash = {
+                    'datum' : content_val,
+                    'bookmark_id': bookmark_id
+                },
+                new_val = jForm.serializeObject(),
+                formdata = $.extend(bookmarks_hash, new_val);
+
+            $.ajax({
+                url: "/admin/teachers/bookmarks/update",
+                data: formdata,
+                method: "POST",
+                success: function (res) {
+                   if(res.success) {
+                    debugger;
+                     toastr.success('schloopmarked updated successfully', '', {
+                                positionClass: 'toast-top-right cloud-display'
+                            });      
+                   } else {
+                        _self.showErrors(res.errors);
+                   }
+                }
+            });
         });
     };
 
