@@ -1,5 +1,4 @@
 class Admin::Teachers::DashboardsController < ApplicationController
-
 	layout "teacher"
   def index
     @grade_teacher_data = []
@@ -102,7 +101,3 @@ class Admin::Teachers::DashboardsController < ApplicationController
     render json: { success: errors.blank?, errors: errors }
   end
 end
-
-
-
-

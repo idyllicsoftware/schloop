@@ -28,10 +28,11 @@ class Ecircular < ActiveRecord::Base
   has_many :attachments, as: :attachable
   has_many :ecircular_recipients
 	has_many :ecircular_parents
+	has_many :ecircular_teachers
 
   validates :title, :created_by_type, :created_by_id , :presence => true
 
-	def self.school_circulars(school, filter_params={}, offset=0, page_size=50)
+	def self.school_circulars(school, user, filter_params={}, offset=0, page_size=50)
 		circular_data = []
 		circulars = school.ecirculars
 		if filter_params[:from_date].present?
@@ -59,65 +60,87 @@ class Ecircular < ActiveRecord::Base
 			circulars = Ecircular.where(id: circular_ids)	
 		end
 		total_records = circulars.count
-
 		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
 
 		circular_parents_by_ecircular_id = EcircularParent.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
+		circular_teachers_by_ecircular_id = EcircularTeacher.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
 
+    circular_tracker_data_by_ecircular_id = Tracker.where(trackable_id: circulars.ids,
+                                                          trackable_type: "Ecircular",
+                                                          user_id: user.id,
+                                                          user_type: user.class.name).index_by(&:trackable_id)
 		circulars.each do |circular|
-			recipients, attachments, students_data = [], [], []
-			grouped_circulars = circular.ecircular_recipients.group_by do |x| x.grade_id end
-			grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
-			grouped_circulars.each do |grade_id, recipients_data|
-				recipient = {grade_id: grade_id, grade_name: (grades_by_id[grade_id].name rescue "-")}
-				recipient[:divisions] = []
-				recipients_data.each do |rec|
-					recipient[:divisions] << {div_id: rec.division_id, div_name: (rec.division.name rescue "-")}
-				end
-				recipients << recipient
-			end
+			circular_data << circular.data_for_circular(circular_parents_by_ecircular_id, circular_teachers_by_ecircular_id, circular_tracker_data_by_ecircular_id)
+		end
+		return circular_data, total_records
+	end
 
-			circular.attachments.select(:id, :original_filename, :name).each do |attachment|
-				attachments << {original_filename: attachment.original_filename, s3_url: attachment.name}
+	def data_for_circular(circular_parents_by_ecircular_id, circular_teachers_by_ecircular_id, circular_tracker_data_by_ecircular_id = {})
+		recipients, attachments, students_data, teachers_data = [], [], [], []
+		grouped_circulars = self.ecircular_recipients.group_by do |x| x.grade_id end
+		grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
+		grouped_circulars.each do |grade_id, recipients_data|
+			recipient = {grade_id: grade_id, grade_name: (grades_by_id[grade_id].name rescue "-")}
+			recipient[:divisions] = []
+			recipients_data.each do |rec|
+				recipient[:divisions] << {div_id: rec.division_id, div_name: (rec.division.name rescue "-")}
 			end
-			created_by = (circular.created_by_type || 'teacher').classify.safe_constantize.find_by(id: circular.created_by_id)
-			student_ids = circular_parents_by_ecircular_id[circular.id].collect(&:student_id) rescue []
-			students = Student.where(id: student_ids).includes(student_profiles: [:grade, :division]) || []
+			recipients << recipient
+		end
 
-			students.each do |student|
-				students_data << {
+		self.attachments.select(:id, :original_filename, :name).each do |attachment|
+			attachments << {original_filename: attachment.original_filename, s3_url: attachment.name}
+		end
+		created_by = (created_by_type || 'teacher').classify.safe_constantize.find_by(id: created_by_id)
+		student_ids = circular_parents_by_ecircular_id[id].collect(&:student_id) rescue []
+		students = Student.where(id: student_ids).includes(student_profiles: [:grade, :division]) || []
+
+		students.each do |student|
+			students_data << {
 					id: student.id,
 					name: student.name,
 					grade: {
-						id: (student.student_profiles.last.grade.id rescue 0),
-						name: (student.student_profiles.last.grade.name rescue '')
+							id: (student.student_profiles.last.grade.id rescue 0),
+							name: (student.student_profiles.last.grade.name rescue '')
 					},
 					division: {
-						id: (student.student_profiles.last.division.id rescue 0),
-						name: (student.student_profiles.last.division.name rescue '')
+							id: (student.student_profiles.last.division.id rescue 0),
+							name: (student.student_profiles.last.division.name rescue '')
 					}
-				}
-			end
+			}
+		end
 
-			circular_data << {
-				id: circular.id,
-				title: circular.title,
-				body: circular.body,
+		teacher_ids = circular_teachers_by_ecircular_id[id].collect(&:teacher_id) rescue []
+		teachers = Student.where(id: teacher_ids).includes(student_profiles: [:grade, :division]) || []
+
+		teachers.each do |teacher|
+			teachers_data << {
+					id: teacher.id,
+					first_name: teacher.first_name,
+					last_name: teacher.last_name
+			}
+		end
+
+
+		return {
+				id: id,
+				title: title,
+				body: body,
+        is_read: circular_tracker_data_by_ecircular_id[id].present?,
 				created_by: {
-					id: (created_by.id rescue 0),
-					name: (created_by.name rescue '-')
+						id: (created_by.id rescue 0),
+						name: (created_by.name rescue '-')
 				},
-				created_on: circular.created_at,
+				created_on: created_at,
 				circular_tag: {
-					id: Ecircular.circular_tags[circular.circular_tag],
-					name: circular.circular_tag.present? ? circular.circular_tag.humanize : ''
+						id: Ecircular.circular_tags[circular_tag],
+						name: circular_tag.present? ? circular_tag.humanize : ''
 				},
 				recipients: recipients,
 				students: students_data,
+				teachers: teachers_data,
 				attachments: attachments
-			}
-		end
-		return circular_data, total_records
+		}
 	end
 
 end

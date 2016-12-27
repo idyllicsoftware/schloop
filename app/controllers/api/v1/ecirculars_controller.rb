@@ -51,7 +51,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     if @school.blank?
       errors << "school not found."
     else
-      circular_data, total_records = Ecircular.school_circulars(@school, filter_params, offset, page_size)
+      circular_data, total_records = Ecircular.school_circulars(@school, @current_user, filter_params, offset, page_size)
     end
 
     if errors.blank?
@@ -116,6 +116,9 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         # add ecircular parent recipents
         circular.ecircular_parents.create!(parents_params) if parents_params.present?
 
+        # add ecircular teachers recipents
+        circular.ecircular_teachers.create!(teachers_params) if teachers_params.present?
+
         Attachment.create!(attachments_params(circular))
       rescue Exception => ex
         errors << ex.message
@@ -158,6 +161,14 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     }
   end
 
+  def circular_teachers
+    teacher = @current_user
+    grade_teacher_ids = teacher.grade_teachers.pluck(:teacher_id)
+    render json: { success: false, error: 'Grades not present', data: [] } and return unless grade_teacher_ids.present?
+    teachers_data = Teacher.where(id: grade_teacher_ids).select(:id, :first_name, :last_name)
+    render json: { success: true, error: nil, data: { teachers_data: teachers_data }}
+  end
+
   private
     def circular_params
       params.permit(:title, :body, :circular_tag)
@@ -191,6 +202,19 @@ class Api::V1::EcircularsController < Api::V1::BaseController
       return create_parent_params
     end
 
+    def teachers_params
+      create_teachers_params = []
+      return create_teachers_params if params[:teachers].blank?
+      teachers = Teacher.where(id: params[:teachers])
+      teachers.each do |teacher|
+        create_teachers_params << {
+            teacher_id: teacher.id,
+            school_id: teacher.school_id
+        }
+      end
+      return create_teachers_params
+    end
+
     def attachments_params(circular)
       create_params = []
       return create_params if params[:attachments].blank?
@@ -206,8 +230,10 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     end
 
     def filter_params
+      # default_division_ids = @current_user.grade_teachers.pluck(:division_id)
       filters = params[:filter]
       return {} if filters.blank?
+
       divisions = []
       filters[:grades].each do |_, division_ids|
         divisions << division_ids
@@ -216,7 +242,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
       {
         from_date: filters[:from_date],
         to_date: filters[:to_date],
-        divisions: divisions.flatten,
+        divisions: divisions.flatten || default_division_ids,
         tags: filters[:tags]
       }
     end

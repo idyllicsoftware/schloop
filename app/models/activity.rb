@@ -47,47 +47,51 @@ class Activity < ActiveRecord::Base
 
     total_records = activities.count
     activities = activities.offset(offset).limit(page_size) if page.present?
-
+    # activities_data << activity.data_for_activity(mapping_data)
     activities.each do |activity|
-      activity_categories = activity.categories
-      master_subject = activity.master_subject
+      activities_data << activity.data_for_activity(mapping_data)
+    end
+    return activities_data, total_records
+  end
 
-      subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
-      grade = mapping_data[:master_grade_id_grade_id][activity.master_grade.id]
+  def data_for_activity(mapping_data)
+    activity_categories = self.categories
+    master_subject = self.master_subject
 
-      thumbnail_data = {}
-      activity.get_thumbnail_file.select(:original_filename, :name).each do |file|
-        thumbnail_data[:s3_url] = file.name
-        thumbnail_data[:original_filename] = file.original_filename
-      end
-      reference_files = []
-      activity.get_reference_files.select(:original_filename, :name).each do |file|
-        reference_files << { s3_url: file.name, original_filename: file.original_filename }
-      end
+    subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
+    grade = mapping_data[:master_grade_id_grade_id][self.master_grade.id]
 
-      activities_data << {
-        grade_id: (grade.id rescue nil),
-        grade_name: (grade.name rescue nil),
-        master_grade_id: activity.master_grade.id,
-        master_grade_name: activity.master_grade.name,
-        subject_id: (subject.id rescue nil) ,
-        subject_name: (subject.name rescue nil),
-        master_subject_id: master_subject.id,
-        master_subject_name: master_subject.name,
-        activity: {
-          id: activity.id,
-          topic: activity.topic,
-          teaches: activity.teaches,
-          title: activity.title,
-          details: activity.details,
-          pre_requisite: activity.pre_requisite,
+    thumbnail_data = {}
+    self.get_thumbnail_file.select(:original_filename, :name).each do |file|
+      thumbnail_data[:s3_url] = file.name
+      thumbnail_data[:original_filename] = file.original_filename
+    end
+    reference_files = []
+    self.get_reference_files.select(:original_filename, :name).each do |file|
+      reference_files << { s3_url: file.name, original_filename: file.original_filename }
+    end
+
+    return {
+      grade_id: (grade.id rescue nil),
+      grade_name: (grade.name rescue nil),
+      master_grade_id: self.master_grade.id,
+      master_grade_name: self.master_grade.name,
+      subject_id: (subject.id rescue nil) ,
+      subject_name: (subject.name rescue nil),
+      master_subject_id: master_subject.id,
+      master_subject_name: master_subject.name,
+      activity: {
+          id: id,
+          topic: topic,
+          teaches: teaches,
+          title: title,
+          details: details,
+          pre_requisite: pre_requisite,
           thumbnail: thumbnail_data,
           references: reference_files,
           categories: activity_categories.select(:id, :name)
-        }
       }
-    end
-    return activities_data, total_records
+    }
   end
 
   def self.create_activity(create_params)
