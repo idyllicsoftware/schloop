@@ -157,6 +157,8 @@ Rails.application.routes.draw do
       post "device/register" => 'devices#register'
       post "device/deregister" => 'devices#de_register'
 
+      post "bookmarks/create" => 'bookmarks/create'
+
     end
   end
 
