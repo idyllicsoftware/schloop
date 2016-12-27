@@ -17,7 +17,7 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     page_size = 20
     offset = (page * page_size)
     bookmarks = Bookmark.where(grade_id: params[:grade_id], subject_id: params[:subject_id]).offset(offset).limit(page_size)
-    render json: {success: false, error: 'Bookmarks not present', data: nil} and return unless bookmarks.present?
+    render json: {success: false, error: [], data: nil} and return unless bookmarks.present?
     bookmark_data = []
     total_bookmarks = bookmarks.count
     bookmarks.each do |bookmark|
