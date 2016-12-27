@@ -228,9 +228,9 @@ class TeacherDashboard extends SchloopBase {
         let _self = this,
             add_topic_content_form = $('.add-topic-content-form'),
             content_editor = $('.content-editor');
-            
+        
             add_topic_content_form.off('click').on('click', '.add-topic-content-btn', function (e) {
-                var content_val = content_editor.html(),
+                var content_val = content_editor.html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ''),
                     bookmarks_hash = {},
                     key_value = {
                         'datum' : content_val
