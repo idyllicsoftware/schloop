@@ -12,6 +12,45 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     render json: { success: errors.blank?, errors: errors }
   end
 
+  def index
+    page = params[:page].to_s.to_i || 1
+    page_size = 20
+    offset = (page * page_size)
+    bookmarks = Bookmark.where(grade_id: params[:grade_id], subject_id: params[:subject_id]).offset(offset).limit(page_size)
+    render json: {success: false, error: 'Bookmarks not present', data: nil} and return unless bookmarks.present?
+    bookmark_data = []
+    total_bookmarks = bookmarks.count
+    bookmarks.each do |bookmark|
+      bookmark_data << { id: bookmark.id,
+                        title: bookmark.title,
+                        data: bookmark.data,
+                        type: bookmark.data_type,
+                        subject_id: bookmark.subject_id,
+                        grade_id: bookmark.grade_id,
+                        preview_image_url: bookmark.preview_image_url,
+                        created_at: bookmark.created_at,
+                        topic: {
+                            topic_id: bookmark.topic.id,
+                            topic_title: bookmark.topic.title
+                        },
+                        teacher: {
+                            id: bookmark.teacher.id,
+                            first_name: bookmark.teacher.first_name,
+                            last_name: bookmark.teacher.last_name
+                        }
+
+      }
+    end
+    pagination_data = {
+        page_size: page_size,
+        record_count: total_bookmarks,
+        total_pages: (total_bookmarks/page_size.to_f).ceil,
+        current_page: page
+    }
+    bookmark_data << pagination_data
+    render json: {success: true, error: nil, data: bookmark_data}
+  end
+
   private
 
   def bookmarks_params
@@ -44,7 +83,6 @@ class Api::V1::BookmarksController < Api::V1::BaseController
   end
 
   def get_preview_image_url(url)
-    # require 'link_thumbnailer'
     preview_object = LinkThumbnailer.generate(url)
     title = preview_object.title
     if preview_object.images.present?
