@@ -76,7 +76,7 @@
 					    font-size: 14px;
 					}
 					i {
-				    	padding-left: 20px;
+				    	padding-left: 10px;
 	    				color: #25aae1;
 					}
 					a:hover {
@@ -149,22 +149,47 @@
 						padding: 0px;
 					}
 					.popover.bottom > .arrow {
-						left: 14% !important;
+						left: 8% !important;
 					}    
 				}
 			}
 			.nav > li > a {
-				color: #666666;
-				&:hover {
-					background-color: #def1f0;
+				&:hover, &:active, &:focus {
 					color: #666666 !important;
-					font-weight: 600;
+					background-color: #def1f0;
 				}
 			}
-			.new-topic {
+			.nav > li {
+				padding: 10px 20px;
+				cursor: pointer;
 				a {
+					color: #666666;
+				}
+				background-color: transparent;
+				&:hover {
+					background-color: #def1f0;
+					font-weight: 600;		
+				}
+			}
+			.nav > li.active {
+				background-color: #def1f0;
+				font-weight: 600;
+			}
+			.new-topic {
+				span{
 					padding: 10px;
 		    		font-weight: 600;
+					color: #25aae1;
+					&:hover{
+						text-decoration: none;
+						color: rgba(43, 191, 231, 0.9) !important;
+						cursor: pointer;
+					}
+					&:focus {
+						outline: none;
+						text-decoration: none;
+						color: rgba(43, 191, 231, 0.9) !important;
+					}
 				}
 			}
 		}
@@ -184,7 +209,7 @@
 					.content-editor {
 						    min-height: 20px;
 						    max-height: 100%;
-						    color: #dddddd;
+						    color: #666666;
 						    width: 80%;
 						    &:focus {
 						    	outline: none;
@@ -193,6 +218,7 @@
 					[contenteditable=true]:empty:before{
 					  content: attr(placeholder);
 					  display: block; 
+					  color: #dddddd;
 					}
 					button {
 						    background: transparent;
@@ -209,6 +235,12 @@
 					border: 1px solid #25aae1;
 					outline: none;
 				} 
+			}
+			.bookmark-not-found {
+				padding: 10px 20px;
+			    background-color: #f9f8eb;
+			    display: flex;
+			    justify-content: center;
 			}
 			.topics-list-section {
 				margin-top: 15px;
@@ -258,6 +290,11 @@
 							    float: right;
     							padding: 5px;
 							}
+						}
+						p {
+							padding: 10px;
+						    color: #666666;
+						    font-weight: 600;
 						}
 					}
 					.content-view-section {
