@@ -51,25 +51,40 @@ class TeacherDashboard extends SchloopBase {
         });           
 
         $(document).on("click", ".topics-list li", function(e) {
-            var topic_data = {},tag_hash = {},
+            var tag_hash = {},
                 key_value = $(this).find('span').data('topic_id'),
                 topic_id_tag = {
                     'topic_id' : key_value
                 };
             e.preventDefault();
-            var fun = function jsonConcat(o1, o2) {
-                for (var key in o2) {
-                    o1[key] = o2[key];
-                }
-                return o1;
-            }
-            
-            topic_data = fun(topic_data, _self.filters);
-            tag_hash = fun (topic_data, topic_id_tag);
+            tag_hash = $.extend(_self.filters, topic_id_tag);
             $(".topics-list").find(".active").removeClass("active");
             $(this).addClass("active");
             _self.loadTopicBookmarks(tag_hash, $(this));
             _self.addTopicContent(tag_hash, $(this));
+        });
+
+        $(document).on('click','.save-caption', function(e) {
+            let bookmarkId = $(this).data('bookmark_id'),
+                jForm = $(this).closest('div').parent();
+            
+            e.preventDefault();
+            $.ajax({
+                url: `/admin/teachers/bookmarks/add_caption`,
+                method: 'POST',
+                data: jForm.serializeObject(),
+                success: function (res) {
+                    if(res.success) {
+                        jForm.replaceWith('<p>'+ res.caption +'</p>');
+                        toastr.success('Caption added successfully', '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                            });      
+                    } else {
+                        _self.showErrors(res.errors);
+                    }
+                    
+                }
+            });   
         });
 
     };
@@ -124,16 +139,8 @@ class TeacherDashboard extends SchloopBase {
             $('.add-topic-btn').on('click', function () {
                 var key_value = add_topic_form.serializeObject(),
                     topic_data = {};
-                
-                var fun = function jsonConcat(o1, o2) {
-                                for (var key in o2) {
-                                    o1[key] = o2[key];
-                                }
-                             return o1;
-                            }
 
-                topic_data = fun(topic_data, _self.filters);
-                topic_data = fun (topic_data, key_value); 
+                topic_data = $.extend(_self.filters, key_value); 
 
                 $.ajax({
                     url: `/admin/teachers/topics`,
@@ -200,6 +207,16 @@ class TeacherDashboard extends SchloopBase {
                         _self.topicBookmarks = res.bookmarks.toHash('id');
                         bookmarksEl.html(html);
                         $("time.timeago").timeago();
+
+                        $('.input-form-group').on('focusin', function() {
+                                $(this).css('border-bottom','1px solid #25aae1');
+                                $(this).find('button').css('color','#25aae1');
+                        });
+                        $('.input-form-group').on('focusout', function() {
+                            $(this).css('border-bottom','1px solid #ccc');
+                            $(this).find('button').css('color','#dddddd');
+                        });
+
                 } else {
                     _self.showErrors(res.errors);
                 }
@@ -213,24 +230,13 @@ class TeacherDashboard extends SchloopBase {
             content_editor = $('.content-editor');
             
             add_topic_content_form.off('click').on('click', '.add-topic-content-btn', function (e) {
-                var formData = new FormData($(this)[0]),
-                    topic_data = {}, content_val = content_editor.html(),
+                var content_val = content_editor.html(),
                     bookmarks_hash = {},
                     key_value = {
                         'datum' : content_val
                     };
                     e.preventDefault();
-                    // formData.append('datum', content_editor.html());
-                
-                var fun = function jsonConcat(o1, o2) {
-                                for (var key in o2) {
-                                    o1[key] = o2[key];
-                                }
-                             return o1;
-                            }
-//$.extend
-                topic_data = fun(topic_data, topic_content_data);
-                bookmarks_hash = fun(topic_data, key_value);
+                bookmarks_hash = $.extend(topic_content_data, key_value);
                 
                 $.ajax({
                     url: "/admin/teachers/bookmarks",

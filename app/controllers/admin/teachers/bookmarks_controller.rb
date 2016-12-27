@@ -29,8 +29,9 @@ class Admin::Teachers::BookmarksController < ApplicationController
       bookmark.save
     rescue Exception => e
       errors << "error occured while adding caption"
+      render json: { success: errors.blank?, errors: errors } and return
     end
-    render json: { success: errors.blank?, errors: errors }
+     render json: { success: errors.blank?, caption:bookmark.caption }
   end
 
   private

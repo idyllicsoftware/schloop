@@ -122,10 +122,18 @@
   			</div>
   			<div class="content-of-topic">
   				<div class="content-caption-section">
-  					<div class="input-form-group">
-				      <input type="text" class="caption-field" required name="teacher[cell_number]" placeholder="Add a caption" autocomplete="off"  maxlength="15" />
-				      <button>Save</button>
-				    </div>
+  					{{^caption}}
+  					<form class="caption-form">
+	  					<div class="input-form-group">
+	  						<input type="hidden" name="bookmark_id" value="{{id}}">
+					      <input type="text" class="caption-field" required name="caption" placeholder="Add a caption" autocomplete="off"  maxlength="100" />
+					      <button data-bookmark_id="{{id}}" class="save-caption">Save</button>
+					    </div>
+				    </form>
+				    {{/caption}}
+				    {{#caption}}
+				    	<p>{{caption}}</p>
+				    {{/caption}}
   				</div>
   				<div class="content-view-section">
   					{{#data}}
