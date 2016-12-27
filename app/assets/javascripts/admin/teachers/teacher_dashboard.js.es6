@@ -236,7 +236,7 @@ class TeacherDashboard extends SchloopBase {
                             if(_self.topicBookmarks.hasOwnProperty(bookmark_id)){
 
                                 $.ajax({
-                                    url: "/admin/teachers/bookmarks/destroy?bookmark_id="+bookmark_id,
+                                    url: "/admin/teachers/bookmarks/"+bookmark_id,
                                     method: "DELETE",
                                     success: function (res) {
                                        if(res.success) {
@@ -271,9 +271,9 @@ class TeacherDashboard extends SchloopBase {
                 formdata = $.extend(bookmarks_hash, new_val);
 
             $.ajax({
-                url: "/admin/teachers/bookmarks/update",
+                url: "/admin/teachers/bookmarks/"+bookmark_id,
                 data: formdata,
-                method: "POST",
+                method: "PATCH",
                 success: function (res) {
                    if(res.success) {
                     debugger;
