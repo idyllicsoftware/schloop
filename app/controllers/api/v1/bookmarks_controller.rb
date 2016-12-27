@@ -47,8 +47,7 @@ class Api::V1::BookmarksController < Api::V1::BaseController
         total_pages: (total_bookmarks/page_size.to_f).ceil,
         current_page: page
     }
-    bookmark_data << pagination_data
-    render json: {success: true, error: nil, data: bookmark_data}
+    render json: {success: true, error: nil, data: {bookmark_data: bookmark_data, pagination_data: pagination_data}}
   end
 
   private
