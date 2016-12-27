@@ -1,10 +1,9 @@
-
 namespace :seed do
   desc "create roles"
   task :populate_roles => :environment do
     puts "creating roles..."
     require Rails.root.join("db", "role_permissions_data","roles_data.rb").to_s
-    roles_data_hash = ROLES  
+    roles_data_hash = ROLES
     roles_data_hash.each do |type, role_hash|
       role_hash.each do |role|
         name = role[:name].gsub(/[^0-9a-z]/i, ' ')
@@ -39,7 +38,7 @@ namespace :seed do
             next
           end
         end
-      end  
+      end
     end
     puts "Permissions created"
   end

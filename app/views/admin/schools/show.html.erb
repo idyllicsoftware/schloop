@@ -1,4 +1,7 @@
 <div class="school-main-section">
+  <div class="cloud_image">
+    <img class="img-responsive" src="<%= asset_path('home/cloud_3.png') %>">
+  </div>
   <div class="container">
     <ul id="school-Tab" class="nav nav-tabs">
       <li class="active">
@@ -8,7 +11,7 @@
         <a href="#students-tab" aria-controls="students-tab" role="students-tab"  data-toggle="tab" data-tab-name="students">Students</a>
       </li>
       <li>
-        <a href="#circulars-tab" aria-controls="circulars-tab" role="circulars-tab"  data-toggle="tab"  data-tab-name="circulars">Circulars</a>
+        <a href="#circulars-tab" aria-controls="circulars-tab" role="circulars-tab"  data-toggle="tab"  data-tab-name="circulars">e-Connect</a>
       </li>
     </ul>
     <div class="tab-content">
@@ -33,7 +36,7 @@
               </div>
               <div class="col-md-4">
                 <span class="data-title">Website</span>
-                <span class="data-attr"><a href="<%= @school.website %>"><%= @school.website %></a></span>
+                <span class="data-attr"><a href="<%= @school.website %>" target="_blank"><%= @school.website %></a></span>
               </div>
             </div>
             <div class="row mt40">
@@ -118,7 +121,7 @@
                               </ul>
                             </div>
                             <div class="div-operation">
-                              <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content" data-grade_id="{{grade_id}}">+Add Division</a></span>
+                              <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content" data-grade_id="{{grade_id}}" data-placement="left">+Add Division</a></span>
                                 <span class="current_division"><a>Delete Division A</a></span>
                               <%= render :partial => "admin/schools/add_divisions"%>
                             </div>

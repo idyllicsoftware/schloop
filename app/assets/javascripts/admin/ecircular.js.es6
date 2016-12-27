@@ -135,7 +135,14 @@ class SchoolECircular extends SchloopBase {
     initEventListeners (){
         let _self = this,
         { school_id } = _self._config,
-        eCircularFormEl = $(".school-ecircular-form");
+        eCircularFormEl = $(".school-ecircular-form"),
+        circular_container = $('.circulars-container'),
+        file_attachment = circular_container.find("#file-attachment"),
+        btnEl = $('#circularSubmit'),data_id = 0,
+        file_upload = new FileUpload({
+                jScope: file_attachment,
+                isImageUpload: false
+        });
 
         _self.initCircularTagPopover();
         _self.initRecipientsSelectPopover();
@@ -145,16 +152,65 @@ class SchoolECircular extends SchloopBase {
             'title': 'name',
             'body': 'name',
         }, function (res) {
-            if(res.success) {
+            if(res.errors && res.errors.length) {
+                _self.showErrors(res.errors);
+            }else {
                 $('.selected_circular_tag').html('Select E-Circular');
                 $('.selected_circular_tag').next().val(null);
                 $(".select-recipients_name").html('Select recipients');
-                toastr.success('E-Circular sent successfully', '', {
-                    positionClass: 'toast-top-right cloud-display'
-                });
-                eCircularFormEl[0].reset();
+                circular_container.find(".circular_id_hidden_input").val(res.circular_id);
+                if(circular_container.find(".selected_files tr").length){
+                    btnEl.attr('disabled', 'disabled');
+                    circular_container.find(".uploadBtn").trigger('click');
+                }else{
+                    eCircularFormEl[0].reset();
+                    toastr.success('E-Circular sent successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
+                }
+            }
+        }, null, btnEl);
+    
+        circular_container.find("#circularSubmit").on('click', function () {
+            var rec_name = circular_container.find('.select-recipients_name').html(),
+                rec_tag = circular_container.find('.selected_circular_tag').html();
+                
+            circular_container.find('label.error').removeClass('hidden');            
+            if ( rec_name === 'Select recipients') {
+             circular_container.find('.req-filed').append("<label class='recipient-error'>This field is required</label>");   
+            } else {
+                circular_container.find('.req-filed >.recipient-error').remove();
+            }
+            if ( rec_tag === 'Select E-Circular') {
+             circular_container.find('.req-filed').append("<label class='recipient-tag-error'>This field is required</label>");   
+            } else {
+                circular_container.find('.req-filed >.recipient-tag-error').remove();
+            }
+
+            if(!circular_container.find(".circular_id_hidden_input").val()) {
+                    eCircularFormEl.submit();
             }else {
-                _self.showErrors(res.errors);
+                circular_container.find("#circularSubmit").attr('disabled', 'disabled');
+                circular_container.find(".uploadBtn").trigger('click');
+            }
+        });
+    
+        $(document).on("uploadedFileResponse", function (event, res) {
+            if(res.result.data) {
+                data_id++;
+                if (circular_container.find("button.delete[disabled]").length == data_id) {
+                    eCircularFormEl[0].reset();
+                    file_upload.resetForm();
+                    circular_container.find(".progressWrap").hide();            
+                    circular_container.find(".circular_id_hidden_input").val(null);
+                    circular_container.find("#circularSubmit").removeAttr('disabled');
+                    circular_container.find(".selected_files").html('');
+                    toastr.success('E-Circular sent successfully', '', {
+                        positionClass: 'toast-top-right cloud-display'
+                    });
+                }
+            }else {
+                circular_container.find("#circularSubmit").removeAttr('disabled');
             }
         });
     };
@@ -206,7 +262,7 @@ class SchoolECircular extends SchloopBase {
         html = "",
         detailTpl = $("#circular-history-detail-tpl").html(),
         circularHistoryModal = $('#circular-history-modal');
-
+    
         $(document).on('click','.circular-history-item', function () {
             let {circular_id} = $(this).data();
             if(_self._ecirculars.hasOwnProperty(circular_id)) {
@@ -230,19 +286,44 @@ class SchoolECircular extends SchloopBase {
                             arr.push({name: html});
                         });
                         return arr;
-                    }
+                    },
+                    attachment_file: function() {
+                        var att = [],html = '',html_url = '';
+                        this.attachments.forEach(function(attachment) {
+                            html = attachment.original_filename;
+                            html_url = attachment.s3_url;
+                            att.push({original_filename: html, s3_url: html_url});
+                        });
+                        return att;
+                    },
+                    attachment_img: function() {
+                        var att = [],html_url = '', len, no,allowedFileTypes = ['jpg', 'jpeg', 'png', 'gif'];
+                        this.attachments.forEach(function(attachment) {
+                            html_url = attachment.s3_url;
+                            len = attachment.s3_url.split('/').slice(-1)[0].split(".");
+                            no  = len[len.length-1];
+                            if (allowedFileTypes.indexOf(no.toLowerCase()) >= 0) {
+                                att.push({s3_url: html_url});       
+                            }
+                        });
+                        return att;
+                    },
                 });
                 circularHistoryModal.find('.modal-body').html(html);
             }
         });
-
+        
         $(document).on('click', '.history-circular-btn-wrap a', function () {
-            let {type} = $(this).data();
+            let {type} = $(this).data(),
+                circulars_main_form = $('.circulars-main-form'),
+                school_ecircular_form = $('.school-ecircular-form');
             if(type == "history"){
                 $("#circulars-tab").removeClass('new_circular_active').addClass('history_active');
                 _self.loadCircularHistory();
             }else {
                 $("#circulars-tab").removeClass('history_active').addClass('new_circular_active');
+                school_ecircular_form[0].reset();
+                circulars_main_form.find('label.error, .recipient-error , .recipient-tag-error').addClass('hidden');
             }
         });
     };

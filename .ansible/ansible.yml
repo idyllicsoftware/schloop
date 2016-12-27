@@ -21,7 +21,7 @@
     become_method: sudo
   roles:
     - { role: deployer.user,tags: deployer }
-    - { role: rvm_io.ruby, tags: ruby }
+    - { role: rvm_io.ruby, tags: ruby,become: yes,become_user: deployer }
     - { role: ANXS.postgresql,tags: postgresql,postgresql_version: 9.3,become: yes,become_user: root }
     - { role: geerlingguy.passenger,tags: passenger, become: yes,become_user: root }
   post_tasks:

@@ -3,6 +3,7 @@
 
 .school-main-section {
 	.container {
+		margin: 30px auto;
 		.school-profile-main-section {
 			  	.data-title{
 					font-weight: bold;
@@ -447,9 +448,18 @@
 				height: 300px;
 				overflow: auto;
 		      }
+		      .circular-body {
+				color: #999999;
+			    margin-bottom: 10px;
+			    padding-bottom: 5px;
+			    border-bottom: 1px solid #ccc;
+		      }
 		      .border_botm {
 		      	border-bottom: 1px solid #ccc;
 		      	margin-right: 20px;
+		      	.select-recipients_name, .selected_circular_tag {
+		      		color: #999999;
+		      	}
 		      	.popover {
 		      		padding: 20px;
 		      	}
@@ -501,9 +511,42 @@
 		      		}
 		      	}
 		      }
+		      .recipient-error {
+					margin: 0px;
+					position: absolute;
+				    bottom: -20px;
+				    left: 20px;
+				    color: #dd0017;
+				    font-weight: normal;
+				    font-size: 12px;
+			    }
+			   .recipient-tag-error {
+			   		margin: 0px;
+					position: absolute;
+				    bottom: -20px;
+				    left: 420px;
+				    color: #dd0017;
+				    font-weight: normal;
+				    font-size: 12px;
+			   }
 		      .select-recipients {
 		      	display: flex;
 			    justify-content: space-between;
+		      }
+		      .border-botm {
+		      	border-bottom: 1px solid #ccc;
+		      	margin-top: 20px;
+		      	.form-group {
+		      	    margin-bottom: 0px;
+		      	}
+		      	.file_upload_files--upload-block {
+		      		margin-bottom: 0px;
+		      	}
+		      }
+		      .send-btn {
+		      	float: right;
+			    margin-right: 20px;
+			    margin-top: 20px;
 		      }
 			} 
 			.ecirculars-history-section{
@@ -522,9 +565,57 @@
     					cursor: pointer;
 					}
 				}
+			}
+			input[type="radio"]:not(:checked),
+			input[type="radio"]:checked {
+			  position: absolute;
+			  left: -9999px;
+			}
+			input[type="radio"]:not(:checked) + label,
+			input[type="radio"]:checked + label {
+			  position: relative;
+			  padding-left: 25px;
+			  cursor: pointer;
+			}
+
+			input[type="radio"]:not(:checked) + label:before ,
+			input[type="radio"]:checked + label:before {
+			  content: '';
+			  position: absolute;
+			  left: 0px; 
+			  top: 2px;
+			  width: 15px;
+			  height: 15px;
+			  border: 1px solid #ccc;
+			  border-radius: 100%;
+			}
+			input[type="radio"]:checked + label:before {
+				border: none;
+			}
+
+			input[type="radio"]:not(:checked) + label:after,
+			input[type="radio"]:checked + label:after {
+				content: '';
+			    position: absolute;
+			    top: 2px;
+			    left: 0px;
+			    width: 15px;
+			    height: 15px;
+			   	background-image: url(<%= asset_path('admin/radio_select.svg') %>);
+		    	background-repeat: no-repeat;
+		    	background-position: 2px 2px;
+		    	border: 1px solid #ccc;
+			    border-radius: 100%;
+			}
+			input[type="radio"]:not(:checked) + label:after {
+			  opacity: 0;
+			  transform: scale(0);
+			}
+			input[type="radio"]:checked + label:after {
+			  opacity: 1;
+			  transform: scale(1);
 			}   
 		}
-
 	}
 }
 #upload-teachers-modal {
@@ -542,12 +633,23 @@
 
 #circular-history-modal {
 	color: #666666;
-	.attachments-list, .subject-body {
-		border-bottom: 1px solid #ccc;
-	}
-	h4{
-		font-weight: 600;
-	}
+	.preview-container {
+		.subject-body {
+			border-bottom: 1px solid #ccc;
+		}
+		h4{
+			font-weight: 600;
+		}
+		.att-list {
+			list-style: none;
+    		padding: 10px 10px 20px 10px;
+    		border-bottom: 1px solid #ccc;
+    		img {
+    			width: 200px;
+    			height: 200px;
+    		}
+		}
+	}	
 	.circulars-main-form {
 		.upload-photo-wrap {
 	      #upload-photo {

@@ -3,25 +3,46 @@
 @import "admin/activities";
 @import "admin/students";
 @import "admin/school_profile";
+@import "admin/teachers/dashboards";
 
 .school-main-section {
+  padding-bottom: 100px;
+  min-height: 442px;
+  max-height: 100%;
   .container {
     width: 1020px;
   }
 }
+
 .schools-main-section {
+  padding-bottom: 100px;
+  min-height: 442px;
+  max-height: 100%;
+}
+.schools-main-section, .school-main-section {
   .cloud_image {
-    position: relative;
     height: 55px;
-    .cloud3-img {
-      position: absolute;
-      right: 20%;
-    }
+    position: absolute;
+    right: 20%;
+    top: 150px;
+  }
+  .sms-cloud1-img {
+    width: 100px;
+    position: absolute;
+    bottom: -250px;
+    margin-left: 20px;
+  }
+  .sms-cloud4-img {
+    width: 100px;
+    position: absolute;
+    right: 0;
+    top: 300%;
+    margin-right: 20px;
   }
 }
 .school-main-section, .schools-main-section{
   .container {
-    margin: 50px auto;
+    margin: 30px auto;
     background: $container-background;
     padding: 40px 40px;
     border-radius: 10px;
@@ -35,6 +56,9 @@
       border-bottom-color: transparent;
       cursor: default;
     }
+  }
+  #contents-tab {
+    padding: 0px 40px;
   }
   #school-Tab {
     margin-top: -110px;

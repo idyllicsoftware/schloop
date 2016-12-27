@@ -22,6 +22,8 @@ class Activity < ActiveRecord::Base
   has_many :categories, through: :activity_categories
   has_many :attachments, as: :attachable, dependent: :destroy
 
+  has_many :activity_shares, dependent: :destroy
+
   enum file_sub_type: { reference: 0, thumbnail: 1 }
   enum status: { active: 0, inactive: 1 }
 
@@ -34,57 +36,62 @@ class Activity < ActiveRecord::Base
       offset = (page * page_size)
     end
     activities_data = []
-    activities = Activity.where(search_params)
+    activities = Activity.active.where(search_params)
     activities = activities.includes(:attachments, :categories)
     if category_ids.present?
       activities= activities.joins("LEFT JOIN activity_categories ON activity_categories.activity_id = activities.id
                            LEFT JOIN categories ON activity_categories.category_id = categories.id")
-                   .where("categories.id in (?)", category_ids)
+                    .where("categories.id in (?)", category_ids).distinct
     end
     activities = activities.order(id: :desc)
 
     total_records = activities.count
     activities = activities.offset(offset).limit(page_size) if page.present?
-
+    # activities_data << activity.data_for_activity(mapping_data)
     activities.each do |activity|
-      activity_categories = activity.categories
-      master_subject = activity.master_subject
+      activities_data << activity.data_for_activity(mapping_data)
+    end
+    return activities_data, total_records
+  end
 
-      subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
-      grade = mapping_data[:master_grade_id_grade_id][activity.master_grade.id]
+  def data_for_activity(mapping_data)
+    activity_categories = self.categories
+    master_subject = self.master_subject
 
-      thumbnail_data = {}
-      activity.get_thumbnail_file.select(:original_filename, :name).each do |file|
-        thumbnail_data[:s3_url] = file.name
-        thumbnail_data[:original_filename] = file.original_filename
-      end
-      reference_files = []
-      activity.attachments.select(:original_filename, :name).each do |file|
-        reference_files << { s3_url: file.name, original_filename: file.original_filename }
-      end
-      activities_data << {
-        grade_id: grade.id,
-        grade_name: grade.name,
-        master_grade_id: activity.master_grade.id,
-        master_grade_name: activity.master_grade.name,
-        subject_id: (subject.id rescue nil) ,
-        subject_name: (subject.name rescue nil),
-        master_subject_id: master_subject.id,
-        master_subject_name: master_subject.name,
-        activity: {
-          id: activity.id,
-          topic: activity.topic,
-          teaches: activity.teaches,
-          title: activity.title,
-          details: activity.details,
-          pre_requisite: activity.pre_requisite,
+    subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
+    grade = mapping_data[:master_grade_id_grade_id][self.master_grade.id]
+
+    thumbnail_data = {}
+    self.get_thumbnail_file.select(:original_filename, :name).each do |file|
+      thumbnail_data[:s3_url] = file.name
+      thumbnail_data[:original_filename] = file.original_filename
+    end
+    reference_files = []
+    self.get_reference_files.select(:original_filename, :name).each do |file|
+      reference_files << { s3_url: file.name, original_filename: file.original_filename }
+    end
+
+    return {
+      grade_id: (grade.id rescue nil),
+      grade_name: (grade.name rescue nil),
+      master_grade_id: self.master_grade.id,
+      master_grade_name: self.master_grade.name,
+      subject_id: (subject.id rescue nil) ,
+      subject_name: (subject.name rescue nil),
+      master_subject_id: master_subject.id,
+      master_subject_name: master_subject.name,
+      activity: {
+          id: id,
+          topic: topic,
+          teaches: teaches,
+          title: title,
+          details: details,
+          pre_requisite: pre_requisite,
           thumbnail: thumbnail_data,
           references: reference_files,
           categories: activity_categories.select(:id, :name)
-        }
       }
-    end
-    return activities_data, total_records
+    }
   end
 
   def self.create_activity(create_params)
@@ -115,12 +122,45 @@ class Activity < ActiveRecord::Base
     { success: errors.blank?, errors: errors }
   end
 
-   def get_thumbnail_file
+  def get_thumbnail_file
     attachments.where(sub_type: Activity.file_sub_types['thumbnail'])
   end
 
   def get_reference_files
     attachments.where(sub_type: Activity.file_sub_types['reference'])
+  end
+
+  def share(user, recipients)
+    errors = []
+    school = user.school
+    errors << "No associated school found, please try again." if school.blank?
+    return {success: false, errors: errors, data: nil} if errors.present?
+
+    errors << "No recipients found" if recipients.blank?
+    return {success: false, errors: errors, data: nil} if errors.present?
+
+    errors << "Invalid teacher" unless user.is_a?(Teacher)
+    return {success: false, errors: errors, data: nil} if errors.present?
+
+    share_params = []
+    recipients.each do |grade_id, divisions|
+      divisions.each do |division_id|
+        share_params << {
+          activity_id: self.id,
+          school_id: school.id,
+          teacher_id: user.id,
+          grade_id: grade_id,
+          division_id: division_id
+        }
+      end
+    end
+
+    begin
+      ActivityShare.create(share_params)
+    rescue Exception => ex
+      errors << ex.message
+    end
+    return {success: errors.blank?, errors: errors, data: {}}
   end
 
   private

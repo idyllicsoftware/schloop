@@ -45,6 +45,7 @@
 
 class SchoolAdmin < User
   after_create :add_roles
+  has_many :devices, as: :deviceable, dependent: :destroy
 
   def add_roles
     role = Role.find_by(name: "SchoolAdmin")

@@ -2,7 +2,6 @@
    <div class="modal-dialog modal-lg">
      <div class="modal-content">
        <div class="modal-body">
-       <div class="close-form hidden">X</div>
         <%= form_tag '', id:'activity_creation_form', class:"web-content-form" do %>
           <div class="row">
             <div class="form-group col-md-6">
@@ -54,13 +53,13 @@
           <div class="row">
             <div class="form-group col-md-12">
               <label class="mandatory">Pre Requisites</label>
-              <textarea class="form-control input-field" name="activity[pre_requisite]" maxlength="1000"></textarea>
+              <textarea class="form-control input-field textarea-pre" name="activity[pre_requisite]" maxlength="1000"></textarea>
             </div>
           </div>
           <div class="row">
             <div class="form-group col-md-12">
               <label class="mandatory">Steps to follow</label>
-              <textarea class="form-control input-field" name="activity[details]" maxlength="1000"></textarea>
+              <textarea class="form-control input-field textarea-detail" name="activity[details]" maxlength="1000"></textarea>
             </div>
           </div>
          <% end %>
@@ -87,6 +86,7 @@
                  </div>
                  <table class="selected_files"></table>
                </div>
+               <div class="thumb_img_list"></div>
              </div>
            </div>
          </form>
@@ -99,21 +99,22 @@
           <div class="row">
             <div class="form-group col-md-6 image-attach ref_img">
               <p class="mandatory">Reference Image</p>
-                  <div class="file_upload_files--upload-block">
-                      <div class="fileUpload file_upload_files--fileUploadBtn">
-                        <span><i class="fa fa-cloud-upload"></i> choose file</span>
-                        <input class="fileuploadInput upload" type="file" multiple name="file" data-url="/admin/activities/upload_file" accept="image/*">
-                      </div>
-                      <button class="btn btn-primary text-uppercase disabled uploadBtn hidden">upload</button>
-                    <div class="progressWrap" style="padding: 15px 0px;display: none;">
-                      <div class="progress">
-                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                          <span></span>
-                        </div>
-                      </div>
-                    </div>
-                    <table class="selected_files"></table>
+              <div class="file_upload_files--upload-block">
+                  <div class="fileUpload file_upload_files--fileUploadBtn">
+                    <span><i class="fa fa-cloud-upload"></i> choose file</span>
+                    <input class="fileuploadInput upload" type="file" multiple name="file" data-url="/admin/activities/upload_file" accept="image/*">
                   </div>
+                  <button class="btn btn-primary text-uppercase disabled uploadBtn hidden">upload</button>
+                <div class="progressWrap" style="padding: 15px 0px;display: none;">
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+                <table class="selected_files"></table>
+              </div>
+              <div class="ref_img_list"></div>
             </div>
           </div>
          </form>

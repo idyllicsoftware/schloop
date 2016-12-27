@@ -21,10 +21,9 @@
           <input type="text" class="form-control input-field" required name="title" placeholder="Subject" autocomplete="off" maxlength="50" />
         </div>
         <div class="form-group col-md-12">
-          <input type="text" class="form-control input-field" placeholder="Body" autocomplete="off" maxlength="10" disabled="disabled"/>
-          <textarea class="form-control input-field circular-textarea" required name="body"></textarea>
+          <textarea class="form-control input-field circular-textarea" name="body" placeholder="Body"></textarea>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 mt20 req-filed">
           <div class="col-md-5 border_botm">
               <a id="select-recipients-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-recipients-popover-content" data-placement="top">
 		          	    	<span class="select-recipients">
@@ -37,16 +36,45 @@
               <a id="select-circular-popover" tabindex="0" data-toggle="popover" role="button" data-value="select-circular-popover-content" data-placement="top">
                 <span class="select-recipients">
 						        <p class="selected_circular_tag">Select E-Circular</p>
-						        <input type="hidden" class="cirular_value" name="circular_tag" value="">
+						        <input type="hidden" class="cirular_value" required name="circular_tag" value="">
 						        <p class="fa fa-chevron-down"></p>
 						    </span>
               </a>
           </div>
-          <div class="col-md-2">
-              <button type="submit" class="btn btn-primary">SEND</button>
+        </div>  
+      <% end %>
+      <div class="pl15 pr15" id="file-attachment">
+        <div class="col-md-12 border-botm">
+          <div id="col-md-6 mb0">
+            <form class="fileDetails uploadFiles_btn_container clearfix" style="display: block;">
+              <input type="hidden" class="circular_id_hidden_input" name="id" />
+              <%= hidden_field_tag :type,  'reference'%>
+              <div class="row">
+                <div class="form-group col-md-6 image-attach">
+                  <div class="file_upload_files--upload-block">
+                      <div class="fileUpload file_upload_files--fileUploadBtn">
+                        <span><i class="fa fa-cloud-upload"></i> choose file</span>
+                        <input class="fileuploadInput upload" type="file" multiple name="file" data-url="/admin/schools/:school_id/ecirculars/upload_file" accept="image/* , .xls, .xlsx, .doc, .docx, .pdf">
+                      </div>
+                      <button class="btn btn-primary text-uppercase disabled uploadBtn hidden">upload</button>
+                      <div class="progressWrap" style="padding: 15px 0px;display: none;">
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                            <span></span>
+                          </div>
+                        </div>
+                      </div>
+                      <table class="selected_files"></table>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
-      <% end %>
+      </div>
+      <div class="col-md-2 send-btn">
+          <button id="circularSubmit" class="btn btn-primary">SEND</button>
+      </div>
     </div>
 
 
@@ -73,20 +101,22 @@
     <div class="tab-content">
       <div class="tab-pane fade in active" id="all-grade-section-tab">
         <% @grades.each do |grade|%>
-            <div class="std_name">
-              <span class="col-md-12 checkbox_customized">
-                <input class='chek_cls grade_checkbox' value="<%= grade.id %>" type="checkbox" id="grade_circular_<%= grade.name %>" >
-                <label for="grade_circular_<%= grade.name %>"><%= grade.name %></label>
-              </span>
-              <ul class="checkbox_customized">
-                <% grade.divisions.each do |division| %>
-                    <li class="col-md-2">
-                      <input type="checkbox" class="division_checkbox" name="grades[<%= grade.id %>]division[]" value="<%= division.id %>" id="div_circular_<%= division.name %>" data-grade_id="<%= grade.id %>">
-                      <label for="div_circular_<%= division.name %>"><%= division.name %></label>
-                    </li>
-                <% end %>
-              </ul>
-            </div>
+            <% if grade.divisions.count != 0 %>
+              <div class="std_name">
+                <span class="col-md-12 checkbox_customized">
+                  <input class='chek_cls grade_checkbox' value="<%= grade.id %>" type="checkbox" id="grade_circular_<%= grade.name %>" >
+                  <label for="grade_circular_<%= grade.name %>"><%= grade.name %></label>
+                </span>
+                <ul class="checkbox_customized">
+                  <% grade.divisions.each do |division| %>
+                      <li class="col-md-2">
+                        <input type="checkbox" class="division_checkbox" name="grades[<%= grade.id %>]division[]" value="<%= division.id %>" id="<%= grade.id %>div_circular_<%= division.name %>" data-grade_id="<%= grade.id %>">
+                        <label for="<%= grade.id %>div_circular_<%= division.name %>"><%= division.name %></label>
+                      </li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>  
         <% end %>
       </div>
 
@@ -161,8 +191,18 @@
       </div>
       <div class="attachments-list">
         <h4>Attachments</h4>
-        <p>Image1</p>
-        <p>Image2</p>
+        {{#attachment_file}}
+        <ul>
+          <li><a href="{{s3_url}}" target="_blank">{{original_filename}}</a></li>
+        </ul>  
+        {{/attachment_file}}
+        <ul class="col-md-12 att-list">
+        {{#attachment_img}}
+          <li class="col-md-4">
+           <img src="{{s3_url}}">
+          </li>
+        {{/attachment_img}}
+        </ul>
       </div>
       <div>
         <h4>Sent to</h4>

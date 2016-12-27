@@ -46,18 +46,45 @@
 #
 
 class Parent < User
-	has_many :students, :dependent => :destroy
-	has_many :parent_details,  :dependent => :destroy
+  has_many :students, dependent: :destroy
+  has_many :parent_details,  dependent: :destroy
+  has_many :devices, as: :deviceable, dependent: :destroy
+
   validates :cell_number, :presence => true,
             :numericality => true,
             :length => {:minimum => 10, :maximum => 15}
-	after_create :send_invitation
-	
+  after_create :send_invitation
+
+  validate do |parent|
+    parent.students.each do |student|
+      next if student.valid?
+      student.errors.full_messages.each do |message|
+        # you can customize the error message here:
+        errors.add :base, "#{message}"
+      end
+    end
+  end
+
   def send_invitation
     Admin::AdminMailer.welcome_message(self.email, self.first_name, self.password).deliver_now
-  end	
+  end
 
   def password_required?
     new_record? ? false : super
+  end
+
+  def generated_token
+    loop do
+      token = SecureRandom.uuid.gsub(/\-/, '')
+      return token unless Teacher.where(token: token).first
+    end
+  end
+
+  def send_password_reset
+    token = generated_token
+    self.reset_password_token = token
+    self.reset_password_sent_at = Time.zone.now
+    save!
+    UserMailer.parent_password_reset(self).deliver
   end
 end

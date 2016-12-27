@@ -47,6 +47,10 @@ $i: 100;
   $i: $i + 100;
 }
 
+body {
+  background-color: #caecf0;
+  height: 100%
+}
 
 .rel { position: relative; }
 .abs { position: absolute; }
@@ -93,6 +97,12 @@ button.btn.loaderIn {
 	color: #27a9e0;
 	margin-right: 10px;
 	border: 1px solid #27a9e0;
+}
+.btn:focus {
+	outline: 0;	
+}
+.btn-primary:active:focus {
+	outline: 0;
 }
 
 label {
@@ -205,55 +215,6 @@ input::-ms-input-placeholder {
 	  border: 1px solid #4778d9!important;
 	}
 }
-	input[type="radio"]:not(:checked),
-	input[type="radio"]:checked {
-	  position: absolute;
-	  left: -9999px;
-	}
-	input[type="radio"]:not(:checked) + label,
-	input[type="radio"]:checked + label {
-	  position: relative;
-	  padding-left: 25px;
-	  cursor: pointer;
-	}
-
-	input[type="radio"]:not(:checked) + label:before ,
-	input[type="radio"]:checked + label:before {
-	  content: '';
-	  position: absolute;
-	  left: 0px; 
-	  top: 2px;
-	  width: 15px;
-	  height: 15px;
-	  border: 1px solid #ccc;
-	  border-radius: 100%;
-	}
-	input[type="radio"]:checked + label:before {
-		border: none;
-	}
-
-	input[type="radio"]:not(:checked) + label:after,
-	input[type="radio"]:checked + label:after {
-		content: '';
-	    position: absolute;
-	    top: 2px;
-	    left: 0px;
-	    width: 15px;
-	    height: 15px;
-	   	background-image: url(<%= asset_path('admin/radio_select.svg') %>);
-    	background-repeat: no-repeat;
-    	background-position: 2px 2px;
-    	border: 1px solid #ccc;
-	    border-radius: 100%;
-	}
-	input[type="radio"]:not(:checked) + label:after {
-	  opacity: 0;
-	  transform: scale(0);
-	}
-	input[type="radio"]:checked + label:after {
-	  opacity: 1;
-	  transform: scale(1);
-	}
 
 .popover {
 	max-width: 500px;

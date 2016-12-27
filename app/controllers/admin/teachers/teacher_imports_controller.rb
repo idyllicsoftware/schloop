@@ -9,7 +9,13 @@ class Admin::Teachers::TeacherImportsController < ApplicationController
     if @teacher_import.save
       render json: {success: true}
     else
-      render json: {success: false, errors: @teacher_import.errors.full_messages}
+      if !@teacher_import.errors.full_messages.blank?
+         errors =  @teacher_import.errors.full_messages
+      else
+        errors = [@teacher_import.imported_teachers[1]]
+      end
+      render json: {success: false, errors: errors}
+      # render json: {success: false, errors: @teacher_import.errors.full_messages}
     end
   end
 

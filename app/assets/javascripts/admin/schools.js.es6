@@ -22,10 +22,28 @@ class Schools extends SchloopBase {
             
         $(document).on('click','#create-school-btn', function () {
             createModalEl.modal('show');
+            createModalEl.find('label.error').addClass('hidden');
         });
 
-        self.loadSchools();
+        $(document).on('click','.add-school', function () {
+            createModalEl.find('label.error').removeClass('hidden');
+        });
 
+        $(":file").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = imageIsLoaded;
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        function imageIsLoaded(e) {
+            $('.upload-logo').css('background-image', 'url(' + e.target.result +')');
+            $('.upload-logo').find('img').css('z-index','-1');
+        };
+
+        self.loadSchools();
+        
         this.initFormSubmit(createSchoolFormEl, {
             'school[name]': 'name',
             'school[photo]': 'photo',
@@ -36,7 +54,6 @@ class Schools extends SchloopBase {
             'school[website]': 'website',
             'school[logo]': 'logo',
             'administrator[first_name]': 'name',
-
             'administrator[last_name]': 'name',
             'administrator[cell_number]': 'phone',
             'administrator[email]': 'email',
@@ -57,8 +74,10 @@ class Schools extends SchloopBase {
             processData: false
         });
 
-        $(document).on('click','.cancel-creation', function () {
+        $(document).on('click','.cancel-creation', function (e) {
             createModalEl.modal('hide');
+            createSchoolFormEl[0].reset();
+            e.preventDefault();
         });
     };
 

@@ -1,5 +1,5 @@
 class Api::V1::TeachersController < Api::V1::BaseController
-  skip_before_filter :authenticate, only: [:register, :login]
+  skip_before_filter :authenticate, only: [:register, :login, :forgot_password]
 
   def register
     errors = []
@@ -92,6 +92,22 @@ class Api::V1::TeachersController < Api::V1::BaseController
     end
   end
 
+  def forgot_password
+    errors = []
+    teacher = Teacher.find_by(email: params[:email])
+    if teacher.present?
+      teacher.send_password_reset 
+      response =  { success: true, 
+                    error: errors,
+                    data: { message: "Password reset instruction sent to your email" }
+                  }
+    else
+      errors << "teacher with given email id not found"
+      response = { success: false, error: errors }
+    end
+    render json: response
+  end
+
   def dashboard
     render json: {
       success: true,
@@ -104,6 +120,18 @@ class Api::V1::TeachersController < Api::V1::BaseController
     }
   end
 
+  def index
+    teacher = @current_user
+    student_name = params[:q]
+    parents = teacher.associated_parents(student_name)
+    render json: {
+      success: true,
+      error: nil,
+      data: {
+        parents: parents
+      }
+    }
+  end
 
   def profile
     teacher = @current_user
@@ -139,7 +167,89 @@ class Api::V1::TeachersController < Api::V1::BaseController
         profile: profile_data
       }
     }
+  end
 
+  def topics
+    errors = []
+    grade  = Grade.find_by(id: params[:grade_id])
+    errors << "Please provide valid grade." if grade.nil?
+
+    subject = Subject.find_by(id: params[:subject_id])
+    errors << "Please provide valid subject." if subject.nil?
+
+    if errors.blank?
+      master_grade_id = grade.master_grade_id
+      master_subject_id = subject.master_subject_id
+
+      topics = Topic.index(@current_user, master_grade_id, master_subject_id)
+      render json: {
+          success: true,
+          error: nil,
+          data: {
+              topics: topics
+          }
+      }
+    else
+      render json: {
+          success: false,
+          error:  {
+              code: 0,
+              message: errors
+          },
+          data: nil
+      }
+    end
+  end
+
+  def create_topic
+    errors = []
+    grade  = Grade.find_by(id: params[:grade_id])
+    errors << "Please provide valid grade." if grade.nil?
+
+    subject = Subject.find_by(id: params[:subject_id])
+    errors << "Please provide valid subject." if subject.nil?
+
+    errors << "Topic cannot be blank." if params[:topic].blank?
+
+    if errors.blank?
+      master_grade_id = grade.master_grade_id
+      master_subject_id = subject.master_subject_id
+
+      topic = Topic.create(title: params[:topic], master_grade_id: master_grade_id,
+      master_subject_id: master_subject_id, teacher_id: @current_user.id)
+
+      render json: {
+          success: true,
+          error: nil,
+          data: {
+              topic: topic
+          }
+      }
+    else
+      render json: {
+          success: false,
+          error:  {
+              code: 0,
+              message: errors
+          },
+          data: nil
+      }
+    end
+
+  end
+
+  def circular_read
+    errors = []
+    circular_id = params[:id]
+    circular = Ecircular.find_by(id: circular_id)
+
+    errors << "Invalid circular to track" if circular.blank?
+    errors += Tracker.track(circular, @current_user, 'read', @current_user.class.to_s) if errors.blank?
+    render json: {
+        success: errors.blank?,
+        error:  errors,
+        data: nil
+    }
   end
 
   private

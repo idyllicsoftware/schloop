@@ -6,7 +6,12 @@ class FileUpload {
         let oUpload = this,
             {isImageUpload=false} = config;
         oUpload._config = config;
-        oUpload._config.allowedFileTypes = !isImageUpload ? ["doc", "docx", "pdf", "xls", "xlsx", "csv", "xlsm"] : ['jpg', 'jpeg', 'png', 'gif'];
+    
+        if (isImageUpload) {
+                oUpload._config.allowedFileTypes = ['jpg', 'jpeg', 'png', 'gif'];
+        } else {
+            oUpload._config.allowedFileTypes = ["doc", "docx", "pdf", "xls", "xlsx", "csv", "xlsm", 'jpg', 'jpeg', 'png', 'gif'];
+        }
         oUpload.limitMultiFileUploadSize = (typeof config !== 'undefined' && config.limitMultiFileUploadSize) ? config.limitMultiFileUploadSize : 10000000;
         oUpload.file_ids = [];
 
@@ -85,7 +90,7 @@ class FileUpload {
     isFileTypeAllowed (fileExt) {
         let oUpload = this,
             {isImageUpload=false, allowedFileTypes} = oUpload._config,
-            msg = !isImageUpload ? `Please only upload files with doc, docx, pdf, xls, xlsx, or csv extensions.` : `Please only upload files with jpg, jpeg, or png extensions.`;
+            msg = !isImageUpload ? `Please upload correct CSV file.` : `Please only upload files with jpg, jpeg, or png extensions.`;
 
         if (allowedFileTypes.indexOf(fileExt.toLowerCase()) < 0) {
             $(`<div class='errorMessage'>${msg}</div>`).appendTo(oUpload.uploadsBlock).fadeIn();
@@ -170,7 +175,7 @@ class FileUpload {
     initFileUploadWidget(){
         var oUpload = this,
             {isImageUpload=false, jScope=$(document)} = oUpload._config;
-
+        
         oUpload.fileUpload.fileupload({
             dataType: 'json',
             acceptFileTypes: !isImageUpload ? /(\.|\/)(doc|docx|pdf|xls|xlsx|csv)$/i : /(\.|\/)(gif|jpe?g|png)$/i,
@@ -189,6 +194,7 @@ class FileUpload {
             add: function (e, data) {
                 var currentFile = data.files[0];
                 oUpload.clearErrorMessages();
+                e.preventDefault();
                 if (!oUpload.addFileAllowed(currentFile)) {
                     return false;
                 }

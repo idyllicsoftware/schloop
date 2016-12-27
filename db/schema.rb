@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161223135434) do
+ActiveRecord::Schema.define(version: 20161222115456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,19 @@ ActiveRecord::Schema.define(version: 20161223135434) do
   end
 
   add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
+
+  create_table "devices", force: :cascade do |t|
+    t.integer  "deviceable_id"
+    t.string   "deviceable_type"
+    t.integer  "device_type",     default: 0
+    t.string   "token",                       null: false
+    t.string   "os_version"
+    t.integer  "status",          default: 0
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "devices", ["deviceable_type", "deviceable_id"], name: "index_devices_on_deviceable_type_and_deviceable_id", using: :btree
 
   create_table "divisions", force: :cascade do |t|
     t.string   "name",       null: false
@@ -188,21 +201,21 @@ ActiveRecord::Schema.define(version: 20161223135434) do
   end
 
   create_table "parents", force: :cascade do |t|
-    t.string   "email",                  limit: 100, default: "", null: false
-    t.string   "encrypted_password",                 default: "", null: false
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.text     "first_name",                                      null: false
-    t.text     "last_name",                                       null: false
-    t.text     "guardian_type",                                   null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.text     "first_name",                          null: false
+    t.text     "last_name",                           null: false
+    t.text     "guardian_type",                       null: false
   end
 
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
@@ -333,6 +346,20 @@ ActiveRecord::Schema.define(version: 20161223135434) do
 
   add_index "topics", ["master_grade_id", "master_subject_id"], name: "index_topics_on_master_grade_id_and_master_subject_id", using: :btree
   add_index "topics", ["teacher_id"], name: "index_topics_on_teacher_id", using: :btree
+
+  create_table "trackers", force: :cascade do |t|
+    t.integer  "trackable_id"
+    t.string   "trackable_type"
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.integer  "event"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "trackers", ["trackable_type", "trackable_id", "user_type", "user_id", "event"], name: "index_all", unique: true, using: :btree
+  add_index "trackers", ["trackable_type", "trackable_id"], name: "index_trackers_on_trackable_type_and_trackable_id", using: :btree
+  add_index "trackers", ["user_type", "user_id"], name: "index_trackers_on_user_type_and_user_id", using: :btree
 
   create_table "user_roles", force: :cascade do |t|
     t.integer  "role_id"

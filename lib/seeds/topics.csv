@@ -1,0 +1,27 @@
+title,master_grade_id,master_subject_id,teacher_id,is_created_by_teacher
+Acceleration,1,1,1,FALSE
+Center of mass,2,2,2,TRUE
+Force,3,3,3,FALSE
+Mass,4,4,1,TRUE
+Momentum,5,1,2,FALSE
+Newton's laws of motion,6,2,3,FALSE
+Speed,7,3,1,TRUE
+Velocity,1,4,2,FALSE
+Capacitor,2,1,3,TRUE
+Coulomb's law,3,2,1,TRUE
+Direct current,4,3,2,TRUE
+Electric charge,5,4,3,FALSE
+Electric current,6,1,1,TRUE
+Electric field,7,2,2,TRUE
+Electric potential energy,1,3,3,FALSE
+Electron,2,4,1,TRUE
+Faraday's law of induction,3,1,2,TRUE
+Ion,4,2,3,FALSE
+Joule heating,5,3,1,TRUE
+Lenz's law,6,4,2,FALSE
+Magnetic field,7,1,3,TRUE
+Ohm's law,1,2,1,FALSE
+Plasma (physics),2,3,2,FALSE
+Resistor,3,4,3,FALSE
+Transistor,4,1,1,FALSE
+Voltage,5,2,2,FALSE

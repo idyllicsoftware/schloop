@@ -8,6 +8,9 @@
 
 Please install ansible on your system (on local machine) from [here](http://docs.ansible.com/ansible/intro_installation.html)
 
+## Note: 
+  Any time you run any ansible task make sure you are inside `.ansible` directory of the application.
+
 ### Steps
 1. Create a server on Amazon
 
@@ -48,5 +51,9 @@ Please install ansible on your system (on local machine) from [here](http://docs
   - `cd .ansible && ansible-playbook ansible.yml -i hosts --tags=mina-helper ## Please make sure the database.yml and secrets.yml are set properly. Inside templates directory`
   - `mina production deploy`
 
-I guess rest all will follow perfectly well.
 
+8. To only upload authorized key run the ansible-playbook with --tags=authorized_keys. Before running make sure all authorized keys are present in `.ansible/public_keys/authorized_keys`  directory of the project
+  ```
+     cd .ansible
+     ansible-playbook ansible.yml -i hosts --tags=authorized_keys
+  ```
