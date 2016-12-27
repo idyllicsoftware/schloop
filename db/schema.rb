@@ -277,9 +277,10 @@ ActiveRecord::Schema.define(version: 20161222115456) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "middle_name"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "parent_id"
+    t.boolean  "activation_status"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -288,14 +289,10 @@ ActiveRecord::Schema.define(version: 20161222115456) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "grade_id"
-    t.integer  "teacher_id"
-    t.integer  "division_id"
     t.integer  "master_subject_id", default: 0, null: false
   end
 
-  add_index "subjects", ["division_id"], name: "index_subjects_on_division_id", using: :btree
   add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
-  add_index "subjects", ["teacher_id"], name: "index_subjects_on_teacher_id", using: :btree
 
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -401,6 +398,7 @@ ActiveRecord::Schema.define(version: 20161222115456) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.integer  "invitations_count",      default: 0
+    t.boolean  "activation_status"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -419,8 +417,6 @@ ActiveRecord::Schema.define(version: 20161222115456) do
   add_foreign_key "grades", "schools"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
-  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
-  add_foreign_key "subjects", "teachers"
   add_foreign_key "user_roles", "roles"
 end
