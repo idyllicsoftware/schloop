@@ -65,6 +65,8 @@ Rails.application.routes.draw do
            get :get_topics
         end
       end
+      resources :collaborations do
+      end
     end
 
 ##############################################################################
