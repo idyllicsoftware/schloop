@@ -44,7 +44,7 @@ class Api::V1::BookmarksController < Api::V1::BaseController
   end
 
   def get_preview_image_url(url)
-    require 'link_thumbnailer'
+    # require 'link_thumbnailer'
     preview_object = LinkThumbnailer.generate(url)
     title = preview_object.title
     if preview_object.images.present?
