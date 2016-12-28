@@ -11,9 +11,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
       if collaborations.include?(bookmark.id)
         collaboration = Collaboration.find_by(bookmark_id: bookmark.id)
         comments = collaboration.comments
-        grade = 
-
-        collaboration_data << { collaboration: collaboration, bookmark: collaboration.bookmark, grade_name: bookmark.grade.name, subject_name: bookmark.subject.name, topic_name: bookmark.topic.title, comments: comments }
+        collaboration_data << { collaboration_id: collaboration.id, bookmark: collaboration.bookmark, grade_name: bookmark.grade.name, subject_name: bookmark.subject.name, topic_name: bookmark.topic.title, comments: comments }
       end
     end
     render json: {success: true, data: collaboration_data}
