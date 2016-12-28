@@ -12,6 +12,17 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     render json: { success: errors.blank?, errors: errors }
   end
 
+  def add_caption
+    errors = nil
+    bookmark = Bookmark.find_by(id: params[:id])
+    if bookmark.present?
+      bookmark.update_attributes(caption: params[:caption])
+    else
+      errors = 'Invalid bookmark id'
+    end
+    render json: { success: errors.blank?, errors: errors }
+  end
+
   def index
     page = params[:page].to_s.to_i || 1
     page_size = 20
@@ -23,6 +34,7 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     bookmarks.each do |bookmark|
       bookmark_data << { id: bookmark.id,
                         title: bookmark.title,
+                        caption: bookmark.caption,
                         data: bookmark.data,
                         type: bookmark.data_type,
                         subject_id: bookmark.subject_id,
@@ -66,10 +78,12 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     create_bookmarks_params[:data_type] = Bookmark.data_types[data_type]
     if is_url
       preview_image_data = get_preview_image_url(bookmarks_params[:data])
-      preview_image_data[:title].present? ? (create_bookmarks_params[:title] = preview_image_data[:title]) : (create_bookmarks_params[:title] = "Schloopmark Web URL")
+      create_bookmarks_params[:title] = preview_image_data[:title]
+      create_bookmarks_params[:caption] = preview_image_data[:caption]
       create_bookmarks_params[:preview_image_url] = preview_image_data[:preview_image_url]
     else
       create_bookmarks_params[:title] = "Schloopmark Note"
+      create_bookmarks_params[:caption] = "Schloopmark Note"
     end
     create_bookmarks_params
   end
@@ -83,7 +97,8 @@ class Api::V1::BookmarksController < Api::V1::BaseController
 
   def get_preview_image_url(url)
     preview_object = LinkThumbnailer.generate(url)
-    title = preview_object.title
+    title = preview_object.title || "Schloopmark Web URL"
+    caption = preview_object.description || "Schloopmark Web URL"
     if preview_object.images.present?
       preview_image_url = preview_object.images.first.src
     elsif preview_object.url.present?
@@ -91,7 +106,7 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     else
       preview_image_url = "image not found"
     end
-    { title: title, preview_image_url: preview_image_url }
+    { title: title, preview_image_url: preview_image_url, caption: caption }
   end
 
 end
