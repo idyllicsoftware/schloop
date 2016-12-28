@@ -87,7 +87,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def profile
     parent = @current_user
     error = nil
-    unless parent.active?
+    if parent.active?
       students_data = []
       students = parent.students.active.includes(:student_profiles)
       students.each do |student|
