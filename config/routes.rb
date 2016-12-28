@@ -163,6 +163,7 @@ Rails.application.routes.draw do
 
       post "/bookmarks/create" => 'bookmarks#create'
       get "/bookmarks" => 'bookmarks#index'
+      post "/bookmarks/add_caption" => 'bookmarks#add_caption'
 
     end
   end
