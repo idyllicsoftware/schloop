@@ -4,21 +4,32 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def login
     parent = Parent.find_by_email(params[:parent][:email])
     if parent.present? && parent.valid_password?(params[:parent][:password])
-      parent.sign_in_count += 1
-      parent.save
-      login_response = {
-        success: true,
-        error: nil,
-        data: {
-          id: parent.id,
-          first_name: parent.first_name,
-          last_name: parent.last_name,
-          email: parent.email,
-          phone: parent.cell_number,
-          token: parent.user_token,
-          first_sign_in: (parent.sign_in_count <= 1)
+      if parent.active?
+        parent.sign_in_count += 1
+        parent.save
+        login_response = {
+          success: true,
+          error: nil,
+          data: {
+            id: parent.id,
+            first_name: parent.first_name,
+            last_name: parent.last_name,
+            email: parent.email,
+            phone: parent.cell_number,
+            token: parent.user_token,
+            first_sign_in: (parent.sign_in_count <= 1)
+          }
         }
-      }
+      else
+        login_response = {
+            success: false,
+            error:  {
+                code: 0,
+                message: "Your account has been deactivated."
+            },
+            data: nil
+        }
+      end
     else
       login_response = {
         success: false,
