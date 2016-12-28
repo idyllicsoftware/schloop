@@ -289,10 +289,14 @@ ActiveRecord::Schema.define(version: 20161222115456) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "grade_id"
+    t.integer  "teacher_id"
+    t.integer  "division_id"
     t.integer  "master_subject_id", default: 0, null: false
   end
 
+  add_index "subjects", ["division_id"], name: "index_subjects_on_division_id", using: :btree
   add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
+  add_index "subjects", ["teacher_id"], name: "index_subjects_on_teacher_id", using: :btree
 
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -417,6 +421,8 @@ ActiveRecord::Schema.define(version: 20161222115456) do
   add_foreign_key "grades", "schools"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
+  add_foreign_key "subjects", "teachers"
   add_foreign_key "user_roles", "roles"
 end
