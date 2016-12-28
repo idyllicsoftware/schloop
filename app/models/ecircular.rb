@@ -111,7 +111,7 @@ class Ecircular < ActiveRecord::Base
 		end
 
 		teacher_ids = circular_teachers_by_ecircular_id[id].collect(&:teacher_id) rescue []
-		teachers = Student.where(id: teacher_ids).includes(student_profiles: [:grade, :division]) || []
+		teachers = Teacher.where(id: teacher_ids) || []
 
 		teachers.each do |teacher|
 			teachers_data << {
