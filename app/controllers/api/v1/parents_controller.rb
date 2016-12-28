@@ -116,7 +116,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
       error = "Your account has been deactivated."
     end
     render json: {
-      success: error.present?,
+      success: error.blank?,
       error: error,
       data: parent_profile
     }
