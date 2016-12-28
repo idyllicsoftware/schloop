@@ -19,6 +19,7 @@ class Student < ActiveRecord::Base
 	validates :first_name, :presence => true, :length => { :maximum => 30 }
 	validates :middle_name,  :length => { :maximum => 30 }
 	validates :last_name, :presence => true, :length => { :maximum => 30 }
+	scope :active, -> { where(activation_status: true)}
 
 	validate do |student|
 		student.student_profiles.each do |student|
