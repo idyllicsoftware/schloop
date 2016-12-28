@@ -5,7 +5,6 @@
 #  id               :integer          not null, primary key
 #  commentable_type :string
 #  commentable_id   :integer
-#  name             :string
 #  commented_by     :integer
 #  message          :text
 #  created_at       :datetime         not null
@@ -17,4 +16,5 @@
 #
 
 class Comment < ActiveRecord::Base
+  belongs_to :commentable, polymorphic: true
 end

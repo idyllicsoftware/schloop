@@ -19,4 +19,5 @@
 
 class Collaboration < ActiveRecord::Base
   belongs_to :bookmark
+  has_many :comments, as: :commentable
 end

@@ -3,7 +3,6 @@ class CreateComments < ActiveRecord::Migration
     create_table :comments do |t|
       t.string :commentable_type
       t.integer :commentable_id
-      t.string :name
       t.integer :commented_by
       t.text :message
 
