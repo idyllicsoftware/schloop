@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161227064513) do
+ActiveRecord::Schema.define(version: 20161228062713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,18 @@ ActiveRecord::Schema.define(version: 20161227064513) do
   end
 
   add_index "collaborations", ["bookmark_id"], name: "index_collaborations_on_bookmark_id", using: :btree
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "commentable_type"
+    t.integer  "commentable_id"
+    t.string   "name"
+    t.integer  "commented_by"
+    t.text     "message"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
 
   create_table "devices", force: :cascade do |t|
     t.integer  "deviceable_id"

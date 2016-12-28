@@ -88,6 +88,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
       preview_image_data = get_preview_image_url(params[:datum])
       preview_image_data[:title].present? ? (bookmark_datum[:title] = preview_image_data[:title]) : (bookmark_datum[:title] = "Schloopmark Web URL")
       bookmark_datum[:preview_image_url] = preview_image_data[:preview_image_url]
+      bookmark_datum[:data] = nil
     else
       bookmark_datum[:title] = "Schloopmark Note"
       bookmark_datum[:url] = nil
