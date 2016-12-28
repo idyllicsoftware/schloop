@@ -93,7 +93,7 @@ class Ecircular < ActiveRecord::Base
 		end
 		created_by = (created_by_type || 'teacher').classify.safe_constantize.find_by(id: created_by_id)
 		student_ids = circular_parents_by_ecircular_id[id].collect(&:student_id) rescue []
-		students = Student.where(id: student_ids).includes(student_profiles: [:grade, :division]) || []
+		students = Student.active.where(id: student_ids).includes(student_profiles: [:grade, :division]) || []
 
 		students.each do |student|
 			students_data << {

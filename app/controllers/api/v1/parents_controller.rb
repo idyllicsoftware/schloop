@@ -77,7 +77,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
     parent = @current_user
 
     students_data = []
-    students = parent.students.includes(:student_profiles)
+    students = parent.students.active.includes(:student_profiles)
     students.each do |student|
       student_profile = student.student_profiles.last
       students_data << {
@@ -126,8 +126,8 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def circulars
     errors, circular_data = [], []
 
-    @student = Student.find_by(id: params[:student_id])
-    errors << "Student not found" if @student.blank?
+    @student = Student.where(id: params[:student_id]).active.first
+    errors << "Student not found" if @student.blank? ||
 
     school = @student.school
     errors << "Student School not found" if school.blank?
@@ -171,7 +171,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def circular
     errors = []
 
-    @student = Student.find_by(id: params[:student_id])
+    @student = Student.where(id: params[:student_id]).active.first
     errors << "Student not found" if @student.blank?
 
     school = @student.school
@@ -217,7 +217,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def activities
     errors, search_params = [], {}
 
-    @student = Student.find_by(id: params[:student_id])
+    @student = Student.where(id: params[:student_id]).active.first
     errors << "Student not found" if @student.blank?
 
     school = @student.school
@@ -281,7 +281,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def activity
     errors = []
 
-    @student = Student.find_by(id: params[:student_id])
+    @student = Student.where(id: params[:student_id]).active.first
     errors << "Student not found" if @student.blank?
 
     school = @student.school

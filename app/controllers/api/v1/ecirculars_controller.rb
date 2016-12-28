@@ -193,7 +193,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     def parents_params
       create_parent_params = []
       return create_parent_params if params[:students].blank?
-      students = Student.where(id: params[:students])
+      students = Student.where(id: params[:students]).active
       students.each do |student|
         create_parent_params << {
             student_id: student.id,
@@ -231,7 +231,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     end
 
     def filter_params
-      # default_division_ids = @current_user.grade_teachers.pluck(:division_id)
+      default_division_ids = @current_user.grade_teachers.pluck(:division_id)
       filters = params[:filter]
       return {} if filters.blank?
 
