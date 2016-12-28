@@ -257,6 +257,17 @@
 					    background-repeat: no-repeat;
 					    background-size: 100% 100%;
 					}
+					.bookmarks-action {
+					    position: absolute;
+					    right: 0;
+					    display: flex;
+					    justify-content: space-between;
+					    width: 15%;
+					    padding: 10px;
+					    color: #25aae1;
+					    font-weight: 600;
+					    p { cursor: pointer;}
+					}
 					.created-by-teacher-detail {
 						padding: 5px 20px;
 						p {
@@ -341,4 +352,27 @@
 			}
 		}
 	}	
+}
+#bookmark-edit-modal {
+	.modal-body {
+		padding: 70px;
+		.bookmark-edit-form {
+			.close-edit-modal {
+				position: absolute;
+			    right: 20px;
+			    top: 10px;
+			    color: #25aae1;
+			    font-size: 30px;
+			    cursor: pointer;
+			}
+			div[contenteditable=true] {
+				&:focus {
+					outline: 0px;
+				}
+			}
+			.content-editor-section {
+				border: 0px;
+			}
+		}
+	}		
 }

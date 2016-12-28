@@ -34,6 +34,27 @@ class Admin::Teachers::BookmarksController < ApplicationController
      render json: { success: errors.blank?, caption:bookmark.caption }
   end
 
+  def destroy
+    errors = []
+    begin
+      bookmark = Bookmark.find_by(params[:bookmark_id])
+      bookmark.destroy
+    rescue Exception => e
+      errors << "unable to destroy bookmarks"
+    end
+    render json: {success: errors.blank?, errors: errors}
+  end
+
+  def update
+    errors = []
+    begin  
+      bookmark = Bookmark.find_by(id: params[:bookmark_id])
+      bookmark.update(bookmark_update_params)  
+    rescue Exception => e
+      errors << "error occured while inserting new bookmark"
+    end
+    render json: { success: errors.blank?, errors: errors }
+  end
   private
 
   def bookmark_params
@@ -51,12 +72,31 @@ class Admin::Teachers::BookmarksController < ApplicationController
       preview_image_data = get_preview_image_url(params[:datum])
       preview_image_data[:title].present? ? (bookmark_datum[:title] = preview_image_data[:title]) : (bookmark_datum[:title] = "Schloopmark Web URL")
       bookmark_datum[:preview_image_url] = preview_image_data[:preview_image_url]
-      #bookmark[:preview_image_url] = get_preview_image_url(params[:datum])
     else
       bookmark_datum[:title] = "Schloopmark Note"
     end
 
     return bookmark_datum
+  end
+
+  def bookmark_update_params
+    data_type = get_data_type(params[:datum])
+    bookmark_datum = {}
+    (data_type == :url) ? (bookmark_datum[:url] = params[:datum]) : (bookmark_datum[:data] = params[:datum])
+    bookmark_datum[:data_type] = Bookmark.data_types[data_type]
+    if data_type == :url 
+      preview_image_data = get_preview_image_url(params[:datum])
+      preview_image_data[:title].present? ? (bookmark_datum[:title] = preview_image_data[:title]) : (bookmark_datum[:title] = "Schloopmark Web URL")
+      bookmark_datum[:preview_image_url] = preview_image_data[:preview_image_url]
+    else
+      bookmark_datum[:title] = "Schloopmark Note"
+      bookmark_datum[:url] = nil
+      bookmark_datum[:preview_image_url] = nil
+      bookmark_datum[:data] = params[:datum]
+    end
+      bookmark_datum[:caption] = params[:bookmark][:caption]
+
+    return bookmark_datum  
   end
 
   def get_data_type(input_data)
