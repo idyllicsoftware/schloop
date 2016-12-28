@@ -43,7 +43,11 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :parent_imports, only: [:new, :create]
-    resources :students
+    resources :students do
+      collection do
+        post :deactivate
+      end
+    end
     resource :users
 
 
