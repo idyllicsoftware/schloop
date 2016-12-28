@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     post 'password_resets/create_for_parent' => 'password_resets#create_for_parent'
     get 'password_resets/parent_edit' => 'password_resets#parent_edit'
     patch 'password_resets/parent_update' => 'password_resets#parent_update'
+    get '/privacy_policy', to: 'home#privacy_policy'
 
   namespace :admin do
     resources :parent_imports, only: [:new, :create]
