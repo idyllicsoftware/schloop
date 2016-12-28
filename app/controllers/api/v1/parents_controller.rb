@@ -86,34 +86,38 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
   def profile
     parent = @current_user
-
-    students_data = []
-    students = parent.students.active.includes(:student_profiles)
-    students.each do |student|
-      student_profile = student.student_profiles.last
-      students_data << {
-        id: student.id,
-        school_id: student.school_id,
-        school_name: student.school.name,
-        first_name: student.first_name,
-        last_name: student.last_name,
-        middle_name: student.middle_name,
-        grade: {id: student_profile.grade.id, name: student_profile.grade.name},
-        division: {id: student_profile.division.id, name: student_profile.division.name}
+    error = nil
+    unless parent.active?
+      students_data = []
+      students = parent.students.active.includes(:student_profiles)
+      students.each do |student|
+        student_profile = student.student_profiles.last
+        students_data << {
+          id: student.id,
+          school_id: student.school_id,
+          school_name: student.school.name,
+          first_name: student.first_name,
+          last_name: student.last_name,
+          middle_name: student.middle_name,
+          grade: {id: student_profile.grade.id, name: student_profile.grade.name},
+          division: {id: student_profile.division.id, name: student_profile.division.name}
+        }
+      end
+      parent_profile = {
+        id: parent.id,
+        first_name: parent.first_name,
+        last_name: parent.last_name,
+        email: parent.email,
+        phone: parent.cell_number,
+        students: students_data
       }
+    else
+      parent_profile = {}
+      error = "Your account has been deactivated."
     end
-
-    parent_profile = {
-      id: parent.id,
-      first_name: parent.first_name,
-      last_name: parent.last_name,
-      email: parent.email,
-      phone: parent.cell_number,
-      students: students_data
-    }
     render json: {
-      success: true,
-      error: nil,
+      success: error.present?,
+      error: error,
       data: parent_profile
     }
   end
