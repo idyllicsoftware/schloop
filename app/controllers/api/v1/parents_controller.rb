@@ -142,7 +142,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
     errors, circular_data = [], []
 
     @student = Student.where(id: params[:student_id]).active.first
-    errors << "Student not found" if @student.blank? ||
+    errors << "Student not found" if @student.blank?
 
     school = @student.school
     errors << "Student School not found" if school.blank?
