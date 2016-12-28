@@ -117,7 +117,10 @@ class Api::V1::ParentsController < Api::V1::BaseController
     end
     render json: {
       success: error.blank?,
-      error: error,
+      error:  {
+          code: 0,
+          message: error
+      },
       data: parent_profile
     }
   end
