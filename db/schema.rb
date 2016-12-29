@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161228062713) do
+ActiveRecord::Schema.define(version: 20161229065543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -291,6 +291,20 @@ ActiveRecord::Schema.define(version: 20161228062713) do
     t.string   "logo"
   end
 
+  create_table "social_trackers", force: :cascade do |t|
+    t.integer  "sc_trackable_id"
+    t.string   "sc_trackable_type"
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.integer  "event"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "social_trackers", ["sc_trackable_type", "sc_trackable_id", "user_type", "user_id", "event"], name: "index_sc_all", unique: true, using: :btree
+  add_index "social_trackers", ["sc_trackable_type", "sc_trackable_id"], name: "index_social_trackers_on_sc_trackable_type_and_sc_trackable_id", using: :btree
+  add_index "social_trackers", ["user_type", "user_id"], name: "index_social_trackers_on_user_type_and_user_id", using: :btree
+
   create_table "student_profiles", force: :cascade do |t|
     t.integer  "student_id"
     t.integer  "grade_id"
@@ -305,10 +319,10 @@ ActiveRecord::Schema.define(version: 20161228062713) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "middle_name"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "parent_id"
-    t.boolean  "activation_status"
+    t.boolean  "activation_status", default: true
   end
 
   create_table "subjects", force: :cascade do |t|

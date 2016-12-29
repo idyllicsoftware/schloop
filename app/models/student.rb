@@ -10,7 +10,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  parent_id         :integer
-#  activation_status :boolean
+#  activation_status :boolean          default(TRUE)
 #
 
 class Student < ActiveRecord::Base

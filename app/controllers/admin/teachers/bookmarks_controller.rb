@@ -55,7 +55,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     end
     render json: { success: errors.blank?, errors: errors }
   end
-  
+
   private
 
   def bookmark_params
@@ -129,16 +129,5 @@ class Admin::Teachers::BookmarksController < ApplicationController
     return { title: title, preview_image_url: preview_image_url }
   end
 
-  def liked
-    errors = []
-    begin
-      bookmark = Bookmark.find_by(id: params[:bookmark_id])
-      bookmark.increment!(:likes, 1)
-    rescue Exception => e
-      errors << "error while increamenting likes for bookmark"
-      render json: { success: errors.blank?, errors: errors } and return
-    end
-    render json: { success: errors.blank?, likes: bookmark.likes }
-  end
 
 end
