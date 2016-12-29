@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
+  require 'sidekiq/web'
+  mount Sidekiq::Web, at: "/kiq"
 
   # You can have the root of your site routed with "root"
   root 'home#index'
@@ -43,7 +45,11 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :parent_imports, only: [:new, :create]
-    resources :students
+    resources :students do
+      collection do
+        post :deactivate
+      end
+    end
     resource :users
 
 
@@ -156,6 +162,10 @@ Rails.application.routes.draw do
 
       post "device/register" => 'devices#register'
       post "device/deregister" => 'devices#de_register'
+
+      post "/bookmarks/create" => 'bookmarks#create'
+      get "/bookmarks" => 'bookmarks#index'
+      post "/bookmarks/add_caption" => 'bookmarks#add_caption'
 
     end
   end

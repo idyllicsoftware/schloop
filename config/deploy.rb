@@ -3,6 +3,7 @@ require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rvm'    # for rvm support. (http://rvm.io)
+require 'mina_sidekiq/tasks'
 
 user = %x(git config user.name).delete("\n")
 
@@ -75,9 +76,11 @@ task :deploy => :environment do
     invoke :'rails:db_create'
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
+    # invoke :'sidekiq:quiet'
     invoke :'deploy:cleanup'
 
     to :launch do
+      invoke :'sidekiq:restart'
       queue "mkdir -p #{deploy_to}/#{current_path}/tmp/"
       queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
     end

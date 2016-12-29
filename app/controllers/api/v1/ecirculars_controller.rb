@@ -110,15 +110,22 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     circular = Ecircular.create(circular_params.merge!(created_by_type: created_by_type, created_by_id: @current_user.id, school_id: @current_user.school_id ))
     if circular.persisted?
       begin
-        # add ecircular recipients
-        circular.ecircular_recipients.create!(recipients_params) if recipients_params.present?
-
-        # add ecircular parent recipents
-        circular.ecircular_parents.create!(parents_params) if parents_params.present?
-
-        # add ecircular teachers recipents
-        circular.ecircular_teachers.create!(teachers_params) if teachers_params.present?
-
+        if params[:recipients].present?
+          # add ecircular recipients
+          circular.ecircular_recipients.create!(recipients_params)
+          division_ids = circular.ecircular_recipients.pluck(:division_id)
+          student_ids = StudentProfile.active.where(division_id: division_ids).pluck(:student_id)
+          circular.send_notification(student_ids)
+        elsif params[:students].present?
+          # add ecircular parent recipents
+          circular.ecircular_parents.create!(parents_params)
+          student_ids = circular.ecircular_parents.pluck(:student_id)
+          # student_ids = [1]
+          circular.send_notification(student_ids)
+        elsif params[:teachers]
+          # add ecircular teachers recipents
+          circular.ecircular_teachers.create!(teachers_params)
+        end
         Attachment.create!(attachments_params(circular))
       rescue Exception => ex
         errors << ex.message
@@ -163,10 +170,11 @@ class Api::V1::EcircularsController < Api::V1::BaseController
 
   def circular_teachers
     teacher = @current_user
-    grade_teacher_ids = teacher.grade_teachers.pluck(:teacher_id)
-    render json: { success: false, error: 'Grades not present', data: [] } and return unless grade_teacher_ids.present?
-    teachers_data = Teacher.where(id: grade_teacher_ids).select(:id, :first_name, :last_name)
-    render json: { success: true, error: nil, data: { teachers_data: teachers_data }}
+    grade_ids = teacher.grade_teachers.pluck(:grade_id)
+    teachers_data = Teacher.joins(:grade_teachers)
+                           .where("grade_teachers.grade_id IN (#{grade_ids.join(',')}) AND grade_teachers.teacher_id != #{teacher.id}").distinct
+                           .select(:id, :first_name, :last_name)
+    render json: { success: teachers_data.present?, error: [], data: { teachers_data: teachers_data }}
   end
 
   private
@@ -176,7 +184,6 @@ class Api::V1::EcircularsController < Api::V1::BaseController
 
     def recipients_params
       create_params = []
-      return create_params if params[:recipients].blank?
       params[:recipients].each do |grade_id, division_ids|
         division_ids.each do |div_id|
           create_params << {
@@ -191,8 +198,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
 
     def parents_params
       create_parent_params = []
-      return create_parent_params if params[:students].blank?
-      students = Student.where(id: params[:students])
+      students = Student.where(id: params[:students]).active
       students.each do |student|
         create_parent_params << {
             student_id: student.id,
@@ -204,7 +210,6 @@ class Api::V1::EcircularsController < Api::V1::BaseController
 
     def teachers_params
       create_teachers_params = []
-      return create_teachers_params if params[:teachers].blank?
       teachers = Teacher.where(id: params[:teachers])
       teachers.each do |teacher|
         create_teachers_params << {
@@ -230,7 +235,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     end
 
     def filter_params
-      # default_division_ids = @current_user.grade_teachers.pluck(:division_id)
+      default_division_ids = @current_user.grade_teachers.pluck(:division_id)
       filters = params[:filter]
       return {} if filters.blank?
 
@@ -246,5 +251,4 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         tags: filters[:tags]
       }
     end
-
 end

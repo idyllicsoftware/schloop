@@ -2,14 +2,15 @@
 #
 # Table name: students
 #
-#  id          :integer          not null, primary key
-#  school_id   :integer
-#  first_name  :string
-#  last_name   :string
-#  middle_name :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  parent_id   :integer
+#  id                :integer          not null, primary key
+#  school_id         :integer
+#  first_name        :string
+#  last_name         :string
+#  middle_name       :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  parent_id         :integer
+#  activation_status :boolean          default(TRUE)
 #
 
 class Student < ActiveRecord::Base
@@ -19,6 +20,7 @@ class Student < ActiveRecord::Base
 	validates :first_name, :presence => true, :length => { :maximum => 30 }
 	validates :middle_name,  :length => { :maximum => 30 }
 	validates :last_name, :presence => true, :length => { :maximum => 30 }
+	scope :active, -> { where(activation_status: true)}
 
 	validate do |student|
 		student.student_profiles.each do |student|

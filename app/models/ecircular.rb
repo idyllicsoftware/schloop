@@ -30,6 +30,8 @@ class Ecircular < ActiveRecord::Base
 	has_many :ecircular_parents
 	has_many :ecircular_teachers
 
+  # after_create :send_notification
+
   validates :title, :created_by_type, :created_by_id , :presence => true
 
 	def self.school_circulars(school, user, filter_params={}, offset=0, page_size=50)
@@ -93,7 +95,7 @@ class Ecircular < ActiveRecord::Base
 		end
 		created_by = (created_by_type || 'teacher').classify.safe_constantize.find_by(id: created_by_id)
 		student_ids = circular_parents_by_ecircular_id[id].collect(&:student_id) rescue []
-		students = Student.where(id: student_ids).includes(student_profiles: [:grade, :division]) || []
+		students = Student.active.where(id: student_ids).includes(student_profiles: [:grade, :division]) || []
 
 		students.each do |student|
 			students_data << {
@@ -111,7 +113,7 @@ class Ecircular < ActiveRecord::Base
 		end
 
 		teacher_ids = circular_teachers_by_ecircular_id[id].collect(&:teacher_id) rescue []
-		teachers = Student.where(id: teacher_ids).includes(student_profiles: [:grade, :division]) || []
+		teachers = Teacher.where(id: teacher_ids) || []
 
 		teachers.each do |teacher|
 			teachers_data << {
@@ -143,4 +145,9 @@ class Ecircular < ActiveRecord::Base
 		}
 	end
 
+	def send_notification(student_ids)
+		student_ids.each do |student_id|
+			NotificationWorker.perform_async(self.id, student_id)
+		end
+	end
 end

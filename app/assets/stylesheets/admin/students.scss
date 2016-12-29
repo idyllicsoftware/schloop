@@ -10,8 +10,67 @@
           padding: 0px 5px;
           cursor: pointer;
         &.active, &:hover, &:active {
-            border-bottom-color: #666;
+          //border-bottom-color: #666;
+            color: #666;
+            font-weight: bold;
         }
       }
+  }
+}
+
+.upload-student-link {
+  a {
+    float: right;
+    font-weight: 600;
+    }  
+}
+
+#studentListWrapper {
+  table {
+    tr:first-child {
+      border-top: 2px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+    tr {
+      border-bottom: 2px dotted #ccc;
+      th{
+          background-color: #fff;
+          padding: 15px;
+        }
+      td {
+          border: 0px;
+          padding: 15px;
+          &:last-child {
+            span {
+              cursor: pointer;
+            }
+          }
+      }
+      .student-edit-btn{
+        font-weight: 600;
+        color: #25aae1;
+      }
+      .popover {
+        max-width: 320px;
+        padding: 15px;
+      }
+      .popover-content {
+        .student-edit-btn {
+          margin-top: 30px;
+          .update-student {
+            display: flex;
+            margin-bottom: 20px;
+            justify-content: space-between;
+            .btn-primary {
+              width: 120px;
+              margin-right: 0px;
+            }
+          }  
+          .deActivateStudentBtn{
+            width: 260px;
+          }
+        }
+      }
+    }
   }
 }
