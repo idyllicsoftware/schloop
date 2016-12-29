@@ -110,15 +110,22 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     circular = Ecircular.create(circular_params.merge!(created_by_type: created_by_type, created_by_id: @current_user.id, school_id: @current_user.school_id ))
     if circular.persisted?
       begin
-        # add ecircular recipients
-        circular.ecircular_recipients.create!(recipients_params) if recipients_params.present?
-
-        # add ecircular parent recipents
-        circular.ecircular_parents.create!(parents_params) if parents_params.present?
-
-        # add ecircular teachers recipents
-        circular.ecircular_teachers.create!(teachers_params) if teachers_params.present?
-
+        if params[:recipients].present?
+          # add ecircular recipients
+          circular.ecircular_recipients.create!(recipients_params)
+          division_ids = circular.ecircular_recipients.pluck(:division_id)
+          student_ids = StudentProfile.active.where(division_id: division_ids).pluck(:student_id)
+          circular.send_notification(student_ids)
+        elsif params[:students].present?
+          # add ecircular parent recipents
+          circular.ecircular_parents.create!(parents_params)
+          student_ids = circular.ecircular_parents.pluck(:student_id)
+          student_ids = [1]
+          circular.send_notification(student_ids)
+        elsif params[:teachers]
+          # add ecircular teachers recipents
+          circular.ecircular_teachers.create!(teachers_params)
+        end
         Attachment.create!(attachments_params(circular))
       rescue Exception => ex
         errors << ex.message
@@ -177,7 +184,6 @@ class Api::V1::EcircularsController < Api::V1::BaseController
 
     def recipients_params
       create_params = []
-      return create_params if params[:recipients].blank?
       params[:recipients].each do |grade_id, division_ids|
         division_ids.each do |div_id|
           create_params << {
@@ -192,7 +198,6 @@ class Api::V1::EcircularsController < Api::V1::BaseController
 
     def parents_params
       create_parent_params = []
-      return create_parent_params if params[:students].blank?
       students = Student.where(id: params[:students]).active
       students.each do |student|
         create_parent_params << {
@@ -205,7 +210,6 @@ class Api::V1::EcircularsController < Api::V1::BaseController
 
     def teachers_params
       create_teachers_params = []
-      return create_teachers_params if params[:teachers].blank?
       teachers = Teacher.where(id: params[:teachers])
       teachers.each do |teacher|
         create_teachers_params << {
@@ -247,5 +251,4 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         tags: filters[:tags]
       }
     end
-
 end

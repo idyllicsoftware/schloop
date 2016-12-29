@@ -57,6 +57,7 @@ Rails.application.configure do
   config.log_level = :info
 
   MAILER_HOST = "http://staging.schloop.co/"
+  FCM_KEY = 'AIzaSyDe3HNn_owddmmaGABY-hXRLaMbFOqYiOo'
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
