@@ -255,6 +255,27 @@ class TeacherDashboard extends SchloopBase {
                                 });
                             }
                         });
+                        bookmarksEl.find('.share-for-collaboration').on('click', function() {
+                            var curr_Bm_id = $(this).data('bookmark_id');
+
+                            if(_self.topicBookmarks.hasOwnProperty(curr_Bm_id)){
+
+                                $.ajax({
+                                    url: "/admin/teachers/collaborations?bookmark_id=" + curr_Bm_id,
+                                    method: "POST",
+                                    success: function (res) {
+                                       if(res.success) {
+                                        //TO DO...
+                                         toastr.success('schloopmark collaborated successfully', '', {
+                                                    positionClass: 'toast-top-right cloud-display'
+                                                });      
+                                       } else {
+                                            _self.showErrors(res.errors);
+                                       }
+                                    }
+                                });
+                            }
+                        });
                 } else {
                     _self.showErrors(res.errors);
                 }

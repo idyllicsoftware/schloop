@@ -11,9 +11,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
       if collaborations.include?(bookmark.id)
         collaboration = Collaboration.find_by(bookmark_id: bookmark.id)
         comments = collaboration.comments
-        grade = 
-
-        collaboration_data << { collaboration: collaboration, bookmark: collaboration.bookmark, grade_name: bookmark.grade.name, subject_name: bookmark.subject.name, topic_name: bookmark.topic.title, comments: comments }
+        collaboration_data << { collaboration_id: collaboration.id, collaboration_data: collaboration, bookmark_id: bookmark.id, bookmark_data: bookmark_data(collaboration.bookmark), comments: comments }
       end
     end
     render json: {success: true, data: collaboration_data}
@@ -27,6 +25,24 @@ class Admin::Teachers::CollaborationsController < ApplicationController
       errors << "error while collaborating schloopmark"
     end
     render json: {success: errors.blank?, errors: errors}
+  end
+
+  private
+  def bookmark_data(bookmark)
+    datum = { bookmark_id: bookmark.id,
+               title: bookmark.title,
+               data: bookmark.data,
+               data_type: bookmark.data_type,
+               caption: bookmark.caption,
+               url: bookmark.url,
+               preview_image_url: bookmark.preview_image_url,
+               likes: bookmark.likes,
+               views: bookmark.views,
+               topic_name: bookmark.topic.title,
+               grade_name: bookmark.grade.name,
+               subject_name: bookmark.subject.name
+            }
+    return datum
   end
 
 end
