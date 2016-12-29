@@ -22,10 +22,10 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     data = {}
     begin 
       bookmark = Bookmark.find_by(id: params[:bookmark_id])
-      teachers = GradeTeachers.select('distinct teacher_id').where(grade_id: bookmark.grade_id).where(subject_id: bookmark.subject_id)
-      first_teacher = teachers.first
+      teachers = GradeTeacher.select('distinct teacher_id').where(grade_id: bookmark.grade_id).where(subject_id: bookmark.subject_id).collect(&:teacher_id)
+      first_teacher = Teacher.find_by(id: teachers.first)
       new_collaboration = Collaboration.create(bookmark_id: params[:bookmark_id], collaboration_message: params[:collaboration_message])
-      data = { teacher_first_name: first_teacher.first_name, teacher_last_name: first_teacher.teacher_last_name, count: teachers.count }
+      data = { teacher_first_name: first_teacher.first_name, teacher_last_name: first_teacher.last_name, count: teachers.count }
     rescue Exception => e
       errors << "error while collaborating schloopmark"
     end
