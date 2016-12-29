@@ -30,7 +30,7 @@ class Ecircular < ActiveRecord::Base
 	has_many :ecircular_parents
 	has_many :ecircular_teachers
 
-  after_create :send_notification
+  # after_create :send_notification
 
   validates :title, :created_by_type, :created_by_id , :presence => true
 
@@ -143,14 +143,11 @@ class Ecircular < ActiveRecord::Base
 				teachers: teachers_data,
 				attachments: attachments
 		}
-  end
+	end
 
-  def send_notification
-    division_ids = self.ecircular_recipients.pluck(:division_id)
-    student_ids = StudentProfile.active.where(division_id: division_ids).pluck(:student_id)
-    student_ids.each do |student_id|
-      NotificationWorker.perform_async(self.id, student_id)
-    end
-  end
-
+	def send_notification(student_ids)
+		student_ids.each do |student_id|
+			NotificationWorker.perform_async(self.id, student_id)
+		end
+	end
 end

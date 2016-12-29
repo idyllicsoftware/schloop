@@ -1,5 +1,6 @@
 class NotificationWorker
   include Sidekiq::Worker
+  sidekiq_options queue: 'default'
 
   def perform(circular_id, student_id)
     student = Student.find_by(id: student_id)
