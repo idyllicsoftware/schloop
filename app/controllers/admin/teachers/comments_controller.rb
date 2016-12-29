@@ -1,4 +1,5 @@
 class Admin::Teachers::CommentsController < ApplicationController
+  
   def create
     errors = []
     begin
@@ -13,4 +14,5 @@ class Admin::Teachers::CommentsController < ApplicationController
       errors <<  "errors while creating new comment"
     end
   end
+
 end

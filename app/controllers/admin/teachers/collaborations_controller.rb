@@ -44,5 +44,4 @@ class Admin::Teachers::CollaborationsController < ApplicationController
             }
     return datum
   end
-
 end
