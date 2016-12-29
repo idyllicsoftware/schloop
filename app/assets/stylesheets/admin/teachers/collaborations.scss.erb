@@ -1,0 +1,114 @@
+// Place all the styles related to the admin/teachers/collaboration controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#collaboration {
+	padding: 0px 150px;
+	.schloopmark-item {
+		border-bottom: 10px solid #ebebeb;
+    	margin-bottom: 50px;
+	}
+	.schloopmark-view-section {
+		background-color: #f9f8eb;
+		.schloopmark-view {
+			padding: 10px 20px;
+			background-color: #f9f8eb;
+			display: flex;
+			border-bottom: 1px solid #c6c6c6;
+			.collaborated-by-teacher-img {
+				width: 60px;
+			    height: 60px;
+			    border-radius: 100%;
+			    background-color: rgba(37, 169, 225, 0.26);
+			    background-repeat: no-repeat;
+			    background-size: 100% 100%;
+			}
+			.collaborated-by-teacher-detail {
+				padding: 5px 20px;
+				p { color: #666666; }
+				.about-schloopmark {
+					color: #999999;
+				}
+			}
+		}
+		.schloopmark-content {
+			color: #666666;
+			p {
+				font-weight: 600;
+				padding: 10px 20px;
+    			margin: 0;
+    		}
+			.content-block {
+				padding: 0px 20px 20px 20px;
+			}
+		}
+	}
+	.schloopmark-like {
+		padding: 10px 20px;
+    	display: flex;
+    	color: #999999;
+    	font-size: 12px;
+    	img {
+    		padding-right: 10px;
+    	}
+	}
+	.share-section {
+		display: flex;
+	    padding: 0px 10px;
+	    background-color: #f9f8eb;
+	    border-bottom: 1px solid #c6c6c6;
+	    .share {
+			display: flex;
+		    padding: 10px;
+		    cursor: pointer;
+		    p {
+		    	margin: 0;
+    			padding: 10px;
+		    }
+	    }
+	}
+	.comment-section {
+		padding: 10px;
+	    background-color: #f9f8eb;
+	    display: block;
+	    margin-top: 5px;
+	    .com-sub-section {
+	    	display: flex;
+    		padding: 10px;
+    		.com-by-teacher-img {
+    			width: 40px;
+			    height: 40px;
+			    border-radius: 100%;
+			    background-color: rgba(37, 169, 225, 0.26);
+			    background-repeat: no-repeat;
+			    background-size: 100% 100%;
+    		}
+    		.com-by-teacher-detail {
+    			padding-left: 20px;
+    			width: 90%;
+    			.fw { font-weight: 700;}
+    			time { 
+    				color: #999999;
+    				font-size: 12px;
+    			}
+    			.comment-editor {
+				    border-bottom: 1px solid #dadada;
+    				height: 100%;
+	    			.write-comment {
+					    min-height: 20px;
+					    max-height: 100%;
+					    color: #666666;
+						padding: 10px 5px;
+					    &:focus {
+					    	outline: none;
+					    }
+	    			}
+	    			.write-comment[contenteditable=true]:empty:before{
+					  content: attr(placeholder); 
+					  color: #dddddd;
+					}
+				}	
+    		}
+	    }
+	}
+}
