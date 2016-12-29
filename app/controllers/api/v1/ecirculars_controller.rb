@@ -120,7 +120,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
           # add ecircular parent recipents
           circular.ecircular_parents.create!(parents_params)
           student_ids = circular.ecircular_parents.pluck(:student_id)
-          student_ids = [1]
+          # student_ids = [1]
           circular.send_notification(student_ids)
         elsif params[:teachers]
           # add ecircular teachers recipents

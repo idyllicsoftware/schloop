@@ -76,7 +76,7 @@ task :deploy => :environment do
     invoke :'rails:db_create'
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
-    invoke :'sidekiq:quiet'
+    # invoke :'sidekiq:quiet'
     invoke :'deploy:cleanup'
 
     to :launch do
