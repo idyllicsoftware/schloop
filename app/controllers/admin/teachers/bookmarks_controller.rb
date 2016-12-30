@@ -14,7 +14,8 @@ class Admin::Teachers::BookmarksController < ApplicationController
     errors = []
     begin
       bookmarks = Bookmark.index(current_teacher, params[:topic_id])
-      render json: {success:true, bookmarks: bookmarks}
+      collaborated = Collaboration.where(bookmark_id: bookmark.ids).pluck(:bookmark_id)
+      render json: { success:true, bookmarks: bookmarks collaborated: collaborated }
     rescue Exception => e
       errors << "errors while fetching bookmarks"
       render json: {success:false, errors: errors}
