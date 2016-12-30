@@ -58,7 +58,6 @@ class Ecircular < ActiveRecord::Base
 		end
 
 		if filter_params[:id].present?
-			binding.pry
 			circular_ids = circulars.ids # filter_params[:id]
 			circulars = Ecircular.where(id: circular_ids)	
 		end
