@@ -95,19 +95,19 @@
 			<div>Shivam, Vaibhav & 5 others liked</div>
 		</div>
 		<div class="share-section">
-			<div class="like-schloopmark share">
-				<img src="<%= asset_path('admin/like.svg') %>">
+			<div class="like-schloopmark share" data-collaboration_id='{{collaboration_id}}'>
+				<img src="<%= asset_path('admin/unlike.svg') %>">
 				<p>Like</p>
 			</div>
 			<div class="write-comment share">
 				<img src="<%= asset_path('admin/comment.svg') %>">
 				<p>Comment</p>
 			</div>
-			<div class="add-Tomytopic share">
-				<img src="<%= asset_path('admin/add_item.svg') %>">
+			<div class="add-Tomytopic share" data-collaboration_id='{{collaboration_id}}'>
+				<img src="<%= asset_path('admin/add_item.svg')%>">
 				<p>Add to my topics</p>
 			</div>
-			<div class="follow-up-parent share">
+			<div class="follow-up-parent share" data-collaboration_id='{{collaboration_id}}'>
 				<img src="<%= asset_path('admin/follow_up.svg') %>">
 				<p>Followup for parents</p>
 			</div>
@@ -119,9 +119,9 @@
   				</div>
   				<div class="com-by-teacher-detail">
   					<div class="comment-as">
-  					<span class="fw">Rucha Shah</span> <span>nice…we can also plan to take students to the planetarium…what say?</span>
+  					<span class="fw">Rucha Shah</span> <span>{{{message}}}</span>
   					</div>
-  					<time class="timeago" datetime="date" title="id">20 mins ago </time>
+  					<time class="timeago" datetime="{{created_at}}" title="id"></time>
   				</div>
 			</div>
 			{{/comments}}
@@ -130,7 +130,7 @@
   				</div>
   				<div class="com-by-teacher-detail">
   					<div class="comment-editor col-md-12 p0">
-				        <div class="write-comment" contenteditable="true" placeholder="Add a comment"></div>
+				        <div class="write-comment" contenteditable="true" placeholder="Add a comment" data-collaboration_id="{{collaboration_id}}"></div>
 				    </div>
   				</div>
 			</div>			

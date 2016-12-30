@@ -68,6 +68,8 @@ Rails.application.routes.draw do
       end
       resources :collaborations do
       end
+      resources :comments do
+      end
     end
 
 ##############################################################################

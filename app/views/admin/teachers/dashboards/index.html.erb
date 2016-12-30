@@ -146,11 +146,11 @@
   				<div class="share-topic-section">
   					<div class="share-topic share-for-collaboration" data-bookmark_id="{{id}}">
   						<img src="<%= asset_path('admin/collaboration.svg') %>">
-  						<a href="">Share for collaboration</a>
+  						<span>Share for collaboration</span>
   					</div>
   					<div class="share-topic">
   						<img src="<%= asset_path('admin/follow_up.svg') %>">
-  						<a href="">Followup for parents</a>
+  						<span>Followup for parents</span>
   					</div>
   				</div>
   			</div>
@@ -164,6 +164,7 @@
       <div class="modal-body">
       	<%= form_tag '', class:"bookmark-edit-form", novalidate: true do %>
       		<div class="close-edit-modal">x</div>
+      		<input type="hidden" name="bookmark[id]">
 	      	<div class="form-group">
 				<input type="text" class="input-field" required name="bookmark[caption]" placeholder="Add a caption" autocomplete="off"  maxlength="100" />
 			</div>

@@ -51,17 +51,17 @@ class TeacherDashboard extends SchloopBase {
         });           
 
         $(document).on("click", ".topics-list li", function(e) {
-            var tag_hash = {},
+            var topic_hash = {},
                 key_value = $(this).find('span').data('topic_id'),
                 topic_id_tag = {
                     'topic_id' : key_value
                 };
             e.preventDefault();
-            tag_hash = $.extend(_self.filters, topic_id_tag);
+            _self.topic_hash = $.extend(_self.filters, topic_id_tag);
             $(".topics-list").find(".active").removeClass("active");
             $(this).addClass("active");
-            _self.loadTopicBookmarks(tag_hash, $(this));
-            _self.addTopicContent(tag_hash, $(this));
+            _self.loadTopicBookmarks();
+            _self.addTopicContent();
         });
 
         $(document).on('click','.save-caption', function(e) {
@@ -85,6 +85,31 @@ class TeacherDashboard extends SchloopBase {
                     
                 }
             });   
+        });
+    
+        $(document).on('click', '.bookmark-edit', function(e) {
+            var bookmark_id = $(this).data('bookmark_id'),
+                bookmarkEditModal = $('#bookmark-edit-modal'),
+                jForm = bookmarkEditModal.find('form');
+
+                e.preventDefault();
+                bookmarkEditModal.modal('show');
+                if(_self.topicBookmarks.hasOwnProperty(bookmark_id)){
+                   var curr_bookmark = _self.topicBookmarks[bookmark_id];
+                    jForm.fillForm(_self.topicBookmarks[bookmark_id], 'bookmark');
+                    if(curr_bookmark.data){
+                        jForm.find('.content-editor-update').html(curr_bookmark.data);
+                    }else{
+                        jForm.find('.content-editor-update').html(curr_bookmark.preview_image_url);
+                    }
+                    jForm.on('click', '.bookmark-edit-btn', function(e) {
+                        var bmId = jForm.find('input[type=hidden][name="bookmark[id]"]').val();
+                        e.preventDefault();
+                        if (bmId == bookmark_id) {                            
+                            _self.bookmarkEdit(jForm, bookmark_id);
+                        }
+                    });
+                }
         });
 
     };
@@ -194,8 +219,9 @@ class TeacherDashboard extends SchloopBase {
         return $("#topic_bookmarks_tpl").html();
     };
 
-    loadTopicBookmarks(filters_data, thisEl) {
+    loadTopicBookmarks() {
         let _self = this,
+            filters_data = _self.topic_hash,
             bookmarksEl = $('.bookmarks-section'),
             bookmarkEditModal = $('#bookmark-edit-modal');
         $.ajax({
@@ -208,7 +234,7 @@ class TeacherDashboard extends SchloopBase {
                         _self.topicBookmarks = res.bookmarks.toHash('id');
                         bookmarksEl.html(html);
                         $("time.timeago").timeago();
-
+                        
                         $('.input-form-group').on('focusin', function() {
                                 $(this).css('border-bottom','1px solid #25aae1');
                                 $(this).find('button').css('color','#25aae1');
@@ -217,22 +243,7 @@ class TeacherDashboard extends SchloopBase {
                             $(this).css('border-bottom','1px solid #ccc');
                             $(this).find('button').css('color','#dddddd');
                         });
-                        
-                        bookmarksEl.find(".bookmark-edit").on('click', function() {
-                            var bookmark_id = $(this).data('bookmark_id'),
-                                jForm = bookmarkEditModal.find('form');
-                                bookmarkEditModal.modal('show');
-                                if(_self.topicBookmarks.hasOwnProperty(bookmark_id)){
-                                   var curr_bookmark = _self.topicBookmarks[bookmark_id];
-                                    jForm.fillForm(_self.topicBookmarks[bookmark_id], 'bookmark');
-                                    if(curr_bookmark.data){
-                                        jForm.find('.content-editor-update').html(curr_bookmark.data);
-                                    }else{
-                                        jForm.find('.content-editor-update').html(curr_bookmark.preview_image_url);
-                                    }
-                                    _self.bookmarkEdit(jForm, bookmark_id, filters_data);
-                                }
-                        });
+            
                         bookmarksEl.find('.bookmark-delete').on('click', function() {
                             var curr_bookmark_El = $(this).closest('.topics-list-section'),
                                 bookmark_id = $(this).data('bookmark_id');
@@ -255,26 +266,55 @@ class TeacherDashboard extends SchloopBase {
                                 });
                             }
                         });
+
                         bookmarksEl.find('.share-for-collaboration').on('click', function() {
-                            var curr_Bm_id = $(this).data('bookmark_id');
+                            var curr_Bm_id = $(this).data('bookmark_id'),
+                                img_tag = $(this).find('img'),
+                                span_tag = $(this).find('span'),
+                                shared = $(this).hasClass('already-shared') ? false : true ;
 
-                            if(_self.topicBookmarks.hasOwnProperty(curr_Bm_id)){
-
-                                $.ajax({
-                                    url: "/admin/teachers/collaborations?bookmark_id=" + curr_Bm_id,
-                                    method: "POST",
-                                    success: function (res) {
-                                       if(res.success) {
-                                        //TO DO...
-                                         toastr.success('schloopmark collaborated successfully', '', {
-                                                    positionClass: 'toast-top-right cloud-display'
-                                                });      
-                                       } else {
-                                            _self.showErrors(res.errors);
-                                       }
-                                    }
+                            if(_self.topicBookmarks.hasOwnProperty(curr_Bm_id) && shared){
+                                swal({
+                                        title: "Are you sure?",
+                                        text: "You want share for collaboration",
+                                        type: "info",
+                                        showCancelButton: true,
+                                        confirmButtonText: "Yes!"
+                                    },
+                                    function(isConfirm){
+                                        if (isConfirm) {
+                                            $.ajax({
+                                                url: "/admin/teachers/collaborations?bookmark_id=" + curr_Bm_id,
+                                                method: "POST",
+                                                success: function (res) {
+                                                   if(res.success) {
+                                                    span_tag.html('Shared with teachers').css('color','#25aae1');
+                                                    img_tag.replaceWith('<img src="/assets/admin/collaboration_fill.svg" >');
+                                                     toastr.success('schloopmark collaborated successfully', '', {
+                                                                positionClass: 'toast-top-right cloud-display'
+                                                            });      
+                                                   } else {
+                                                        _self.showErrors(res.errors);
+                                                   }
+                                                }
+                                            });
+                                        }
                                 });
-                            }
+                            }                
+                        });
+
+                        $(document).find('.share-for-collaboration').each(function(){
+                            var thisEl = $(this),
+                                img_tag = $(this).find('img'),
+                                span_tag = $(this).find('span'),
+                                bk_id = $(this).data('bookmark_id');
+                            res.collaborated.forEach(function(co) {
+                                 if(bk_id == co) {
+                                    thisEl.addClass('already-shared');
+                                    span_tag.html('Shared with teachers').css('color','#25aae1');
+                                    img_tag.replaceWith('<img src="/assets/admin/collaboration_fill.svg" >');
+                                 }
+                            });
                         });
                 } else {
                     _self.showErrors(res.errors);
@@ -283,35 +323,32 @@ class TeacherDashboard extends SchloopBase {
         });
     };
 
-    bookmarkEdit(jForm, bookmark_id, filters_data) {
+    bookmarkEdit(jForm, bookmark_id) {
         let _self = this,
-            bookmarkEditModal = $('#bookmark-edit-modal');
-
-        jForm.on('click', '.bookmark-edit-btn', function() {
-            var content_val = $('.content-editor-update').html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ''),
-                bookmarks_hash = {
-                    'datum' : content_val,
-                    'bookmark_id': bookmark_id
-                },
-                new_val = jForm.serializeObject(),
-                formdata = $.extend(bookmarks_hash, new_val);
-
-            $.ajax({
-                url: "/admin/teachers/bookmarks/"+bookmark_id,
-                data: formdata,
-                method: "PATCH",
-                success: function (res) {
-                   if(res.success) {
-                    _self.loadTopicBookmarks(filters_data);
-                    bookmarkEditModal.modal('hide');
-                     toastr.success('schloopmarked updated successfully', '', {
-                                positionClass: 'toast-top-right cloud-display'
-                            });      
-                   } else {
-                        _self.showErrors(res.errors);
-                   }
-                }
-            });
+            bookmarkEditModal = $('#bookmark-edit-modal'),
+            content_val = $('.content-editor-update').html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ''),
+            bookmarks_hash = {
+                'datum' : content_val,
+                'bookmark_id': bookmark_id
+            },
+            new_val = jForm.serializeObject(),
+            formdata = $.extend(bookmarks_hash, new_val);
+        
+        $.ajax({
+            url: "/admin/teachers/bookmarks/"+bookmark_id,
+            data: formdata,
+            method: "PATCH",
+            success: function (res) {
+               if(res.success) {
+                _self.loadTopicBookmarks();
+                bookmarkEditModal.modal('hide');
+                 toastr.success('schloopmarked updated successfully', '', {
+                            positionClass: 'toast-top-right cloud-display'
+                        });      
+               } else {
+                    _self.showErrors(res.errors);
+               }
+            }
         });
 
         jForm.on('click', '.close-edit-modal', function() {
@@ -319,19 +356,19 @@ class TeacherDashboard extends SchloopBase {
         });
     };
 
-    addTopicContent(topic_content_data, thisEl) {
+    addTopicContent() {
         let _self = this,
             add_topic_content_form = $('.add-topic-content-form'),
             content_editor = $('.content-editor');
         
             add_topic_content_form.off('click').on('click', '.add-topic-content-btn', function (e) {
-                var content_val = content_editor.html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ''),
+                var content_val = content_editor.html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ' '),
                     bookmarks_hash = {},
                     key_value = {
                         'datum' : content_val
                     };
                     e.preventDefault();
-                bookmarks_hash = $.extend(topic_content_data, key_value);
+                bookmarks_hash = $.extend(_self.topic_hash, key_value);
                 
                 $.ajax({
                     url: "/admin/teachers/bookmarks",
@@ -340,7 +377,7 @@ class TeacherDashboard extends SchloopBase {
                     success: function (res) {
                        if(res.success) {
                         content_editor.html('');
-                         _self.loadTopicBookmarks(topic_content_data, thisEl);
+                         _self.loadTopicBookmarks();
                          toastr.success('New schloopmarked added successfully', '', {
                                     positionClass: 'toast-top-right cloud-display'
                                 });      
