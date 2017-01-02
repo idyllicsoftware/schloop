@@ -364,10 +364,16 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
     private
     def filter_params
-      circular_ids = EcircularParent.where(parent_id: @current_user.id).pluck(:ecircular_id)
+      filters = params[:filter]
+      if filters[:from_date].present?
+        from_date = DateTime.parse(filters[:from_date])
+        to_date = DateTime.parse(filters[:to_date])
+        circular_ids = EcircularParent.where(parent_id: @current_user.id).where(created_at: from_date.beginning_of_day..to_date.end_of_day ).pluck(:ecircular_id)
+      else
+        circular_ids = EcircularParent.where(parent_id: @current_user.id).pluck(:ecircular_id)
+      end
       filter_hash = {id: circular_ids}
       
-      filters = params[:filter]
       return filter_hash if filters.blank?
       divisions = [@student_profile.division_id] 
       return {
