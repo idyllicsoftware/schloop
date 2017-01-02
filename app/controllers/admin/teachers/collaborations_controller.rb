@@ -11,7 +11,15 @@ class Admin::Teachers::CollaborationsController < ApplicationController
       if collaborations.include?(bookmark.id)
         collaboration = Collaboration.find_by(bookmark_id: bookmark.id)
         comments = collaboration.comments
-        collaboration_data << { collaboration_id: collaboration.id, collaboration_data: collaboration, bookmark_id: bookmark.id, bookmark_data: bookmark_data(collaboration.bookmark), comments: comments }
+        data = []
+        comments.each do |comment|
+          teacher = Teacher.find_by(id: comment.commented_by)
+          name = teacher.first_name + " " +teacher.last_name
+          comment_data = comment.as_json
+          comment_data["teacher_name"] = name
+          data << comment_data
+        end
+        collaboration_data << { collaboration_id: collaboration.id, collaboration_data: collaboration,  bookmark_data: bookmark_data(collaboration.bookmark), comments: data }
       end
     end
     render json: {success: true, data: collaboration_data}
