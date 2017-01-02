@@ -111,7 +111,6 @@ class TeacherDashboard extends SchloopBase {
                     });
                 }
         });
-
     };
 
     InitDocument () {
@@ -131,14 +130,14 @@ class TeacherDashboard extends SchloopBase {
                         'grade_name' : grade_filter_name,
                         'subject_name' : subject_filter_name
                     }
-                    _self.loadMyTopics();
-                
-            var max_topic_content_lenght = $('.content-view-section').find('p').text().length;
-                if (max_topic_content_lenght > 200){
-                    var trimmedString = $('.content-view-section').find('p').text().substring(0, 200);
-                    $('.content-view-section').find('p').text(trimmedString);
-                    $('.content-view-section').find('p').append("<a class='read-more'> More...</a>");
-                }
+                    _self.loadMyTopics();        
+
+        $(document).on('click', '.more', function (e) {
+            e.preventDefault();
+            this.expand = !this.expand;
+            $(this).text(this.expand ? "Collapse" : "More...");
+            $(this).closest('.content-view-section').find('.sm-area, .bg-area').toggleClass('sm-area bg-area');
+        });
 
         $('.content-editor-section > div[contenteditable=true]').on('focusin', function() {
             $('div[contenteditable=true]').parent().css('border','1px solid #25aae1');
@@ -148,43 +147,45 @@ class TeacherDashboard extends SchloopBase {
             $('div[contenteditable=true]').parent().css('border','1px solid #ccc');
             $('div[contenteditable=true]').parent().find('button').css('color','#dddddd');
         });
-        _self.addTopic();
-    };
 
-    addTopic() {
-        var _self = this,
-            addTopicModalEl = $('#add-topic-modal');
-
-        $(document).on('click','.add-topic', function () {
+        $(document).on('click','.add-topic', function (e) {
             var add_topic_form = $('.add-topic-form');
             addTopicModalEl.modal('show');
+            e.preventDefault();
             add_topic_form[0].reset();
             addTopicModalEl.find('label').replaceWith('<label>' + _self.filters.grade_name + ' - ' + _self.filters.subject_name + ' | Add New Topic</label>');        
-            
-            $('.add-topic-btn').on('click', function () {
-                var key_value = add_topic_form.serializeObject(),
-                    topic_data = {};
+             _self.addTopic(add_topic_form);   
+        });    
+        
+    };
 
-                topic_data = $.extend(_self.filters, key_value); 
+    addTopic(add_topic_form) {
+        var _self = this,
+            addTopicModalEl = $('#add-topic-modal'); 
 
-                $.ajax({
-                    url: `/admin/teachers/topics`,
-                    data: topic_data,
-                    method: 'POST',
-                    success: function (res) {
-                        if(res.success) {
-                            _self.loadMyTopics();
-                            addTopicModalEl.modal('hide');
-                            toastr.success('New topic added successfully', '', {
-                                    positionClass: 'toast-top-right cloud-display'
-                            });      
-                        } else {
-                            _self.showErrors(res.errors);
-                        }
+        add_topic_form.off('click').on('click', '.add-topic-btn', function (e) {
+            var key_value = add_topic_form.serializeObject(),
+                topic_data = {};
+            e.preventDefault();
+            topic_data = $.extend(_self.filters, key_value);
+
+            $.ajax({
+                url: `/admin/teachers/topics`,
+                data: topic_data,
+                method: 'POST',
+                success: function (res) {
+                    if(res.success) {
+                        _self.loadMyTopics();
+                        addTopicModalEl.modal('hide');
+                        toastr.success('New topic added successfully', '', {
+                                positionClass: 'toast-top-right cloud-display'
+                        });      
+                    } else {
+                        _self.showErrors(res.errors);
                     }
-                });
+                }
             });
-        });
+        });    
     };
 
     loadMyTopics(){
@@ -316,6 +317,15 @@ class TeacherDashboard extends SchloopBase {
                                  }
                             });
                         });
+
+                        $(document).find('.content-view-section .sm-area .data').each( function() {
+                            var thisEl = $(this),
+                                len = $(this).text().length;
+                                if(len < 200){
+                                    $(this).closest('.content-view-section').find('.more').addClass('hidden');
+                                }
+                        });
+
                 } else {
                     _self.showErrors(res.errors);
                 }

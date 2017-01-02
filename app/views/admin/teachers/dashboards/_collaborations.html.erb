@@ -1,65 +1,7 @@
-<div class="tab-pane fade in active" id="collaboration">
+<div class="tab-pane fade in" id="collaboration">
 	<div class="content-wrapper">
 		<div class="collaborated-schloopmark">
-			<!-- <div class="schloopmark-view-section">
-				<div class="schloopmark-view">
-	  				<div class="collaborated-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-	  				</div>
-	  				<div class="collaborated-by-teacher-detail">
-	  					<p>Title of the image</p>
-	  					<div class="about-schloopmark"><time class="timeago" datetime="date" title="id">20 mins ago </time>|<span> Grade I </span>|<span> Science </span>|<span> Our Universe </span></div>
-	  				</div>
-  				</div>
-  				<div class="schloopmark-content">
-  					<p>View out of international space station at night</p>
-  					<div class="content-block">
-  						 It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  					</div>
-  				</div>
-			</div>
-			<div class="schloopmark-like">
-				<img src="<%= asset_path('admin/like_fill.svg') %>">
-				<div>Shivam, Vaibhav & 5 others liked</div>
-			</div>
-			<div class="share-section">
-				<div class="like-schloopmark share">
-					<img src="<%= asset_path('admin/like.svg') %>">
-					<p>Like</p>
-				</div>
-				<div class="write-comment share">
-					<img src="<%= asset_path('admin/comment.svg') %>">
-					<p>Comment</p>
-				</div>
-				<div class="add-Tomytopic share">
-					<img src="<%= asset_path('admin/add_item.svg') %>">
-					<p>Add to my topics</p>
-				</div>
-				<div class="follow-up-parent share">
-					<img src="<%= asset_path('admin/follow_up.svg') %>">
-					<p>Followup for parents</p>
-				</div>
-			</div>
-			<div class="comment-section">
-				<div class="com-sub-section">
-	  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-	  				</div>
-	  				<div class="com-by-teacher-detail">
-	  					<div class="comment-as">
-	  					<span class="fw">Rucha Shah</span> <span>nice…we can also plan to take students to the planetarium…what say?</span>
-	  					</div>
-	  					<time class="timeago" datetime="date" title="id">20 mins ago </time>
-	  				</div>
-  				</div>
-  				<div class="com-sub-section">
-	  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-	  				</div>
-	  				<div class="com-by-teacher-detail">
-	  					<div class="comment-editor col-md-12 p0">
-					        <div class="write-comment" contenteditable="true" placeholder="Add a comment"></div>
-					    </div>
-	  				</div>
-  				</div>			
-			</div> -->
+			
 		</div>
 	</div>
 </div>
@@ -81,10 +23,10 @@
 				<p>{{caption}}</p>
 				<div class="content-block">
 				{{#data}}
-					{{data}}
+					{{{data}}}
 				{{/data}}
 				{{#preview_image_url}}
-					<img src="{{preview_image_url}}" style="width: 300px; height: 200px;">
+					<a href="{{url}}"><img src="{{preview_image_url}}" style="width: 300px; height: 200px;"></a>
 				{{/preview_image_url}}
 				</div>
 			</div>	
@@ -119,9 +61,9 @@
   				</div>
   				<div class="com-by-teacher-detail">
   					<div class="comment-as">
-  					<span class="fw">Rucha Shah</span> <span>{{{message}}}</span>
+  					<span class="fw">{{teacher_name}}</span> <span>{{{message}}}</span>
   					</div>
-  					<time class="timeago" datetime="{{created_at}}" title="id"></time>
+  					<time class="timeago" datetime="{{created_at}}"></time>
   				</div>
 			</div>
 			{{/comments}}
