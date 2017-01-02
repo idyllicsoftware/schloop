@@ -70,7 +70,7 @@ class Ecircular < ActiveRecord::Base
 		return circular_data, total_records
 	end
 
-	def data_for_circular(circular_parents_by_ecircular_id, circular_teachers_by_ecircular_id, circular_tracker_data_by_ecircular_id = {})
+	def data_for_circular(circular_parents_by_ecircular_id, circular_teachers_by_ecircular_id = {}, circular_tracker_data_by_ecircular_id = {})
 		recipients, attachments, students_data, teachers_data = [], [], [], []
 		grouped_circulars = self.ecircular_recipients.group_by do |x| x.grade_id end
 		grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)
