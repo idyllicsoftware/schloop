@@ -37,6 +37,9 @@ class Ecircular < ActiveRecord::Base
 	def self.school_circulars(school, user, filter_params={}, offset=0, page_size=50)
 		circular_data = []
 		circulars = school.ecirculars
+		filter_circular_ids = filter_params[:id]
+		circulars = circulars.where(id: filter_circular_ids)
+
 		if filter_params[:from_date].present?
 			from_date = DateTime.parse(filter_params[:from_date])
 			circulars = circulars.where("created_at >= ?", from_date.beginning_of_day)
@@ -51,16 +54,6 @@ class Ecircular < ActiveRecord::Base
 			circulars = circulars.where(circular_tag: filter_params[:tags])
 		end
 
-		if filter_params[:divisions].present?
-			division_ids = filter_params[:divisions].join(', ')
-			circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{division_ids})").ids
-			circulars = circulars.where(id: circular_ids)
-		end
-
-		if filter_params[:id].present?
-			circular_ids = circulars.ids # filter_params[:id]
-			circulars = Ecircular.where(id: circular_ids)	
-		end
 		total_records = circulars.count
 		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
 
