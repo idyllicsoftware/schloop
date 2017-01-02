@@ -10,7 +10,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     bookmarks.each do |bookmark|
       if collaborations.include?(bookmark.id)
         collaboration = Collaboration.find_by(bookmark_id: bookmark.id)
-        comments = collaboration.comments
+        comments = collaboration.comments.order('created_at asc')
         data = []
         comments.each do |comment|
           teacher = Teacher.find_by(id: comment.commented_by)
@@ -20,6 +20,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
           data << comment_data
         end
         collaboration_data << { collaboration_id: collaboration.id, collaboration_data: collaboration,  bookmark_data: bookmark_data(collaboration.bookmark), comments: data }
+        collaboration_data = collaboration_data.sort_by { |element| element[:collaboration_data][:created_at]}.reverse
       end
     end
     render json: {success: true, data: collaboration_data}

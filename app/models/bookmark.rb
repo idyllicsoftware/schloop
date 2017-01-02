@@ -46,7 +46,7 @@ class Bookmark < ActiveRecord::Base
   enum data_type: { text:0, url:1 }
   def self.index(user, topic_id)
     bookmarks = self.where("topic_id = ? AND (teacher_id = 0 OR teacher_id = ?)",
-                                topic_id, user.id)
+                                topic_id, user.id).order('updated_at desc')
     return bookmarks
   end
 
