@@ -115,12 +115,13 @@ class Api::V1::EcircularsController < Api::V1::BaseController
           circular.ecircular_recipients.create!(recipients_params)
           division_ids = circular.ecircular_recipients.pluck(:division_id)
           student_ids = StudentProfile.active.where(division_id: division_ids).pluck(:student_id)
+          student_ids = Student.where(id: student_ids).active.ids
           circular.send_notification(student_ids)
         elsif params[:students].present?
           # add ecircular parent recipents
           circular.ecircular_parents.create!(parents_params)
           student_ids = circular.ecircular_parents.pluck(:student_id)
-          # student_ids = [1]
+          student_ids = Student.where(id: student_ids).active.ids
           circular.send_notification(student_ids)
         elsif params[:teachers]
           # add ecircular teachers recipents
