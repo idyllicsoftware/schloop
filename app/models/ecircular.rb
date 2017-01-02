@@ -37,30 +37,23 @@ class Ecircular < ActiveRecord::Base
 	def self.school_circulars(school, user, filter_params={}, offset=0, page_size=50)
 		circular_data = []
 		circulars = school.ecirculars
+		filter_circular_ids = filter_params[:id]
+		circulars = circulars.where(id: filter_circular_ids)
+
 		if filter_params[:from_date].present?
 			from_date = DateTime.parse(filter_params[:from_date])
-			circulars = circulars.where("created_at >= ?", from_date.beginning_of_day)
+			circulars = circulars.where("ecirculars.created_at >= ?", from_date.beginning_of_day)
 		end
 
 		if filter_params[:to_date].present?
 			to_date = DateTime.parse(filter_params[:to_date])
-			circulars = circulars.where("created_at <= ?", to_date.end_of_day)
+			circulars = circulars.where("ecirculars.created_at <= ?", to_date.end_of_day)
 		end
 
 		if filter_params[:tags].present?
 			circulars = circulars.where(circular_tag: filter_params[:tags])
 		end
 
-		if filter_params[:divisions].present?
-			division_ids = filter_params[:divisions].join(', ')
-			circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{division_ids})").ids
-			circulars = circulars.where(id: circular_ids)
-		end
-
-		if filter_params[:id].present?
-			circular_ids = circulars.ids # filter_params[:id]
-			circulars = Ecircular.where(id: circular_ids)	
-		end
 		total_records = circulars.count
 		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
 
@@ -77,7 +70,7 @@ class Ecircular < ActiveRecord::Base
 		return circular_data, total_records
 	end
 
-	def data_for_circular(circular_parents_by_ecircular_id, circular_teachers_by_ecircular_id, circular_tracker_data_by_ecircular_id = {})
+	def data_for_circular(circular_parents_by_ecircular_id, circular_teachers_by_ecircular_id = {}, circular_tracker_data_by_ecircular_id = {})
 		recipients, attachments, students_data, teachers_data = [], [], [], []
 		grouped_circulars = self.ecircular_recipients.group_by do |x| x.grade_id end
 		grades_by_id = Grade.where(id: grouped_circulars.keys).index_by(&:id)

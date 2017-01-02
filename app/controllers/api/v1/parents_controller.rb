@@ -364,17 +364,20 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
     private
     def filter_params
-      circular_ids = EcircularParent.where(parent_id: @current_user.id).pluck(:ecircular_id)
+      parent_circular_ids = EcircularParent.where(parent_id: @current_user.id).pluck(:ecircular_id)
+      default_division_ids = @student_profile.division_id
+      division_circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{default_division_ids})").ids
+
+      circular_ids = (parent_circular_ids + division_circular_ids)
+
       filter_hash = {id: circular_ids}
-      
       filters = params[:filter]
       return filter_hash if filters.blank?
-      divisions = [@student_profile.division_id] 
+
       return {
         id: circular_ids,
         from_date: filters[:from_date],
         to_date: filters[:to_date],
-        divisions: divisions,
         tags: filters[:tags]
       }
     end
