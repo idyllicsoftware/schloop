@@ -53,7 +53,9 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     else
       circular_data, total_records = Ecircular.school_circulars(@school, @current_user, filter_params, offset, page_size)
     end
-
+    teacher_circulars = get_teachers_circulars(params[:filter])
+    circular_data << teacher_circulars
+    total_records += teacher_circulars.count
     if errors.blank?
       index_response = {
         success: true,
@@ -238,7 +240,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     def filter_params
       circular_ids = []
       default_division_ids = @current_user.grade_teachers.pluck(:division_id)
-      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{default_division_ids})").ids
+      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (?)",default_division_ids).ids
 
       filters = params[:filter]
       return {id: circular_ids} if filters.blank?
@@ -250,13 +252,38 @@ class Api::V1::EcircularsController < Api::V1::BaseController
       end if filters[:grades].present?
 
       division_ids &= default_division_ids
-      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{division_ids})").ids
+      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (?)",division_ids).ids
 
       { id: circular_ids,
         from_date: filters[:from_date],
         to_date: filters[:to_date],
         tags: filters[:tags]
       }
+    end
+
+    def get_teachers_circulars(filters)
+      teacher_circulars = EcircularTeacher.where(teacher_id: @current_user.id)
+      if filters.blank?
+        circular_ids = teacher_circulars.pluck(:ecircular_id)
+        circulars = Ecircular.where(id: circular_ids)
+        return circulars
+      end
+      if filters[:from_date].present?
+      from_date =  DateTime.parse(filters[:from_date]).beginning_of_day
+      teacher_circulars = teacher_circulars.where("created_at >= ?", from_date)
+      end
+
+      if filters[:to_date].present?
+      to_date =  DateTime.parse(filters[:to_date]).end_of_day
+      teacher_circulars = teacher_circulars.where("created_at <= ?", to_date)
+      end
+      circular_ids = teacher_circulars.pluck(:ecircular_id)
+      circulars = Ecircular.where(id: circular_ids)
+
+      if filters[:tags].present?
+        circulars = circulars.where(circular_tag: filters[:tags])
+      end
+      return circulars
     end
 
 end
