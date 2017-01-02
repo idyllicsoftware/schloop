@@ -249,7 +249,11 @@ class Api::V1::EcircularsController < Api::V1::BaseController
         division_ids << division_ids
       end if filters[:grades].present?
 
-      division_ids &= default_division_ids
+      if division_ids.present?
+        division_ids &= default_division_ids
+      else
+        division_ids = default_division_ids
+      end
       circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{division_ids.join(',')})").ids
 
       { id: circular_ids,
