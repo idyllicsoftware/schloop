@@ -238,7 +238,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     def filter_params
       circular_ids = []
       default_division_ids = @current_user.grade_teachers.pluck(:division_id)
-      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{default_division_ids})").ids
+      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{default_division_ids.join(',')})").ids
 
       filters = params[:filter]
       return {id: circular_ids} if filters.blank?
@@ -250,7 +250,7 @@ class Api::V1::EcircularsController < Api::V1::BaseController
       end if filters[:grades].present?
 
       division_ids &= default_division_ids
-      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{division_ids})").ids
+      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{division_ids.join(',')})").ids
 
       { id: circular_ids,
         from_date: filters[:from_date],

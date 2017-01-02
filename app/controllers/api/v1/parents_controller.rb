@@ -365,8 +365,8 @@ class Api::V1::ParentsController < Api::V1::BaseController
     private
     def filter_params
       parent_circular_ids = EcircularParent.where(parent_id: @current_user.id).pluck(:ecircular_id)
-      default_division_ids = @student_profile.division_id
-      division_circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{default_division_ids})").ids
+      default_division_id = @student_profile.division_id
+      division_circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{default_division_id})").ids
 
       circular_ids = (parent_circular_ids + division_circular_ids)
 
