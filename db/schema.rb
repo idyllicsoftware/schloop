@@ -94,26 +94,6 @@ ActiveRecord::Schema.define(version: 20161229061320) do
 
   add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
 
-  create_table "collaborations", force: :cascade do |t|
-    t.integer  "bookmark_id"
-    t.string   "collaboration_message"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-  end
-
-  add_index "collaborations", ["bookmark_id"], name: "index_collaborations_on_bookmark_id", using: :btree
-
-  create_table "comments", force: :cascade do |t|
-    t.string   "commentable_type"
-    t.integer  "commentable_id"
-    t.integer  "commented_by"
-    t.text     "message"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
-
   create_table "devices", force: :cascade do |t|
     t.integer  "deviceable_id"
     t.string   "deviceable_type"
@@ -229,21 +209,21 @@ ActiveRecord::Schema.define(version: 20161229061320) do
   end
 
   create_table "parents", force: :cascade do |t|
-    t.string   "email",                  limit: 100, default: "", null: false
-    t.string   "encrypted_password",                 default: "", null: false
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.text     "first_name",                                      null: false
-    t.text     "last_name",                                       null: false
-    t.text     "guardian_type",                                   null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.text     "first_name",                          null: false
+    t.text     "last_name",                           null: false
+    t.text     "guardian_type",                       null: false
   end
 
   add_index "parents", ["email"], name: "index_parents_on_email", unique: true, using: :btree
@@ -317,10 +297,14 @@ ActiveRecord::Schema.define(version: 20161229061320) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "grade_id"
+    t.integer  "teacher_id"
+    t.integer  "division_id"
     t.integer  "master_subject_id", default: 0, null: false
   end
 
+  add_index "subjects", ["division_id"], name: "index_subjects_on_division_id", using: :btree
   add_index "subjects", ["grade_id"], name: "index_subjects_on_grade_id", using: :btree
+  add_index "subjects", ["teacher_id"], name: "index_subjects_on_teacher_id", using: :btree
 
   create_table "teachers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -436,7 +420,6 @@ ActiveRecord::Schema.define(version: 20161229061320) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
-  add_foreign_key "collaborations", "bookmarks"
   add_foreign_key "divisions", "grades"
   add_foreign_key "ecircular_recipients", "ecirculars"
   add_foreign_key "grade_teachers", "divisions"
@@ -446,6 +429,8 @@ ActiveRecord::Schema.define(version: 20161229061320) do
   add_foreign_key "grades", "schools"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "subjects", "divisions"
   add_foreign_key "subjects", "grades"
+  add_foreign_key "subjects", "teachers"
   add_foreign_key "user_roles", "roles"
 end
