@@ -164,7 +164,7 @@ Rails.application.routes.draw do
       post "device/deregister" => 'devices#de_register'
 
       post "/bookmarks/create" => 'bookmarks#create'
-      get "/bookmarks" => 'bookmarks#index'
+      get  "/bookmarks" => 'bookmarks#index'
       post "/bookmarks/add_caption" => 'bookmarks#add_caption'
 
     end
