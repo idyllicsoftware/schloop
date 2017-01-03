@@ -21,10 +21,12 @@ class Collaborations extends SchloopBase {
     	});
 
         $(document).on('click', '.more', function (e) {
+            var bm_id = $(this).data('bookmark_id');
             e.preventDefault();
             this.expand = !this.expand;
             $(this).text(this.expand ? "Collapse" : "More...");
             $(this).closest('.content-block').find('.sm-area, .bg-area').toggleClass('sm-area bg-area');
+            _self.viewSchloopmark(bm_id);
         });
 
     	_self.likeSchloopmark();
@@ -115,7 +117,7 @@ class Collaborations extends SchloopBase {
     		}
 
     		$.ajax({
-	            url: '/admin/teachers/' + teacher_id +'/bookmark_like_or_view',
+	            url: '/admin/teachers/bookmarks/bookmark_like_or_view',
 	            data: like_data,
 	            method: 'POST',
 	            success: function (res) {
@@ -186,5 +188,26 @@ class Collaborations extends SchloopBase {
 		        });
 		    }
     	});
+    };
+
+    viewSchloopmark(bookmark_id) {
+        let _self = this,
+            views_data = {
+                'bookmark_id' : bookmark_id,
+                'event' : 'view'
+            };
+    
+        $.ajax({
+            url: '/admin/teachers/bookmarks/bookmark_like_or_view',
+            data : views_data,
+            method: 'POST',
+            success: function (res) {
+                if(res.success) {
+                    //TO DO.... 
+                } else {
+                    _self.showErrors(res.errors);
+                }
+            }
+        });
     };
 }
