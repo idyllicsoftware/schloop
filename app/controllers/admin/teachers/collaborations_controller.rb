@@ -52,8 +52,11 @@ class Admin::Teachers::CollaborationsController < ApplicationController
                preview_image_url: bookmark.preview_image_url,
                likes: bookmark.likes,
                views: bookmark.views,
+               topic_id: bookmark.topic_id,
                topic_name: bookmark.topic.title,
+               grade_id: bookmark.grade_id,
                grade_name: bookmark.grade.name,
+               subject_id: bookmark.subject_id,
                subject_name: bookmark.subject.name
             }
     return datum

@@ -70,6 +70,9 @@ class Admin::Teachers::BookmarksController < ApplicationController
     bookmark_datum[:grade_id] = params[:grade_id]
     bookmark_datum[:teacher_id] = teacher.id
     bookmark_datum[:school_id] = teacher.school_id
+    if params[:caption].present?
+      bookmark_datum[:caption] = params[:caption]
+    end
     if data_type == :url 
       preview_image_data = get_preview_image_url(params[:datum])
       preview_image_data[:title].present? ? (bookmark_datum[:title] = preview_image_data[:title]) : (bookmark_datum[:title] = "Schloopmark Web URL")
