@@ -144,6 +144,7 @@ GEM
     multi_xml (0.5.5)
     net-http-persistent (2.9.4)
     net_http_timeout_errors (0.3.0)
+    newrelic_rpm (3.17.2.327)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     oga (2.7)
@@ -315,6 +316,7 @@ DEPENDENCIES
   mina (~> 0.3.8)
   mina-multistage
   mina-sidekiq
+  newrelic_rpm
   pg
   pry
   pry-nav
