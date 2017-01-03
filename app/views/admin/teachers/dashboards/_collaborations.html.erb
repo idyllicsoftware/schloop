@@ -22,9 +22,12 @@
 			<div class="schloopmark-content">
 				<p>{{caption}}</p>
 				<div class="content-block">
-				{{#data}}
-					{{{data}}}
-				{{/data}}
+					{{#data}}
+						<div class="sm-area">
+	  						<p class="data">{{{data}}}</p>
+	  					</div>
+	  					<a href="#" class="more">More...</a>
+					{{/data}}
 				{{#preview_image_url}}
 					<a href="{{url}}"><img src="{{preview_image_url}}" style="width: 300px; height: 200px;"></a>
 				{{/preview_image_url}}
@@ -37,7 +40,7 @@
 			<div>Shivam, Vaibhav & 5 others liked</div>
 		</div>
 		<div class="share-section">
-			<div class="like-schloopmark share" data-collaboration_id='{{collaboration_id}}'>
+			<div class="like-schloopmark share" data-bookmark_id='{{#bookmark_data}}{{bookmark_id}}{{/bookmark_data}}' data-collaboration_id='{{collaboration_id}}' data-teacher_id='<%= @teacher.id %>'>
 				<img src="<%= asset_path('admin/unlike.svg') %>">
 				<p>Like</p>
 			</div>
