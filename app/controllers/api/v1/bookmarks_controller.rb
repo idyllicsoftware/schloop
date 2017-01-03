@@ -32,31 +32,31 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     total_bookmarks = bookmarks.count
     bookmarks.each do |bookmark|
       bookmark_data << { id: bookmark.id,
-                        title: bookmark.title,
-                        caption: bookmark.caption,
-                        data: bookmark.data,
-                        type: bookmark.data_type,
-                        subject_id: bookmark.subject_id,
-                        grade_id: bookmark.grade_id,
-                        preview_image_url: bookmark.preview_image_url,
-                        created_at: bookmark.created_at,
-                        topic: {
+                         title: bookmark.title,
+                         caption: bookmark.caption,
+                         data: bookmark.data,
+                         type: bookmark.data_type,
+                         subject_id: bookmark.subject_id,
+                         grade_id: bookmark.grade_id,
+                         preview_image_url: bookmark.preview_image_url,
+                         created_at: bookmark.created_at,
+                         topic: {
                             topic_id: bookmark.topic.id,
                             topic_title: bookmark.topic.title
-                        },
-                        teacher: {
+                         },
+                         teacher: {
                             id: bookmark.teacher.id,
                             first_name: bookmark.teacher.first_name,
                             last_name: bookmark.teacher.last_name
-                        }
+                         }
 
       }
     end
     pagination_data = {
-        page_size: page_size,
-        record_count: total_bookmarks,
-        total_pages: (total_bookmarks/page_size.to_f).ceil,
-        current_page: page
+       page_size: page_size,
+       record_count: total_bookmarks,
+       total_pages: (total_bookmarks/page_size.to_f).ceil,
+       current_page: page
     }
     render json: {success: true, error: nil, data: {bookmark_data: bookmark_data, pagination_data: pagination_data}}
   end
