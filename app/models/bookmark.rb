@@ -32,11 +32,12 @@ class Bookmark < ActiveRecord::Base
   belongs_to :grade
   belongs_to :subject
   belongs_to :school
+  has_one :collaboration, :dependent => :destroy
+
 #  index_bookmarks_on_grade_id_and_subject_id  (grade_id,subject_id)
 #  index_bookmarks_on_school_id                (school_id)
 #  index_bookmarks_on_teacher_id               (teacher_id)
 #
-
   validates :grade_id, presence: true
   validates :subject_id, presence: true
   validates :topic_id, presence: true

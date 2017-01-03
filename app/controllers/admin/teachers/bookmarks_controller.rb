@@ -38,7 +38,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
   def destroy
     errors = []
     begin
-      bookmark = Bookmark.find_by(params[:bookmark_id])
+      bookmark = Bookmark.find_by(id:params[:id])  
       bookmark.destroy
     rescue Exception => e
       errors << "unable to destroy bookmarks"
