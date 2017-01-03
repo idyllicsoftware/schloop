@@ -20,13 +20,15 @@ class Collaborations extends SchloopBase {
     		_self.loadCollaboratedSchloopmark();	
     	});
 
-        $(document).on('click', '.more', function (e) {
+        $(document).on('click', '.read_more', function (e) {
             var bm_id = $(this).data('bookmark_id');
             e.preventDefault();
             this.expand = !this.expand;
             $(this).text(this.expand ? "Collapse" : "More...");
             $(this).closest('.content-block').find('.sm-area, .bg-area').toggleClass('sm-area bg-area');
-            _self.viewSchloopmark(bm_id);
+            if($(this).text() === 'Collapse') {
+                _self.viewSchloopmark(bm_id);
+            }
         });
 
     	_self.likeSchloopmark();
@@ -80,6 +82,10 @@ class Collaborations extends SchloopBase {
                                 }
                         });
 
+                        $(document).on('click', '.content-block a img', function() {
+                            var bm_id = $(this).data('bm_id');
+                            _self.viewSchloopmark(bm_id);
+                        });
                 } else {
                     _self.showErrors(res.errors);
                 }

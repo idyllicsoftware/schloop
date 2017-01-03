@@ -20,16 +20,16 @@
   				</div>
 			</div>
 			<div class="schloopmark-content">
-				<p>{{caption}}</p>
+				<p class="caption">{{caption}}</p>
 				<div class="content-block">
 					{{#data}}
 						<div class="sm-area">
 	  						<p class="data">{{{data}}}</p>
 	  					</div>
-	  					<a href="#" class="more" data-bookmark_id='{{bookmark_id}}'>More...</a>
+	  					<a href="#" class="read_more" data-bookmark_id='{{bookmark_id}}'>More...</a>
 					{{/data}}
 				{{#preview_image_url}}
-					<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" style="width: 300px; height: 200px;"></a>
+					<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" data-bm_id='{{bookmark_id}}' style="width: 300px; height: 200px;"></a>
 				{{/preview_image_url}}
 				</div>
 			</div>	
