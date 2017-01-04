@@ -68,10 +68,10 @@ class Admin::Teachers::BookmarksController < ApplicationController
       if (event.eql? 'like') and (params[:like_state].eql? "false") and   errors.blank?
         record = SocialTracker.where(user_type: user.class.to_s).where(user_id: user.id).where(sc_trackable_type: bookmark.class.to_s).where(sc_trackable_id: bookmark.id).where(event: SocialTracker.events[event.to_sym]).first
         record.destroy
-        bookmark.decrement(:likes) unless record.errors.present?
+        bookmark.decrement!(:likes) unless record.errors.present?
       else
-        SocialTracker.track(bookmark, user, event, user.class.to_s) if errors.blank?
-        SocialTracker.events[event.to_sym] == 1 ? bookmark.increment!(:likes) : bookmark.increment!(:views)
+        response = SocialTracker.track(bookmark, user, event, user.class.to_s) if errors.blank?
+        SocialTracker.events[event.to_sym] == 1 ? bookmark.increment!(:likes) : bookmark.increment!(:views) unless response.include? "Sc trackable has already been taken"
       end
     rescue Exception => e
       errors << "errors occured while manipulating like and view"

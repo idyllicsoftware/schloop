@@ -24,13 +24,16 @@ class SocialTracker < ActiveRecord::Base
   
   enum events: {view: 0, like: 1}
   def self.track(entity, user, event, user_type = user.type)
+    errors = []
     ActiveRecord::Base.transaction do
       begin
-        self.create(sc_trackable: entity, user_id: user.id, user_type: user_type, event: SocialTracker.events[event.to_sym])
+        response = self.create(sc_trackable: entity, user_id: user.id, user_type: user_type, event: SocialTracker.events[event.to_sym])
+        errors = response.errors.full_messages
       rescue Exception => ex
         errors << 'Error occured while creating social tracker entry.'
         raise ActiveRecord::Rollback
       end
     end
+    return errors
   end
 end
