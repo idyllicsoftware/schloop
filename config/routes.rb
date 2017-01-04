@@ -59,6 +59,7 @@ Rails.application.routes.draw do
         collection do
           get :get_bookmarks
           post :add_caption
+          post :bookmark_like_or_view
         end
       end
       resources :topics do
@@ -92,7 +93,6 @@ Rails.application.routes.draw do
       end
 
       resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
-        post :bookmark_like_or_view
       end
 
       resources :grades, only: [:index, :create, :destroy], shallow: true do

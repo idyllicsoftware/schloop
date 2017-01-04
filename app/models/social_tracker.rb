@@ -19,12 +19,14 @@
 #
 
 class SocialTracker < ActiveRecord::Base
-  belongs_to :trackable, polymorphic: true
-  validates_uniqueness_of :trackable_id, :scope => [:trackable_type, :user_id, :user_type, :event]
+  belongs_to :sc_trackable, polymorphic: true
+  validates_uniqueness_of :sc_trackable_id, :scope => [:sc_trackable_type, :user_id, :user_type, :event]
   
   enum events: {view: 0, like: 1}
   def self.track(entity, user, event, user_type = user.type)
-    tracked_data = self.create(trackable: entity, user_id: user.id, user_type: user_type, event: Tracker.events[event.to_sym])
-    return tracked_data.errors.full_messages
+    tracked_data = self.create(sc_trackable: entity, user_id: user.id, user_type: user_type, event: SocialTracker.events[event.to_sym])
+    if tracked_data.errors.present? 
+      raise StandardError, 'Error while creating social tracker entry for event'   
+    end
   end
 end

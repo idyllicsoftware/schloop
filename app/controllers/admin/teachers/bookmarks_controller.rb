@@ -57,6 +57,28 @@ class Admin::Teachers::BookmarksController < ApplicationController
     render json: { success: errors.blank?, errors: errors }
   end
 
+  def bookmark_like_or_view
+    binding.pry
+    event = params[:event]
+    errors = []
+    user = current_teacher ? current_teacher : current_user
+    bookmark = Bookmark.find_by(id: params[:bookmark_id])
+    errors << "Invalid bookmark to track" if bookmark.blank?
+    begin
+      if event == 'like' and params[:like_state] == "false" and errors.blank?
+        record = SocialTracker.where(user_type: user.class.to_s).where(user_id: user.id).where(sc_trackable_type: bookmark.class.to_s).where(sc_trackable_id: bookmark.id).where(event: SocialTracker.events[event.to_sym]).first
+        record.destroy
+        bookmark.decrement(:likes) unless record.errors.present?
+      else
+        SocialTracker.track(bookmark, user, event, user.class.to_s) if errors.blank?
+        SocialTracker.events[event.to_sym] ? bookmark.increment!(:likes) :  bookmark.increment!(:views)
+      end
+    rescue Exception => e
+      errors << "errors occured while manipulating like and view"
+    end
+    render json:{ success: errors.blank?, errors: errors, bookmark: Bookmark.find_by(id: params[:bookmark_id])}
+  end
+
   private
 
   def bookmark_params
@@ -132,6 +154,5 @@ class Admin::Teachers::BookmarksController < ApplicationController
     end
     return { title: title, preview_image_url: preview_image_url }
   end
-
 
 end
