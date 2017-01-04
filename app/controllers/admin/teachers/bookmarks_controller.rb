@@ -58,20 +58,20 @@ class Admin::Teachers::BookmarksController < ApplicationController
   end
 
   def bookmark_like_or_view
-    binding.pry
+    params.permit(:event, :bookmark_id, :like_state)
     event = params[:event]
     errors = []
     user = current_teacher ? current_teacher : current_user
     bookmark = Bookmark.find_by(id: params[:bookmark_id])
     errors << "Invalid bookmark to track" if bookmark.blank?
     begin
-      if event == 'like' and params[:like_state] == "false" and errors.blank?
+      if (event.eql? 'like') and (params[:like_state].eql? "false") and   errors.blank?
         record = SocialTracker.where(user_type: user.class.to_s).where(user_id: user.id).where(sc_trackable_type: bookmark.class.to_s).where(sc_trackable_id: bookmark.id).where(event: SocialTracker.events[event.to_sym]).first
         record.destroy
         bookmark.decrement(:likes) unless record.errors.present?
       else
         SocialTracker.track(bookmark, user, event, user.class.to_s) if errors.blank?
-        SocialTracker.events[event.to_sym] ? bookmark.increment!(:likes) :  bookmark.increment!(:views)
+        SocialTracker.events[event.to_sym] == 1 ? bookmark.increment!(:likes) : bookmark.increment!(:views)
       end
     rescue Exception => e
       errors << "errors occured while manipulating like and view"
@@ -82,6 +82,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
   private
 
   def bookmark_params
+    params.permit(:datum, :topic_id, :subject_id, :grade_id, :caption)
     teacher = current_teacher
     data_type = get_data_type(params[:datum])
     bookmark_datum = {}
@@ -106,6 +107,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
   end
 
   def bookmark_update_params
+    params.permit(:datum, :caption)
     data_type = get_data_type(params[:datum])
     bookmark_datum = {}
     (data_type == :url) ? (bookmark_datum[:url] = params[:datum]) : (bookmark_datum[:data] = params[:datum])
