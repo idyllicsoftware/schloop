@@ -27,7 +27,8 @@ class Collaborations extends SchloopBase {
             $(this).text(this.expand ? "Collapse" : "More...");
             $(this).closest('.content-block').find('.sm-area, .bg-area').toggleClass('sm-area bg-area');
             if($(this).text() === 'Collapse') {
-                _self.viewSchloopmark(bm_id);
+                var view_El = $(this).closest('.schloopmark-item').find('.view_count');
+                _self.viewSchloopmark(bm_id, view_El);
             }
         });
 
@@ -52,7 +53,21 @@ class Collaborations extends SchloopBase {
                         _self.collaborations = res.data.toHash('collaboration_id');
                         collaborationsContainer.html(html);
                         $("time.timeago").timeago();
-                        
+                    
+                        $(document).find('.like-schloopmark').each( function() {
+                            var coll_id = $(this).data('collaboration_id'),
+                                like_el = $(this);
+                            if(_self.collaborations.hasOwnProperty(coll_id)) {
+                                var curr_bookmark = _self.collaborations[coll_id];
+                                if(curr_bookmark.bookmark_data.is_liked === true) {
+                                    like_el.find('img').replaceWith('<img src="/assets/admin/like.svg" >');
+                                    like_el.removeClass('unlike');
+                                    like_el.addClass('like');
+                                    like_el.find('p').html('Liked');
+                                }
+                            }
+                        }); 
+
                         collaborationsContainer.find('.add-Tomytopic').on('click', function () {
                             var curr_coll_id = $(this).data('collaboration_id');
 
@@ -78,13 +93,14 @@ class Collaborations extends SchloopBase {
                             var thisEl = $(this),
                                 len = $(this).text().length;
                                 if(len < 200){
-                                    $(this).closest('.content-block').find('.more').addClass('hidden');
+                                    $(this).closest('.content-block').find('.read_more').addClass('hidden');
                                 }
                         });
 
                         $(document).on('click', '.content-block a img', function() {
-                            var bm_id = $(this).data('bm_id');
-                            _self.viewSchloopmark(bm_id);
+                            var bm_id = $(this).data('bm_id'),
+                                view_El = $(this).closest('.schloopmark-item').find('.view_count');
+                            _self.viewSchloopmark(bm_id, view_El);
                         });
                 } else {
                     _self.showErrors(res.errors);
@@ -98,6 +114,7 @@ class Collaborations extends SchloopBase {
     
     	$(document).on('click', '.like-schloopmark', function () {
     		var curr_coll_id = $(this).data('collaboration_id'),like,
+                thisEl = $(this),
                 bm_id = $(this).data('bookmark_id'),
                 teacher_id = $(this).data('teacher_id');
 
@@ -128,7 +145,8 @@ class Collaborations extends SchloopBase {
 	            method: 'POST',
 	            success: function (res) {
 	                if(res.success) {
-	                	//TO DO.... 
+                        var like_count = res.bookmark.likes;
+                        thisEl.closest('.schloopmark-item').find('.schloopmark-like .like_count').text(like_count);
 	                } else {
 	                    _self.showErrors(res.errors);
 	                }
@@ -196,7 +214,7 @@ class Collaborations extends SchloopBase {
     	});
     };
 
-    viewSchloopmark(bookmark_id) {
+    viewSchloopmark(bookmark_id, view_El) {
         let _self = this,
             views_data = {
                 'bookmark_id' : bookmark_id,
@@ -209,7 +227,8 @@ class Collaborations extends SchloopBase {
             method: 'POST',
             success: function (res) {
                 if(res.success) {
-                    //TO DO.... 
+                var view_count = res.bookmark.views;
+                view_El.text(view_count);
                 } else {
                     _self.showErrors(res.errors);
                 }

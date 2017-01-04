@@ -37,7 +37,8 @@
 		{{/bookmark_data}}
 		<div class="schloopmark-like">
 			<img src="<%= asset_path('admin/like_fill.svg') %>">
-			<div>Shivam, Vaibhav & 5 others liked</div>
+			<div><span class="like_count">{{#bookmark_data}}{{likes}}{{/bookmark_data}}</span> liked</div>
+			<div class="pl20"><span class="view_count">{{#bookmark_data}}{{views}}{{/bookmark_data}}</span> views</div>
 		</div>
 		<div class="share-section">
 			<div class="like-schloopmark share" data-bookmark_id='{{#bookmark_data}}{{bookmark_id}}{{/bookmark_data}}' data-collaboration_id='{{collaboration_id}}'>
