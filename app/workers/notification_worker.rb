@@ -8,15 +8,19 @@ class NotificationWorker
 
     registration_ids = student.parent.devices.active.pluck(:token)
     options = {
-        notification: {
-            title: "New Ecircular Added",
-            body:  circular.title,
-            sound: 'default'
-        },
+        # notification: {
+        #     title: "New Ecircular Added",
+        #     body:  circular.title,
+        #     sound: 'default'
+        # },
         data: {
-            type: 'ecircular',
-            id: circular_id,
-            student_id: student_id
+           title: "New Ecircular Added",
+           body:  circular.title,
+           sound: 'default',
+
+           type: 'ecircular',
+           id: circular_id,
+           student_id: student_id
         }
     }
 
