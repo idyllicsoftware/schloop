@@ -43,6 +43,8 @@ class Admin::Teachers::CollaborationsController < ApplicationController
 
   private
   def bookmark_data(bookmark)
+    user = current_teacher
+    is_liked = SocialTracker.find_by(sc_trackable: bookmark, user_type: user.class.to_s, user_id: user.id, event: 1).present?
     datum = { bookmark_id: bookmark.id,
                title: bookmark.title,
                data: bookmark.data,
@@ -50,6 +52,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
                caption: bookmark.caption,
                url: bookmark.url,
                preview_image_url: bookmark.preview_image_url,
+               is_liked: is_liked,
                likes: bookmark.likes,
                views: bookmark.views,
                topic_id: bookmark.topic_id,
