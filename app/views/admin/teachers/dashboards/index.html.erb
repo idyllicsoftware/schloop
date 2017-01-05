@@ -85,7 +85,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-      	<%= form_tag '', class:"add-topic-form", novalidate: true do %>
+      	<%= form_tag '', class:"add-topic-form", novalidate: true, onsubmit: 'return false' do %>
 	      	<label>GRADE I - SCIENCE | Add New Topic</label>
 	      	<div class="input-form-group">
 				<input type="text" class="caption-field" required name="title" placeholder="Topic name" autocomplete="off"  maxlength="50" />
@@ -138,7 +138,7 @@
   				<div class="content-view-section">
   					{{#data}}
   						<div class="sm-area">
-	  						<p class="data">{{{data}}}</p>
+	  						<div class="data">{{{data}}}</div>
 	  					</div>
 	  					<a href="#" class="more">More...</a>
   					{{/data}}

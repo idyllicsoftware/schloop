@@ -317,7 +317,7 @@ class TeacherDashboard extends SchloopBase {
                                  }
                             });
                         });
-
+                        
                         $(document).find('.content-view-section .sm-area .data').each( function() {
                             var thisEl = $(this),
                                 len = $(this).text().length;
@@ -378,7 +378,7 @@ class TeacherDashboard extends SchloopBase {
                         'datum' : content_val
                     };
                     e.preventDefault();
-                bookmarks_hash = $.extend(_self.topic_hash, key_value);
+                bookmarks_hash = $.extend({}, _self.topic_hash, key_value);
                 
                 $.ajax({
                     url: "/admin/teachers/bookmarks",
