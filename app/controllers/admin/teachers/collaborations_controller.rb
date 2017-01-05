@@ -56,7 +56,8 @@ class Admin::Teachers::CollaborationsController < ApplicationController
         master_grade = Grade.find_by(id: bookmark[:grade_id]).master_grade
         #if topic exist for current user
         topic = Topic.find_by(teacher_id: user.id, master_grade_id: master_grade.id, master_subject_id: master_subject.id, title: bookmark[:topic_name])
-        if topic.blank?          #   create topic for that teacher
+        if topic.blank?       
+           #   create topic for that teacher
           topic = Topic.create(title: bookmark[:topic_name], teacher_id: user.id, master_subject_id: master_subject.id, master_grade_id: master_grade.id)
         end
         #   add bookmark to that topic for current teacher
@@ -84,7 +85,6 @@ class Admin::Teachers::CollaborationsController < ApplicationController
               caption: bookmark.caption,
               url: bookmark.url,
               preview_image_url: bookmark.preview_image_url,
-              is_liked: is_liked,
               likes: bookmark.likes,
               views: bookmark.views,
               topic_id: bookmark.topic_id,
