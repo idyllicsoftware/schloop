@@ -46,6 +46,10 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     #get the topic name, grade_id, subject_id, current user
     bookmark = bookmark_params
     user = current_teacher || Teacher.first
+    if Bookmark.find_by(id: bookmark_params[:bookmark_id], teacher_id: user_id).present?
+          errors << "bookmark already present in my topic"
+          render json: { success: errors.blank?, errors: errors } and return
+    end
     ActiveRecord::Base.transaction do
       begin
         master_subject = Subject.find_by(id: bookmark[:subject_id]).master_subject
@@ -57,7 +61,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
         end
         #   add bookmark to that topic for current teacher
         data = {}
-        data = bookmark.except(:topic_name,:topic_id)
+        data = bookmark.except(:topic_name,:topic_id, :bookmark_id)
         data[:teacher_id]=user.id 
         data[:topic_id]= topic.id
         new_bookmark = Bookmark.create!(data) 
@@ -94,7 +98,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
   end
 
   def bookmark_params
-    params.require(:bookmark).permit(:id, :title, :data, :data_type, :caption, :url, :preview_image_url, :is_liked, :likes, :views, :topic_id, :topic_name, :grade_id, :subject_id)
+    params.require(:bookmark).permit(:bookmark_id, :title, :data, :data_type, :caption, :url, :preview_image_url, :topic_id, :topic_name, :grade_id, :subject_id)
   end
 
 end
