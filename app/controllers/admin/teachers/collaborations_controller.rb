@@ -46,8 +46,8 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     #get the topic name, grade_id, subject_id, current user
     bookmark = bookmark_params
     user = current_teacher || Teacher.first
-    if Bookmark.find_by(id: bookmark_params[:bookmark_id], teacher_id: user_id).present?
-          errors << "bookmark already present in my topic"
+    if Bookmark.find_by(id: bookmark_params[:bookmark_id], teacher_id: user.id).present?
+          errors << "bookmark already present in my topics"
           render json: { success: errors.blank?, errors: errors } and return
     end
     ActiveRecord::Base.transaction do
