@@ -34,4 +34,41 @@ class Bookmark < ActiveRecord::Base
   belongs_to :school
 
   enum data_type: { text: 0, url: 1 }
+
+  before_save :add_crawl_data
+
+  def add_crawl_data
+    if self.url?
+      crawl_data = generate_crawl_data
+
+      self.url = data
+      self.title = crawl_data[:title]
+      self.caption = crawl_data[:caption]
+      self.preview_image_url = crawl_data[:preview_image_url]
+    else
+      self.title = "Schloopmark Note"
+      self.caption = "Schloopmark Note"
+    end
+
+  end
+
+  def generate_crawl_data
+    preview_object = LinkThumbnailer.generate(self.data)
+
+    title = preview_object.title || "Schloopmark Web URL"
+    caption = preview_object.description || "Schloopmark Web URL"
+
+    if preview_object.images.present?
+      preview_image_url = preview_object.images.first.src
+    elsif preview_object.url.present?
+      preview_image_url = preview_object.url.to_s
+    end
+
+    return {
+      title: title,
+      caption: caption,
+      preview_image_url: preview_image_url
+    }
+  end
+
 end
