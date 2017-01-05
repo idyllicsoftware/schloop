@@ -31,7 +31,10 @@ class Collaborations extends SchloopBase {
                 _self.viewSchloopmark(bm_id, view_El);
             }
         });
-
+        
+        $(document).on('click', '.write-comment-tag', function() {
+            $(this).closest('.schloopmark-item').find('.write-comment').focus();
+        });
     	_self.likeSchloopmark();
     	_self.addComment();	
     };
