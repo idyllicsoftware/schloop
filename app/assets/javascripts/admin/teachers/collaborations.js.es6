@@ -81,10 +81,9 @@ class Collaborations extends SchloopBase {
                                     
                                     if (_self.collaborations.hasOwnProperty(curr_coll_id)) {
                                         var hash = _self.collaborations[curr_coll_id],
-                                            datum = {
-                                                'datum' : hash.bookmark_data.data
-                                            },
-                                            bookmarks_hash = $.extend(hash.bookmark_data, datum);
+                                            bookmarks_hash = {
+                                                'bookmark' : hash.bookmark_data
+                                            };
                                             _self.addToMytopic(bookmarks_hash);
                                     }
                                 } else {
@@ -160,9 +159,9 @@ class Collaborations extends SchloopBase {
 
     addToMytopic(bookmarks_hash) {
     	let _self = this;
-
+    
             $.ajax({
-                url: "/admin/teachers/bookmarks",
+                url: "/admin/teachers/collaborations/add_to_my_topics",
                 data: bookmarks_hash,
                 method: "POST",
                 success: function (res) {
