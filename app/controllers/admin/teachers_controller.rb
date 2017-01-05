@@ -76,26 +76,6 @@ class Admin::TeachersController < ApplicationController
         errors: errors
       }
   end
-=begin
-  def bookmark_view
-    errors = []
-    teacher = current_teacher || teacher.first
-    bookmark = Bookmark.find_by(id: params[:bookmark_id])
-    errors << "Invalid bookmark to track" if bookmark.blank?
-    errors += SocialTracker.track(bookmark, teacher, 'view', teacher.class.to_s) if errors.blank?
-    render json:{ success: errors.blank?, errors: errors}
-  end
-=end
-
-  def bookmark_like_or_view
-    event = params[:event]
-    errors = []
-    teacher = current_teacher #|| teacher.first
-    bookmark = Bookmark.find_by(id: params[:bookmark_id])
-    errors << "Invalid bookmark to track" if bookmark.blank?
-    errors += SocialTracker.track(bookmark, teacher, event, teacher.class.to_s) if errors.blank?
-    render json:{ success: errors.blank?, errors: errors}
-  end
 
   private
 

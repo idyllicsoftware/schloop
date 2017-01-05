@@ -68,6 +68,9 @@ Rails.application.routes.draw do
         end
       end
       resources :collaborations do
+        collection do
+          post :add_to_my_topics
+        end
       end
       resources :comments do
       end

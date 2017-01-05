@@ -66,7 +66,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     errors << "Invalid bookmark to track" if bookmark.blank?
     begin
       if (event.eql? 'like') and (params[:like_state].eql? "false") and   errors.blank?
-        record = SocialTracker.where(user_type: user.class.to_s).where(user_id: user.id).where(sc_trackable_type: bookmark.class.to_s).where(sc_trackable_id: bookmark.id).where(event: SocialTracker.events[event.to_sym]).first
+        record = SocialTracker.find_by(user_type: user.class.to_s, user_id: user.id, sc_trackable_type: bookmark.class.to_s, sc_trackable_id: bookmark.id, event: SocialTracker.events[event.to_sym])
         record.destroy
         bookmark.decrement!(:likes) unless record.errors.present?
       else
