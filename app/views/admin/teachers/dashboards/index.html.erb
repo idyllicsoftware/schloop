@@ -161,7 +161,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
-      	<%= form_tag '', class:"bookmark-edit-form", novalidate: true do %>
+      	<%= form_tag '', class:"bookmark-edit-form", novalidate: true, onsubmit: 'return false' do %>
       		<div class="close-edit-modal">x</div>
       		<input type="hidden" name="bookmark[id]">
 	      	<div class="form-group">
