@@ -235,7 +235,12 @@ class TeacherDashboard extends SchloopBase {
             method: 'GET',
             success: function (res) {
                 if(res.success) {
-                    var html = Mustache.to_html(_self.topicBookmarksTpl, res);
+                    var html = Mustache.to_html(_self.topicBookmarksTpl, {
+                            bookmarks: res.bookmarks,
+                            is_text: function() {
+                                return this.data_type === "text";
+                            }
+                        });
                         _self.topicBookmarks = res.bookmarks.toHash('id');
                         bookmarksEl.html(html);
                         $("time.timeago").timeago();

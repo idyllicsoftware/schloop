@@ -22,15 +22,15 @@
 			<div class="schloopmark-content">
 				<p class="caption">{{caption}}</p>
 				<div class="content-block">
-					{{#data}}
+					{{#is_text}}
 						<div class="sm-area">
 	  						<div class="data">{{{data}}}</div>
 	  					</div>
 	  					<a href="#" class="read_more" data-bookmark_id='{{bookmark_id}}'>More...</a>
-					{{/data}}
-				{{#preview_image_url}}
-					<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" data-bm_id='{{bookmark_id}}' style="width: 300px; height: 200px;"></a>
-				{{/preview_image_url}}
+					{{/is_text}}
+					{{^is_text}}
+						<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" data-bm_id='{{bookmark_id}}' style="width: 300px; height: 200px;"></a>
+					{{/is_text}}
 				</div>
 			</div>	
 		</div>

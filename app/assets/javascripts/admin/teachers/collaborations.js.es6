@@ -52,7 +52,12 @@ class Collaborations extends SchloopBase {
             method: 'GET',
             success: function (res) {
                 if(res.success) {
-                	var html = Mustache.to_html(_self.collaborationsBookmarksTpl, res);
+                	var html = Mustache.to_html(_self.collaborationsBookmarksTpl, {
+                        data: res.data,
+                        is_text: function() {
+                            return this.data_type === "text";
+                        },
+                    });
                         _self.collaborations = res.data.toHash('collaboration_id');
                         collaborationsContainer.html(html);
                         $("time.timeago").timeago();

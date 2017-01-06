@@ -132,15 +132,15 @@
 				    {{/caption}}
   				</div>
   				<div class="content-view-section">
-  					{{#data}}
+  					{{#is_text}}
   						<div class="sm-area">
 	  						<div class="data">{{{data}}}</div>
 	  					</div>
 	  					<a href="#" class="more">More...</a>
-  					{{/data}}
-  					{{#preview_image_url}}
+  					{{/is_text}}
+  					{{^is_text}}
   						<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" style="width: 300px; height: 150px"></a>
-  					{{/preview_image_url}}	
+  					{{/is_text}}
   				</div>
   				<div class="share-topic-section">
   					<div class="share-topic share-for-collaboration" data-bookmark_id="{{id}}">
