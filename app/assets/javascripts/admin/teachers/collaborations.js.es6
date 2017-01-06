@@ -72,22 +72,28 @@ class Collaborations extends SchloopBase {
                         }); 
 
                         collaborationsContainer.find('.add-Tomytopic').on('click', function () {
-                            var curr_coll_id = $(this).data('collaboration_id');
+                            var curr_coll_id = $(this).data('collaboration_id'),
+                                thisEl = $(this);
 
-                                if(!$(this).hasClass('mytopic')){
-                                    $(this).addClass('mytopic');
-                                    $(this).find('p').html('Added to my topics');
-                                    $(this).find('img').replaceWith('<img src="/assets/admin/add_item_fill.svg" >');
-                                    
-                                    if (_self.collaborations.hasOwnProperty(curr_coll_id)) {
-                                        var hash = _self.collaborations[curr_coll_id],
-                                            bookmarks_hash = {
-                                                'bookmark' : hash.bookmark_data
-                                            };
-                                            _self.addToMytopic(bookmarks_hash);
-                                    }
-                                } else {
-                                    swal({title: "Oops!", text: "This Schoolmark already added to mytopic.", type: "error", confirmButtonText: "OK" });
+                                if (_self.collaborations.hasOwnProperty(curr_coll_id)) {
+                                    var hash = _self.collaborations[curr_coll_id],
+                                        bookmarks_hash = {
+                                            'bookmark' : hash.bookmark_data
+                                        };
+                                        _self.addToMytopic(bookmarks_hash, thisEl);
+                                }
+                        });
+
+                        collaborationsContainer.on('click', '.follow-up-parent', function () {
+                            var curr_coll_id = $(this).data('collaboration_id'),
+                                thisEl = $(this);
+
+                                if (_self.collaborations.hasOwnProperty(curr_coll_id)) {
+                                    var hash = _self.collaborations[curr_coll_id],
+                                        bookmarks_hash = {
+                                            'bookmark' : hash.bookmark_data
+                                        };
+                                        _self.ShareAsFollowups(bookmarks_hash, thisEl);
                                 }
                         });
 
@@ -157,7 +163,7 @@ class Collaborations extends SchloopBase {
     	});
     };
 
-    addToMytopic(bookmarks_hash) {
+    addToMytopic(bookmarks_hash, thisEl) {
     	let _self = this;
     
             $.ajax({
@@ -166,6 +172,8 @@ class Collaborations extends SchloopBase {
                 method: "POST",
                 success: function (res) {
                    if(res.success) {
+                    thisEl.find('p').html('Added to my topics');
+                    thisEl.find('img').replaceWith('<img src="/assets/admin/add_item_fill.svg" >');
                      toastr.success('Schloopmarked added to mytopic successfully', '', {
                                 positionClass: 'toast-top-right cloud-display'
                             });      
@@ -236,5 +244,27 @@ class Collaborations extends SchloopBase {
                 }
             }
         });
+    };
+
+    ShareAsFollowups (bookmarks_hash, thisEl) {
+        let _self = this;
+        // TO DO...
+        $.ajax({
+            url: "/admin/teachers/collaborations/add_to_my_topics",
+            data: bookmarks_hash,
+            method: "POST",
+            success: function (res) {
+               if(res.success) {
+                thisEl.find('p').html('shared as followup');
+                thisEl.find('img').replaceWith('<img src="/assets/admin/follow_up_fill.svg" >');
+                 toastr.success('Schloopmarked shared as followup successfully', '', {
+                            positionClass: 'toast-top-right cloud-display'
+                        });      
+               } else {
+                    _self.showErrors(res.errors);
+               }
+            }
+        });
+
     };
 }
