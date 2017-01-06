@@ -50,7 +50,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     errors = []
     begin  
       bookmark = Bookmark.find_by(id: params[:bookmark_id])
-      bookmark.update(bookmark_update_params)  
+      bookmark.update!(generate_update_params)  
     rescue Exception => e
       errors << "error occured while inserting new bookmark"
     end
@@ -104,25 +104,18 @@ class Admin::Teachers::BookmarksController < ApplicationController
     return datum.deep_symbolize_keys
   end
 
-  def bookmark_update_params
-    params.permit(:datum, :caption)
-    data_type = get_data_type(params[:datum])
+  def generate_update_params
     bookmark_datum = {}
-    (data_type == :url) ? (bookmark_datum[:url] = params[:datum]) : (bookmark_datum[:data] = params[:datum])
-    bookmark_datum[:data_type] = Bookmark.data_types[data_type]
-    if data_type == :url 
-      preview_image_data = get_preview_image_url(params[:datum])
-      preview_image_data[:title].present? ? (bookmark_datum[:title] = preview_image_data[:title]) : (bookmark_datum[:title] = "Schloopmark Web URL")
-      bookmark_datum[:preview_image_url] = preview_image_data[:preview_image_url]
-      bookmark_datum[:data] = nil
-    else
-      bookmark_datum[:title] = "Schloopmark Note"
-      bookmark_datum[:url] = nil
-      bookmark_datum[:preview_image_url] = nil
-      bookmark_datum[:data] = params[:datum]
-    end
     bookmark_datum[:caption] = params[:bookmark][:caption]
+    is_url = Util::NetworkUtils.valid_url?(params[:data])
+    data_type = is_url ? :url : :text
+    bookmark_datum[:data_type] = Bookmark.data_types[data_type]
+    bookmark_datum[:data] = params[:data]
     return bookmark_datum  
+  end
+
+  def update_params
+    params.permit(:data, :bookmark)
   end
 
   def get_data_type(input_data)
@@ -138,8 +131,6 @@ class Admin::Teachers::BookmarksController < ApplicationController
     end
     return :text
   end
-
-  private
 
   def get_preview_image_url(url)
     require 'link_thumbnailer'
