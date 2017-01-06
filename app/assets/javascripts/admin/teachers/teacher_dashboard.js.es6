@@ -18,8 +18,12 @@ class TeacherDashboard extends SchloopBase {
         var _self = this;
             _self.filters = {};
 
+        $('#schloopmarking-Tab a[data-tab-name="my_topics"]').on('shown.bs.tab', function (e) {
+            _self.loadTopicBookmarks();   
+        });
             _self.InitDocument();
         
+
         $("#select-filter-tag-popover").on('shown.bs.popover', function () {
             var popoverEl = $('#' + $(this).attr('aria-describedby')),
                 selected_subject = $('.grade-selection').find('.select-grade-subject').find('li > input');   
@@ -317,7 +321,7 @@ class TeacherDashboard extends SchloopBase {
                                  }
                             });
                         });
-                        
+
                         $(document).find('.content-view-section .sm-area .data').each( function() {
                             var thisEl = $(this),
                                 len = $(this).text().length;
@@ -338,7 +342,7 @@ class TeacherDashboard extends SchloopBase {
             bookmarkEditModal = $('#bookmark-edit-modal'),
             content_val = $('.content-editor-update').html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ''),
             bookmarks_hash = {
-                'datum' : content_val,
+                'data' : content_val,
                 'bookmark_id': bookmark_id
             },
             new_val = jForm.serializeObject(),
@@ -375,7 +379,7 @@ class TeacherDashboard extends SchloopBase {
                 var content_val = content_editor.html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ' '),
                     bookmarks_hash = {},
                     key_value = {
-                        'datum' : content_val
+                        'data' : content_val
                     };
                     e.preventDefault();
                 bookmarks_hash = $.extend({}, _self.topic_hash, key_value);
