@@ -33,7 +33,7 @@ class Api::V1::DevicesController < Api::V1::BaseController
   def de_register
     errors = []
     token = params[:token]
-    device = Device.find_by(token: token)
+    device = Device.find_by(deviceable: @current_user, token: token)
     if device.blank?
       errors << "No device with token found"
       render json: {

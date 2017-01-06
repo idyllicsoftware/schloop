@@ -3,7 +3,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
   def create
     errors = []
     begin  
-      Bookmark.create(bookmark_params)  
+      Bookmark.create!(bookmark_params)  
     rescue Exception => e
       errors << "error occured while inserting new bookmark"
     end
@@ -82,28 +82,26 @@ class Admin::Teachers::BookmarksController < ApplicationController
   private
 
   def bookmark_params
-    params.permit(:datum, :topic_id, :subject_id, :grade_id, :caption)
-    teacher = current_teacher
-    data_type = get_data_type(params[:datum])
     bookmark_datum = {}
-    (data_type == :url) ? (bookmark_datum[:url] = params[:datum]) : (bookmark_datum[:data] = params[:datum])
-    bookmark_datum[:data_type] = Bookmark.data_types[data_type]
-    bookmark_datum[:topic_id] = params[:topic_id]
-    bookmark_datum[:subject_id] = params[:subject_id]
-    bookmark_datum[:grade_id] = params[:grade_id]
-    bookmark_datum[:teacher_id] = teacher.id
-    bookmark_datum[:school_id] = teacher.school_id
-    if params[:caption].present?
-      bookmark_datum[:caption] = params[:caption]
-    end
-    if data_type == :url 
-      preview_image_data = get_preview_image_url(params[:datum])
-      preview_image_data[:title].present? ? (bookmark_datum[:title] = preview_image_data[:title]) : (bookmark_datum[:title] = "Schloopmark Web URL")
-      bookmark_datum[:preview_image_url] = preview_image_data[:preview_image_url]
-    else
-      bookmark_datum[:title] = "Schloopmark Note"
-    end
+    bookmark_datum.merge!(permited_bookmark_params)
+    bookmark_datum.merge!(generate_bookmark_params(bookmark_datum))
     return bookmark_datum
+  end
+
+  def permited_bookmark_params
+    params.permit(:data, :topic_id, :subject_id, :grade_id).deep_symbolize_keys
+  end
+
+  def generate_bookmark_params(bookmark_data)
+    datum = {}
+    teacher = current_teacher
+    is_url = Util::NetworkUtils.valid_url?(bookmark_data[:data])
+    data_type = is_url ? :url : :text
+    datum[:data_type] = Bookmark.data_types[data_type]
+    datum[:teacher_id] = teacher.id
+    datum[:school_id] = teacher.school_id
+
+    return datum.deep_symbolize_keys
   end
 
   def bookmark_update_params

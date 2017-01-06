@@ -32,10 +32,14 @@ gem 'devise'
 gem 'devise_invitable', '~> 1.7.0'
 gem 'aws-sdk'
 gem 'fcm'
+gem 'sidekiq'
+gem 'mina-sidekiq'
 # gem 'rmagick', '2.15.4'
 
 #ransack for filters
 gem 'ransack'
+
+gem 'newrelic_rpm'
 
 group :development do
   # Using mina for deployment

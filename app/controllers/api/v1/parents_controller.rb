@@ -4,21 +4,32 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def login
     parent = Parent.find_by_email(params[:parent][:email])
     if parent.present? && parent.valid_password?(params[:parent][:password])
-      parent.sign_in_count += 1
-      parent.save
-      login_response = {
-        success: true,
-        error: nil,
-        data: {
-          id: parent.id,
-          first_name: parent.first_name,
-          last_name: parent.last_name,
-          email: parent.email,
-          phone: parent.cell_number,
-          token: parent.user_token,
-          first_sign_in: (parent.sign_in_count <= 1)
+      if parent.active?
+        parent.sign_in_count += 1
+        parent.save
+        login_response = {
+          success: true,
+          error: nil,
+          data: {
+            id: parent.id,
+            first_name: parent.first_name,
+            last_name: parent.last_name,
+            email: parent.email,
+            phone: parent.cell_number,
+            token: parent.user_token,
+            first_sign_in: (parent.sign_in_count <= 1)
+          }
         }
-      }
+      else
+        login_response = {
+            success: false,
+            error:  {
+                code: 0,
+                message: "Your account has been deactivated."
+            },
+            data: nil
+        }
+      end
     else
       login_response = {
         success: false,
@@ -75,34 +86,41 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
   def profile
     parent = @current_user
-
-    students_data = []
-    students = parent.students.includes(:student_profiles)
-    students.each do |student|
-      student_profile = student.student_profiles.last
-      students_data << {
-        id: student.id,
-        school_id: student.school_id,
-        school_name: student.school.name,
-        first_name: student.first_name,
-        last_name: student.last_name,
-        middle_name: student.middle_name,
-        grade: {id: student_profile.grade.id, name: student_profile.grade.name},
-        division: {id: student_profile.division.id, name: student_profile.division.name}
+    error = nil
+    if parent.active?
+      students_data = []
+      students = parent.students.active.includes(:student_profiles)
+      students.each do |student|
+        student_profile = student.student_profiles.last
+        students_data << {
+          id: student.id,
+          school_id: student.school_id,
+          school_name: student.school.name,
+          first_name: student.first_name,
+          last_name: student.last_name,
+          middle_name: student.middle_name,
+          grade: {id: student_profile.grade.id, name: student_profile.grade.name},
+          division: {id: student_profile.division.id, name: student_profile.division.name}
+        }
+      end
+      parent_profile = {
+        id: parent.id,
+        first_name: parent.first_name,
+        last_name: parent.last_name,
+        email: parent.email,
+        phone: parent.cell_number,
+        students: students_data
       }
+    else
+      parent_profile = {}
+      error = "Your account has been deactivated."
     end
-
-    parent_profile = {
-      id: parent.id,
-      first_name: parent.first_name,
-      last_name: parent.last_name,
-      email: parent.email,
-      phone: parent.cell_number,
-      students: students_data
-    }
     render json: {
-      success: true,
-      error: nil,
+      success: error.blank?,
+      error:  {
+          code: 0,
+          message: error
+      },
       data: parent_profile
     }
   end
@@ -126,7 +144,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def circulars
     errors, circular_data = [], []
 
-    @student = Student.find_by(id: params[:student_id])
+    @student = Student.where(id: params[:student_id]).active.first
     errors << "Student not found" if @student.blank?
 
     school = @student.school
@@ -171,7 +189,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def circular
     errors = []
 
-    @student = Student.find_by(id: params[:student_id])
+    @student = Student.where(id: params[:student_id]).active.first
     errors << "Student not found" if @student.blank?
 
     school = @student.school
@@ -217,7 +235,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def activities
     errors, search_params = [], {}
 
-    @student = Student.find_by(id: params[:student_id])
+    @student = Student.where(id: params[:student_id]).active.first
     errors << "Student not found" if @student.blank?
 
     school = @student.school
@@ -281,7 +299,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def activity
     errors = []
 
-    @student = Student.find_by(id: params[:student_id])
+    @student = Student.where(id: params[:student_id]).active.first
     errors << "Student not found" if @student.blank?
 
     school = @student.school
@@ -346,17 +364,20 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
     private
     def filter_params
-      circular_ids = EcircularParent.where(parent_id: @current_user.id).pluck(:ecircular_id)
+      parent_circular_ids = EcircularParent.where(parent_id: @current_user.id).where(student_id: @student.id).pluck(:ecircular_id)
+      default_division_id = @student_profile.division_id
+      division_circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{default_division_id})").ids
+
+      circular_ids = (parent_circular_ids + division_circular_ids)
+
       filter_hash = {id: circular_ids}
-      
       filters = params[:filter]
       return filter_hash if filters.blank?
-      divisions = [@student_profile.division_id] 
+
       return {
         id: circular_ids,
         from_date: filters[:from_date],
         to_date: filters[:to_date],
-        divisions: divisions,
         tags: filters[:tags]
       }
     end

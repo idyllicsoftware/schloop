@@ -87,4 +87,8 @@ class Parent < User
     save!
     UserMailer.parent_password_reset(self).deliver
   end
+
+  def active?
+    students.active.present?
+  end
 end

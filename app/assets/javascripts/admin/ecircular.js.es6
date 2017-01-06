@@ -158,12 +158,13 @@ class SchoolECircular extends SchloopBase {
                 $('.selected_circular_tag').html('Select E-Circular');
                 $('.selected_circular_tag').next().val(null);
                 $(".select-recipients_name").html('Select recipients');
-                circular_container.find(".circular_id_hidden_input").val(res.circular_id);
                 if(circular_container.find(".selected_files tr").length){
                     btnEl.attr('disabled', 'disabled');
+                    circular_container.find(".circular_id_hidden_input").val(res.circular_id);
                     circular_container.find(".uploadBtn").trigger('click');
                 }else{
                     eCircularFormEl[0].reset();
+                    circular_container.find(".circular_id_hidden_input").val(null);
                     toastr.success('E-Circular sent successfully', '', {
                         positionClass: 'toast-top-right cloud-display'
                     });
@@ -223,7 +224,8 @@ class SchoolECircular extends SchloopBase {
         let _self = this, html = '',
             { school_id } = _self._config,
             circularHistoryListEl = $('.ecirculars-history-section ul');
-        _self._ecirculars = {};
+            _self._ecirculars = {};
+        
         $.ajax({
             url: `/admin/schools/${school_id}/ecirculars/all`,
             success: function (res) {
