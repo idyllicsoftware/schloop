@@ -168,6 +168,7 @@ Rails.application.routes.draw do
       get  "/bookmarks" => 'bookmarks#index'
       post "/bookmarks/add_caption" => 'bookmarks#add_caption'
 
+      post "/collaborate" => 'collaborations#collaborate'
     end
   end
 
