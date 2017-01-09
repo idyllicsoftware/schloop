@@ -78,6 +78,8 @@ Rails.application.routes.draw do
           post :add_to_my_topics
         end
       end
+      resources :followups do
+      end
       resources :comments do
       end
     end
