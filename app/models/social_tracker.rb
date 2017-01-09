@@ -21,8 +21,10 @@
 class SocialTracker < ActiveRecord::Base
   belongs_to :sc_trackable, polymorphic: true
   validates_uniqueness_of :sc_trackable_id, :scope => [:sc_trackable_type, :user_id, :user_type, :event]
-  
   enum events: {view: 0, like: 1}
+
+  after_create :update_bookmark_analytics
+
   def self.track(entity, user, event, user_type = user.type)
     errors = []
     ActiveRecord::Base.transaction do
@@ -34,6 +36,19 @@ class SocialTracker < ActiveRecord::Base
         raise ActiveRecord::Rollback
       end
     end
-    return errors
+    return {success: errors.blank?, errors: errors}
+  end
+
+  def self.unlike(user, bookmark, event)
+    record = self.find_by(user_type: user.class.to_s, user_id: user.id, sc_trackable_type: bookmark.class.to_s, sc_trackable_id: bookmark.id, event: SocialTracker.events[event.to_sym])
+    unless record.present?
+      record.destroy
+      bookmark.decrement!(:likes)
+    end
+  end
+
+  private
+  def update_bookmark_analytics
+    self.view? ? bookmark.increment!(:views) : bookmark.increment!(:likes)
   end
 end

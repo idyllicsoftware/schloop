@@ -2,8 +2,8 @@ class Admin::Teachers::BookmarksController < ApplicationController
 
   def create
     errors = []
-    begin  
-      Bookmark.create!(bookmark_params)  
+    begin
+      Bookmark.create!(bookmark_params)
     rescue Exception => e
       errors << "error occured while inserting new bookmark"
     end
@@ -19,7 +19,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     rescue Exception => e
       errors << "errors while fetching bookmarks"
       render json: {success:false, errors: errors}
-    end  
+    end
   end
 
   def add_caption
@@ -32,13 +32,13 @@ class Admin::Teachers::BookmarksController < ApplicationController
       errors << "error occured while adding caption"
       render json: { success: errors.blank?, errors: errors } and return
     end
-     render json: { success: errors.blank?, caption:bookmark.caption }
+    render json: { success: errors.blank?, caption:bookmark.caption }
   end
 
   def destroy
     errors = []
     begin
-      bookmark = Bookmark.find_by(id:params[:id])  
+      bookmark = Bookmark.find_by(id:params[:id])
       bookmark.destroy
     rescue Exception => e
       errors << "unable to destroy bookmarks"
@@ -48,9 +48,9 @@ class Admin::Teachers::BookmarksController < ApplicationController
 
   def update
     errors = []
-    begin  
+    begin
       bookmark = Bookmark.find_by(id: params[:bookmark_id])
-      bookmark.update!(generate_update_params)  
+      bookmark.update!(generate_update_params)
     rescue Exception => e
       errors << "error occured while inserting new bookmark"
     end
@@ -64,19 +64,18 @@ class Admin::Teachers::BookmarksController < ApplicationController
     user = current_teacher ? current_teacher : current_user
     bookmark = Bookmark.find_by(id: params[:bookmark_id])
     errors << "Invalid bookmark to track" if bookmark.blank?
-    begin
-      if (event.eql? 'like') and (params[:like_state].eql? "false") and   errors.blank?
-        record = SocialTracker.find_by(user_type: user.class.to_s, user_id: user.id, sc_trackable_type: bookmark.class.to_s, sc_trackable_id: bookmark.id, event: SocialTracker.events[event.to_sym])
-        record.destroy
-        bookmark.decrement!(:likes) unless record.errors.present?
-      else
-        response = SocialTracker.track(bookmark, user, event, user.class.to_s) if errors.blank?
-        SocialTracker.events[event.to_sym] == 1 ? bookmark.increment!(:likes) : bookmark.increment!(:views) unless response.include? "Sc trackable has already been taken"
+    if errors.blank?
+      begin
+        if (event.eql? 'like') and (params[:like_state].eql? "false")
+          SocialTracker.unlike(user, bookmark, event)
+        else
+          SocialTracker.track(bookmark, user, event, user.class.to_s)
+        end
+      rescue Exception => e
+        errors << "errors occured while manipulating like and view"
       end
-    rescue Exception => e
-      errors << "errors occured while manipulating like and view"
     end
-    render json:{ success: errors.blank?, errors: errors, bookmark: Bookmark.find_by(id: params[:bookmark_id])}
+    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark}
   end
 
   private
@@ -111,7 +110,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     data_type = is_url ? :url : :text
     bookmark_datum[:data_type] = Bookmark.data_types[data_type]
     bookmark_datum[:data] = params[:data]
-    return bookmark_datum  
+    return bookmark_datum
   end
 
   def update_params
@@ -119,11 +118,11 @@ class Admin::Teachers::BookmarksController < ApplicationController
   end
 
   def get_data_type(input_data)
-    begin 
+    begin
       uri = URI(input_data)
       request = Net::HTTP.new uri.host
       response= request.request_head uri.path
-      if (response.code.start_with?('2') or response.code.start_with?('3')) 
+      if (response.code.start_with?('2') or response.code.start_with?('3'))
         return :url
       end
     rescue Exception => e
@@ -136,8 +135,8 @@ class Admin::Teachers::BookmarksController < ApplicationController
     require 'link_thumbnailer'
     preview_object = LinkThumbnailer.generate(url)
     title = preview_object.title
-    if preview_object.images.present?  
-      preview_image_url = preview_object.images.first.src  
+    if preview_object.images.present?
+      preview_image_url = preview_object.images.first.src
     elsif preview_object.url.present?
       preview_image_url = preview_object.url.to_s
     else
