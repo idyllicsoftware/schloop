@@ -26,7 +26,7 @@ Rails.application.configure do
       :enable_starttls_auto => true
   }
 
-  MAILER_HOST = "http://schloop.co/"
+  MAILER_HOST = "http://localhost:3000/"
   FCM_KEY = 'AIzaSyDe3HNn_owddmmaGABY-hXRLaMbFOqYiOo'
 
   # Print deprecation notices to the Rails logger.
