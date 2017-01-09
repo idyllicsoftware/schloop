@@ -20,8 +20,23 @@ class Followups extends SchloopBase {
     	});
     };
 
+    get followupsBookmarksTpl (){
+        return $("#followups_bookmarks_tpl").html();
+    };
+
     loadFollowupsSchloopmark () {
-    	let _self = this;
+    	let _self = this,
+            followups_schloopmark = $('.followups-schloopmark');
     	//To DO...
-    } 
+        // $.ajax({
+        //     url: `/admin/teachers/followups`,
+        //     method: 'POST',
+        //     success: function (res) {
+        //         debugger;
+        //         if(res.success) {
+        //             var html = Mustache.to_html(_self.followupsBookmarksTpl, res);
+        //         }
+        //     }    
+        // });             
+    };
 }    

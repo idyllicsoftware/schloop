@@ -92,14 +92,35 @@ class Collaborations extends SchloopBase {
                         collaborationsContainer.on('click', '.follow-up-parent', function () {
                             var curr_coll_id = $(this).data('collaboration_id'),
                                 thisEl = $(this);
-
                                 if (_self.collaborations.hasOwnProperty(curr_coll_id)) {
-                                    var hash = _self.collaborations[curr_coll_id],
-                                        bookmarks_hash = {
-                                            'bookmark' : hash.bookmark_data
-                                        };
-                                        _self.ShareAsFollowups(bookmarks_hash, thisEl);
-                                }
+                                    var curr_Bm_id = _self.collaborations[curr_coll_id].bookmark_data.bookmark_id
+                                    swal({
+                                            title: "Are you sure?",
+                                            text: "You want followup for parent",
+                                            type: "info",
+                                            showCancelButton: true,
+                                            confirmButtonText: "Yes!"
+                                        },
+                                        function(isConfirm){
+                                            if (isConfirm) {
+                                                $.ajax({
+                                                    url: "/admin/teachers/followups?bookmark_id=" + curr_Bm_id,
+                                                    method: "POST",
+                                                    success: function (res) {
+                                                       if(res.success) {
+                                                        thisEl.find('p').html('shared as followup');
+                                                        thisEl.find('img').replaceWith('<img src="/assets/admin/follow_up_fill.svg" >');
+                                                         toastr.success('Schloopmarked shared as followup successfully', '', {
+                                                                    positionClass: 'toast-top-right cloud-display'
+                                                                });      
+                                                       } else {
+                                                            _self.showErrors(res.errors);
+                                                       }
+                                                    }
+                                                });
+                                            }
+                                    });
+                                }    
                         });
 
                         $(document).find('.content-block .sm-area .data').each( function() {
@@ -249,27 +270,5 @@ class Collaborations extends SchloopBase {
                 }
             }
         });
-    };
-
-    ShareAsFollowups (bookmarks_hash, thisEl) {
-        let _self = this;
-        // TO DO...
-        $.ajax({
-            url: "/admin/teachers/collaborations/add_to_my_topics",
-            data: bookmarks_hash,
-            method: "POST",
-            success: function (res) {
-               if(res.success) {
-                thisEl.find('p').html('shared as followup');
-                thisEl.find('img').replaceWith('<img src="/assets/admin/follow_up_fill.svg" >');
-                 toastr.success('Schloopmarked shared as followup successfully', '', {
-                            positionClass: 'toast-top-right cloud-display'
-                        });      
-               } else {
-                    _self.showErrors(res.errors);
-               }
-            }
-        });
-
     };
 }
