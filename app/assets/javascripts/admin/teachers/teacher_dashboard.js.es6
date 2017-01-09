@@ -312,6 +312,41 @@ class TeacherDashboard extends SchloopBase {
                                 });
                             }                
                         });
+                        
+                        bookmarksEl.find('.followups-for-parent').on('click', function() {
+                            var bm_id = $(this).data('bookmark_id'),
+                                img_tag = $(this).find('img'),
+                                span_tag = $(this).find('span');
+
+                            if(_self.topicBookmarks.hasOwnProperty(bm_id)){
+                                swal({
+                                        title: "Are you sure?",
+                                        text: "You want followup for parent",
+                                        type: "info",
+                                        showCancelButton: true,
+                                        confirmButtonText: "Yes!"
+                                    },
+                                    function(isConfirm){
+                                        if (isConfirm) {
+                                            $.ajax({
+                                                url: "/admin/teachers/followups?bookmark_id=" + bm_id,
+                                                method: "POST",
+                                                success: function (res) {
+                                                   if(res.success) {
+                                                    thisEl.find('p').html('shared as followup');
+                                                    thisEl.find('img').replaceWith('<img src="/assets/admin/follow_up_fill.svg" >');
+                                                     toastr.success('Schloopmarked shared as followup successfully', '', {
+                                                                positionClass: 'toast-top-right cloud-display'
+                                                            });      
+                                                   } else {
+                                                        _self.showErrors(res.errors);
+                                                   }
+                                                }
+                                            });
+                                        }
+                                });
+                            }                
+                        });
 
                         $(document).find('.share-for-collaboration').each(function(){
                             var thisEl = $(this),
