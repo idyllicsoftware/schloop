@@ -8,6 +8,7 @@
 //= require mustache
 //= require tinymce/tinymce.min.js
 //= require tinymceEditor.js
+//= require jquery.timeago.js
 //= require multiselect.min
 //= require moment
 //= require common
@@ -77,7 +78,7 @@ class SchloopBase {
         if(typeof errors === 'string'){
             let msg = errors + '<br/>' || "Something went wrong. Please try later.";
             swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
-        } else if (typeof errors === 'array'){
+        } else if (typeof errors === 'object'){
             let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
             swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
         }

@@ -94,6 +94,26 @@ ActiveRecord::Schema.define(version: 20170109060639) do
 
   add_index "categories", ["name_map"], name: "index_categories_on_name_map", using: :btree
 
+  create_table "collaborations", force: :cascade do |t|
+    t.integer  "bookmark_id"
+    t.string   "collaboration_message"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "collaborations", ["bookmark_id"], name: "index_collaborations_on_bookmark_id", using: :btree
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "commentable_type"
+    t.integer  "commentable_id"
+    t.integer  "commented_by"
+    t.text     "message"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
+
   create_table "devices", force: :cascade do |t|
     t.integer  "deviceable_id"
     t.string   "deviceable_type"
@@ -279,6 +299,20 @@ ActiveRecord::Schema.define(version: 20170109060639) do
     t.string   "logo"
   end
 
+  create_table "social_trackers", force: :cascade do |t|
+    t.integer  "sc_trackable_id"
+    t.string   "sc_trackable_type"
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.integer  "event"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "social_trackers", ["sc_trackable_type", "sc_trackable_id", "user_type", "user_id", "event"], name: "index_sc_all", unique: true, using: :btree
+  add_index "social_trackers", ["sc_trackable_type", "sc_trackable_id"], name: "index_social_trackers_on_sc_trackable_type_and_sc_trackable_id", using: :btree
+  add_index "social_trackers", ["user_type", "user_id"], name: "index_social_trackers_on_user_type_and_user_id", using: :btree
+
   create_table "student_profiles", force: :cascade do |t|
     t.integer  "student_id"
     t.integer  "grade_id"
@@ -428,6 +462,7 @@ ActiveRecord::Schema.define(version: 20170109060639) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["user_token"], name: "index_users_on_user_token", using: :btree
 
+  add_foreign_key "collaborations", "bookmarks"
   add_foreign_key "divisions", "grades"
   add_foreign_key "ecircular_recipients", "ecirculars"
   add_foreign_key "followups", "bookmarks"
