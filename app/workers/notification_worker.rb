@@ -13,6 +13,7 @@ class NotificationWorker
         #     body:  circular.title,
         #     sound: 'default'
         # },
+        priority: "high",
         content_available: true,
         data: {
            title: "New Ecircular Added",
