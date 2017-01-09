@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161229065543) do
+ActiveRecord::Schema.define(version: 20170109060639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -175,6 +175,14 @@ ActiveRecord::Schema.define(version: 20161229065543) do
     t.datetime "updated_at",      null: false
     t.integer  "school_id"
   end
+
+  create_table "followups", force: :cascade do |t|
+    t.integer  "bookmark_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "followups", ["bookmark_id"], name: "index_followups_on_bookmark_id", using: :btree
 
   create_table "grade_teachers", force: :cascade do |t|
     t.datetime "created_at",  null: false
@@ -457,6 +465,7 @@ ActiveRecord::Schema.define(version: 20161229065543) do
   add_foreign_key "collaborations", "bookmarks"
   add_foreign_key "divisions", "grades"
   add_foreign_key "ecircular_recipients", "ecirculars"
+  add_foreign_key "followups", "bookmarks"
   add_foreign_key "grade_teachers", "divisions"
   add_foreign_key "grade_teachers", "grades"
   add_foreign_key "grade_teachers", "subjects"

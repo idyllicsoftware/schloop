@@ -58,14 +58,14 @@ class Admin::Teachers::BookmarksController < ApplicationController
   end
 
   def bookmark_like_or_view
-    params.permit(:event, :bookmark_id, :like_state)
-    event = params[:event]
+    tracker_params = like_or_view_params
+    event = tracker_params[:event]
     errors = []
     user = current_teacher ? current_teacher : current_user
-    bookmark = Bookmark.find_by(id: params[:bookmark_id])
+    bookmark = Bookmark.find_by(id: tracker_params[:bookmark_id])
     errors << "Invalid bookmark to track" if bookmark.blank?
     begin
-      if (event.eql? 'like') and (params[:like_state].eql? "false") and   errors.blank?
+      if (event.eql? 'like') and (tracker_params[:like_state].eql? "false") and   errors.blank?
         record = SocialTracker.find_by(user_type: user.class.to_s, user_id: user.id, sc_trackable_type: bookmark.class.to_s, sc_trackable_id: bookmark.id, event: SocialTracker.events[event.to_sym])
         record.destroy
         bookmark.decrement!(:likes) unless record.errors.present?
@@ -76,7 +76,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     rescue Exception => e
       errors << "errors occured while manipulating like and view"
     end
-    render json:{ success: errors.blank?, errors: errors, bookmark: Bookmark.find_by(id: params[:bookmark_id])}
+    render json:{ success: errors.blank?, errors: errors, bookmark: Bookmark.find_by(id: tracker_params[:bookmark_id])}
   end
 
   private
@@ -132,18 +132,8 @@ class Admin::Teachers::BookmarksController < ApplicationController
     return :text
   end
 
-  def get_preview_image_url(url)
-    require 'link_thumbnailer'
-    preview_object = LinkThumbnailer.generate(url)
-    title = preview_object.title
-    if preview_object.images.present?  
-      preview_image_url = preview_object.images.first.src  
-    elsif preview_object.url.present?
-      preview_image_url = preview_object.url.to_s
-    else
-      preview_image_url = "image not found"
-    end
-    return { title: title, preview_image_url: preview_image_url }
+  def like_or_view_params
+    params.permit(:event, :bookmark_id, :like_state)
   end
 
 end
