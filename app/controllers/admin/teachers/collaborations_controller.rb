@@ -7,12 +7,12 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     collaborations_bookmark_ids = Collaboration.pluck(:bookmark_id)
     bookmarks_ids = Bookmark.where(grade_id: grade_ids).where(subject_id: subject_ids).pluck(:id)
     filtered_bookmark_ids = collaborations_bookmark_ids & bookmarks_ids
-    bookmark_datum = []
+    bookmark_datum = {}
     collaborations = Collaboration.where(bookmark_id: filtered_bookmark_ids).includes(:bookmark).includes(:comments)
     collaboration_datum = []
     collaborations.each do |collaboration|
       comments = collaboration.comments.order('created_at asc') 
-      bookmark_datum << {bookmark: bookmark_data(collaboration.bookmark), comments: comments}
+      bookmark_datum = {bookmark: bookmark_data(collaboration.bookmark), comments: comments}
       collaboration_datum << {collaboration_id: collaboration.id, collaboration_data: bookmark_datum}
     end
     render json: {success: true, data: collaboration_datum}
@@ -47,7 +47,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
       begin
         master_subject = Subject.find_by(id: bookmark[:subject_id]).master_subject
         master_grade = Grade.find_by(id: bookmark[:grade_id]).master_grade
-        topic = Topic.find_by(teacher_id: user.id, master_grade_id: master_grade.id, master_subject_id: master_subject.id, title: bookmark[:topic_name])
+        topic = Topic.find_by(teacher_id: teacher.id, master_grade_id: master_grade.id, master_subject_id: master_subject.id, title: bookmark[:topic_name])
         if topic.blank?       
           topic = Topic.create(title: bookmark[:topic_name], teacher_id: teacher.id, master_subject_id: master_subject.id, master_grade_id: master_grade.id)
         end
@@ -66,8 +66,8 @@ class Admin::Teachers::CollaborationsController < ApplicationController
 
   private
   def bookmark_data(bookmark)
-    user = current_teacher
-    is_liked = SocialTracker.find_by(sc_trackable: bookmark, user_type: user.class.to_s, user_id: user.id, event: 1).present?
+    teacher = current_teacher
+    is_liked = SocialTracker.find_by(sc_trackable: bookmark, user_type: teacher.class.to_s, user_id: teacher.id, event: 1).present?
     datum = { bookmark_id: bookmark.id,
               title: bookmark.title,
               data: bookmark.data,

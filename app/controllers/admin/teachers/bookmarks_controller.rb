@@ -76,7 +76,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
         errors << "errors occured while manipulating like and view" + "," + e.message
       end
     end
-    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark.reload}
+    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark.present? ? bookmark.reload : []}
   end
 
   private
