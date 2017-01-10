@@ -27,7 +27,8 @@ Rails.application.configure do
   }
 
   MAILER_HOST = "http://localhost:3000/"
-  FCM_KEY = 'AIzaSyDe3HNn_owddmmaGABY-hXRLaMbFOqYiOo'
+  # FCM_KEY = 'AIzaSyDe3HNn_owddmmaGABY-hXRLaMbFOqYiOo'
+  FCM_KEY = 'AIzaSyAEWrNuYF0CfCtMsywjbmS1YIGF1_qoIlk'
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

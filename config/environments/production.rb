@@ -77,7 +77,8 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
   MAILER_HOST = "http://schloop.co"
-  FCM_KEY = 'AIzaSyDe3HNn_owddmmaGABY-hXRLaMbFOqYiOo'
+  # FCM_KEY = 'AIzaSyDe3HNn_owddmmaGABY-hXRLaMbFOqYiOo'
+  FCM_KEY = 'AIzaSyAEWrNuYF0CfCtMsywjbmS1YIGF1_qoIlk'
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
