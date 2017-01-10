@@ -38,7 +38,10 @@ class Ecircular < ActiveRecord::Base
 		circular_data = []
 		circulars = school.ecirculars
 		filter_circular_ids = filter_params[:id]
-		circulars = circulars.where(id: filter_circular_ids) if filter_circular_ids.present?
+		
+		return circular_data, 0 if filter_circular_ids.blank?
+
+		circulars = circulars.where(id: filter_circular_ids)
 		if filter_params[:from_date].present?
 			from_date = DateTime.parse(filter_params[:from_date])
 			circulars = circulars.where("ecirculars.created_at >= ?", from_date.beginning_of_day)
