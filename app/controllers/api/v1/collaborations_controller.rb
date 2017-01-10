@@ -8,9 +8,8 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
     errors << "Please provide valid bookmark" if bookmark.nil?
 
     if errors.blank?
-      binding.pry
       collaboration = Collaboration.create(bookmark: bookmark, collaboration_message: collaboration_msg )
-      errors << collaboration.errors.full_messages
+      errors << collaboration.errors.full_messages if collaboration.errors.present?
     end
     if errors.blank?
       render json: {

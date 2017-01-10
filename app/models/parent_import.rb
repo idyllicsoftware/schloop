@@ -16,7 +16,18 @@ class ParentImport
   def save
     if imported_parents[0] != false 
       if imported_parents.map(&:valid?).all?
-          imported_parents.each(&:save!)
+        
+        imported_parents.each_with_index do |parent, index|
+          existing_parent = Parent.find_by_email(parent.email)
+          if !existing_parent.present?
+            parent.save
+          else
+            parent_data = {"first_name" => parent.first_name, "last_name" => parent.last_name, "email" => parent.email, "cell_number" => parent.cell_number, "school_id" =>  parent.school_id}
+            existing_parent.update_attributes(parent_data)
+            parent.students.first.parent_id = existing_parent.id
+            parent.students.each(&:save!)
+          end
+        end
         true
       else
         imported_parents.each_with_index do |parent, index|
@@ -55,7 +66,7 @@ class ParentImport
         division = Division.where(:grade_id => @@grade_id, :name => row["division"])
         division_id = division.first.id rescue ""
         parent_data = {"first_name" => row["first_name"], "last_name" => row["last_name"], "email" => row["email"], "cell_number" => row["cell_number"], "school_id" =>  row["school_id"]}
-        student_data = {"first_name" => row["student_first_name"], "last_name" => row["student_last_name"], "school_id" =>  row["school_id"], "activation_status" => true }
+        student_data = {"first_name" => row["student_first_name"], "last_name" => row["student_last_name"], "school_id" =>  row["school_id"]}
         student_profile_data = {"grade_id" => @@grade_id, "division_id"=> division_id, :status => 0}
         parent_detail_data = {"school_id" => @@school_id, "first_name" => row["first_name"], "last_name" => row["last_name"]}
         parent = Parent.find_by(email: row["email"])

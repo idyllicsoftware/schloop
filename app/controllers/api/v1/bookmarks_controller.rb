@@ -58,15 +58,15 @@ class Api::V1::BookmarksController < Api::V1::BaseController
   end
 
   def index
+    bookmark_data = []
     page = params[:page].to_s.to_i || 1
     page_size = 20
     offset = (page * page_size)
     bookmarks = Bookmark.where(grade_id: params[:grade_id], subject_id: params[:subject_id])
-                  .includes(:topic, :teacher)
-                  .offset(offset)
-                  .limit(page_size)
-    bookmark_data = []
+                  .includes(:topic, :teacher).order(id: :desc)
+
     total_bookmarks = bookmarks.count
+    bookmarks = bookmarks.offset(offset).limit(page_size)
     bookmarks.each do |bookmark|
       bookmark_data << { id: bookmark.id,
                          title: bookmark.title,
