@@ -41,7 +41,7 @@ class SocialTracker < ActiveRecord::Base
 
   def self.unlike(user, bookmark, event)
     record = self.find_by(user_type: user.class.to_s, user_id: user.id, sc_trackable_type: bookmark.class.to_s, sc_trackable_id: bookmark.id, event: SocialTracker.events[event.to_sym])
-    unless record.present?
+    if record.present?
       record.destroy
       bookmark.decrement!(:likes)
     end

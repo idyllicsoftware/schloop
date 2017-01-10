@@ -19,7 +19,7 @@ class Admin::Teachers::CommentsController < ApplicationController
 
   private
   def comment_params
-    params.permit(:id, :commment_type, :message)
+    params.permit(:id, :comment_type, :message)
   end
 
 end

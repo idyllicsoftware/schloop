@@ -70,7 +70,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
         if (event.eql? 'like') and (params[:like_state].eql? "false")
           SocialTracker.unlike(user, bookmark, event)
         else
-          SocialTracker.track(bookmark, user, event, teacher.class.to_s)
+          SocialTracker.track(bookmark, user, event, user.class.to_s)
         end
       rescue Exception => e
         errors << "errors occured while manipulating like and view" + "," + e.message
