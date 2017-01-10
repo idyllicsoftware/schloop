@@ -77,7 +77,7 @@ class SchloopBase {
         if(typeof errors === 'string'){
             let msg = errors + '<br/>' || "Something went wrong. Please try later.";
             swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
-        } else if (typeof errors === 'array'){
+        } else if (typeof errors === 'object'){
             let msg = errors.join("<br/> ") || "Something went wrong. Please try later.";
             swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK" });
         }
@@ -210,7 +210,7 @@ class SchloopBase {
             e.preventDefault();
             e.stopPropagation();
             let jForm = $(this), formData;
-            console.log(2);
+    
             if(jForm.valid()) {
                 if(extraParams) {
                     formData = new FormData(jForm[0]);
