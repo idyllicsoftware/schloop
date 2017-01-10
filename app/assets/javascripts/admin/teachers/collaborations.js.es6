@@ -35,6 +35,13 @@ class Collaborations extends SchloopBase {
         $(document).on('click', '.write-comment-tag', function() {
             $(this).closest('.schloopmark-item').find('.write-comment').focus();
         });
+
+        $(document).on('click', '.content-block a img', function() {
+            var bm_id = $(this).data('bm_id'),
+                view_El = $(this).closest('.schloopmark-item').find('.view_count');
+            _self.viewSchloopmark(bm_id, view_El);
+        });
+
     	_self.likeSchloopmark();
     	_self.addComment();	
     };
@@ -129,12 +136,6 @@ class Collaborations extends SchloopBase {
                                 if(len < 200){
                                     $(this).closest('.content-block').find('.read_more').addClass('hidden');
                                 }
-                        });
-
-                        $(document).on('click', '.content-block a img', function() {
-                            var bm_id = $(this).data('bm_id'),
-                                view_El = $(this).closest('.schloopmark-item').find('.view_count');
-                            _self.viewSchloopmark(bm_id, view_El);
                         });
                 } else {
                     _self.showErrors(res.errors);
