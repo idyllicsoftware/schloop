@@ -9,6 +9,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     filtered_bookmark_ids = collaborations_bookmark_ids & bookmarks_ids
     bookmark_datum, collaboration_datum = {}, []
     collaborations = Collaboration.where(bookmark_id: filtered_bookmark_ids).includes(:bookmark).includes(:comments)
+    collaborations = collaborations.sort_by(&:created_at).reverse
     collaborations.each do |collaboration|
       comments = collaboration.comments.order('created_at asc') 
       bookmark_datum = {collaboration: collaboration, bookmark: bookmark_data(collaboration.bookmark), comments: comments}
