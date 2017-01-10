@@ -23,5 +23,5 @@ class Device < ActiveRecord::Base
   belongs_to :deviceable, polymorphic: true
 
   enum status: {active: 0, inactive: 1}
-  enum device_types: {android: 0, ios: 1}
+  enum device_type: {android: 0, ios: 1}
 end

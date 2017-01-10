@@ -141,7 +141,7 @@ class Ecircular < ActiveRecord::Base
 	end
 
 	def send_notification(student_ids)
-		student_ids.each do |student_id|
+		student_ids.uniq.each do |student_id|
 			NotificationWorker.perform_async(self.id, student_id)
 		end
 	end
