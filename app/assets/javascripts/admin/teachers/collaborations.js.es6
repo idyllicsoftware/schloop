@@ -66,8 +66,8 @@ class Collaborations extends SchloopBase {
                             var coll_id = $(this).data('collaboration_id'),
                                 like_el = $(this);
                             if(_self.collaborations.hasOwnProperty(coll_id)) {
-                                var curr_bookmark = _self.collaborations[coll_id];
-                                if(curr_bookmark.bookmark_data.is_liked === true) {
+                                var curr_bookmark = _self.collaborations[coll_id].collaboration_data;
+                                if(curr_bookmark.bookmark.is_liked === true) {
                                     like_el.find('img').replaceWith('<img src="/assets/admin/like.svg" >');
                                     like_el.removeClass('unlike');
                                     like_el.addClass('like');
@@ -81,9 +81,9 @@ class Collaborations extends SchloopBase {
                                 thisEl = $(this);
 
                                 if (_self.collaborations.hasOwnProperty(curr_coll_id)) {
-                                    var hash = _self.collaborations[curr_coll_id],
+                                    var hash = _self.collaborations[curr_coll_id].collaboration_data,
                                         bookmarks_hash = {
-                                            'bookmark' : hash.bookmark_data
+                                            'bookmark' : hash.bookmark,
                                         };
                                         _self.addToMytopic(bookmarks_hash, thisEl);
                                 }
@@ -93,7 +93,7 @@ class Collaborations extends SchloopBase {
                             var curr_coll_id = $(this).data('collaboration_id'),
                                 thisEl = $(this);
                                 if (_self.collaborations.hasOwnProperty(curr_coll_id)) {
-                                    var curr_Bm_id = _self.collaborations[curr_coll_id].bookmark_data.bookmark_id
+                                    var curr_Bm_id = _self.collaborations[curr_coll_id].collaboration_data.bookmark.bookmark_id
                                     swal({
                                             title: "Are you sure?",
                                             text: "You want followup for parent",

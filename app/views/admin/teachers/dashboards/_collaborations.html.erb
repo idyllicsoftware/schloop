@@ -8,79 +8,81 @@
 
 <script type="text/html" id="collaborations_bookmarks_tpl">
 	{{#data}}
-	<div class="schloopmark-item">
-		{{#bookmark_data}}
-		<div class="schloopmark-view-section">
-			<div class="schloopmark-view">
-  				<div class="collaborated-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-  				</div>
-  				<div class="collaborated-by-teacher-detail">
-  					<p>{{title}}</p>
-  					<div class="about-schloopmark"><time class="timeago" datetime=".{{#collaboration_data}} {{created_at}} {{/collaboration_data}}" title="id"></time> |<span> {{grade_name}} </span>|<span> {{subject_name}} </span>|<span> {{topic_name}} </span></div>
-  				</div>
-			</div>
-			<div class="schloopmark-content">
-				<p class="caption">{{caption}}</p>
-				<div class="content-block">
-					{{#is_text}}
-						<div class="sm-area">
-	  						<div class="data">{{{data}}}</div>
-	  					</div>
-	  					<a href="#" class="read_more" data-bookmark_id='{{bookmark_id}}'>More...</a>
-					{{/is_text}}
-					{{^is_text}}
-						<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" data-bm_id='{{bookmark_id}}' style="width: 300px; height: 200px;"></a>
-					{{/is_text}}
+		{{#collaboration_data}}
+			<div class="schloopmark-item">
+				{{#bookmark}}
+				<div class="schloopmark-view-section">
+					<div class="schloopmark-view">
+		  				<div class="collaborated-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
+		  				</div>
+		  				<div class="collaborated-by-teacher-detail">
+		  					<p>{{title}}</p>
+		  					<div class="about-schloopmark"><time class="timeago" datetime=".{{#collaboration}} {{created_at}} {{/collaboration}}" title="id"></time> |<span> {{grade_name}} </span>|<span> {{subject_name}} </span>|<span> {{topic_name}} </span></div>
+		  				</div>
+					</div>
+					<div class="schloopmark-content">
+						<p class="caption">{{caption}}</p>
+						<div class="content-block">
+							{{#is_text}}
+								<div class="sm-area">
+			  						<div class="data">{{{data}}}</div>
+			  					</div>
+			  					<a href="#" class="read_more" data-bookmark_id='{{bookmark_id}}'>More...</a>
+							{{/is_text}}
+							{{^is_text}}
+								<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" data-bm_id='{{bookmark_id}}' style="width: 300px; height: 200px;"></a>
+							{{/is_text}}
+						</div>
+					</div>	
 				</div>
-			</div>	
-		</div>
-		{{/bookmark_data}}
-		<div class="schloopmark-like">
-			<img src="<%= asset_path('admin/like_fill.svg') %>">
-			<div><span class="like_count">{{#bookmark_data}}{{likes}}{{/bookmark_data}}</span> liked</div>
-			<div class="pl20"><span class="view_count">{{#bookmark_data}}{{views}}{{/bookmark_data}}</span> views</div>
-		</div>
-		<div class="share-section">
-			<div class="like-schloopmark share" data-bookmark_id='{{#bookmark_data}}{{bookmark_id}}{{/bookmark_data}}' data-collaboration_id='{{collaboration_id}}'>
-				<img src="<%= asset_path('admin/unlike.svg') %>">
-				<p>Like</p>
+				{{/bookmark}}
+				<div class="schloopmark-like">
+					<img src="<%= asset_path('admin/like_fill.svg') %>">
+					<div><span class="like_count">{{#bookmark}}{{likes}}{{/bookmark}}</span> liked</div>
+					<div class="pl20"><span class="view_count">{{#bookmark}}{{views}}{{/bookmark}}</span> views</div>
+				</div>
+				<div class="share-section">
+					<div class="like-schloopmark share" data-bookmark_id='{{#bookmark}}{{bookmark_id}}{{/bookmark}}' data-collaboration_id='{{collaboration_id}}'>
+						<img src="<%= asset_path('admin/unlike.svg') %>">
+						<p>Like</p>
+					</div>
+					<div class="write-comment-tag share">
+						<img src="<%= asset_path('admin/comment.svg') %>">
+						<p>Comment</p>
+					</div>
+					<div class="add-Tomytopic share" data-collaboration_id='{{collaboration_id}}'>
+						<img src="<%= asset_path('admin/add_item.svg')%>">
+						<p>Add to my topics</p>
+					</div>
+					<div class="follow-up-parent share" data-collaboration_id='{{collaboration_id}}'>
+						<img src="<%= asset_path('admin/follow_up.svg') %>">
+						<p>Followup for parents</p>
+					</div>
+				</div>
+				<div class="comment-section">
+					{{#comments}}
+					<div class="com-sub-section">
+		  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
+		  				</div>
+		  				<div class="com-by-teacher-detail">
+		  					<div class="comment-as">
+		  					<span class="fw">{{commenter}}</span> <span>{{{message}}}</span>
+		  					</div>
+		  					<time class="timeago" datetime="{{created_at}}"></time>
+		  				</div>
+					</div>
+					{{/comments}}
+					<div class="com-sub-section">
+		  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
+		  				</div>
+		  				<div class="com-by-teacher-detail">
+		  					<div class="comment-editor col-md-12 p0">
+						        <div class="write-comment" contenteditable="true" placeholder="Add a comment" data-collaboration_id="{{collaboration_id}}"></div>
+						    </div>
+		  				</div>
+					</div>			
+				</div>
 			</div>
-			<div class="write-comment-tag share">
-				<img src="<%= asset_path('admin/comment.svg') %>">
-				<p>Comment</p>
-			</div>
-			<div class="add-Tomytopic share" data-collaboration_id='{{collaboration_id}}'>
-				<img src="<%= asset_path('admin/add_item.svg')%>">
-				<p>Add to my topics</p>
-			</div>
-			<div class="follow-up-parent share" data-collaboration_id='{{collaboration_id}}'>
-				<img src="<%= asset_path('admin/follow_up.svg') %>">
-				<p>Followup for parents</p>
-			</div>
-		</div>
-		<div class="comment-section">
-			{{#comments}}
-			<div class="com-sub-section">
-  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-  				</div>
-  				<div class="com-by-teacher-detail">
-  					<div class="comment-as">
-  					<span class="fw">{{teacher_name}}</span> <span>{{{message}}}</span>
-  					</div>
-  					<time class="timeago" datetime="{{created_at}}"></time>
-  				</div>
-			</div>
-			{{/comments}}
-			<div class="com-sub-section">
-  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-  				</div>
-  				<div class="com-by-teacher-detail">
-  					<div class="comment-editor col-md-12 p0">
-				        <div class="write-comment" contenteditable="true" placeholder="Add a comment" data-collaboration_id="{{collaboration_id}}"></div>
-				    </div>
-  				</div>
-			</div>			
-		</div>
-	</div>
+		{{/collaboration_data}}	
 	{{/data}}
 </script>	
