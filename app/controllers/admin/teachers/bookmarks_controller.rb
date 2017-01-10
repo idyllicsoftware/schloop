@@ -2,8 +2,8 @@ class Admin::Teachers::BookmarksController < ApplicationController
 
   def create
     errors = []
-    begin  
-      Bookmark.create!(bookmark_params)  
+    begin
+      Bookmark.create!(bookmark_params)
     rescue Exception => e
       errors << "error occured while inserting new bookmark" + "," + e.message
     end
@@ -19,7 +19,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     rescue Exception => e
       errors << "errors while fetching bookmarks" + "," + e.message
       render json: {success:false, errors: errors}
-    end  
+    end
   end
 
   def add_caption
@@ -31,7 +31,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
       errors << "error occured while adding caption" + "," + e.message
       render json: { success: errors.blank?, errors: errors } and return
     end
-     render json: { success: errors.blank?, caption: bookmark.caption }
+    render json: { success: errors.blank?, caption:bookmark.caption }
   end
 
   def destroy
@@ -50,7 +50,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     begin  
       ####remove this params[:bookmark_id] with strict params
       bookmark = Bookmark.find_by(id: params[:bookmark_id])
-      bookmark.update!(generate_update_params)  
+      bookmark.update!(generate_update_params)
     rescue Exception => e
       errors << "error occured while inserting new bookmark" +','+ e.message
       errors <<  bookmark.errors.full_messages.join(',')
@@ -62,25 +62,21 @@ class Admin::Teachers::BookmarksController < ApplicationController
     tracker_params = like_or_view_params
     event = tracker_params[:event]
     errors = []
-    user = current_teacher ? current_teacher : current_user
+    user = current_teacher || current_user
     bookmark = Bookmark.find_by(id: tracker_params[:bookmark_id])
     errors << "Invalid bookmark to track" if bookmark.blank?
-    begin
-      if errors.blank?
-        if (event.eql? 'like') and (tracker_params[:like_state].eql? "false")
-          record = SocialTracker.find_by(user_type: user.class.to_s, user_id: user.id, sc_trackable_type: bookmark.class.to_s, sc_trackable_id: bookmark.id, event: SocialTracker.events[event.to_sym])
-          record.destroy
-          bookmark.decrement!(:likes) unless record.errors.present?
+    if errors.blank?
+      begin
+        if (event.eql? 'like') and (params[:like_state].eql? "false")
+          SocialTracker.unlike(user, bookmark, event)
         else
-          response = SocialTracker.track(bookmark, user, event, user.class.to_s)
-          SocialTracker.events[event.to_sym] == 1 ? bookmark.increment!(:likes) : bookmark.increment!(:views) unless response.include? "Sc trackable has already been taken"
+          SocialTracker.track(bookmark, user, event, teacher.class.to_s)
         end
+      rescue Exception => e
+        errors << "errors occured while manipulating like and view" + "," + e.message
       end
-    rescue 
-      Exception => e
-      errors << "errors occured while manipulating like and view"
     end
-    render json:{ success: errors.blank?, errors: errors, bookmark: Bookmark.find_by(id: tracker_params[:bookmark_id])}
+    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark.reload}
   end
 
   private
@@ -115,7 +111,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     data_type = is_url ? :url : :text
     bookmark_datum[:data_type] = Bookmark.data_types[data_type]
     bookmark_datum[:data] = params[:data]
-    return bookmark_datum  
+    return bookmark_datum
   end
 
   def update_params

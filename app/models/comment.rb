@@ -9,6 +9,7 @@
 #  message          :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  commenter        :string
 #
 # Indexes
 #
@@ -17,4 +18,5 @@
 
 class Comment < ActiveRecord::Base
   belongs_to :commentable, polymorphic: true
+  belongs_to :teacher
 end
