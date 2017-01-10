@@ -74,6 +74,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
               url: bookmark.url,
               preview_image_url: bookmark.preview_image_url,
               likes: bookmark.likes,
+              is_liked: is_liked,
               views: bookmark.views,
               topic_id: bookmark.topic_id,
               topic_name: bookmark.topic.title,
