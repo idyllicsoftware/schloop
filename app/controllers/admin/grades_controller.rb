@@ -52,6 +52,7 @@ class Admin::GradesController < ApplicationController
 
   def index
     grade_data = []
+    @grades = @grades.sort_by(& :created_at).reverse
     @grades.each do |grade|
       subjects = []
       grade.subjects.each do |subject|
