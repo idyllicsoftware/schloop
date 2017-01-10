@@ -10,9 +10,7 @@ class SchoolTeachers extends SchloopBase {
     initEventListeners (){
         let _self = this,
             { school_id } = _self._config;
-        // $("#myTab a[data-toggle='tab']").off().on('shown.bs.tab', function () {
-        //     _self.loadSchoolsTeachers();
-        // });
+
         _self.loadSchoolsTeachers();
         
         $("#add-teachers-popover").on('show.bs.popover', function () {
