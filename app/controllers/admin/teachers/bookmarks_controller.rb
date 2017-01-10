@@ -100,7 +100,6 @@ class Admin::Teachers::BookmarksController < ApplicationController
     datum[:data_type] = Bookmark.data_types[data_type]
     datum[:teacher_id] = teacher.id
     datum[:school_id] = teacher.school_id
-
     return datum.deep_symbolize_keys
   end
 

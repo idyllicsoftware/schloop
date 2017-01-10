@@ -7,12 +7,11 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     collaborations_bookmark_ids = Collaboration.pluck(:bookmark_id)
     bookmarks_ids = Bookmark.where(grade_id: grade_ids).where(subject_id: subject_ids).pluck(:id)
     filtered_bookmark_ids = collaborations_bookmark_ids & bookmarks_ids
-    bookmark_datum = {}
+    bookmark_datum, collaboration_datum = {}, []
     collaborations = Collaboration.where(bookmark_id: filtered_bookmark_ids).includes(:bookmark).includes(:comments)
-    collaboration_datum = []
     collaborations.each do |collaboration|
       comments = collaboration.comments.order('created_at asc') 
-      bookmark_datum = {bookmark: bookmark_data(collaboration.bookmark), comments: comments}
+      bookmark_datum = {collaboration: collaboration, bookmark: bookmark_data(collaboration.bookmark), comments: comments}
       collaboration_datum << {collaboration_id: collaboration.id, collaboration_data: bookmark_datum}
     end
     render json: {success: true, data: collaboration_datum}
@@ -24,7 +23,6 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     begin 
       bookmark = Bookmark.find_by(id: collaboration_params[:bookmark_id])
       errors << "bookmark not found" if bookmark.nil?
-      #teachers = GradeTeacher.select('distinct teacher_id').where(grade_id: bookmark.grade_id).where(subject_id: bookmark.subject_id).collect(&:teacher_id)
       teacher_ids = GradeTeacher.select('distinct teacher_id').where(grade_id: bookmark.grade_id).where(subject_id: bookmark.subject_id).pluck(:teacher_id)
       first_teacher = Teacher.find_by(id: teacher_ids.first)
       new_collaboration = Collaboration.create(bookmark_id: collaboration_params[:bookmark_id])
@@ -40,8 +38,8 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     bookmark = bookmark_params
     teacher = current_teacher
     if Bookmark.find_by(id: bookmark_params[:bookmark_id], teacher_id: teacher.id).present?
-          errors << "bookmark already present in my topics"
-          render json: { success: errors.blank?, errors: errors } and return
+      errors << "bookmark already present in my topics"
+      render json: { success: errors.blank?, errors: errors } and return
     end
     ActiveRecord::Base.transaction do
       begin
