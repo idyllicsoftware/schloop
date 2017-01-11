@@ -90,31 +90,6 @@ class TeacherDashboard extends SchloopBase {
                 }
             });   
         });
-    
-        $(document).on('click', '.bookmark-edit', function(e) {
-            var bookmark_id = $(this).data('bookmark_id'),
-                bookmarkEditModal = $('#bookmark-edit-modal'),
-                jForm = bookmarkEditModal.find('form');
-
-                e.preventDefault();
-                bookmarkEditModal.modal('show');
-                if(_self.topicBookmarks.hasOwnProperty(bookmark_id)){
-                   var curr_bookmark = _self.topicBookmarks[bookmark_id];
-                    jForm.fillForm(_self.topicBookmarks[bookmark_id], 'bookmark');
-                    if(curr_bookmark.data){
-                        jForm.find('.content-editor-update').html(curr_bookmark.data);
-                    }else{
-                        jForm.find('.content-editor-update').html(curr_bookmark.preview_image_url);
-                    }
-                    jForm.on('click', '.bookmark-edit-btn', function(e) {
-                        var bmId = jForm.find('input[type=hidden][name="bookmark[id]"]').val();
-                        e.preventDefault();
-                        if (bmId == bookmark_id) {                            
-                            _self.bookmarkEdit(jForm, bookmark_id);
-                        }
-                    });
-                }
-        });
     };
 
     InitDocument () {
@@ -253,7 +228,52 @@ class TeacherDashboard extends SchloopBase {
                             $(this).css('border-bottom','1px solid #ccc');
                             $(this).find('button').css('color','#dddddd');
                         });
-            
+
+                        bookmarksEl.find('.edit-caption').on('click', function() {
+                            var bookmark_id = $(this).data('bookmark_id'),
+                                thisEl = $(this),
+                                input_El = thisEl.parent().find('.edit-ca');
+                                input_El.focusin( function() {
+                                     input_El.css('border-bottom','1px solid #25aae1');
+                                });
+                            if (thisEl.text() === 'Save') {
+                                thisEl.removeClass('Edit');
+                                thisEl.addClass('Save');
+                                input_El.attr('disabled','disabled');
+                            } else {
+                                thisEl.removeClass('Save');
+                                input_El.removeAttr('disabled');
+                                thisEl.addClass('Edit');
+                                thisEl.text('Save');
+                                input_El.trigger('focusin');
+                                input_El.focus(input_El.val().length);                                
+                            }
+                            if(thisEl.hasClass('Save')) {
+                                var caption_data = {
+                                    'bookmark_id': bookmark_id,
+                                    'caption': input_El.val(),
+                                };
+                                $.ajax({
+                                    url: `/admin/teachers/bookmarks/add_caption`,
+                                    method: 'POST',
+                                    data: caption_data,
+                                    success: function (res) {
+                                        if(res.success) {
+                                            input_El.attr('disabled','disabled');
+                                            input_El.val(res.caption);
+                                            thisEl.text('Edit');
+                                            input_El.css('border-bottom','none');
+                                            toastr.success('Caption updated successfully', '', {
+                                                        positionClass: 'toast-top-right cloud-display'
+                                                });      
+                                        } else {
+                                            _self.showErrors(res.errors);
+                                        }
+                                    }
+                                });
+                            }    
+                        }); 
+
                         bookmarksEl.find('.bookmark-delete').on('click', function() {
                             var curr_bookmark_El = $(this).closest('.topics-list-section'),
                                 bookmark_id = $(this).data('bookmark_id');
@@ -374,39 +394,6 @@ class TeacherDashboard extends SchloopBase {
                     _self.showErrors(res.errors);
                 }
             }
-        });
-    };
-
-    bookmarkEdit(jForm, bookmark_id) {
-        let _self = this,
-            bookmarkEditModal = $('#bookmark-edit-modal'),
-            content_val = $('.content-editor-update').html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ''),
-            bookmarks_hash = {
-                'data' : content_val,
-                'bookmark_id': bookmark_id
-            },
-            new_val = jForm.serializeObject(),
-            formdata = $.extend(bookmarks_hash, new_val);
-        
-        $.ajax({
-            url: "/admin/teachers/bookmarks/"+bookmark_id,
-            data: formdata,
-            method: "PATCH",
-            success: function (res) {
-               if(res.success) {
-                _self.loadTopicBookmarks();
-                bookmarkEditModal.modal('hide');
-                 toastr.success('schloopmarked updated successfully', '', {
-                            positionClass: 'toast-top-right cloud-display'
-                        });      
-               } else {
-                    _self.showErrors(res.errors);
-               }
-            }
-        });
-
-        jForm.on('click', '.close-edit-modal', function() {
-            bookmarkEditModal.modal('hide');
         });
     };
 

@@ -43,15 +43,23 @@
 				</div>
 				<div class="share-section">
 					<div class="like-schloopmark share" data-bookmark_id='{{#bookmark}}{{bookmark_id}}{{/bookmark}}' data-collaboration_id='{{collaboration_id}}'>
-						<img src="<%= asset_path('admin/unlike.svg') %>">
-						<p>Like</p>
+					{{#bookmark}}
+						{{#is_liked}}
+							<img src="<%= asset_path('admin/like.svg') %>" class='like' data-img1='<%= asset_path('admin/like.svg') %>' data-img2='<%= asset_path('admin/unlike.svg') %>'>
+							<p>Liked</p>
+						{{/is_liked}}
+						{{^is_liked}}
+							<img src="<%= asset_path('admin/unlike.svg') %>" data-img1='<%= asset_path('admin/like.svg') %>' data-img2='<%= asset_path('admin/unlike.svg') %>'>
+							<p>Like</p>
+						{{/is_liked}}
+					{{/bookmark}}	
 					</div>
 					<div class="write-comment-tag share">
 						<img src="<%= asset_path('admin/comment.svg') %>">
 						<p>Comment</p>
 					</div>
 					<div class="add-Tomytopic share" data-collaboration_id='{{collaboration_id}}'>
-						<img src="<%= asset_path('admin/add_item.svg')%>">
+						<img src="<%= asset_path('admin/add_item.svg')%>" data-img1='<%= asset_path('admin/add_item.svg') %>' data-img2='<%= asset_path('admin/add_item_fill.svg') %>'>
 						<p>Add to my topics</p>
 					</div>
 					<div class="follow-up-parent share" data-collaboration_id='{{collaboration_id}}'>

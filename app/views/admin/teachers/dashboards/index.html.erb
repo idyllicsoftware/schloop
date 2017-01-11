@@ -112,7 +112,6 @@
   					<span><time class="timeago" datetime="{{updated_at}}" title="{{id}}"></time></span>
   				</div>
   				<div class="bookmarks-action">
-  					<p class="bookmark-edit" data-bookmark_id={{id}}>Edit</p>
   					<p class="bookmark-delete" data-bookmark_id={{id}}>Delete</p>
   				</div>
   			</div>
@@ -128,7 +127,10 @@
 				    </form>
 				    {{/caption}}
 				    {{#caption}}
-				    	<p>{{caption}}</p>
+	  					<input type="hidden" name="bookmark_id" value="{{id}}">
+				    	<p><input type="text" class="caption-field edit-ca" required name="caption" value="{{caption}}" placeholder="Add a caption" autocomplete="off"  maxlength="100" disabled="disabled" /></p>
+				    	<div class="pull-right edit-caption" data-bookmark_id="{{id}}">Edit</div>
+				    	<!-- <div class="pull-right edit-caption hide save-captionn" data-bookmark_id="{{id}}">Save</div> -->
 				    {{/caption}}
   				</div>
   				<div class="content-view-section">
@@ -156,25 +158,3 @@
   		</div>
 	{{/bookmarks}}
 </script> 
-
-<div class="modal fade" id="bookmark-edit-modal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-body">
-      	<%= form_tag '', class:"bookmark-edit-form", novalidate: true, onsubmit: 'return false' do %>
-      		<div class="close-edit-modal">x</div>
-      		<input type="hidden" name="bookmark[id]">
-	      	<div class="form-group">
-				<input type="text" class="input-field" required name="bookmark[caption]" placeholder="Add a caption" autocomplete="off"  maxlength="100" />
-			</div>
-			<div class="bookmark-content-editor col-md-12 p0">
-		        <div class="content-editor-update" contenteditable="true" placeholder="Paste a url of an image, video, file or paste any note to add comment..."></div>
-		    </div>
-			<div class="clearfix">
-				<button class="btn btn-primary pull-right mt20 bookmark-edit-btn" type="button">Save</button>
-			</div>
-		<% end %>	
-	  </div>
-    </div>
-  </div>
-</div> 

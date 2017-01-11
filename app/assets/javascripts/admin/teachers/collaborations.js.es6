@@ -43,7 +43,6 @@ class Collaborations extends SchloopBase {
         });
 
     	_self.likeSchloopmark();
-    	_self.addComment();	
     };
 
     get collaborationsBookmarksTpl (){
@@ -67,21 +66,13 @@ class Collaborations extends SchloopBase {
                     });
                         _self.collaborations = res.data.toHash('collaboration_id');
                         collaborationsContainer.html(html);
-                        $("time.timeago").timeago();
-                    
-                        $(document).find('.like-schloopmark').each( function() {
-                            var coll_id = $(this).data('collaboration_id'),
-                                like_el = $(this);
-                            if(_self.collaborations.hasOwnProperty(coll_id)) {
-                                var curr_bookmark = _self.collaborations[coll_id].collaboration_data;
-                                if(curr_bookmark.bookmark.is_liked === true) {
-                                    like_el.find('img').replaceWith('<img src="/assets/admin/like.svg" >');
-                                    like_el.removeClass('unlike');
-                                    like_el.addClass('like');
-                                    like_el.find('p').html('Liked');
-                                }
+                        $("time.timeago").timeago(); 
+
+                        $(document).find('.like-schloopmark > img').each( function() {
+                            if($(this).hasClass('like')) {
+                                $(this).parent().find('p').css('color','#25aae1');
                             }
-                        }); 
+                        });
 
                         collaborationsContainer.find('.add-Tomytopic').on('click', function () {
                             var curr_coll_id = $(this).data('collaboration_id'),
@@ -137,6 +128,8 @@ class Collaborations extends SchloopBase {
                                     $(this).closest('.content-block').find('.read_more').addClass('hidden');
                                 }
                         });
+
+                        _self.addComment(); 
                 } else {
                     _self.showErrors(res.errors);
                 }
@@ -151,20 +144,21 @@ class Collaborations extends SchloopBase {
     		var curr_coll_id = $(this).data('collaboration_id'),like,
                 thisEl = $(this),
                 bm_id = $(this).data('bookmark_id'),
-                teacher_id = $(this).data('teacher_id');
-
-    		if($(this).hasClass('like')){
+                img_El = $(this).find('img'),
+                img1_src_path = img_El.data('img1'), img2_src_path = img_El.data('img2');
+                
+    		if(img_El.hasClass('like')){
     			like = false;
-    			$(this).removeClass('like');
-    			$(this).addClass('unlike');
-    			$(this).find('p').html('Like');
-    			$(this).find('img').replaceWith('<img src="/assets/admin/unlike.svg" >');
+    			img_El.removeClass('like');
+    			img_El.addClass('unlike');
+    			$(this).find('p').html('Like').css('color','#666666');
+    			img_El.attr('src', img2_src_path);
     		} else {
     			like = true;
-    			$(this).find('img').replaceWith('<img src="/assets/admin/like.svg" >');
-    			$(this).removeClass('unlike');
-    			$(this).addClass('like');
-    			$(this).find('p').html('Liked');
+    			img_El.removeClass('unlike');
+    			img_El.addClass('like');
+    			$(this).find('p').html('Liked').css('color','#25aae1');
+                img_El.attr('src', img1_src_path);   
     		}
 
     		var like_data = {
@@ -191,8 +185,10 @@ class Collaborations extends SchloopBase {
     };
 
     addToMytopic(bookmarks_hash, thisEl) {
-    	let _self = this;
-    
+    	let _self = this,
+            img1_path = thisEl.find('img').data('img1'),
+            img2_path = thisEl.find('img').data('img2');
+
             $.ajax({
                 url: "/admin/teachers/collaborations/add_to_my_topics",
                 data: bookmarks_hash,
@@ -200,7 +196,7 @@ class Collaborations extends SchloopBase {
                 success: function (res) {
                    if(res.success) {
                     thisEl.find('p').html('Added to my topics');
-                    thisEl.find('img').replaceWith('<img src="/assets/admin/add_item_fill.svg" >');
+                    thisEl.find('img').attr('src','img2_path');
                      toastr.success('Schloopmarked added to mytopic successfully', '', {
                                 positionClass: 'toast-top-right cloud-display'
                             });      
@@ -213,40 +209,40 @@ class Collaborations extends SchloopBase {
 
     addComment () {
     	let _self = this;
-
-    	$(document).on('keyup','.write-comment', function (e) {
+        
+    	$('.write-comment').off('keydown').on('keydown', function (e) {
     		var curr_coll_id = $(this).data('collaboration_id'),
     			curr_El = $(this);
-    	
+    	    //e.preventDefault();
+           // e.stopPropagation()
     		if (!e) {
 		        e = window.event;
 		    }
 		    var keyCode = e.which || e.keyCode;
-		    if (keyCode === 13 && !e.shiftKey) {
-		        if (e.preventDefault) {
-		            e.preventDefault();
-		        } else {
-		            e.returnValue = false;
-		        }
-		        var comment_data = $(this).html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), '');
-		        var cmm_data = {
-	    			'id' : curr_coll_id,
-	    			'comment_type' : 'Collaboration',
-	    			'message' : comment_data
-	    		};
-
-	    		$.ajax({
-		            url: `/admin/teachers/comments`,
-		            data: cmm_data,
-		            method: 'POST',
-		            success: function (res) {
-		                if(res.success) {
-		                	_self.loadCollaboratedSchloopmark();
-		                } else {
-		                    _self.showErrors(res.errors);
-		                }
-		            }
-		        });
+		    if (keyCode === 13 && !e.shiftKey && !_self.locked) {
+                var comment_data = $(this).html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), '');
+                $(this).html("");
+                if(comment_data){
+                     _self.locked = true;
+                    var cmm_data = {
+    	    			'id' : curr_coll_id,
+    	    			'comment_type' : 'Collaboration',
+    	    			'message' : comment_data
+    	    		};
+                   $.ajax({
+    		            url: `/admin/teachers/comments`,
+    		            data: cmm_data,
+    		            method: 'POST',
+    		            success: function (res) {
+    		                if(res.success) {
+    		                	_self.loadCollaboratedSchloopmark();
+    		                } else {
+    		                    _self.showErrors(res.errors);
+    		                }
+                            _self.locked = false;
+    		            }
+    		        });
+                }
 		    }
     	});
     };

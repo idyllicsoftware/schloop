@@ -263,7 +263,7 @@
 					    right: 0;
 					    display: flex;
 					    justify-content: space-between;
-					    width: 15%;
+					    width: 10%;
 					    padding: 10px;
 					    color: #25aae1;
 					    font-weight: 600;
@@ -281,19 +281,11 @@
 				}
 				.content-of-topic {
 					.content-caption-section {
+						position: relative;
 						.input-form-group {
 							border-bottom: 1px solid #dadada;
 							width: 100%;
 							padding-top: 10px;
-							.caption-field {
-								background: transparent;
-							    padding: 5px;
-							    border: 0px;
-							    width: 90%;
-							    &:focus {
-							    	outline: 0;
-							    }
-							}
 							button {
 								background: transparent;
 							    border: none;
@@ -303,10 +295,28 @@
     							padding: 5px;
 							}
 						}
+						.caption-field {
+							background: transparent;
+						    padding: 5px;
+						    border: 0px;
+						    width: 90%;
+						    &:focus {
+						    	outline: 0;
+						    }
+						}
 						p {
 							padding: 10px;
 						    color: #666666;
 						    font-weight: 600;
+						}
+						.edit-caption {
+							position: absolute;
+						    bottom: 0;
+						    right: 0;
+						    padding: 10px;
+						    color: #cacaca;
+						    font-weight: bold;
+						    cursor: pointer;
 						}
 					}
 					.content-view-section {
@@ -366,27 +376,4 @@
 			}
 		}
 	}	
-}
-#bookmark-edit-modal {
-	.modal-body {
-		padding: 70px;
-		.bookmark-edit-form {
-			.close-edit-modal {
-				position: absolute;
-			    right: 20px;
-			    top: 10px;
-			    color: #25aae1;
-			    font-size: 30px;
-			    cursor: pointer;
-			}
-			div[contenteditable=true] {
-				&:focus {
-					outline: 0px;
-				}
-			}
-			.content-editor-section {
-				border: 0px;
-			}
-		}
-	}		
 }
