@@ -1,4 +1,5 @@
 
+
 class Activities extends SchloopBase {
     init (){
         let _self = this;
@@ -53,6 +54,10 @@ class Activities extends SchloopBase {
                     inEl.parents().closest('div').find('.placeholder').empty();
             });
         });
+    
+        $(document).on('click','.close-activity-form', function () {
+            createWebContentModal.modal('hide');
+        });    
 
         _self.initForm(jForm, null, $("#activitySubmit"));
         createWebContentModal.find("#activitySubmit").on('click', function () {

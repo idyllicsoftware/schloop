@@ -319,6 +319,10 @@ class SchoolECircular extends SchloopBase {
             }
         });
         
+        $(document).on('click','.close-circular-history-form', function () {
+            circularHistoryModal.modal('hide');
+        });
+
         $(document).on('click', '.history-circular-btn-wrap a', function () {
             let {type} = $(this).data(),
                 circulars_main_form = $('.circulars-main-form'),
