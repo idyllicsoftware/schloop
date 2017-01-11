@@ -58,6 +58,28 @@ class Bookmark < ActiveRecord::Base
     return bookmarks
   end
 
+  def as_json
+    { id: id,
+      title: title,
+      caption: caption,
+      data: data,
+      type: data_type,
+      subject_id: subject_id,
+      grade_id: grade_id,
+      preview_image_url: preview_image_url,
+      created_at: created_at,
+      topic: {
+        topic_id: topic.id,
+        topic_title: topic.title
+      },
+      teacher: {
+        id: teacher.id,
+        first_name: teacher.first_name,
+        last_name: teacher.last_name
+      }
+    }
+  end
+
   def add_crawl_data
     if self.url?
       crawl_data = generate_crawl_data

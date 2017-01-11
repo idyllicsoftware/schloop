@@ -193,6 +193,7 @@ Rails.application.routes.draw do
       post "/bookmarks/add_caption" => 'bookmarks#add_caption'
 
       post "/collaborate" => 'collaborations#collaborate'
+      get  "/collaboration" => 'collaborations#index'
     end
   end
 

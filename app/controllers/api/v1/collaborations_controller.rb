@@ -30,4 +30,28 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
       }
     end
   end
+
+  def index
+    page = params[:page].to_s.to_i || 1
+    page_size = 20
+    offset = (page * page_size)
+
+    collaborations, no_of_records = Collaboration.index(@current_user, offset, page_size)
+
+    pagination_data = {
+      page_size: page_size,
+      record_count: no_of_records,
+      total_pages: (no_of_records/page_size.to_f).ceil,
+      current_page: page
+    }
+
+    render json: {
+      success: true,
+      error: nil,
+      data: {
+        pagination_data: pagination_data,
+        collaborations: collaborations
+      }
+    }
+  end
 end
