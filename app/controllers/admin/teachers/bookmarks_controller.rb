@@ -50,12 +50,12 @@ class Admin::Teachers::BookmarksController < ApplicationController
     begin  
       ####remove this params[:bookmark_id] with strict params
       bookmark = Bookmark.find_by(id: params[:bookmark_id])
-      bookmark.update!(generate_update_params)
+      bookmark.update!(caption: update_params[:bookmark][:caption])
     rescue Exception => e
       errors << "error occured while inserting new bookmark" +','+ e.message
       errors <<  bookmark.errors.full_messages.join(',')
     end
-    render json: { success: errors.blank?, errors: errors }
+    render json: { success: errors.blank?, errors: errors , data: update_params[:bookmark][:caption] }
   end
 
   def bookmark_like_or_view
@@ -103,18 +103,8 @@ class Admin::Teachers::BookmarksController < ApplicationController
     return datum.deep_symbolize_keys
   end
 
-  def generate_update_params
-    bookmark_datum = {}
-    bookmark_datum[:caption] = params[:bookmark][:caption]
-    is_url = Util::NetworkUtils.valid_url?(params[:data])
-    data_type = is_url ? :url : :text
-    bookmark_datum[:data_type] = Bookmark.data_types[data_type]
-    bookmark_datum[:data] = params[:data]
-    return bookmark_datum
-  end
-
   def update_params
-    params.permit(:data, :bookmark)
+    params.permit(:bookmark)
   end
 
   def delete_params
