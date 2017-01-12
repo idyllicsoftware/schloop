@@ -64,7 +64,7 @@ class Collaboration < ActiveRecord::Base
     collaboration_comments = comments.order('created_at asc')
     return comments_data if collaboration_comments.blank?
 
-    teacher_index_by_id = Teacher.where(id: comments.pluck(:commented_by))
+    teacher_index_by_id = Teacher.where(id: comments.pluck(:commented_by)).index_by(&:id)
     collaboration_comments.each do |comment|
       teacher = teacher_index_by_id[comment.commented_by]
       comment_data = comment.as_json
