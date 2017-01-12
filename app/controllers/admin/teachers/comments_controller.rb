@@ -3,8 +3,10 @@ class Admin::Teachers::CommentsController < ApplicationController
   def create
     errors = []
     begin
+      bookmark = Bookmark.find_by(id: comment_params[:id])
+      collaboration = bookmark.collaboration
       comment_data = {
-      commentable_id: comment_params[:id],
+      commentable_id: collaboration.id,
       commentable_type:  comment_params[:comment_type],
       message: comment_params[:message],
       commented_by: current_teacher.id,
