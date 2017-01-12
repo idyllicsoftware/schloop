@@ -74,7 +74,7 @@ class Teacher < ActiveRecord::Base
   end
 
   def send_invitation
-    Admin::AdminMailer.welcome_message(self.email, self.first_name, self.password, "schloopteacher").deliver_now
+    Admin::AdminMailer.delay.welcome_message(self.email, self.first_name, self.password, "schloopteacher")
   end
 
 
