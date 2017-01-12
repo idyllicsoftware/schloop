@@ -66,7 +66,7 @@ class Parent < User
   end
 
   def send_invitation
-    Admin::AdminMailer.delay.welcome_message(self.email, self.first_name, self.password)
+    Admin::AdminMailer.delay.welcome_message(self.email, self.first_name, self.password, "schloopparent")
   end
 
   def password_required?
