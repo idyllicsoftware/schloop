@@ -12,6 +12,9 @@
 </p>
 <p>
   Please change the password after log-in to the site: <%= @url %><br>
+  <% if ["schloopteacher", "schloopparent"].include?(@user_type) %>
+  Download app from google store from  <a href="https://play.google.com/store/apps/details?id=com.idyllic.<%= @user_type%>"> here</a><br>
+  <%end%>
   Thanks for joining and have a great day!</p>
 </body>
 </html>
