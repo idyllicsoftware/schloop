@@ -40,6 +40,7 @@ gem 'mina-sidekiq'
 gem 'ransack'
 
 gem 'newrelic_rpm'
+gem 'rollbar'
 
 group :development do
   # Using mina for deployment
