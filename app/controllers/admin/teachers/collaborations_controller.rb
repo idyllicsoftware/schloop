@@ -2,27 +2,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
 
   def index 
     teacher= current_teacher
-    collaboration_datum = Collaboration.index(teacher)
-    #grade_ids = teacher.grade_teachers.pluck(:grade_id).uniq
-   # subject_ids = teacher.grade_teachers.pluck(:subject_id).uniq  
-    #bookmarks = Bookmark.where(grade_id: grade_ids).where(subject_id: subject_ids)
-    #collaborations = Collaboration.pluck(:bookmark_id)
-    #bookmarks.each do |bookmark|
-     # if collaborations.include?(bookmark.id)
-      #  collaboration = Collaboration.find_by(bookmark_id: bookmark.id)
-       # comments = collaboration.comments.order('created_at asc') # formmated_comments
-        #data = []
-        #comments.each do |comment|
-         # teacher = Teacher.find_by(id: comment.commented_by)
-         # name = teacher.first_name + " " +teacher.last_name
-         # comment_data = comment.as_json
-         # comment_data["teacher_name"] = name
-         # data << comment_data
-        #end
-        #collaboration_data << { collaboration_id: collaboration.id, collaboration_data: collaboration,  bookmark_data: bookmark_data(collaboration.bookmark), comments: data }
-        #collaboration_data = collaboration_data.sort_by { |element| element[:collaboration_data][:created_at]}.reverse
-      #end
-    #end
+    collaboration_datum, no_of_records = Collaboration.index(teacher)    
     render json: {success: true, data: collaboration_datum}
   end 
  

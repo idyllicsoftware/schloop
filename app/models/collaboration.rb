@@ -40,18 +40,34 @@ class Collaboration < ActiveRecord::Base
     no_of_records = valid_bookmarks.count
     valid_bookmarks = valid_bookmarks.offset(offset).limit(page_size) if offset.present?
 
-    liked_bookmark_ids = SocialTracker.where(
-      sc_trackable_type: "Bookmark",
-      sc_trackable_id: collaborated_bookmark_ids,
-      user_type: teacher.class.name, user_id: teacher.id, event: 1).pluck(:sc_trackable_id)
+    liked_bookmarks = SocialTracker.where(sc_trackable_type: "Bookmark",
+                                          sc_trackable_id: collaborated_bookmark_ids,
+                                          event: SocialTracker.events[:like])
+
+    liked_bookmark_ids = liked_bookmarks.where(user_type: teacher.class.name, user_id: teacher.id).pluck(:sc_trackable_id)
+
+    teachers_index_by_id = Teacher.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
+    liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
 
     valid_bookmarks.each do |bookmark|
+      likes = []
       bookmark_formatted_data = bookmark.formatted_data
       is_liked = liked_bookmark_ids.include?(bookmark.id)
 
       bookmark_formatted_data.merge!(commnets: bookmark.collaboration.formatted_comments)
-      bookmark_formatted_data.merge!(is_liked: is_liked)
 
+      liked_users = liked_bookmarks_group_by_id[bookmark.id] || []
+
+      liked_users.each do |liked_user|
+        teacher = teachers_index_by_id[liked_user.user_id]
+        likes << {
+          id: teacher.id,
+          first_name: teacher.first_name,
+          last_name: teacher.last_name
+        } 
+      end
+      bookmark_formatted_data.merge!(likes: likes)
+      bookmark_formatted_data.merge!(is_liked: is_liked)
       collaborated_bookmarks << bookmark_formatted_data
     end
 
@@ -64,11 +80,12 @@ class Collaboration < ActiveRecord::Base
     collaboration_comments = comments.order('created_at asc')
     return comments_data if collaboration_comments.blank?
 
-    teacher_index_by_id = Teacher.where(id: comments.pluck(:commented_by))
+    teacher_index_by_id = Teacher.where(id: comments.pluck(:commented_by)).index_by(&:id)
     collaboration_comments.each do |comment|
       teacher = teacher_index_by_id[comment.commented_by]
       comment_data = comment.as_json
-      comment_data["teacher_name"] = teacher.name
+      comment_data[:commenter][:first_name] = teacher.first_name
+      comment_data[:commenter][:last_name] = teacher.last_name
       comments_data << comment_data
     end
     return comments_data

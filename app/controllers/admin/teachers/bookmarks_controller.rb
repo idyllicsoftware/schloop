@@ -48,22 +48,11 @@ class Admin::Teachers::BookmarksController < ApplicationController
   def bookmark_like_or_view
     tracker_params = like_or_view_params
     event = tracker_params[:event]
+    like_state = params[:like_state] 
     errors = []
     user = current_teacher || current_user
-    bookmark = Bookmark.find_by(id: tracker_params[:bookmark_id])
-    errors << "Invalid bookmark to track" if bookmark.blank?
-    if errors.blank?
-      begin
-        if (event.eql? 'like') and (params[:like_state].eql? "false")
-          SocialTracker.unlike(user, bookmark, event)
-        else
-          SocialTracker.track(bookmark, user, event, user.class.to_s)
-        end
-      rescue Exception => e
-        errors << "errors occured while manipulating like and view" + "," + e.message
-      end
-    end
-    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark.present? ? bookmark.reload : []}
+    response = Bookmark.track_bookmark(event,like_state,user)
+    render json: response
   end
 
   private

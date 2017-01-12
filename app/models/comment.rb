@@ -18,5 +18,18 @@
 
 class Comment < ActiveRecord::Base
   belongs_to :commentable, polymorphic: true
-  belongs_to :teacher
+
+  def as_json
+  {
+    id: id,
+    message: message,
+    commenter: {
+      id: commented_by,
+      first_name: "",
+      last_name: "",
+    },
+    created_at: created_at,
+    updated_at: updated_at
+  }
+  end
 end
