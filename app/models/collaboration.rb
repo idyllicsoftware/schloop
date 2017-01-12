@@ -55,7 +55,6 @@ class Collaboration < ActiveRecord::Base
       likes = []
       bookmark_formatted_data = bookmark.formatted_data
       is_liked = liked_bookmark_ids.include?(bookmark.id)
-
       bookmark_formatted_data.merge!(comments: bookmark.collaboration.formatted_comments)
 
       liked_users = liked_bookmarks_group_by_id[bookmark.id] || []
@@ -84,7 +83,6 @@ class Collaboration < ActiveRecord::Base
     comments_data = []
     collaboration_comments = comments.order('created_at asc')
     return comments_data if collaboration_comments.blank?
-
     teacher_index_by_id = Teacher.where(id: comments.pluck(:commented_by)).index_by(&:id)
     collaboration_comments.each do |comment|
       teacher = teacher_index_by_id[comment.commented_by]

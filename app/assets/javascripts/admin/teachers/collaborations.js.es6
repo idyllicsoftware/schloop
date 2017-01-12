@@ -61,10 +61,10 @@ class Collaborations extends SchloopBase {
                 	var html = Mustache.to_html(_self.collaborationsBookmarksTpl, {
                         data: res.data,
                         is_text: function() {
-                            return this.data_type === "text";
+                            return this.type === "text";
                         },
                     });
-                        _self.collaborations = res.data.toHash('collaboration_id');
+                        _self.bookmarks = res.data.toHash('id');
                         collaborationsContainer.html(html);
                         $("time.timeago").timeago(); 
 
@@ -75,23 +75,23 @@ class Collaborations extends SchloopBase {
                         });
 
                         collaborationsContainer.find('.add-Tomytopic').on('click', function () {
-                            var curr_coll_id = $(this).data('collaboration_id'),
+                            var curr_bm_id = $(this).data('bookmark_id'),
                                 thisEl = $(this);
 
-                                if (_self.collaborations.hasOwnProperty(curr_coll_id)) {
-                                    var hash = _self.collaborations[curr_coll_id].collaboration_data,
+                                if (_self.bookmarks.hasOwnProperty(curr_coll_id)) {
+                                    var hash = _self.bookmarks[curr_bm_id],
                                         bookmarks_hash = {
-                                            'bookmark' : hash.bookmark,
+                                            'bookmark' : hash,
                                         };
                                         _self.addToMytopic(bookmarks_hash, thisEl);
                                 }
                         });
 
                         collaborationsContainer.on('click', '.follow-up-parent', function () {
-                            var curr_coll_id = $(this).data('collaboration_id'),
+                            var curr_bm_id = $(this).data('bookmark_id'),
                                 thisEl = $(this);
-                                if (_self.collaborations.hasOwnProperty(curr_coll_id)) {
-                                    var curr_Bm_id = _self.collaborations[curr_coll_id].collaboration_data.bookmark.bookmark_id
+                                if (_self.bookmarks.hasOwnProperty(curr_bm_id)) {
+                                    var curr_Bm_id = _self.bookmarks[curr_bm_id].id;
                                     swal({
                                             title: "Are you sure?",
                                             text: "You want followup for parent",
@@ -141,7 +141,7 @@ class Collaborations extends SchloopBase {
     	let _self = this;
     
     	$(document).on('click', '.like-schloopmark', function () {
-    		var curr_coll_id = $(this).data('collaboration_id'),like,
+    		var like,
                 thisEl = $(this),
                 bm_id = $(this).data('bookmark_id'),
                 img_El = $(this).find('img'),
@@ -162,7 +162,6 @@ class Collaborations extends SchloopBase {
     		}
 
     		var like_data = {
-    			'collaboration_id' : curr_coll_id,
                 'bookmark_id' : bm_id,
     			'event' : 'like',
                 'like_state' : like
@@ -211,7 +210,7 @@ class Collaborations extends SchloopBase {
     	let _self = this;
         
     	$('.write-comment').off('keydown').on('keydown', function (e) {
-    		var curr_coll_id = $(this).data('collaboration_id'),
+    		var curr_bm_id = $(this).data('bookmark_id'),
     			curr_El = $(this);
     	    //e.preventDefault();
            // e.stopPropagation()
@@ -225,7 +224,7 @@ class Collaborations extends SchloopBase {
                 if(comment_data){
                      _self.locked = true;
                     var cmm_data = {
-    	    			'id' : curr_coll_id,
+    	    			'id' : curr_bm_id,
     	    			'comment_type' : 'Collaboration',
     	    			'message' : comment_data
     	    		};
