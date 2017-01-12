@@ -64,7 +64,6 @@ class Admin::Teachers::BookmarksController < ApplicationController
     user = current_teacher ? current_teacher : current_user
     bookmark = Bookmark.find_by(id: tracker_params[:bookmark_id])
     errors << "Invalid bookmark to track" if bookmark.blank?
-<<<<<<< HEAD
     if errors.blank?
       begin
         if (event.eql? 'like') and (params[:like_state].eql? "false")
@@ -74,23 +73,9 @@ class Admin::Teachers::BookmarksController < ApplicationController
         end
       rescue Exception => e
         errors << "errors occured while manipulating like and view"
-=======
-    begin
-      if (event.eql? 'like') and (tracker_params[:like_state].eql? "false") and   errors.blank?
-        record = SocialTracker.find_by(user_type: user.class.to_s, user_id: user.id, sc_trackable_type: bookmark.class.to_s, sc_trackable_id: bookmark.id, event: SocialTracker.events[event.to_sym])
-        record.destroy
-        bookmark.decrement!(:likes) unless record.errors.present?
-      else
-        response = SocialTracker.track(bookmark, user, event, user.class.to_s) if errors.blank?
-        SocialTracker.events[event.to_sym] == 1 ? bookmark.increment!(:likes) : bookmark.increment!(:views) unless response.include? "Sc trackable has already been taken"
->>>>>>> b2eba4fa7a928d844da63456b444af3c82c51843
       end
     end
-<<<<<<< HEAD
     render json:{ success: errors.blank?, errors: errors, bookmark: bookmark}
-=======
-    render json:{ success: errors.blank?, errors: errors, bookmark: Bookmark.find_by(id: tracker_params[:bookmark_id])}
->>>>>>> b2eba4fa7a928d844da63456b444af3c82c51843
   end
 
   private
@@ -146,23 +131,8 @@ class Admin::Teachers::BookmarksController < ApplicationController
     return :text
   end
 
-<<<<<<< HEAD
-  def get_preview_image_url(url)
-    require 'link_thumbnailer'
-    preview_object = LinkThumbnailer.generate(url)
-    title = preview_object.title
-    if preview_object.images.present?
-      preview_image_url = preview_object.images.first.src
-    elsif preview_object.url.present?
-      preview_image_url = preview_object.url.to_s
-    else
-      preview_image_url = "image not found"
-    end
-    return { title: title, preview_image_url: preview_image_url }
-=======
   def like_or_view_params
     params.permit(:event, :bookmark_id, :like_state)
->>>>>>> b2eba4fa7a928d844da63456b444af3c82c51843
   end
 
 end
