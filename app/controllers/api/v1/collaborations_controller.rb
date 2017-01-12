@@ -57,38 +57,38 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
 
   def like
     errors = []
-    collaboration = Collaboration.find_by(id: params[:collaboration_id])
-    errors << "Invalid collaboration to track" if collaboration.blank?
+    bookmark = Bookmark.find_by(id: params[:bookmark_id])
+    errors << "Invalid bookmark to track" if bookmark.blank?
     if errors.blank?
       event = 'like'
       like_state = "true"
-      collaboration.bookmark.track_bookmark(event, like_state, @current_user)
+      bookmark.track_bookmark(event, like_state, @current_user)
     end
-    render json: { success: errors.blank?, errors: errors, collaboration: (collaboration.id rescue 0)}
+    render json: { success: errors.blank?, errors: errors, bookmark: (bookmark.id rescue 0)}
   end
 
   def unlike
     errors = []
-    collaboration = Collaboration.find_by(id: params[:collaboration_id])
-    errors << "Invalid collaboration to track" if collaboration.blank?
+    bookmark = Bookmark.find_by(id: params[:bookmark_id])
+    errors << "Invalid bookmark to track" if bookmark.blank?
     if errors.blank?
       event = 'like'
       like_state = "false"
-      collaboration.bookmark.track_bookmark(event, like_state, @current_user)
+      bookmark.track_bookmark(event, like_state, @current_user)
     end
-    render json: { success: errors.blank?, errors: errors, collaboration: (collaboration.id rescue 0)}
+    render json: { success: errors.blank?, errors: errors, bookmark: (bookmark.id rescue 0)}
   end
 
   def view
     errors = []
-    collaboration = Collaboration.find_by(id: params[:collaboration_id])
-    errors << "Invalid collaboration to track" if collaboration.blank?
+    bookmark = Bookmark.find_by(id: params[:bookmark_id])
+    errors << "Invalid bookmark to track" if bookmark.blank?
     if errors.blank?
       event = 'view'
       like_state = "false"
-      collaboration.bookmark.track_bookmark(event, like_state, @current_user)
+      bookmark.track_bookmark(event, like_state, @current_user)
     end
-    render json: { success: errors.blank?, errors: errors, collaboration: (collaboration.id rescue 0)}
+    render json: { success: errors.blank?, errors: errors, bookmark: (bookmark.id rescue 0)}
   end
 
 
