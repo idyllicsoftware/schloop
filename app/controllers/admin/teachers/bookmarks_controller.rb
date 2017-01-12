@@ -46,13 +46,18 @@ class Admin::Teachers::BookmarksController < ApplicationController
   end
 
   def bookmark_like_or_view
+    errors = []
     tracker_params = like_or_view_params
     event = tracker_params[:event]
-    like_state = params[:like_state] 
-    errors = []
     user = current_teacher || current_user
-    response = Bookmark.track_bookmark(event,like_state,user)
-    render json: response
+    bookmark = Bookmark.find_by(id: tracker_params[:bookmark_id])
+
+    errors << "Invalid bookmark to track" if bookmark.blank?
+    if errors.blank?
+      like_state = params[:like_state] || "true"
+      bookmark.track_bookmark(event, like_state, user)
+    end
+    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark}
   end
 
   private

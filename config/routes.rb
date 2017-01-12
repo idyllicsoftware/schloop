@@ -194,6 +194,11 @@ Rails.application.routes.draw do
 
       post "/collaborate" => 'collaborations#collaborate'
       get  "/collaboration" => 'collaborations#index'
+
+      get "/collaboration/:bookmark_id/like" => "collaborations#like"
+      get "/collaboration/:bookmark_id/unlike" => "collaborations#unlike"
+      get  "/collaboration/:bookmark_id/view" => "collaborations#view"
+      post "/collaboration/:bookmark_id/comment" => 'collaborations#comment'
     end
   end
 

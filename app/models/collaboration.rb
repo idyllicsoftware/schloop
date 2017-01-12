@@ -20,6 +20,7 @@
 class Collaboration < ActiveRecord::Base
   belongs_to :bookmark
   has_many :comments, as: :commentable, :dependent => :delete_all
+  validates_uniqueness_of :bookmark_id
 
   def self.index(teacher, offset = nil, page_size = 20)
     collaborated_bookmarks = []
@@ -35,6 +36,7 @@ class Collaboration < ActiveRecord::Base
     end
     bookmark_ids = Bookmark.where(query_string).ids
     collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
+    followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     valid_bookmarks = Bookmark.where(id: collaborated_bookmark_ids).includes(:collaboration).order(id: :desc)
 
     no_of_records = valid_bookmarks.count
@@ -54,7 +56,7 @@ class Collaboration < ActiveRecord::Base
       bookmark_formatted_data = bookmark.formatted_data
       is_liked = liked_bookmark_ids.include?(bookmark.id)
 
-      bookmark_formatted_data.merge!(commnets: bookmark.collaboration.formatted_comments)
+      bookmark_formatted_data.merge!(comments: bookmark.collaboration.formatted_comments)
 
       liked_users = liked_bookmarks_group_by_id[bookmark.id] || []
 
@@ -68,6 +70,9 @@ class Collaboration < ActiveRecord::Base
       end
       bookmark_formatted_data.merge!(likes: likes)
       bookmark_formatted_data.merge!(is_liked: is_liked)
+      bookmark_formatted_data.merge!(is_collaborated: collaborated_bookmark_ids.include?(bookmark.id))
+      bookmark_formatted_data.merge!(is_followedup: followed_bookmark_ids.include?(bookmark.id))
+
       collaborated_bookmarks << bookmark_formatted_data
     end
 

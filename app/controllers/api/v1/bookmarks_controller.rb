@@ -79,24 +79,25 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     render json: {success: true, error: nil, data: {bookmark_data: bookmark_data, pagination_data: pagination_data}}
   end
 
-  private
 
-  def bookmarks_params
-    params.require(:bookmark).permit(:topic_id, :subject_id, :grade_id, :data)
-  end
+    private
 
-  def generate_bookmarks_params
-    teacher = @current_user
-    create_bookmarks_params = {}
-    create_bookmarks_params[:teacher_id] = teacher.id
-    create_bookmarks_params[:school_id] = teacher.school_id
+    def bookmarks_params
+      params.require(:bookmark).permit(:topic_id, :subject_id, :grade_id, :data)
+    end
 
-    is_url = Util::NetworkUtils.valid_url?(bookmarks_params[:data])
+    def generate_bookmarks_params
+      teacher = @current_user
+      create_bookmarks_params = {}
+      create_bookmarks_params[:teacher_id] = teacher.id
+      create_bookmarks_params[:school_id] = teacher.school_id
 
-    data_type = is_url ? :url : :text
-    create_bookmarks_params[:data_type] = Bookmark.data_types[data_type]
+      is_url = Util::NetworkUtils.valid_url?(bookmarks_params[:data])
 
-    create_bookmarks_params
-  end
+      data_type = is_url ? :url : :text
+      create_bookmarks_params[:data_type] = Bookmark.data_types[data_type]
+
+      create_bookmarks_params
+    end
 
 end

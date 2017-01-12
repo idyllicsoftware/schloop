@@ -25,7 +25,7 @@ class SocialTracker < ActiveRecord::Base
 
   after_create :update_bookmark_analytics
 
-  def self.track(entity, user, event, user_type = user.type)
+  def self.track(user, entity, event, user_type = user.class.name)
     errors = []
     ActiveRecord::Base.transaction do
       begin
