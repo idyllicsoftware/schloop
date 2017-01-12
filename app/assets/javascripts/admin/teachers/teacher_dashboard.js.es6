@@ -279,20 +279,33 @@ class TeacherDashboard extends SchloopBase {
                                 bookmark_id = $(this).data('bookmark_id');
                             
                             if(_self.topicBookmarks.hasOwnProperty(bookmark_id)){
-
-                                $.ajax({
-                                    url: "/admin/teachers/bookmarks/"+bookmark_id,
-                                    method: "DELETE",
-                                    success: function (res) {
-                                       if(res.success) {
-                                        curr_bookmark_El.remove();
-                                         toastr.success('schloopmarked deleted successfully', '', {
-                                                    positionClass: 'toast-top-right cloud-display'
-                                                });      
-                                       } else {
-                                            _self.showErrors(res.errors);
-                                       }
-                                    }
+                                swal({
+                                      title: "Are you sure?",
+                                      type: "warning", 
+                                      text: "You want delete this schloopmark",
+                                      confirmButtonColor: "#25aae1",
+                                      confirmButtonText: "Yes, delete it!",
+                                      showCancelButton: true,
+                                      closeOnConfirm: false
+                                    },
+                                    function(isConfirm){
+                                      if (isConfirm) {
+                                            $.ajax({
+                                                url: "/admin/teachers/bookmarks/"+bookmark_id,
+                                                method: "DELETE",
+                                                success: function (res) {
+                                                   if(res.success) {
+                                                     swal.close();
+                                                    curr_bookmark_El.remove();
+                                                     toastr.success('schloopmarked deleted successfully', '', {
+                                                                positionClass: 'toast-top-right cloud-display'
+                                                            });      
+                                                   } else {
+                                                        _self.showErrors(res.errors);
+                                                   }
+                                                }
+                                            });
+                                        }
                                 });
                             }
                         });
