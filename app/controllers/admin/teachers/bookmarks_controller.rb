@@ -45,19 +45,6 @@ class Admin::Teachers::BookmarksController < ApplicationController
     render json: {success: errors.blank?, errors: errors}
   end
 
-  def update
-    errors = []
-    begin  
-      ####remove this params[:bookmark_id] with strict params
-      bookmark = Bookmark.find_by(id: params[:bookmark_id])
-      bookmark.update!(caption: update_params[:bookmark][:caption])
-    rescue Exception => e
-      errors << "error occured while inserting new bookmark" +','+ e.message
-      errors <<  bookmark.errors.full_messages.join(',')
-    end
-    render json: { success: errors.blank?, errors: errors , data: update_params[:bookmark][:caption] }
-  end
-
   def bookmark_like_or_view
     tracker_params = like_or_view_params
     event = tracker_params[:event]
@@ -101,10 +88,6 @@ class Admin::Teachers::BookmarksController < ApplicationController
     datum[:teacher_id] = teacher.id
     datum[:school_id] = teacher.school_id
     return datum.deep_symbolize_keys
-  end
-
-  def update_params
-    params.permit(:bookmark)
   end
 
   def delete_params

@@ -40,7 +40,7 @@ class Bookmark < ActiveRecord::Base
   validates :topic_id, presence: true
   validates :teacher_id, presence: true
   validates :likes, :numericality => { only_integer: true ,greater_than_or_equal_to: 0 },:presence => true
-
+  validates :data, presence: true
   before_create :add_crawl_data
 
   enum data_type: { text:0, url:1 }
