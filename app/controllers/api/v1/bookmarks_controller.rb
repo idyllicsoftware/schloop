@@ -79,41 +79,6 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     render json: {success: true, error: nil, data: {bookmark_data: bookmark_data, pagination_data: pagination_data}}
   end
 
-  def like
-    errors = []
-    bookmark = Bookmark.find_by(id: params[:bookmark_id])
-    errors << "Invalid bookmark to track" if bookmark.blank?
-    if errors.blank?
-      event = 'like'
-      like_state = "true"
-      bookmark.track_bookmark(event, like_state, @current_user)
-    end
-    render json: { success: errors.blank?, errors: errors, bookmark: bookmark.id}
-  end
-
-  def unlike
-    errors = []
-    bookmark = Bookmark.find_by(id: params[:bookmark_id])
-    errors << "Invalid bookmark to track" if bookmark.blank?
-    if errors.blank?
-      event = 'like'
-      like_state = "false"
-      bookmark.track_bookmark(event, like_state, @current_user)
-    end
-    render json: { success: errors.blank?, errors: errors, bookmark: bookmark.id}
-  end
-
-  def view
-    errors = []
-    bookmark = Bookmark.find_by(id: params[:bookmark_id])
-    errors << "Invalid bookmark to track" if bookmark.blank?
-    if errors.blank?
-      event = 'view'
-      like_state = "false"
-      bookmark.track_bookmark(event, like_state, @current_user)
-    end
-    render json: { success: errors.blank?, errors: errors, bookmark: bookmark.id}
-  end
 
     private
 
