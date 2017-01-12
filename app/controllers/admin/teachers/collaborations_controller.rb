@@ -7,8 +7,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
   end 
  
   def create
-    errors = []
-    data = {}
+    errors, data = [], {}
     begin 
       bookmark = Bookmark.find_by(id: collaboration_params[:bookmark_id])
       is_collaborated = Collaboration.find_by(bookmark_id: bookmark.id).present?
@@ -54,28 +53,6 @@ class Admin::Teachers::CollaborationsController < ApplicationController
   end
 
   private
-  def bookmark_data(bookmark)
-    teacher = current_teacher
-    is_liked = SocialTracker.find_by(sc_trackable: bookmark, user_type: teacher.class.to_s, user_id: teacher.id, event: 1).present?
-    datum = { bookmark_id: bookmark.id,
-              title: bookmark.title,
-              data: bookmark.data,
-              data_type: bookmark.data_type,
-              caption: bookmark.caption,
-              url: bookmark.url,
-              preview_image_url: bookmark.preview_image_url,
-              likes: bookmark.likes,
-              is_liked: is_liked,
-              views: bookmark.views,
-              topic_id: bookmark.topic_id,
-              topic_name: bookmark.topic.title,
-              grade_id: bookmark.grade_id,
-              grade_name: bookmark.grade.name,
-              subject_id: bookmark.subject_id,
-              subject_name: bookmark.subject.name
-            }
-    return datum
-  end
 
   def bookmark_params
     params.require(:bookmark).permit(:bookmark_id, :title, :data, :data_type, :caption, :url, :preview_image_url, :topic_id, :topic_name, :grade_id, :subject_id)
