@@ -32,8 +32,9 @@ class Bookmark < ActiveRecord::Base
   belongs_to :grade
   belongs_to :subject
   belongs_to :school
-  has_one :collaboration, :dependent => :destroy
-  has_many :social_trackers, :as => 'sc_trackable', :dependent => :destroy
+  has_one :collaboration, dependent: :destroy
+  has_one :followup, dependent: :destroy
+  has_many :social_trackers, :as => 'sc_trackable', dependent: :destroy
 
 
 #  index_bookmarks_on_grade_id_and_subject_id  (grade_id,subject_id)
@@ -66,7 +67,10 @@ class Bookmark < ActiveRecord::Base
       type: data_type,
       subject_id: subject_id,
       grade_id: grade_id,
+      url: url,
       preview_image_url: preview_image_url,
+      likes: likes,
+      views: views,
       created_at: created_at,
       topic: {
         topic_id: topic.id,
@@ -74,8 +78,7 @@ class Bookmark < ActiveRecord::Base
       },
       teacher: {
         id: teacher.id,
-        first_name: teacher.first_name,
-        last_name: teacher.last_name
+        name: teacher.name
       }
     }
   end

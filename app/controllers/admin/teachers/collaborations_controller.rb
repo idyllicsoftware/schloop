@@ -10,7 +10,7 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     bookmarks.each do |bookmark|
       if collaborations.include?(bookmark.id)
         collaboration = Collaboration.find_by(bookmark_id: bookmark.id)
-        comments = collaboration.comments.order('created_at asc')
+        comments = collaboration.comments.order('created_at asc') # formmated_comments
         data = []
         comments.each do |comment|
           teacher = Teacher.find_by(id: comment.commented_by)
