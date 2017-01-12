@@ -35,6 +35,7 @@ class Collaboration < ActiveRecord::Base
     end
     bookmark_ids = Bookmark.where(query_string).ids
     collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
+    followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     valid_bookmarks = Bookmark.where(id: collaborated_bookmark_ids).includes(:collaboration).order(id: :desc)
 
     no_of_records = valid_bookmarks.count
@@ -68,6 +69,9 @@ class Collaboration < ActiveRecord::Base
       end
       bookmark_formatted_data.merge!(likes: likes)
       bookmark_formatted_data.merge!(is_liked: is_liked)
+      bookmark_formatted_data.merge!(is_collaborated: collaborated_bookmark_ids.include?(bookmark.id))
+      bookmark_formatted_data.merge!(is_followedup: followed_bookmark_ids.include?(bookmark.id))
+
       collaborated_bookmarks << bookmark_formatted_data
     end
 
