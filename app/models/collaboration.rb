@@ -54,7 +54,7 @@ class Collaboration < ActiveRecord::Base
       bookmark_formatted_data = bookmark.formatted_data
       is_liked = liked_bookmark_ids.include?(bookmark.id)
 
-      bookmark_formatted_data.merge!(commnets: bookmark.collaboration.formatted_comments)
+      bookmark_formatted_data.merge!(comments: bookmark.collaboration.formatted_comments)
 
       liked_users = liked_bookmarks_group_by_id[bookmark.id] || []
 

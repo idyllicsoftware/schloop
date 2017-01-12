@@ -79,24 +79,60 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     render json: {success: true, error: nil, data: {bookmark_data: bookmark_data, pagination_data: pagination_data}}
   end
 
-  private
-
-  def bookmarks_params
-    params.require(:bookmark).permit(:topic_id, :subject_id, :grade_id, :data)
+  def like
+    errors = []
+    bookmark = Bookmark.find_by(id: params[:bookmark_id])
+    errors << "Invalid bookmark to track" if bookmark.blank?
+    if errors.blank?
+      event = 'like'
+      like_state = "true"
+      bookmark.track_bookmark(event, like_state, @current_user)
+    end
+    render json: { success: errors.blank?, errors: errors, bookmark: bookmark.id}
   end
 
-  def generate_bookmarks_params
-    teacher = @current_user
-    create_bookmarks_params = {}
-    create_bookmarks_params[:teacher_id] = teacher.id
-    create_bookmarks_params[:school_id] = teacher.school_id
-
-    is_url = Util::NetworkUtils.valid_url?(bookmarks_params[:data])
-
-    data_type = is_url ? :url : :text
-    create_bookmarks_params[:data_type] = Bookmark.data_types[data_type]
-
-    create_bookmarks_params
+  def unlike
+    errors = []
+    bookmark = Bookmark.find_by(id: params[:bookmark_id])
+    errors << "Invalid bookmark to track" if bookmark.blank?
+    if errors.blank?
+      event = 'like'
+      like_state = "false"
+      bookmark.track_bookmark(event, like_state, @current_user)
+    end
+    render json: { success: errors.blank?, errors: errors, bookmark: bookmark.id}
   end
+
+  def view
+    errors = []
+    bookmark = Bookmark.find_by(id: params[:bookmark_id])
+    errors << "Invalid bookmark to track" if bookmark.blank?
+    if errors.blank?
+      event = 'view'
+      like_state = "false"
+      bookmark.track_bookmark(event, like_state, @current_user)
+    end
+    render json: { success: errors.blank?, errors: errors, bookmark: bookmark.id}
+  end
+
+    private
+
+    def bookmarks_params
+      params.require(:bookmark).permit(:topic_id, :subject_id, :grade_id, :data)
+    end
+
+    def generate_bookmarks_params
+      teacher = @current_user
+      create_bookmarks_params = {}
+      create_bookmarks_params[:teacher_id] = teacher.id
+      create_bookmarks_params[:school_id] = teacher.school_id
+
+      is_url = Util::NetworkUtils.valid_url?(bookmarks_params[:data])
+
+      data_type = is_url ? :url : :text
+      create_bookmarks_params[:data_type] = Bookmark.data_types[data_type]
+
+      create_bookmarks_params
+    end
 
 end

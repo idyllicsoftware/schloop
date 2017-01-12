@@ -118,23 +118,18 @@ class Bookmark < ActiveRecord::Base
     }
   end
 
-  ## in progress
   def track_bookmark(event, like_state, user)
     errors = []
-    bookmark = Bookmark.find_by(id: tracker_params[:bookmark_id])
-    errors << "Invalid bookmark to track" if bookmark.blank?
-    if errors.blank?
-      begin
-        if (event.eql? 'like') and (params[:like_state].eql? "false")
-          SocialTracker.unlike(user, bookmark, event)
-        else
-          SocialTracker.track(bookmark, user, event, user.class.to_s)
-        end
-      rescue Exception => e
-        errors << "errors occured while manipulating like and view"
+    begin
+      if (event.eql? 'like') and (like_state.eql? "false")
+        SocialTracker.unlike(user, self, event)
+      else
+        SocialTracker.track(user, self, event)
       end
+    rescue Exception => ex
+      errors << "errors occured while manipulating like and view. #{ex.message}"
     end
-    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark}
+    return {success: errors.blank?, errors: errors, bookmark: id}
   end
 
 end
