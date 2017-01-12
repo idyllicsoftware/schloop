@@ -3,7 +3,7 @@ class Admin::Teachers::DashboardsController < ApplicationController
   def index
     @grade_teacher_data = []
     @teacher = current_teacher
-    grades_data = @teacher.grade_teachers.group_by do |record| record.grade_id end
+    grades_data = @teacher.grade_teachers.includes(:grade).includes(:subject).group_by do |record| record.grade_id end
 
     grades_data.each do |grade_id, datas|
       subjects_data = {}

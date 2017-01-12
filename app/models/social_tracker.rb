@@ -32,7 +32,7 @@ class SocialTracker < ActiveRecord::Base
         response = self.create(sc_trackable: entity, user_id: user.id, user_type: user_type, event: SocialTracker.events[event.to_sym])
         errors = response.errors.full_messages
       rescue Exception => ex
-        errors << 'Error occured while creating social tracker entry.'
+        errors << 'Error occured while creating social tracker entry.' + ',' + ex.message
         raise ActiveRecord::Rollback
       end
     end
@@ -41,7 +41,7 @@ class SocialTracker < ActiveRecord::Base
 
   def self.unlike(user, bookmark, event)
     record = self.find_by(user_type: user.class.to_s, user_id: user.id, sc_trackable_type: bookmark.class.to_s, sc_trackable_id: bookmark.id, event: SocialTracker.events[event.to_sym])
-    unless record.present?
+    if record.present?
       record.destroy
       bookmark.decrement!(:likes)
     end
@@ -49,6 +49,7 @@ class SocialTracker < ActiveRecord::Base
 
   private
   def update_bookmark_analytics
-    self.view? ? bookmark.increment!(:views) : bookmark.increment!(:likes)
+    bookmark = Bookmark.find_by(id: self.sc_trackable_id)
+    self.event==1 ? bookmark.increment!(:likes) : bookmark.increment!(:views)
   end
 end

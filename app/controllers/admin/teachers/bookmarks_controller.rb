@@ -5,7 +5,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
     begin
       Bookmark.create!(bookmark_params)
     rescue Exception => e
-      errors << "error occured while inserting new bookmark"
+      errors << "error occured while inserting new bookmark" + "," + e.message
     end
     render json: { success: errors.blank?, errors: errors }
   end
@@ -17,7 +17,7 @@ class Admin::Teachers::BookmarksController < ApplicationController
       collaborated = Collaboration.where(bookmark_id: bookmarks.ids).pluck('distinct bookmark_id')
       render json: { success:true, bookmarks: bookmarks, collaborated: collaborated }
     rescue Exception => e
-      errors << "errors while fetching bookmarks"
+      errors << "errors while fetching bookmarks" + "," + e.message
       render json: {success:false, errors: errors}
     end
   end
@@ -25,11 +25,10 @@ class Admin::Teachers::BookmarksController < ApplicationController
   def add_caption
     errors = []
     begin
-      bookmark = Bookmark.find_by(id: params[:bookmark_id])
-      bookmark.caption = params[:caption]
-      bookmark.save
+      bookmark = Bookmark.find_by(id: caption_params[:bookmark_id])
+      bookmark.update!(caption: caption_params[:caption])
     rescue Exception => e
-      errors << "error occured while adding caption"
+      errors << "error occured while adding caption" + "," + e.message
       render json: { success: errors.blank?, errors: errors } and return
     end
     render json: { success: errors.blank?, caption:bookmark.caption }
@@ -38,30 +37,19 @@ class Admin::Teachers::BookmarksController < ApplicationController
   def destroy
     errors = []
     begin
-      bookmark = Bookmark.find_by(id:params[:id])
+      bookmark = Bookmark.find_by(id: delete_params[:id])  
       bookmark.destroy
     rescue Exception => e
-      errors << "unable to destroy bookmarks"
+      errors << "unable to destroy bookmarks" + ','+ e.message
     end
     render json: {success: errors.blank?, errors: errors}
-  end
-
-  def update
-    errors = []
-    begin
-      bookmark = Bookmark.find_by(id: params[:bookmark_id])
-      bookmark.update!(generate_update_params)
-    rescue Exception => e
-      errors << "error occured while inserting new bookmark"
-    end
-    render json: { success: errors.blank?, errors: errors }
   end
 
   def bookmark_like_or_view
     tracker_params = like_or_view_params
     event = tracker_params[:event]
     errors = []
-    user = current_teacher ? current_teacher : current_user
+    user = current_teacher || current_user
     bookmark = Bookmark.find_by(id: tracker_params[:bookmark_id])
     errors << "Invalid bookmark to track" if bookmark.blank?
     if errors.blank?
@@ -72,10 +60,10 @@ class Admin::Teachers::BookmarksController < ApplicationController
           SocialTracker.track(bookmark, user, event, user.class.to_s)
         end
       rescue Exception => e
-        errors << "errors occured while manipulating like and view"
+        errors << "errors occured while manipulating like and view" + "," + e.message
       end
     end
-    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark}
+    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark.present? ? bookmark.reload : []}
   end
 
   private
@@ -99,40 +87,18 @@ class Admin::Teachers::BookmarksController < ApplicationController
     datum[:data_type] = Bookmark.data_types[data_type]
     datum[:teacher_id] = teacher.id
     datum[:school_id] = teacher.school_id
-
     return datum.deep_symbolize_keys
   end
 
-  def generate_update_params
-    bookmark_datum = {}
-    bookmark_datum[:caption] = params[:bookmark][:caption]
-    is_url = Util::NetworkUtils.valid_url?(params[:data])
-    data_type = is_url ? :url : :text
-    bookmark_datum[:data_type] = Bookmark.data_types[data_type]
-    bookmark_datum[:data] = params[:data]
-    return bookmark_datum
-  end
-
-  def update_params
-    params.permit(:data, :bookmark)
-  end
-
-  def get_data_type(input_data)
-    begin
-      uri = URI(input_data)
-      request = Net::HTTP.new uri.host
-      response= request.request_head uri.path
-      if (response.code.start_with?('2') or response.code.start_with?('3'))
-        return :url
-      end
-    rescue Exception => e
-      return :text
-    end
-    return :text
+  def delete_params
+    params.permit(:id)
   end
 
   def like_or_view_params
     params.permit(:event, :bookmark_id, :like_state)
   end
 
+  def caption_params
+    params.permit(:bookmark_id,:caption)
+  end
 end

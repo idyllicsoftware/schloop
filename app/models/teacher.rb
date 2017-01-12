@@ -59,6 +59,7 @@ class Teacher < ActiveRecord::Base
             :length => {:minimum => 10, :maximum => 15}
 
   belongs_to :school
+  has_many :comments
   has_many :grade_teachers, dependent: :destroy
   has_many :activity_shares
   has_many :topics, dependent: :destroy

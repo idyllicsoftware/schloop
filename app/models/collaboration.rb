@@ -71,7 +71,7 @@ class Collaboration < ActiveRecord::Base
       comment_data["teacher_name"] = teacher.name
       comments_data << comment_data
     end
-    reuturn comments_data
+    return comments_data
   end
 
 end

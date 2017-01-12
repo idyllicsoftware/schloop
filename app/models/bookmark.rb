@@ -34,21 +34,15 @@ class Bookmark < ActiveRecord::Base
   belongs_to :school
   has_one :collaboration, dependent: :destroy
   has_one :followup, dependent: :destroy
+
   has_many :social_trackers, :as => 'sc_trackable', dependent: :destroy
 
-
-#  index_bookmarks_on_grade_id_and_subject_id  (grade_id,subject_id)
-#  index_bookmarks_on_school_id                (school_id)
-#  index_bookmarks_on_teacher_id               (teacher_id)
-#
   validates :grade_id, presence: true
   validates :subject_id, presence: true
   validates :topic_id, presence: true
   validates :teacher_id, presence: true
-  #validates :title, presence: true
-  ##validates :school_id: presence: true 
   validates :likes, :numericality => { only_integer: true ,greater_than_or_equal_to: 0 },:presence => true
-
+  validates :data, presence: true
   before_create :add_crawl_data
 
   enum data_type: { text:0, url:1 }
