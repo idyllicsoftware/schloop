@@ -20,6 +20,7 @@
 class Collaboration < ActiveRecord::Base
   belongs_to :bookmark
   has_many :comments, as: :commentable, :dependent => :delete_all
+  validates_uniqueness_of :bookmark_id
 
   def self.index(teacher, offset = nil, page_size = 20)
     collaborated_bookmarks = []
