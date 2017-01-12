@@ -27,16 +27,17 @@ class Followups extends SchloopBase {
     loadFollowupsSchloopmark () {
     	let _self = this,
             followups_schloopmark = $('.followups-schloopmark');
-    	//To DO...
-        // $.ajax({
-        //     url: `/admin/teachers/followups`,
-        //     method: 'POST',
-        //     success: function (res) {
-        //         debugger;
-        //         if(res.success) {
-        //             var html = Mustache.to_html(_self.followupsBookmarksTpl, res);
-        //         }
-        //     }    
-        // });             
+        //TO DO...
+        $.ajax({
+            url: `/admin/teachers/followups`,
+            method: 'GET',
+            success: function (res) {
+                if(res.success) {
+                    var html = Mustache.to_html(_self.followupsBookmarksTpl, res);
+                } else {
+                    _self.showErrors(res.errors);
+                }
+            }    
+        });             
     };
 }    
