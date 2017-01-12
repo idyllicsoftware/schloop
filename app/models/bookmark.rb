@@ -32,7 +32,9 @@ class Bookmark < ActiveRecord::Base
   belongs_to :grade
   belongs_to :subject
   belongs_to :school
-  has_one :collaboration, :dependent => :destroy
+  has_one :collaboration, dependent: :destroy
+  has_one :followup, dependent: :destroy
+
   has_many :social_trackers, :as => 'sc_trackable', :dependent => :destroy
 
   validates :grade_id, presence: true
