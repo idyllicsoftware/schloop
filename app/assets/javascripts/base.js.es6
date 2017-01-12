@@ -211,7 +211,7 @@ class SchloopBase {
             e.preventDefault();
             e.stopPropagation();
             let jForm = $(this), formData;
-            console.log(2);
+    
             if(jForm.valid()) {
                 if(extraParams) {
                     formData = new FormData(jForm[0]);
