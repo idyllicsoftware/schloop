@@ -41,7 +41,7 @@ class Collaboration < ActiveRecord::Base
     valid_bookmarks = valid_bookmarks.offset(offset).limit(page_size) if offset.present?
 
     valid_bookmarks.each do |bookmark|
-      collaborated_bookmars << bookmark.as_json
+      collaborated_bookmars << bookmark.formatted_data
     end
     return collaborated_bookmars, no_of_records
   end

@@ -68,7 +68,7 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     total_bookmarks = bookmarks.count
     bookmarks = bookmarks.offset(offset).limit(page_size)
     bookmarks.each do |bookmark|
-      bookmark_data << bookmark.as_json
+      bookmark_data << bookmark.formatted_data
     end
     pagination_data = {
        page_size: page_size,

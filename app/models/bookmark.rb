@@ -58,7 +58,7 @@ class Bookmark < ActiveRecord::Base
     return bookmarks
   end
 
-  def as_json
+  def formatted_data
     { id: id,
       title: title,
       caption: caption,
