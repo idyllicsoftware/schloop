@@ -56,8 +56,33 @@ Rails.application.routes.draw do
 
     namespace :teachers do #teachers folder in admin
       resources :teacher_imports, only: [:create], shallow: true
-      resources :dashboards
-      resources :topics, only: [:show],shallow: true
+      resources :dashboards do 
+        collection do
+         
+        end
+
+      end
+      resources :bookmarks do
+        collection do
+          get :get_bookmarks
+          post :add_caption
+          post :bookmark_like_or_view
+        end
+      end
+      resources :topics do
+        collection do
+           get :get_topics
+        end
+      end
+      resources :collaborations do
+        collection do
+          post :add_to_my_topics
+        end
+      end
+      resources :followups do
+      end
+      resources :comments do
+      end
     end
 
 ##############################################################################
@@ -80,7 +105,6 @@ Rails.application.routes.draw do
       end
 
       resources :teachers, only: [:index, :create, :update, :destroy], shallow: true do
-          
       end
 
       resources :grades, only: [:index, :create, :destroy], shallow: true do
@@ -168,6 +192,7 @@ Rails.application.routes.draw do
       get  "/bookmarks" => 'bookmarks#index'
       post "/bookmarks/add_caption" => 'bookmarks#add_caption'
 
+      post "/collaborate" => 'collaborations#collaborate'
     end
   end
 

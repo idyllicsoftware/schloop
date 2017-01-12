@@ -2,11 +2,10 @@
 #
 # Table name: followups
 #
-#  id               :integer          not null, primary key
-#  bookmark_id      :integer
-#  followup_message :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id          :integer          not null, primary key
+#  bookmark_id :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 # Indexes
 #

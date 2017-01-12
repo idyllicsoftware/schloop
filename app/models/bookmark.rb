@@ -32,6 +32,57 @@ class Bookmark < ActiveRecord::Base
   belongs_to :grade
   belongs_to :subject
   belongs_to :school
+  has_one :collaboration, :dependent => :destroy
+  has_many :social_trackers, :as => 'sc_trackable', :dependent => :destroy
 
-  enum data_type: { text: 0, url: 1 }
+  validates :grade_id, presence: true
+  validates :subject_id, presence: true
+  validates :topic_id, presence: true
+  validates :teacher_id, presence: true
+  validates :likes, :numericality => { only_integer: true ,greater_than_or_equal_to: 0 },:presence => true
+  validates :data, presence: true
+  before_create :add_crawl_data
+
+  enum data_type: { text:0, url:1 }
+  
+  def self.index(user, topic_id)
+    bookmarks = self.where("topic_id = ? AND (teacher_id = 0 OR teacher_id = ?)",
+                                topic_id, user.id).order('updated_at desc')
+    return bookmarks
+  end
+
+  def add_crawl_data
+    if self.url?
+      crawl_data = generate_crawl_data
+
+      self.url = data
+      self.title = crawl_data[:title]
+      self.caption = crawl_data[:caption]
+      self.preview_image_url = crawl_data[:preview_image_url]
+    else
+      self.title = "Schloopmark Note"
+      self.caption = "Schloopmark Note"
+    end
+
+  end
+
+  def generate_crawl_data
+    preview_object = LinkThumbnailer.generate(self.data)
+
+    title = preview_object.title || "Schloopmark Web URL"
+    caption = preview_object.description || "Schloopmark Web URL"
+
+    if preview_object.images.present?
+      preview_image_url = preview_object.images.first.src
+    elsif preview_object.url.present?
+      preview_image_url = preview_object.url.to_s
+    end
+
+    return {
+      title: title,
+      caption: caption,
+      preview_image_url: preview_image_url
+    }
+  end
+
 end

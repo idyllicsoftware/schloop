@@ -3,7 +3,7 @@ class Admin::SubjectsController < ApplicationController
 	def create
 		errors = []
 		begin
-			subject = Subject.create(name: params[:subject_name],grade_id: params[:grade_id])
+			subject = Subject.create!(name: params[:subject_name],grade_id: params[:grade_id])
 
 			if subject.errors.present?
 				raise "error occured while adding new subject"
