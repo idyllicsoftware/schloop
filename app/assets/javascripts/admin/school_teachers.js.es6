@@ -24,7 +24,7 @@ class SchoolTeachers extends SchloopBase {
             jForm.attr('action', `/admin/schools/${school_id}/teachers`);
             jForm.attr('method', 'POST');
             jForm.find('input[name="teacher[email]"]').removeAttr('disabled');
-            
+
             $("input[type=checkbox]").change(function(){
                     var grade_id = $(this).data('grade_id'),
                         subject_id = $(this).data('subject_id');
@@ -32,9 +32,13 @@ class SchoolTeachers extends SchloopBase {
                     if($("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked")){
                         $("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked").each(function(i){
                             $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                            var checked_count = jForm.find('input[type=checkbox]:checked').length;
+                             if (checked_count >= 2) {
+                                jForm.find('input[name="teacher[checked]"]').val('checked');
+                             }
                         });
                     }
-             });  
+             });
             _self.initForm(jForm, $(this));
         });
 
@@ -72,6 +76,7 @@ class SchoolTeachers extends SchloopBase {
         this.initFormSubmit(jForm, {
             'teacher[first_name]': 'name',
             'teacher[last_name]': 'name',
+            'teacher[checked]': 'name',
             'teacher[cell_number]': 'phone',
             'teacher[email]': 'email'
         }, function (res) {
@@ -170,6 +175,10 @@ class SchoolTeachers extends SchloopBase {
                                                 if(this_EL_val == division_id && curr_sub_id == sub_id){
                                                         $(this).prop('checked', true);
                                                         $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                                                    var checked_count = jForm.find('input[type=checkbox]:checked').length;
+                                                     if (checked_count >= 2) {
+                                                        jForm.find('input[name="teacher[checked]"]').val('checked');
+                                                     }
                                                 }
                                         });    
                                     });
@@ -185,6 +194,10 @@ class SchoolTeachers extends SchloopBase {
                                 if($("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked")){
                                     $("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked").each(function(i){
                                         $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                                        var checked_count = jForm.find('input[type=checkbox]:checked').length;
+                                         if (checked_count >= 2) {
+                                            jForm.find('input[name="teacher[checked]"]').val('checked');
+                                         }
                                     });
                                 }
                          });
