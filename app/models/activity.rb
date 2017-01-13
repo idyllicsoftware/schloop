@@ -29,7 +29,7 @@ class Activity < ActiveRecord::Base
 
   scope :active, -> { where(status: Activity.statuses['active']) }
 
-  def self.grade_activities(search_params, mapping_data, page, category_ids)
+  def self.grade_activities(search_params, mapping_data, page, category_ids, user=nil)
     if page.present?
       page = page.to_s.to_i
       page_size = 20
@@ -49,12 +49,12 @@ class Activity < ActiveRecord::Base
     activities = activities.offset(offset).limit(page_size) if page.present?
     # activities_data << activity.data_for_activity(mapping_data)
     activities.each do |activity|
-      activities_data << activity.data_for_activity(mapping_data)
+      activities_data << activity.data_for_activity(mapping_data, user)
     end
     return activities_data, total_records
   end
 
-  def data_for_activity(mapping_data)
+  def data_for_activity(mapping_data, user=nil)
     activity_categories = self.categories
     master_subject = self.master_subject
 
@@ -90,7 +90,7 @@ class Activity < ActiveRecord::Base
           thumbnail: thumbnail_data,
           references: reference_files,
           categories: activity_categories.select(:id, :name),
-          is_followedup: self.activity_shares.present?
+          is_followedup: (self.activity_shares.where(teacher: user).present? rescue false)
       }
     }
   end
