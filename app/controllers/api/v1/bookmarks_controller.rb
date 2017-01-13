@@ -67,8 +67,17 @@ class Api::V1::BookmarksController < Api::V1::BaseController
 
     total_bookmarks = bookmarks.count
     bookmarks = bookmarks.offset(offset).limit(page_size)
+
+    collaborated_bookmark_ids = Collaboration.find_by(bookmark_id: bookmarks.ids).pluck(:bookmark_id)
+    followed_bookmark_ids = Followup.find_by(bookmark_id: bookmarks.ids).pluck(:bookmark_id)
+
     bookmarks.each do |bookmark|
-      bookmark_data << bookmark.formatted_data
+      formatted_bookmark_data = bookmark.formatted_data
+      formatted_bookmark_data.merge!(is_collaborated: collaborated_bookmark_ids.include?(bookmark.id))
+      formatted_bookmark_data.merge!(is_followed: followed_bookmark_ids.include?(bookmark.id))
+
+      bookmark_data << formatted_bookmark_data
+
     end
     pagination_data = {
        page_size: page_size,

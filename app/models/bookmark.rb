@@ -75,8 +75,6 @@ class Bookmark < ActiveRecord::Base
       preview_image_url: preview_image_url,
       likes: likes,
       views: views,
-      is_collaborated: is_collaborated,
-      is_followed: is_followed,
       created_at: created_at,
       topic: {
         topic_id: topic.id,
