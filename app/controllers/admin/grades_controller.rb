@@ -60,7 +60,6 @@ class Admin::GradesController < ApplicationController
         grade.divisions.each do |division|
           teachers = []
           teacher_ids = GradeTeacher.where(grade_id: grade.id).where(subject_id: subject.id).where(division_id: division.id).pluck(:teacher_id)
-          binding.pry 
           teacher_records = Teacher.where(id: teacher_ids)
           teacher_records.each do |teacher_record|
             teachers << { teacher_id: teacher_record.id, first_name: teacher_record.first_name, middle_name: teacher_record.middle_name, last_name: teacher_record.last_name, email: teacher_record.email, phone: teacher_record.cell_number}
