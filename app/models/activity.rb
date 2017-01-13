@@ -89,7 +89,8 @@ class Activity < ActiveRecord::Base
           pre_requisite: pre_requisite,
           thumbnail: thumbnail_data,
           references: reference_files,
-          categories: activity_categories.select(:id, :name)
+          categories: activity_categories.select(:id, :name),
+          is_followedup: self.activity_shares.present?
       }
     }
   end

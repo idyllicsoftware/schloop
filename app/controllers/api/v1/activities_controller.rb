@@ -60,6 +60,43 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     render json: index_response
   end
 
+  def shared_activities
+    errors = []
+    page = params[:page]
+    page_size = 20
+
+    search_params = {id: ActivityShare.where(teacher_id: @current_user.id).pluck(:activity_id)}
+    mapping_data = nil
+    category_ids = nil
+    activities_data, total_records = Activity.grade_activities(search_params, mapping_data, page, category_ids)
+
+    if errors.blank?
+      index_response = {
+        success: true,
+        error: nil,
+        data: {
+          pagination_data: {
+            page_size: page_size,
+            record_count: total_records,
+            total_pages: (total_records/page_size.to_f).ceil,
+            current_page: (page || 0).to_i
+          },
+          activities: activities_data
+        }
+      }
+    else
+      index_response = {
+        success: false,
+        error:  {
+          code: 0,
+          message: errors.flatten
+        },
+        data: nil
+      }
+    end
+    render json: index_response
+  end
+
   def get_categories
     activity_categories = Category.select(:id, :name)
     render json: {

@@ -210,6 +210,8 @@ Rails.application.routes.draw do
       get  "/followups/:bookmark_id/view" => "followups#view"
       post "/followups/:bookmark_id/comment" => 'followups#comment'
 
+      get  "/followups/activities" => "activities#shared_activities"
+
     end
   end
 
