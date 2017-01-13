@@ -32,7 +32,7 @@
               </div>
               <div class="col-md-4 ">
                 <span class="data-title">Principle/Director/Authority</span>
-                <span class="data-attr"><%= @school.principal_name %></span>
+                <span class="data-attr"><%= !@school.principal_name.blank? ?  @school.principal_name : '-'%></span>
               </div>
               <div class="col-md-4">
                 <span class="data-title">Website</span>
@@ -54,7 +54,7 @@
               </div>
               <div class="col-md-2 last-col">
                 <span class="data-title">Phone (Alternate)</span>
-                <span class="data-attr"> <%= @school.phone2 %></span>
+                <span class="data-attr"> <%= !@school.phone2.blank? ? @school.phone2 : "-" %></span>
               </div>
             </div>
             <div class="mt30 admin-detail-section">
