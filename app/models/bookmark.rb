@@ -66,7 +66,6 @@ class Bookmark < ActiveRecord::Base
                                           event: SocialTracker.events[:like])
     liked_bookmark_ids = liked_bookmarks.where(user_type: teacher.class.name, user_id: teacher.id).pluck(:sc_trackable_id)
     teachers_index_by_id = Teacher.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
-    parents_index_by_id = Parent.where(id: liked_bookmarks,pluck(:user_id)).index_bY(&:id)
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
 
     bookmarks.each do |bookmark|
