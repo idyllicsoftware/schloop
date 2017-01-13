@@ -53,10 +53,47 @@ class Bookmark < ActiveRecord::Base
 
   enum data_type: { text:0, url:1 }
 
-  def self.index(user, topic_id)
-    bookmarks = self.where("topic_id = ? AND (teacher_id = 0 OR teacher_id = ?)",
-                                topic_id, user.id).order('updated_at desc')
-    return bookmarks
+  def self.index(teacher,grade_id, subject_id, topic_id,options={})
+    bookmarks_data = []
+    bookmarks = Bookmark.where(grade_id: grade_id, subject_id: subject_id, topic_id: topic_id).where(options)
+    bookmark_ids = bookmarks.ids
+    collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
+    followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
+
+
+    liked_bookmarks = SocialTracker.where(sc_trackable_type: "Bookmark",
+                                          sc_trackable_id: collaborated_bookmark_ids,
+                                          event: SocialTracker.events[:like])
+    liked_bookmark_ids = liked_bookmarks.where(user_type: teacher.class.name, user_id: teacher.id).pluck(:sc_trackable_id)
+    teachers_index_by_id = Teacher.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
+    parents_index_by_id = Parent.where(id: liked_bookmarks,pluck(:user_id)).index_bY(&:id)
+    liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
+
+    bookmarks.each do |bookmark|
+      likes = []
+      bookmark_formatted_data = bookmark.formatted_data
+      is_liked = liked_bookmark_ids.include?(bookmark.id)
+      #bookmark_formatted_data.merge!(comments: bookmark.collaboration.formatted_comments)
+
+      liked_users = liked_bookmarks_group_by_id[bookmark.id] || []
+
+      liked_users.each do |liked_user|
+        teacher = teachers_index_by_id[liked_user.user_id]
+        likes << {
+          id: teacher.id,
+          first_name: teacher.first_name,
+          last_name: teacher.last_name
+        } 
+      end
+      bookmark_formatted_data.merge!(likes: likes)
+      bookmark_formatted_data.merge!(is_liked: is_liked)
+      bookmark_formatted_data.merge!(is_collaborated: collaborated_bookmark_ids.include?(bookmark.id))
+      bookmark_formatted_data.merge!(is_followedup: followed_bookmark_ids.include?(bookmark.id))
+      
+      bookmarks_data << bookmark_formatted_data
+    end
+    return bookmarks_data
+
   end
 
   def formatted_data
