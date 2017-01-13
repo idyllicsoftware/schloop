@@ -34,19 +34,25 @@ class Bookmark < ActiveRecord::Base
   belongs_to :school
   has_one :collaboration, dependent: :destroy
   has_one :followup, dependent: :destroy
-
   has_many :social_trackers, :as => 'sc_trackable', dependent: :destroy
 
+
+#  index_bookmarks_on_grade_id_and_subject_id  (grade_id,subject_id)
+#  index_bookmarks_on_school_id                (school_id)
+#  index_bookmarks_on_teacher_id               (teacher_id)
+#
   validates :grade_id, presence: true
   validates :subject_id, presence: true
   validates :topic_id, presence: true
   validates :teacher_id, presence: true
+  #validates :title, presence: true
+  ##validates :school_id: presence: true
   validates :likes, :numericality => { only_integer: true ,greater_than_or_equal_to: 0 },:presence => true
-  validates :data, presence: true
+
   before_create :add_crawl_data
 
   enum data_type: { text:0, url:1 }
-  
+
   def self.index(user, topic_id)
     bookmarks = self.where("topic_id = ? AND (teacher_id = 0 OR teacher_id = ?)",
                                 topic_id, user.id).order('updated_at desc')
@@ -114,23 +120,18 @@ class Bookmark < ActiveRecord::Base
     }
   end
 
-  ## in progress
   def track_bookmark(event, like_state, user)
     errors = []
-    bookmark = Bookmark.find_by(id: tracker_params[:bookmark_id])
-    errors << "Invalid bookmark to track" if bookmark.blank?
-    if errors.blank?
-      begin
-        if (event.eql? 'like') and (params[:like_state].eql? "false")
-          SocialTracker.unlike(user, bookmark, event)
-        else
-          SocialTracker.track(bookmark, user, event, user.class.to_s)
-        end
-      rescue Exception => e
-        errors << "errors occured while manipulating like and view"
+    begin
+      if (event.eql? 'like') and (like_state.eql? "false")
+        SocialTracker.unlike(user, self, event)
+      else
+        SocialTracker.track(user, self, event)
       end
+    rescue Exception => ex
+      errors << "errors occured while manipulating like and view. #{ex.message}"
     end
-    render json:{ success: errors.blank?, errors: errors, bookmark: bookmark}
+    return {success: errors.blank?, errors: errors, bookmark: id}
   end
 
 end
