@@ -78,7 +78,7 @@ class Collaborations extends SchloopBase {
                             var curr_bm_id = $(this).data('bookmark_id'),
                                 thisEl = $(this);
 
-                                if (_self.bookmarks.hasOwnProperty(curr_coll_id)) {
+                                if (_self.bookmarks.hasOwnProperty(curr_bm_id)) {
                                     var hash = _self.bookmarks[curr_bm_id],
                                         bookmarks_hash = {
                                             'bookmark' : hash,
@@ -97,7 +97,8 @@ class Collaborations extends SchloopBase {
                                             text: "You want followup for parent",
                                             type: "info",
                                             showCancelButton: true,
-                                            confirmButtonText: "Yes!"
+                                            confirmButtonText: "Yes!",
+                                            closeOnConfirm: false
                                         },
                                         function(isConfirm){
                                             if (isConfirm) {
@@ -106,6 +107,7 @@ class Collaborations extends SchloopBase {
                                                     method: "POST",
                                                     success: function (res) {
                                                        if(res.success) {
+                                                        swal.close();
                                                         thisEl.find('p').html('shared as followup');
                                                         thisEl.find('img').replaceWith('<img src="/assets/admin/follow_up_fill.svg" >');
                                                          toastr.success('Schloopmarked shared as followup successfully', '', {
