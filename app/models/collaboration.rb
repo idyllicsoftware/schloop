@@ -24,17 +24,7 @@ class Collaboration < ActiveRecord::Base
 
   def self.index(teacher, offset = nil, page_size = 20)
     collaborated_bookmarks = []
-    teacher_grade_subjects = teacher.grade_teachers.pluck(:grade_id, :subject_id).uniq
-    return collaborated_bookmarks if teacher_grade_subjects.blank?
-
-    query_string = ""
-    teacher_grade_subjects.each do |grade_subject|
-      grade_id = grade_subject.first
-      subject_id = grade_subject.second
-      query_string += "(grade_id = #{grade_id} and subject_id = #{subject_id})"
-      query_string += " or " unless grade_subject.equal?(teacher_grade_subjects.last)
-    end
-    bookmark_ids = Bookmark.where(query_string).ids
+    bookmark_ids = Bookmark.associated_bookmark_ids(teacher)
     collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     valid_bookmarks = Bookmark.where(id: collaborated_bookmark_ids).includes(:collaboration).order(id: :desc)

@@ -24,28 +24,7 @@ class Followup < ActiveRecord::Base
 
   def self.index(parent, offset = nil, page_size = 20)
     followed_bookmarks = []
-    grade_subjects = []
-    students = parent.students || []
-    students.each do |student|
-      student_grade = student.student_profiles.active.last.grade
-      subjects = student_grade.subjects rescue []
-      subjects.each do |subject|
-        grade_subjects << [student_grade.id, subject.id]
-      end
-    end
-
-
-    grade_subjects = grade_subjects.uniq
-    return followed_bookmarks if grade_subjects.blank?
-
-    query_string = ""
-    grade_subjects.each do |grade_subject|
-      grade_id = grade_subject.first
-      subject_id = grade_subject.second
-      query_string += "(grade_id = #{grade_id} and subject_id = #{subject_id})"
-      query_string += " or " unless grade_subject.equal?(grade_subjects.last)
-    end
-    bookmark_ids = Bookmark.where(query_string).ids
+    bookmark_ids = Bookmark.associated_bookmark_ids(parent)
     followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     valid_bookmarks = Bookmark.where(id: followed_bookmark_ids).includes(:followup).order(id: :desc)
 
