@@ -79,11 +79,7 @@ class Collaborations extends SchloopBase {
                                 thisEl = $(this);
 
                                 if (_self.bookmarks.hasOwnProperty(curr_bm_id)) {
-                                    var hash = _self.bookmarks[curr_bm_id],
-                                        bookmarks_hash = {
-                                            'bookmark' : hash,
-                                        };
-                                        _self.addToMytopic(bookmarks_hash, thisEl);
+                                        _self.addToMytopic(curr_bm_id, thisEl);
                                 }
                         });
 
@@ -185,14 +181,13 @@ class Collaborations extends SchloopBase {
     	});
     };
 
-    addToMytopic(bookmarks_hash, thisEl) {
+    addToMytopic(bookmark_id, thisEl) {
     	let _self = this,
             img1_path = thisEl.find('img').data('img1'),
             img2_path = thisEl.find('img').data('img2');
 
             $.ajax({
-                url: "/admin/teachers/collaborations/add_to_my_topics",
-                data: bookmarks_hash,
+                url: "/admin/teachers/collaborations/add_to_my_topics?bookmark_id=" + bookmark_id,
                 method: "POST",
                 success: function (res) {
                    if(res.success) {
