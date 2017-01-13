@@ -310,11 +310,19 @@ class SchoolECircular extends SchloopBase {
                         });
                         return att;
                     },
+                    text_body: function() {
+                        var text =  _self._ecirculars[circular_id].body;
+                        return text.replace(new RegExp('\r\n', 'g'), '<br/>').replace(new RegExp('\r', 'g'), '<br/>').replace(new RegExp('\n', 'g'), '<br/>').replace(new RegExp(' ', 'g'), '&nbsp;');
+                    },
                 });
                 circularHistoryModal.find('.modal-body').html(html);
             }
         });
         
+        $(document).on('click','.close-circular-history-form', function () {
+            circularHistoryModal.modal('hide');
+        });
+
         $(document).on('click', '.history-circular-btn-wrap a', function () {
             let {type} = $(this).data(),
                 circulars_main_form = $('.circulars-main-form'),

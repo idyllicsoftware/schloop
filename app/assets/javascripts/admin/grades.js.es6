@@ -9,12 +9,27 @@ class SchoolGrades extends SchloopBase {
         _self.initEventListeners();
         return this;
     };
-		
+	
+    get addTeachersTpl (){
+        return $("#add_teachers_tpl").html();
+    };
+	
     initEventListeners (){
-        let _self = this,
+        let _self = this,addTeachersContainer = $('.scroll-grade'),
         { school_id } = _self._config;
         _self.loadSchoolsGrades();
-        
+        $(".grade-teacher-tab > #teach-tab > a[data-toggle='tab']").on('shown.bs.tab', function () {
+
+           var html = Mustache.to_html(_self.addTeachersTpl, {
+                grades: _self.schoolGrades,    
+           });
+            addTeachersContainer.html(html);
+        });
+
+        $(".grade-teacher-tab > #grade-tab > a[data-toggle='tab']").on('shown.bs.tab', function () {
+            _self.loadSchoolsGrades();
+        });
+
         $("#add-grade-popover").on('shown.bs.popover', function () {
             var popupEl = $('#' + $(this).attr('aria-describedby')),
                 jForm = popupEl.find('form');
@@ -112,6 +127,25 @@ class SchoolGrades extends SchloopBase {
         });
     };
 
+    processGrades (grades){
+        grades.forEach(function(grade){
+            var count = 0;
+            grade.valid = true;
+            grade.subjects.forEach(function(subject){
+                subject.valid = true;
+                if(!subject.divisions.length){
+                    subject.valid = false;
+                    count ++;
+                }
+            });
+            if(count == grade.subjects.length){
+                grade.valid  = false;
+            }
+        });
+
+        return grades;
+    };
+
     loadSchoolsGrades (){
         let _self = this, html = '',
             { school_id } = this._config,
@@ -122,7 +156,8 @@ class SchoolGrades extends SchloopBase {
             success: function (res) {
                 if(res.success) {
                     html = Mustache.to_html(_self.schoolGradesTpl, res);
-                    _self.schoolGrades = res.grades.toHash('grade_id'); 
+                    _self.schoolGrades = _self.processGrades(res.grades); 
+                    _self.schoolGradesHash = _self.schoolGrades.toHash('grade_id'); 
 
                     schoolGradeContainerEl.html(html);
                     _self.popoverInit(false, schoolGradeContainerEl);
@@ -143,7 +178,7 @@ class SchoolGrades extends SchloopBase {
                             jForm = popupEl.find('form'),
                             current_element = $(this).parent().closest("div");
                             
-                        if(_self.schoolGrades.hasOwnProperty(grade_id)){
+                        if(_self.schoolGradesHash.hasOwnProperty(grade_id)){
                     		if (jForm.hasClass('add-subject-form')) {
 	                            jForm.attr('action', `/admin/grades/${grade_id}/subjects`);
 		                		jForm.attr('method', 'POST');

@@ -25,6 +25,10 @@ class Schools extends SchloopBase {
             createModalEl.find('label.error').addClass('hidden');
         });
 
+        $(document).on('click','.close-school-form', function () {
+            createModalEl.modal('hide');
+        });
+
         $(document).on('click','.add-school', function () {
             createModalEl.find('label.error').removeClass('hidden');
         });
