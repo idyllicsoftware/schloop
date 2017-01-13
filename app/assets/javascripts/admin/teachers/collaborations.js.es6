@@ -63,6 +63,29 @@ class Collaborations extends SchloopBase {
                         is_text: function() {
                             return this.type === "text";
                         },
+                        like_count: function() {
+                            var like_El = [], count = 0, str = '';
+
+                            if (this.likes && this.likes.length) {
+                                this.likes.forEach( function (item) {
+                                    count++;
+                                    if (count <=2 ) {
+                                        like_El.push(item.first_name);
+                                    }
+                                });
+                                if (count == 1) {
+                                    str = like_El[0] + " liked";
+                                } else if (count == 2){
+                                    str = like_El.join(',') + " liked";
+                                } else {
+                                    str = like_El.join(',') + " & " + count + " others liked";
+                                }
+                                return str;
+                            } else {
+                                str = "0 liked";
+                                return str;
+                            }   
+                        },
                     });
                         _self.bookmarks = res.data.toHash('id');
                         collaborationsContainer.html(html);
