@@ -44,7 +44,7 @@ class Collaboration < ActiveRecord::Base
 
     liked_bookmarks = SocialTracker.where(sc_trackable_type: "Bookmark",
                                           sc_trackable_id: collaborated_bookmark_ids,
-                                          user_type: 'Teacher'
+                                          user_type: 'Teacher',
                                           event: SocialTracker.events[:like])
 
     liked_bookmark_ids = liked_bookmarks.where(user_type: teacher.class.name, user_id: teacher.id).pluck(:sc_trackable_id)
