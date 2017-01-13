@@ -95,4 +95,6 @@ class Admin::Teachers::BookmarksController < ApplicationController
   def caption_params
     params.permit(:bookmark_id,:caption)
   end
+
+
 end

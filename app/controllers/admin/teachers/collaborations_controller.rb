@@ -25,24 +25,21 @@ class Admin::Teachers::CollaborationsController < ApplicationController
 
   def add_to_my_topics
     errors = []
-    bookmark = bookmark_params
+    bookmark = Bookmark.find_by(id: add_to_my_topics_params[:bookmark_id])
     teacher = current_teacher
-    if Bookmark.find_by(id: bookmark_params[:bookmark_id], teacher_id: teacher.id).present?
+    if Bookmark.find_by(id: bookmark.id, teacher_id: teacher.id).present?
       errors << "bookmark already present in my topics"
       render json: { success: errors.blank?, errors: errors } and return
     end
     ActiveRecord::Base.transaction do
       begin
-        master_subject = Subject.find_by(id: bookmark[:subject_id]).master_subject
-        master_grade = Grade.find_by(id: bookmark[:grade_id]).master_grade
-        topic = Topic.find_by(teacher_id: teacher.id, master_grade_id: master_grade.id, master_subject_id: master_subject.id, title: bookmark[:topic_name])
+        master_subject = Subject.find_by(id: bookmark.subject_id).master_subject
+        master_grade = Grade.find_by(id: bookmark.grade_id).master_grade
+        topic = Topic.find_by(teacher_id: teacher.id, master_grade_id: master_grade.id, master_subject_id: master_subject.id, title: bookmark.topic.title)
         if topic.blank?       
-          topic = Topic.create(title: bookmark[:topic_name], teacher_id: teacher.id, master_subject_id: master_subject.id, master_grade_id: master_grade.id)
+          topic = Topic.create(title: bookmark.topic.title, teacher_id: teacher.id, master_subject_id: master_subject.id, master_grade_id: master_grade.id)
         end
-        data = {}
-        data = bookmark.except(:topic_name,:topic_id, :bookmark_id)
-        data[:teacher_id]=teacher.id 
-        data[:topic_id]= topic.id
+        data = Collaboration.add_to_my_topics_data(bookmark,teacher,topic)
         new_bookmark = Bookmark.create!(data) 
       rescue Exception => ex
         errors << 'Errors occured while adding bookmark to my topics'
@@ -54,8 +51,8 @@ class Admin::Teachers::CollaborationsController < ApplicationController
 
   private
 
-  def bookmark_params
-    params.require(:bookmark).permit(:bookmark_id, :title, :data, :data_type, :caption, :url, :preview_image_url, :topic_id, :topic_name, :grade_id, :subject_id)
+  def add_to_my_topics_params
+    params.permit(:bookmark_id)
   end
 
   def collaboration_params

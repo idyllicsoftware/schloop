@@ -94,4 +94,20 @@ class Collaboration < ActiveRecord::Base
     return comments_data
   end
 
+  def self.add_to_my_topics_data(bookmark,teacher,topic)
+    data = {
+      title: bookmark.title,
+      caption: bookmark.caption,
+      data: bookmark.data,
+      data_type: bookmark.data_type,
+      url: bookmark.url,
+      preview_image_url: bookmark.preview_image_url,
+      grade_id: bookmark.grade_id,
+      subject_id: bookmark.subject_id,
+      topic_id: topic.id,
+      school_id: teacher.school_id,
+      teacher_id: teacher.id
+    }
+    return data
+  end
 end
