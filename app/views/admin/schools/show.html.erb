@@ -128,12 +128,12 @@
                             <div id="myTabContent" class="tab-content">
                               {{#divisions}}
                               <div class="tab-pane fade in" id="{{subject_id}}division{{division_id}}">
-                                <div class="teachers-wrapper">
+                                <div class="teachers-wrapper" id="teachers-popover">
                                   <ul>
                                   {{#teacher}}
-                                    <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption">
+                                    <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content{{teacher_id}}" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption">
                                     <p>{{first_name}} {{last_name}}</p>{{subject_name}}</span></div></a></li>
-                                    <div id="teachers-info-popover-content" class="hidden">
+                                    <div id="teachers-info-popover-content{{teacher_id}}" class="hidden">
                                       <div>
                                         <p>{{first_name}} {{last_name}}</p>
                                         <p>{{phone}}</p>
