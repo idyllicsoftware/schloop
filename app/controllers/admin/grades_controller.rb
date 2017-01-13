@@ -58,14 +58,13 @@ class Admin::GradesController < ApplicationController
       grade.subjects.each do |subject|
         divisions = []
         grade.divisions.each do |division|
-          teacher = []
-          grade_teacher = GradeTeacher.where(grade_id: grade.id).where(subject_id: subject.id).where(division_id: division.id).pluck(:teacher_id)
-          teacher_id =grade_teacher.first
-          if teacher_id.present?
-            teacher_data = Teacher.find(teacher_id)
-            teacher << { teacher_id: teacher_id, first_name: teacher_data.first_name, middle_name: teacher_data.middle_name, last_name: teacher_data.last_name, email: teacher_data.email, phone: teacher_data.cell_number}
+          teachers = []
+          teacher_ids = GradeTeacher.where(grade_id: grade.id).where(subject_id: subject.id).where(division_id: division.id).pluck(:teacher_id)
+          teacher_records = Teacher.where(id: teacher_ids)
+          teacher_records.each do |teacher_record|
+            teachers << { teacher_id: teacher_record.id, first_name: teacher_record.first_name, middle_name: teacher_record.middle_name, last_name: teacher_record.last_name, email: teacher_record.email, phone: teacher_record.cell_number}
           end
-          divisions <<  {division_id: division.id, division_name: division.name, teacher: teacher}
+          divisions <<  {division_id: division.id, division_name: division.name, teacher: teachers}
         end
         subjects << { subject_id: subject.id, subject_name: subject.name, divisions: divisions}
       end

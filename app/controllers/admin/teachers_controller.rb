@@ -39,8 +39,8 @@ class Admin::TeachersController < ApplicationController
     errors = []
     ActiveRecord::Base.transaction do
       begin
+        @teacher.grade_teachers.destroy_all
         if params[:grade].present?
-          @teacher.grade_teachers.destroy_all
           create_grade_teacher_association(@teacher.id)
         end
         update_response = update_school_teacher(@teacher, update_school_teacher_params)

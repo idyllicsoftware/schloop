@@ -16,6 +16,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
+        <div class="upload-teachers-modal">x</div>
         <div class="text-center mb50">
           <h3 class="mt0">Upload Teacher CSV</h3>
           <p>Uploading  a  file  will  update  an  existing  teacher  profile  if  it  exists.  <br/>For new records, they will be added to the current list</p>
@@ -46,7 +47,7 @@
 </div>  
 
 <div id="add-teachers-popover-content" class="hidden">
-  <%= form_tag teacher_registration_path, class:"add-teachers-form" do %>
+  <form class="add-teachers-form" action="admin/teachers">
     <div class="form-group">
       <input type="text" class="form-control input-field" required name="teacher[first_name]" placeholder="First Name" autocomplete="off"  maxlength="20" />
     </div>
@@ -61,42 +62,47 @@
     </div>
     <label>Assign Grades & Subjects </label>
     <div class="scroll-grade">
-      <% @school.grades.each do |grade| %>
-        <% if grade.divisions.count != 0 %>
-          <div class="col-md-12 form-group assign-grade">
-            <label><%= grade.name %> </label>
-            <input type="hidden" name="grade_id[]" value="<%= grade.id %>">
-            <div>
-              <label>SUBJECTS</label>
-              <ul class="checkbox_customized">
-                <% grade.subjects.each  do |subject| %>
-                  <div class="col-md-12">
-                    <li class="col-md-12"><input type="checkbox" class="subject_cls" id="subject<%= subject.id %>">
-                      <label for="subject<%= subject.id %>"><%= subject.name %></label>
-                    </li>
-                    <div class="col-md-12 pl20">
-                      <label>DIVISIONS</label>
-                      <ul class="checkbox_customized">
-                        <% grade.divisions.each do |division| %>
-                        <li class="col-md-6"><input type="checkbox" name="grade[<%= grade.id %>]subjects[<%= subject.id %>]divisions[]" value="<%= division.id %>" id="subject<%= subject.id %>division<%= division.id %>" data-grade_id="<%= grade.id %>"
-                          data-subject_id="<%= subject.id %>">
-                          <label for="subject<%= subject.id %>division<%= division.id %>"><%= division.name %></label>
-                        </li>
-                        <% end %>
-                      </ul>
-                    </div>
-                  </div>
-                <% end %>
-              </ul>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
     </div>
     <div class="assign-grade-btn">
+      <input type="text" name="teacher[checked]" id="error-checked" required value="">
       <button type="submit" class="btn btn-primary">SAVE</button>
       <button type="button" class="btn btn-primary cancelPopoverBtn">CANCEL</button>
       <button type="button" class="removeTeacherBtn btn btn-primary">REMOVE</button>
     </div>
-  <% end %>
+  </form>
 </div>
+<script type="text/html" id="add_teachers_tpl">
+    {{#grades}}
+      {{#valid}}
+      <div class="col-md-12 form-group assign-grade">
+        <label>{{grade_name}}</label>
+        <input type="hidden" name="grade_id[]" value="{{grade_id}}">
+        <div>
+          <label>SUBJECTS</label>
+          <ul class="checkbox_customized">
+            {{#subjects}}
+              {{#valid}}
+                <div class="col-md-12">
+                <li class="col-md-12"><input type="checkbox" class="subject_cls" id="subject{{subject_id}}">
+                  <label for="subject{{subject_id}}">{{subject_name}}</label>
+                </li>
+                <div class="col-md-12 pl20">
+                  <label>DIVISIONS</label>
+                  <ul class="checkbox_customized">
+                    {{#divisions}}
+                    <li class="col-md-6"><input type="checkbox" name="grade[{{grade_id}}]subjects[{{subject_id}}]divisions[]" value="{{division_id}}" id="subject{{subject_id}}division{{division_id}}" data-grade_id="{{grade_id}}"
+                      data-subject_id="{{subject_id}}">
+                      <label for="subject{{subject_id}}division{{division_id}}">{{division_name}}</label>
+                    </li>
+                    {{/divisions}}
+                  </ul>
+                </div>
+                </div>
+              {{/valid}}
+            {{/subjects}}
+          </ul>
+        </div>
+      </div>
+      {{/valid}}
+    {{/grades}}
+</script>
