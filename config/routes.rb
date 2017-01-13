@@ -205,10 +205,10 @@ Rails.application.routes.draw do
       get  "parent/followups" => 'followups#index'
       get  "teacher/followups" => 'followups#index'
 
-      # get "/collaboration/:bookmark_id/like" => "collaborations#like"
-      # get "/collaboration/:bookmark_id/unlike" => "collaborations#unlike"
-      # get  "/collaboration/:bookmark_id/view" => "collaborations#view"
-      # post "/collaboration/:bookmark_id/comment" => 'collaborations#comment'
+      get "/followups/:bookmark_id/like" => "followups#like"
+      get "/followups/:bookmark_id/unlike" => "followups#unlike"
+      get  "/followups/:bookmark_id/view" => "followups#view"
+      post "/followups/:bookmark_id/comment" => 'followups#comment'
 
     end
   end
