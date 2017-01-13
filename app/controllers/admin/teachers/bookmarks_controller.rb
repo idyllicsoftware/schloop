@@ -11,15 +11,19 @@ class Admin::Teachers::BookmarksController < ApplicationController
   end
 
   def get_bookmarks
-    errors = []
-    begin
-      bookmarks = Bookmark.index(current_teacher, params[:topic_id])
-      collaborated = Collaboration.where(bookmark_id: bookmarks.ids).pluck('distinct bookmark_id')
-      render json: { success:true, bookmarks: bookmarks, collaborated: collaborated }
-    rescue Exception => e
-      errors << "errors while fetching bookmarks" + "," + e.message
-      render json: {success:false, errors: errors}
+    bookmark_data = []
+    bookmarks = Bookmark.where(grade_id: params[:grade_id], subject_id: params[:subject_id], topic_id: params[:topic_id])
+                  .includes(:topic, :teacher).order(id: :desc)              
+    bookmark_ids = bookmarks.ids              
+    collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
+    followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
+    bookmarks.each do |bookmark|
+      filtered_bookmark_data = bookmark.formatted_data
+      filtered_bookmark_data.merge!(is_collaborated: collaborated_bookmark_ids.include?(bookmark.id))
+      filtered_bookmark_data.merge!(is_followedup: followed_bookmark_ids.include?(bookmark.id))
+      bookmark_data << filtered_bookmark_data
     end
+    render json: {success: true, error: nil, bookmark_data: bookmark_data}
   end
 
   def add_caption
