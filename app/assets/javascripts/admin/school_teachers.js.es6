@@ -71,6 +71,10 @@ class SchoolTeachers extends SchloopBase {
                 _self.loadSchoolsTeachers();
             }
         });
+        
+        $(document).on('click','.upload-teachers-modal', function () {
+            uploadTeacherModalEl.modal('hide');
+        });
     };
 
     initForm (jForm, popoverEl, school_teacher_id){
