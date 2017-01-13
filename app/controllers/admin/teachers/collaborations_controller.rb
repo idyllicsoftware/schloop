@@ -10,9 +10,9 @@ class Admin::Teachers::CollaborationsController < ApplicationController
     errors, data = [], {}
     begin 
       bookmark = Bookmark.find_by(id: collaboration_params[:bookmark_id])
+      raise "bookmark is invalid" if bookmark.blank?
       is_collaborated = Collaboration.find_by(bookmark_id: bookmark.id).present?
       raise 'bookmark already shared with teachers' if is_collaborated
-      errors << "bookmark not found" if bookmark.nil?
       teacher_ids = GradeTeacher.select('distinct teacher_id').where(grade_id: bookmark.grade_id).where(subject_id: bookmark.subject_id).pluck(:teacher_id)
       first_teacher = Teacher.find_by(id: teacher_ids.first)
       new_collaboration = Collaboration.create(bookmark_id: collaboration_params[:bookmark_id])
