@@ -60,6 +60,8 @@ class Bookmark < ActiveRecord::Base
   end
 
   def formatted_data
+    is_collaborated = Collaboration.find_by(bookmark_id: self.id).present?
+    is_followed = Followup.find_by(bookmark_id: self.id).present?
     { id: id,
       title: title,
       caption: caption,
@@ -73,6 +75,8 @@ class Bookmark < ActiveRecord::Base
       preview_image_url: preview_image_url,
       likes: likes,
       views: views,
+      is_collaborated: is_collaborated,
+      is_followed: is_followed,
       created_at: created_at,
       topic: {
         topic_id: topic.id,
