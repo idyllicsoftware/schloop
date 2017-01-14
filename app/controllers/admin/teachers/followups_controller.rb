@@ -10,10 +10,11 @@ class Admin::Teachers::FollowupsController < ApplicationController
       first_parent = Parent.find_by(id: parent_ids.first)
       data = {parent_name: first_parent.name, count: parent_ids.count}
     rescue Exception => e
-      errors << "error occured while sharing schloopmark with parents" + ',' + e.message
+      errors << "error occured while sharing schloopmark with parents" + ', ' + e.message
     end
     render json: {success: errors.blank?, errors: errors,  data: data}
   end
+
   private
   def followup_params
     params.permit(:bookmark_id)

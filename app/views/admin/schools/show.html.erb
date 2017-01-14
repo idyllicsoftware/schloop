@@ -71,11 +71,11 @@
         </div>
         <div class="content-wrapper">
           <div class="tab-wrapper">
-            <ul id="myTab" class="nav nav-tabs">
-              <li class="active">
+            <ul id="myTab" class="nav nav-tabs grade-teacher-tab">
+              <li class="active" id="grade-tab">
                 <a href="#grade-sub-tab" aria-controls="grade-sub-tab" role="grade-sub-tab" data-toggle="tab">Grades & Subjects</a>
               </li>
-              <li>
+              <li id="teach-tab">
                 <a href="#teachers-tab" aria-controls="teachers-tab" role="teachers-tab"  data-toggle="tab">Teachers</a>
               </li>
             </ul>
@@ -128,12 +128,12 @@
                             <div id="myTabContent" class="tab-content">
                               {{#divisions}}
                               <div class="tab-pane fade in" id="{{subject_id}}division{{division_id}}">
-                                <div class="teachers-wrapper">
+                                <div class="teachers-wrapper" id="teachers-popover">
                                   <ul>
                                   {{#teacher}}
-                                    <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption">
+                                    <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content{{teacher_id}}" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption">
                                     <p>{{first_name}} {{last_name}}</p>{{subject_name}}</span></div></a></li>
-                                    <div id="teachers-info-popover-content" class="hidden">
+                                    <div id="teachers-info-popover-content{{teacher_id}}" class="hidden">
                                       <div>
                                         <p>{{first_name}} {{last_name}}</p>
                                         <p>{{phone}}</p>

@@ -48,6 +48,7 @@ class Bookmark < ActiveRecord::Base
   validates :topic_id, presence: true
   #validates :title, presence: true
   ##validates :school_id: presence: true
+
   validates :likes, :numericality => { only_integer: true ,greater_than_or_equal_to: 0 },:presence => true
 
   before_create :add_crawl_data
@@ -97,6 +98,8 @@ class Bookmark < ActiveRecord::Base
   end
 
   def formatted_data
+    is_collaborated = Collaboration.find_by(bookmark_id: self.id).present?
+    is_followed = Followup.find_by(bookmark_id: self.id).present?
     { id: id,
       title: title,
       caption: caption,
@@ -169,6 +172,46 @@ class Bookmark < ActiveRecord::Base
       errors << "errors occured while manipulating like and view. #{ex.message}"
     end
     return {success: errors.blank?, errors: errors, bookmark: id}
+  end
+
+  def self.associated_bookmark_ids(user)
+    grade_subjects = []
+    query_string = ""
+    if user.is_a?(Parent)
+      parent = user
+      students = parent.students || []
+      students.each do |student|
+        student_grade = student.student_profiles.active.last.grade
+        subjects = student_grade.subjects rescue []
+        subjects.each do |subject|
+          grade_subjects << [student_grade.id, subject.id]
+        end
+      end
+
+      grade_subjects = grade_subjects.uniq
+      return [] if grade_subjects.blank?
+
+      grade_subjects.each do |grade_subject|
+        grade_id = grade_subject.first
+        subject_id = grade_subject.second
+        query_string += "(grade_id = #{grade_id} and subject_id = #{subject_id})"
+        query_string += " or " unless grade_subject.equal?(grade_subjects.last)
+      end
+    else
+      teacher = user
+      teacher_grade_subjects = teacher.grade_teachers.pluck(:grade_id, :subject_id).uniq
+      return collaborated_bookmarks if teacher_grade_subjects.blank?
+
+      teacher_grade_subjects.each do |grade_subject|
+        grade_id = grade_subject.first
+        subject_id = grade_subject.second
+        query_string += "(grade_id = #{grade_id} and subject_id = #{subject_id})"
+        query_string += " or " unless grade_subject.equal?(teacher_grade_subjects.last)
+      end
+
+    end
+    bookmark_ids = (Bookmark.where(query_string).ids rescue [])
+    return bookmark_ids
   end
 
 end

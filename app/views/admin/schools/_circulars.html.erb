@@ -171,6 +171,7 @@
 <div class="modal fade" id="circular-history-modal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
+      <div class="close-circular-history-form">X</div>
       <div class="modal-body">
 
       </div>
@@ -185,9 +186,9 @@
     <div class="preview-container">
       <div class="subject-body pb10">
         <h4>{{ title }}</h4>
-        <p>
-          {{ body }}
-        </p>
+        <div>
+          {{{ text_body }}}
+        </div>  
       </div>
       <div class="attachments-list">
         <h4>Attachments</h4>

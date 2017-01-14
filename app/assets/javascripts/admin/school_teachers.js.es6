@@ -10,9 +10,7 @@ class SchoolTeachers extends SchloopBase {
     initEventListeners (){
         let _self = this,
             { school_id } = _self._config;
-        // $("#myTab a[data-toggle='tab']").off().on('shown.bs.tab', function () {
-        //     _self.loadSchoolsTeachers();
-        // });
+
         _self.loadSchoolsTeachers();
         
         $("#add-teachers-popover").on('show.bs.popover', function () {
@@ -26,7 +24,7 @@ class SchoolTeachers extends SchloopBase {
             jForm.attr('action', `/admin/schools/${school_id}/teachers`);
             jForm.attr('method', 'POST');
             jForm.find('input[name="teacher[email]"]').removeAttr('disabled');
-            
+
             $("input[type=checkbox]").change(function(){
                     var grade_id = $(this).data('grade_id'),
                         subject_id = $(this).data('subject_id');
@@ -34,13 +32,22 @@ class SchoolTeachers extends SchloopBase {
                     if($("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked")){
                         $("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked").each(function(i){
                             $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                            _self.formValidation(jForm);
                         });
                     }
-             });  
+             });
             _self.initForm(jForm, $(this));
         });
 
         _self.initCsvUpload();
+    };
+
+    formValidation (jForm) {
+        let _self = this,
+            checked_count = jForm.find('input[type=checkbox]:checked').length;
+            if (checked_count >= 2) {
+                jForm.find('input[name="teacher[checked]"]').val('checked');
+            }
     };
 
     initCsvUpload (){
@@ -64,16 +71,23 @@ class SchoolTeachers extends SchloopBase {
                 _self.loadSchoolsTeachers();
             }
         });
+        
+        $(document).on('click','.upload-teachers-modal', function () {
+            uploadTeacherModalEl.modal('hide');
+        });
     };
 
     initForm (jForm, popoverEl, school_teacher_id){
         let _self = this,
             delete_teachers_url = `/admin/teachers/${school_teacher_id}`,
             msg = school_teacher_id ? 'School teacher updated successfully' : 'School teacher added successfully';
-           
+
+        _self.formValidation(jForm);
+
         this.initFormSubmit(jForm, {
             'teacher[first_name]': 'name',
             'teacher[last_name]': 'name',
+            'teacher[checked]': 'name',
             'teacher[cell_number]': 'phone',
             'teacher[email]': 'email'
         }, function (res) {
@@ -172,6 +186,7 @@ class SchoolTeachers extends SchloopBase {
                                                 if(this_EL_val == division_id && curr_sub_id == sub_id){
                                                         $(this).prop('checked', true);
                                                         $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                                                    _self.formValidation(jForm);
                                                 }
                                         });    
                                     });
@@ -182,11 +197,13 @@ class SchoolTeachers extends SchloopBase {
                         
                         $("input[type=checkbox]").change(function(){
                                 var grade_id = $(this).data('grade_id'),
-                                    subject_id = $(this).data('subject_id');
-                                    
+                                    subject_id = $(this).data('subject_id'),
+                                    jForm = $(this).closest('form');
+                            
                                 if($("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked")){
                                     $("input[name='grade["+ grade_id +"]subjects["+ subject_id +"]divisions[]']:checked").each(function(i){
                                         $(this).parents().eq(3).find('.subject_cls').prop('checked', true);
+                                        _self.formValidation(jForm);
                                     });
                                 }
                          });

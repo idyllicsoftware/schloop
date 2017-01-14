@@ -199,6 +199,19 @@ Rails.application.routes.draw do
       get "/collaboration/:bookmark_id/unlike" => "collaborations#unlike"
       get  "/collaboration/:bookmark_id/view" => "collaborations#view"
       post "/collaboration/:bookmark_id/comment" => 'collaborations#comment'
+
+
+      post "/followup" => 'followups#followup'
+      get  "parent/followups" => 'followups#index'
+      get  "teacher/followups" => 'followups#index'
+
+      get "/followups/:bookmark_id/like" => "followups#like"
+      get "/followups/:bookmark_id/unlike" => "followups#unlike"
+      get  "/followups/:bookmark_id/view" => "followups#view"
+      post "/followups/:bookmark_id/comment" => 'followups#comment'
+
+      get  "/followups/activities" => "activities#shared_activities"
+
     end
   end
 
