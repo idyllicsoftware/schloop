@@ -68,7 +68,7 @@ class Bookmark < ActiveRecord::Base
     liked_bookmark_ids = liked_bookmarks.where(user_type: teacher.class.name, user_id: teacher.id).pluck(:sc_trackable_id)
     teachers_index_by_id = Teacher.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
-
+    bookmarks = bookmarks.sort_by(&:created_at).reverse
     bookmarks.each do |bookmark|
       likes = []
       bookmark_formatted_data = bookmark.formatted_data
