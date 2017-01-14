@@ -21,6 +21,50 @@ class Followup < ActiveRecord::Base
   belongs_to :bookmark
   has_many :comments, as: :commentable, :dependent => :delete_all
   validates_uniqueness_of :bookmark_id
+  
+  def self.index_for_web(parent)
+    followedup_bookmarks = []
+    bookmark_ids = Bookmark.associated_bookmark_ids(parent)
+    collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
+    followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
+    valid_bookmarks = Bookmark.where(id: followed_bookmark_ids).includes(:followup).order(id: :desc)
+
+    liked_bookmarks = SocialTracker.where(sc_trackable_type: "Bookmark",
+                                          sc_trackable_id: followed_bookmark_ids,
+                                          user_type: 'Parent',
+                                          event: SocialTracker.events[:like])
+
+    liked_bookmark_ids = liked_bookmarks.where(user_type: parent.class.name, user_id: parent.id).pluck(:sc_trackable_id)
+
+    parents_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
+    liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
+    valid_bookmarks = valid_bookmarks.sort_by(&:created_at).reverse
+    valid_bookmarks.each do |bookmark|
+      likes = []
+      bookmark_formatted_data = bookmark.formatted_data
+      is_liked = liked_bookmark_ids.include?(bookmark.id)
+      bookmark_formatted_data.merge!(comments: bookmark.followup.formatted_comments)
+
+      liked_users = liked_bookmarks_group_by_id[bookmark.id] || []
+
+      liked_users.each do |liked_user|
+        parent = parents_index_by_id[liked_user.user_id]
+        likes << {
+          id: parent.id,
+          first_name: parent.first_name,
+          last_name: parent.last_name
+        } 
+      end
+      bookmark_formatted_data.merge!(likes: likes)
+      bookmark_formatted_data.merge!(is_liked: is_liked)
+      bookmark_formatted_data.merge!(is_collaborated: collaborated_bookmark_ids.include?(bookmark.id))
+      bookmark_formatted_data.merge!(is_followedup: followed_bookmark_ids.include?(bookmark.id))
+
+      followedup_bookmarks << bookmark_formatted_data
+    end
+
+    return followedup_bookmarks
+  end
 
   def self.index(parent, offset = nil, page_size = 20)
     followed_bookmarks = []
@@ -38,7 +82,6 @@ class Followup < ActiveRecord::Base
 
     parents_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
-
     valid_bookmarks.each do |bookmark|
       likes = []
       bookmark_formatted_data = bookmark.formatted_data

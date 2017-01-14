@@ -18,7 +18,7 @@ class Admin::Teachers::FollowupsController < ApplicationController
 
   def index
     teacher = current_teacher
-    followup_datum, no_of_records = Followup.index(teacher)
+    followup_datum = Followup.index_for_web(teacher)
     render json: {success: true, data: followup_datum}
   end
 
