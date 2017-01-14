@@ -211,12 +211,12 @@ class TeacherDashboard extends SchloopBase {
             success: function (res) {
                 if(res.success) {
                     var html = Mustache.to_html(_self.topicBookmarksTpl, {
-                            bookmarks: res.bookmarks,
+                            bookmarks: res.bookmark_data,
                             is_text: function() {
-                                return this.data_type === "text";
+                                return this.type === "text";
                             }
                         });
-                        _self.topicBookmarks = res.bookmarks.toHash('id');
+                        _self.topicBookmarks = res.bookmark_data.toHash('id');
                         bookmarksEl.html(html);
                         $("time.timeago").timeago();
                         
@@ -373,13 +373,14 @@ class TeacherDashboard extends SchloopBase {
                                 img_tag = $(this).find('img'),
                                 span_tag = $(this).find('span'),
                                 bk_id = $(this).data('bookmark_id');
-                            res.collaborated.forEach(function(co) {
-                                 if(bk_id == co) {
+                            if(_self.topicBookmarks.hasOwnProperty(bk_id)) {
+                                var is_collaborated = _self.topicBookmarks[bk_id].is_collaborated;
+                                 if(is_collaborated) {
                                     thisEl.addClass('already-shared');
                                     span_tag.html('Shared with teachers').css('color','#25aae1');
                                     img_tag.replaceWith('<img src="/assets/admin/collaboration_fill.svg" >');
                                  }
-                            });
+                            }
                         });
 
                         $(document).find('.content-view-section .sm-area .data').each( function() {
