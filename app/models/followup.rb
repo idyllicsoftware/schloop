@@ -27,11 +27,10 @@ class Followup < ActiveRecord::Base
     bookmark_ids = Bookmark.associated_bookmark_ids(parent)
     followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     valid_bookmarks = Bookmark.where(id: followed_bookmark_ids).includes(:followup).order(id: :desc)
-
     no_of_records = valid_bookmarks.count
     valid_bookmarks = valid_bookmarks.offset(offset).limit(page_size) if offset.present?
 
-    liked_bookmarks = SocialTracker.where(sc_trackable_type: "Followup",
+    liked_bookmarks = SocialTracker.where(sc_trackable_type: "Bookmark",
                                           sc_trackable_id: followed_bookmark_ids,
                                           event: SocialTracker.events[:like])
 
