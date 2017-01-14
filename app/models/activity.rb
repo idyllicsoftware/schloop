@@ -57,9 +57,8 @@ class Activity < ActiveRecord::Base
   def data_for_activity(mapping_data, user=nil)
     activity_categories = self.categories
     master_subject = self.master_subject
-
     subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
-    grade = mapping_data[:master_grade_id_grade_id][self.master_grade.id]
+    grade = mapping_data[:master_grade_id_grade_id][self.master_grade.id] rescue nil
 
     thumbnail_data = {}
     self.get_thumbnail_file.select(:original_filename, :name).each do |file|
