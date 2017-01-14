@@ -79,7 +79,8 @@ class TeacherDashboard extends SchloopBase {
                 data: jForm.serializeObject(),
                 success: function (res) {
                     if(res.success) {
-                        jForm.replaceWith('<p>'+ res.caption +'</p>');
+                        _self.loadTopicBookmarks();
+                        //jForm.replaceWith('<p>'+ res.caption +'</p>');
                         toastr.success('Caption added successfully', '', {
                                     positionClass: 'toast-top-right cloud-display'
                             });      
@@ -344,7 +345,8 @@ class TeacherDashboard extends SchloopBase {
                                         text: "You want followup for parent",
                                         type: "info",
                                         showCancelButton: true,
-                                        confirmButtonText: "Yes!"
+                                        confirmButtonText: "Yes!",
+                                        closeOnConfirm: false
                                     },
                                     function(isConfirm){
                                         if (isConfirm) {
@@ -353,6 +355,7 @@ class TeacherDashboard extends SchloopBase {
                                                 method: "POST",
                                                 success: function (res) {
                                                    if(res.success) {
+                                                    swal.close();
                                                     thisEl.find('p').html('shared as followup');
                                                     thisEl.find('img').replaceWith('<img src="/assets/admin/follow_up_fill.svg" >');
                                                      toastr.success('Schloopmarked shared as followup successfully', '', {

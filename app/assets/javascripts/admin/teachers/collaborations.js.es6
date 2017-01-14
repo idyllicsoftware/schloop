@@ -194,8 +194,25 @@ class Collaborations extends SchloopBase {
 	            method: 'POST',
 	            success: function (res) {
 	                if(res.success) {
-                        var like_count = res.bookmark.likes;
-                        thisEl.closest('.schloopmark-item').find('.schloopmark-like .like_count').text(like_count);
+                        var like_El = [], count = 0, str = '';
+                            if (res.bookmark[0].likes && res.bookmark[0].likes.length) {
+                                res.bookmark[0].likes.forEach( function (item) {
+                                    count++;
+                                    if (count <=2 ) {
+                                        like_El.push(item.first_name);
+                                    }
+                                });
+                                if (count == 1) {
+                                    str = like_El[0] + " liked";
+                                } else if (count == 2){
+                                    str = like_El.join(',') + " liked";
+                                } else {
+                                    str = like_El.join(',') + " & " + count + " others liked";
+                                }
+                            } else {
+                                str = "0 liked";
+                            }
+                        thisEl.closest('.schloopmark-item').find('.schloopmark-like .like_count').text(str);
 	                } else {
 	                    _self.showErrors(res.errors);
 	                }
@@ -279,7 +296,7 @@ class Collaborations extends SchloopBase {
             method: 'POST',
             success: function (res) {
                 if(res.success) {
-                var view_count = res.bookmark.views;
+                var view_count = res.bookmark[0].views;
                 view_El.text(view_count);
                 } else {
                     _self.showErrors(res.errors);
