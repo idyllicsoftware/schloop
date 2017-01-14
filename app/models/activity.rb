@@ -37,7 +37,7 @@ class Activity < ActiveRecord::Base
     end
     activities_data = []
     activities = Activity.active.where(search_params)
-    activities = activities.includes(:attachments, :categories)
+    activities = activities.includes(:attachments, :categories) if activities.present?
     if category_ids.present?
       activities= activities.joins("LEFT JOIN activity_categories ON activity_categories.activity_id = activities.id
                            LEFT JOIN categories ON activity_categories.category_id = categories.id")
