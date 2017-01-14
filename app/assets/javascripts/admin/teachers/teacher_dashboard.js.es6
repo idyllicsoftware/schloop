@@ -351,6 +351,7 @@ class TeacherDashboard extends SchloopBase {
                         bookmarksEl.find('.followups-for-parent').on('click', function() {
                             var bm_id = $(this).data('bookmark_id'),
                                 img_tag = $(this).find('img'),
+                                thisEl = $(this),
                                 span_tag = $(this).find('span');
 
                             if(_self.topicBookmarks.hasOwnProperty(bm_id)){

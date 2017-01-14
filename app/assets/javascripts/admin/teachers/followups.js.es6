@@ -18,6 +18,18 @@ class Followups extends SchloopBase {
     	$('#schloopmarking-Tab a[data-tab-name="followups"]').on('shown.bs.tab', function (e) {
     		_self.loadFollowupsSchloopmark();	
     	});
+
+        $(document).on('click', '.read-more', function (e) {
+            var bm_id = $(this).data('bookmark_id');
+            e.preventDefault();
+            this.expand = !this.expand;
+            $(this).text(this.expand ? "Collapse" : "More...");
+            $(this).closest('.content-block').find('.sm-area, .bg-area').toggleClass('sm-area bg-area');
+            // if($(this).text() === 'Collapse') {
+            //     var view_El = $(this).closest('.schloopmark-item').find('.view_count');
+            //     _self.viewSchloopmark(bm_id, view_El);
+            // }
+        });
     };
 
     get followupsBookmarksTpl (){
@@ -33,7 +45,47 @@ class Followups extends SchloopBase {
             method: 'GET',
             success: function (res) {
                 if(res.success) {
-                    var html = Mustache.to_html(_self.followupsBookmarksTpl, res);
+                    var html = Mustache.to_html(_self.followupsBookmarksTpl, {
+                        data: res.data,
+                        is_text: function() {
+                            return this.type === "text";
+                        },
+                        like_count: function() {
+                            var like_El = [], count = 0, str = '';
+
+                            if (this.likes && this.likes.length) {
+                                this.likes.forEach( function (item) {
+                                    count++;
+                                    if (count <=2 ) {
+                                        like_El.push(item.first_name);
+                                    }
+                                });
+                                if (count == 1) {
+                                    str = like_El[0] + " liked";
+                                } else if (count == 2){
+                                    str = like_El.join(',') + " liked";
+                                } else {
+                                    str = like_El.join(',') + " & " + count + " others liked";
+                                }
+                                return str;
+                            } else {
+                                str = "0 liked";
+                                return str;
+                            }   
+                        },
+                    });
+                    _self.followup_bookmarks = res.data.toHash('id');
+                    followups_schloopmark.html(html);
+                    $("time.timeago").timeago();
+
+                    $(document).find('.content-block .sm-area .data').each( function() {
+                        var thisEl = $(this),
+                            len = $(this).text().length;
+                            if(len < 200){
+                                $(this).closest('.content-block').find('.read-more').addClass('hidden');
+                            }
+                    });
+
                 } else {
                     _self.showErrors(res.errors);
                 }

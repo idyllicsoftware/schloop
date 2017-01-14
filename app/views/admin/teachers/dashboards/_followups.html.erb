@@ -54,6 +54,7 @@
 	</div>
 </div>
 <script type="text/html" id="followups_bookmarks_tpl">
+	{{#data}}
 	<div class="schloopmark-item">
 		<div class="schloopmark-view-section">
 			<div class="schloopmark-view">
@@ -61,46 +62,46 @@
   				</div>
   				<div class="collaborated-by-teacher-detail">
   					<p>{{title}}</p>
-  					<div class="about-schloopmark"><time class="timeago" datetime=".{{#collaboration_data}} {{created_at}} {{/collaboration_data}}" title="id"></time> |<span> {{grade_name}} </span>|<span> {{subject_name}} </span>|<span> {{topic_name}} </span></div>
+  					<div class="about-schloopmark"><time class="timeago" datetime="{{created_at}}"></time> |<span> {{grade_name}} </span>|<span> {{subject_name}} </span>|<span> {{#topic}}{{topic_title}}{{/topic}}</span></div>
   				</div>
 			</div>
 			<div class="schloopmark-content">
 				<p class="caption">{{caption}}</p>
 				<div class="content-block">
-					<div class="sm-area">
-  						<div class="data">{{{data}}}</div>
-  					</div>
-  					<a href="#" class="read_more" data-bookmark_id='{{bookmark_id}}'>More...</a>
-					<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" data-bm_id='{{bookmark_id}}' style="width: 300px; height: 200px;"></a>
+					{{#is_text}}
+						<div class="sm-area">
+	  						<div class="data">{{{data}}}</div>
+	  					</div>
+	  					<a href="#" class="read-more" data-bookmark_id='{{id}}'>More...</a>
+					{{/is_text}}
+					{{^is_text}}
+						<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" data-bm_id='{{id}}' style="width: 300px; height: 200px;"></a>
+					{{/is_text}}
 				</div>
 			</div>	
 		</div>
 		<div class="schloopmark-like">
 			<img src="<%= asset_path('admin/like_fill.svg') %>">
-			<div><span class="like_count">{{#bookmark_data}}{{likes}}{{/bookmark_data}}</span> liked</div>
-			<div class="pl20"><span class="view_count">{{#bookmark_data}}{{views}}{{/bookmark_data}}</span> views</div>
+			<div><span class="like_count">{{like_count}}</span></div>
+			<div class="pl20"><span class="view_count">{{views}}</span> views</div>
 		</div>
 		<div class="comment-section">
+			{{^comments}}
+				<div style="text-align: center;">No comment found</div>
+			{{/comments}}
+			{{#comments}}
 			<div class="com-sub-section">
   				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
   				</div>
   				<div class="com-by-teacher-detail">
   					<div class="comment-as">
-  					<span class="fw">{{teacher_name}}</span> <span>{{{message}}}</span>
+  					<span class="fw">{{#commenter}}{{first_name}} {{last_name}}{{/commenter}}</span> <span>{{{message}}}</span>
   					</div>
   					<time class="timeago" datetime="{{created_at}}"></time>
   				</div>
 			</div>
-			<div class="com-sub-section">
-  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-  				</div>
-  				<div class="com-by-teacher-detail">
-  					<div class="comment-as">
-  					<span class="fw">{{teacher_name}}</span> <span>{{{message}}}</span>
-  					</div>
-  					<time class="timeago" datetime="{{created_at}}"></time>
-  				</div>
-			</div>			
+			{{/comments}}			
 		</div>
 	</div>
+	{{/data}}
 </script>
