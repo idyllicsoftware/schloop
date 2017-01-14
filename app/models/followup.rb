@@ -58,8 +58,8 @@ class Followup < ActiveRecord::Base
       end
       bookmark_formatted_data.merge!(likes: likes)
       bookmark_formatted_data.merge!(is_liked: is_liked)
-      # bookmark_formatted_data.merge!(is_collaborated: followed_bookmark_ids.include?(bookmark.id))
-      # bookmark_formatted_data.merge!(is_followedup: followed_bookmark_ids.include?(bookmark.id))
+      bookmark_formatted_data.merge!(is_collaborated: followed_bookmark_ids.include?(bookmark.id))
+      bookmark_formatted_data.merge!(is_followedup: followed_bookmark_ids.include?(bookmark.id))
 
       followed_bookmarks << bookmark_formatted_data
     end
