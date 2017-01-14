@@ -67,6 +67,7 @@ class Api::V1::FollowupsController < Api::V1::BaseController
       like_state = "true"
       bookmark.track_bookmark(event, like_state, @current_user)
     end
+    bookmark.reload
     render json: { success: errors.blank?, errors: errors, bookmark: (bookmark.id rescue 0)}
   end
 
@@ -79,6 +80,7 @@ class Api::V1::FollowupsController < Api::V1::BaseController
       like_state = "false"
       bookmark.track_bookmark(event, like_state, @current_user)
     end
+    bookmark.reload
     render json: { success: errors.blank?, errors: errors, bookmark: (bookmark.id rescue 0)}
   end
 
