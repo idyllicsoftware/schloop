@@ -22,7 +22,6 @@ class Main extends SchloopBase {
         $("#labelForgotPassword").click(function (){
             $("#loginDiv").addClass('hidden');
             $("#forgotPasswordDiv").removeClass('hidden');
-            self.initForm();
         });
        
         $(document).on('click','.sign-in-link', function (e) {
@@ -41,7 +40,7 @@ class Main extends SchloopBase {
                 login_form.find('input[type=password]').attr('name','teacher[password]'); 
                 forgot_password_form.removeAttr('action');
                 forgot_password_form.find('input[type=email]').attr('name','teacher[email]');
-                forgot_password_form.attr('action','/admin/teachers/forget_password');
+                forgot_password_form.attr('action','/password_resets/create_for_teacher');
                 e.preventDefault();  
                 self.initTeacherLoginForm(login_form, forgot_password_form);              
             }else {

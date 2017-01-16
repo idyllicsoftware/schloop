@@ -41,9 +41,9 @@ class PasswordResetsController < ApplicationController
 
   # for teacher
   def create_for_teacher
-    teacher = Teacher.find_by_email(params[:email])
+    teacher = Teacher.find_by_email(params[:teacher][:email])
     teacher.send_password_reset if teacher
-    redirect_to root_url,:notice => "Email sent with password reset instructions."
+    render json: {success: !teacher.nil?}
   end
 
   def teacher_edit

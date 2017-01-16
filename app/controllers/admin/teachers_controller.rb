@@ -59,9 +59,6 @@ class Admin::TeachersController < ApplicationController
     render json: {success: true}
   end
 
-  def forget_password
-  end
-
   def update_password
     @teacher = current_teacher
     errors = []
