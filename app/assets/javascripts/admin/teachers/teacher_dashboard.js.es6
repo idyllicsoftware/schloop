@@ -42,7 +42,6 @@ class TeacherDashboard extends SchloopBase {
                         'grade_name' : curr_grade_name
                     }
                     _self.loadMyTopics();
-
                      popoverEl.popover('hide');
                 });
 
@@ -314,7 +313,8 @@ class TeacherDashboard extends SchloopBase {
 
                         bookmarksEl.find('.share-for-collaboration').on('click', function() {
                             var curr_Bm_id = $(this).data('bookmark_id'),
-                                img_tag = $(this).find('img'),
+                                thisEl = $(this), img_El = thisEl.find('img'),
+                                img1_path = img_El.data('img1'), img2_path = img_El.data('img2'),
                                 span_tag = $(this).find('span'),
                                 shared = $(this).hasClass('already-shared') ? false : true ;
 
@@ -324,7 +324,8 @@ class TeacherDashboard extends SchloopBase {
                                         text: "You want share for collaboration",
                                         type: "info",
                                         showCancelButton: true,
-                                        confirmButtonText: "Yes!"
+                                        confirmButtonText: "Yes!",
+                                        closeOnConfirm: false
                                     },
                                     function(isConfirm){
                                         if (isConfirm) {
@@ -333,8 +334,10 @@ class TeacherDashboard extends SchloopBase {
                                                 method: "POST",
                                                 success: function (res) {
                                                    if(res.success) {
+                                                    swal.close();
+                                                    thisEl.addClass('already-shared');
                                                     span_tag.html('Shared with teachers').css('color','#25aae1');
-                                                    img_tag.replaceWith('<img src="/assets/admin/collaboration_fill.svg" >');
+                                                    img_El.attr('src', img2_path);
                                                      toastr.success('schloopmark collaborated successfully', '', {
                                                                 positionClass: 'toast-top-right cloud-display'
                                                             });      
@@ -350,11 +353,12 @@ class TeacherDashboard extends SchloopBase {
                         
                         bookmarksEl.find('.followups-for-parent').on('click', function() {
                             var bm_id = $(this).data('bookmark_id'),
-                                img_tag = $(this).find('img'),
-                                thisEl = $(this),
-                                span_tag = $(this).find('span');
+                                span_tag = $(this).find('span'),
+                                thisEl = $(this), img_El = thisEl.find('img'),
+                                img1_path = img_El.data('img1'), img2_path = img_El.data('img2'),
+                                shared_as_followup = $(this).hasClass('already-followup') ? false : true ;
 
-                            if(_self.topicBookmarks.hasOwnProperty(bm_id)){
+                            if(_self.topicBookmarks.hasOwnProperty(bm_id) && shared_as_followup){
                                 swal({
                                         title: "Are you sure?",
                                         text: "You want followup for parent",
@@ -371,9 +375,10 @@ class TeacherDashboard extends SchloopBase {
                                                 success: function (res) {
                                                    if(res.success) {
                                                     swal.close();
-                                                    thisEl.find('p').html('shared as followup');
-                                                    thisEl.find('img').replaceWith('<img src="/assets/admin/follow_up_fill.svg" >');
-                                                     toastr.success('Schloopmarked shared as followup successfully', '', {
+                                                    thisEl.addClass('already-followup');
+                                                    span_tag.html('Shared as followup').css('color','#25aae1');
+                                                    img_El.attr('src', img2_path);
+                                                    toastr.success('Schloopmarked shared as followup successfully', '', {
                                                                 positionClass: 'toast-top-right cloud-display'
                                                             });      
                                                    } else {
@@ -387,16 +392,33 @@ class TeacherDashboard extends SchloopBase {
                         });
 
                         $(document).find('.share-for-collaboration').each(function(){
-                            var thisEl = $(this),
-                                img_tag = $(this).find('img'),
+                            var thisEl = $(this), img_El = thisEl.find('img'),
+                                img1_path = img_El.data('img1'), img2_path = img_El.data('img2'),
                                 span_tag = $(this).find('span'),
                                 bk_id = $(this).data('bookmark_id');
+
                             if(_self.topicBookmarks.hasOwnProperty(bk_id)) {
                                 var is_collaborated = _self.topicBookmarks[bk_id].is_collaborated;
                                  if(is_collaborated) {
                                     thisEl.addClass('already-shared');
                                     span_tag.html('Shared with teachers').css('color','#25aae1');
-                                    img_tag.replaceWith('<img src="/assets/admin/collaboration_fill.svg" >');
+                                    img_El.attr('src', img2_path);
+                                 }
+                            }
+                        });
+
+                        $(document).find('.followups-for-parent').each(function(){
+                            var thisEl = $(this), img_El = thisEl.find('img'),
+                                img1_path = img_El.data('img1'), img2_path = img_El.data('img2'),
+                                span_tag = $(this).find('span'),
+                                bk_id = $(this).data('bookmark_id');
+
+                            if(_self.topicBookmarks.hasOwnProperty(bk_id)) {
+                                var is_followedup = _self.topicBookmarks[bk_id].is_followedup;
+                                 if(is_followedup) {
+                                    thisEl.addClass('already-followup');
+                                    span_tag.html('Shared as followup').css('color','#25aae1');
+                                    img_El.attr('src', img2_path);
                                  }
                             }
                         });

@@ -108,8 +108,11 @@ class Collaborations extends SchloopBase {
 
                         collaborationsContainer.on('click', '.follow-up-parent', function () {
                             var curr_bm_id = $(this).data('bookmark_id'),
-                                thisEl = $(this);
-                                if (_self.bookmarks.hasOwnProperty(curr_bm_id)) {
+                                thisEl = $(this), img_El = thisEl.find('img'),
+                                img1_path = img_El.data('img1'), img2_path = img_El.data('img2'),
+                                shared_as_followup = $(this).hasClass('already-followup') ? false : true ;
+
+                                if (_self.bookmarks.hasOwnProperty(curr_bm_id) && shared_as_followup) {
                                     var curr_Bm_id = _self.bookmarks[curr_bm_id].id;
                                     swal({
                                             title: "Are you sure?",
@@ -127,8 +130,9 @@ class Collaborations extends SchloopBase {
                                                     success: function (res) {
                                                        if(res.success) {
                                                         swal.close();
-                                                        thisEl.find('p').html('shared as followup');
-                                                        thisEl.find('img').replaceWith('<img src="/assets/admin/follow_up_fill.svg" >');
+                                                        thisEl.addClass('already-followup');
+                                                        thisEl.find('p').html('Shared as followup').css('color','#25aae1');
+                                                        img_El.attr('src', img2_path);
                                                          toastr.success('Schloopmarked shared as followup successfully', '', {
                                                                     positionClass: 'toast-top-right cloud-display'
                                                                 });      
@@ -140,6 +144,21 @@ class Collaborations extends SchloopBase {
                                             }
                                     });
                                 }    
+                        });
+
+                        $(document).find('.follow-up-parent').each(function(){
+                            var thisEl = $(this), img_El = thisEl.find('img'),
+                                img1_path = img_El.data('img1'), img2_path = img_El.data('img2'),
+                                bk_id = $(this).data('bookmark_id');
+                            
+                            if(_self.bookmarks.hasOwnProperty(bk_id)) {
+                                var is_followedup = _self.bookmarks[bk_id].is_followedup;
+                                 if(is_followedup) {
+                                    thisEl.addClass('already-followup');
+                                    thisEl.find('p').html('Shared as followup').css('color','#25aae1');
+                                    img_El.attr('src', img2_path);
+                                 }
+                            }
                         });
 
                         $(document).find('.content-block .sm-area .data').each( function() {
