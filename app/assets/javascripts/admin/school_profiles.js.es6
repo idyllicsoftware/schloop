@@ -22,7 +22,14 @@ class SchoolProfiles extends SchloopBase {
     };
 
     initEventListeners (){
-        var _self = this;
+        var _self = this,
+        user_name = $('.user_name').html(),
+        fname_char = user_name.split(' ')[0].charAt(0),
+        lname_char = user_name.split(' ')[1].charAt(0),
+        user_profile_name = fname_char + lname_char;
+        
+        $('.profile-photo').html(user_profile_name.toUpperCase());
+        
         $('#school-Tab li a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             let el = $(this),
                 { tabName } = el.data();

@@ -26,26 +26,30 @@
     }
     .admin-profile-header {
         position: absolute;
-        right: 60px;
+        right: 0px;
         top: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        width: 14%;
+        display: inline-flex;
+        width: 19%;
         .admin-profile {
           margin-right: 10px;
           .profile-photo {
-                width: 76px;
-                height: 76px;
-                background-color: #ece1dd;
-                border-radius: 100%;
-                border: 1px solid #25aae1;
+              width: 70px;
+              height: 70px;
+              border-radius: 100%;
+              background-color: #25aae1;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              color: #fff;
+              font-size: 30px;
+              font-weight: 300;
           }
         }
         .admin-profile-manu {
           p{
             color: #666666;
             margin: 0px;
+            font-weight: 600;
             &:last-child {
               color: #25aae1;
             }

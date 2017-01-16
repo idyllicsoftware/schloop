@@ -18,8 +18,14 @@ class Schools extends SchloopBase {
     initDashboard () {
         let self = this,
             createSchoolFormEl = $(".schools-registration-form"),
-            createModalEl = $("#create-school-modal");
-            
+            createModalEl = $("#create-school-modal"),
+            user_name = $('.user_name').html(),
+            fname_char = user_name.split(' ')[0].charAt(0),
+            lname_char = user_name.split(' ')[1].charAt(0),
+            user_profile_name = fname_char + lname_char;
+        
+        $('.profile-photo').html(user_profile_name.toUpperCase());
+
         $(document).on('click','#create-school-btn', function () {
             createModalEl.modal('show');
             createModalEl.find('label.error').addClass('hidden');

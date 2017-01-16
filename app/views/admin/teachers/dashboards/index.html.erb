@@ -86,6 +86,7 @@
 	      	<div class="input-form-group">
 				<input type="text" class="caption-field" required name="title" placeholder="Topic name" autocomplete="off"  maxlength="50" />
 			</div>
+			<p class="required-field hide">Topic can not be blank.</p>
 			<div class="clearfix">
 				<button class="btn btn-primary pull-right mt20 add-topic-btn" type="button">ADD TOPIC</button>
 			</div>
@@ -104,9 +105,7 @@
 	{{#bookmarks}}
   		<div class="topics-list-section">
   			<div class="title-of-topic">
-  				<div class="created-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-  					<!-- <div class="home-logo" "></div> -->
-  				</div>
+  				<div class="created-by-teacher-img">{{profile}}</div>
   				<div class="created-by-teacher-detail">
   					<p>{{title}}</p>
   					<span><time class="timeago" datetime="{{created_at}}" title="{{id}}"></time></span>

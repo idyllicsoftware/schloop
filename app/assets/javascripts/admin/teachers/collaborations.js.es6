@@ -250,8 +250,8 @@ class Collaborations extends SchloopBase {
                 method: "POST",
                 success: function (res) {
                    if(res.success) {
-                    thisEl.find('p').html('Added to my topics');
-                    thisEl.find('img').attr('src','img2_path');
+                    thisEl.find('p').html('Added to my topics').css('color','#25aae1');
+                    thisEl.find('img').attr('src', img2_path);
                      toastr.success('Schloopmarked added to mytopic successfully', '', {
                                 positionClass: 'toast-top-right cloud-display'
                             });      

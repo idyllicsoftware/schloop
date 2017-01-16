@@ -237,7 +237,7 @@
 					outline: none;
 				} 
 			}
-			.bookmark-not-found {
+			.bookmark-not-found ,.topic-not-found {
 				padding: 10px 20px;
 			    background-color: #f9f8eb;
 			    display: flex;
@@ -254,9 +254,13 @@
 					    width: 60px;
 					    height: 60px;
 					    border-radius: 100%;
-					    background-color: rgba(37, 169, 225, 0.26);
-					    background-repeat: no-repeat;
-					    background-size: 100% 100%;
+					    background-color: #25aae1;
+					    display: flex;
+					    justify-content: center;
+					    align-items: center;
+					    color: #fff;
+					    font-size: 26px;
+					    font-weight: 300;
 					}
 					.bookmarks-action {
 					    position: absolute;
@@ -374,6 +378,13 @@
 			    	outline: 0;
 			    }
 			}
+		}
+		.required-field {
+			margin: 0px;
+	      	color: #dd0017;
+	      	font-weight: normal;
+	      	font-size: 12px;
+	      	padding: 10px 0px;
 		}
 	}	
 }

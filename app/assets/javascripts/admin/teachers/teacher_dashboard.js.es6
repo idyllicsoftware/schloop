@@ -15,8 +15,14 @@ class TeacherDashboard extends SchloopBase {
     };
 
     initEventListeners (){
-        var _self = this;
+        var _self = this,
+            user_name = $('.user-name').html(),
+            fname_char = user_name.split(' ')[0].charAt(0),
+            lname_char = user_name.split(' ')[1].charAt(0),
+            profile_name = fname_char + lname_char;
             _self.filters = {};
+
+        $('.profile-photo').html(profile_name.toUpperCase());
 
         $('#schloopmarking-Tab a[data-tab-name="my_topics"]').on('shown.bs.tab', function (e) {
             _self.loadTopicBookmarks();   
@@ -51,7 +57,11 @@ class TeacherDashboard extends SchloopBase {
                         $(this).attr('checked','checked');
                     }
                 });    
-        });           
+        });
+
+        if ($('.topics-list li').length == 0) {
+            $('.bookmarks-section').html('<div class="topic-not-found"><h4>Add topic first then add content.</h4></div>');
+        }
 
         $(document).on("click", ".topics-list li", function(e) {
             var topic_hash = {},
@@ -63,6 +73,7 @@ class TeacherDashboard extends SchloopBase {
             _self.topic_hash = $.extend(_self.filters, topic_id_tag);
             $(".topics-list").find(".active").removeClass("active");
             $(this).addClass("active");
+
             _self.loadTopicBookmarks();
             _self.addTopicContent();
         });
@@ -131,6 +142,7 @@ class TeacherDashboard extends SchloopBase {
             var add_topic_form = $('.add-topic-form');
             addTopicModalEl.modal('show');
             e.preventDefault();
+            add_topic_form.find('.required-field').addClass('hide');
             add_topic_form[0].reset();
             addTopicModalEl.find('label').replaceWith('<label>' + _self.filters.grade_name + ' - ' + _self.filters.subject_name + ' | Add New Topic</label>');        
              _self.addTopic(add_topic_form);   
@@ -144,26 +156,31 @@ class TeacherDashboard extends SchloopBase {
 
         add_topic_form.off('click').on('click', '.add-topic-btn', function (e) {
             var key_value = add_topic_form.serializeObject(),
-                topic_data = {};
+                topic_data = {},
+                topic = add_topic_form.find('.caption-field').val();
             e.preventDefault();
             topic_data = $.extend(_self.filters, key_value);
 
-            $.ajax({
-                url: `/admin/teachers/topics`,
-                data: topic_data,
-                method: 'POST',
-                success: function (res) {
-                    if(res.success) {
-                        _self.loadMyTopics();
-                        addTopicModalEl.modal('hide');
-                        toastr.success('New topic added successfully', '', {
-                                positionClass: 'toast-top-right cloud-display'
-                        });      
-                    } else {
-                        _self.showErrors(res.errors);
+            if(topic !== "") {
+                $.ajax({
+                    url: `/admin/teachers/topics`,
+                    data: topic_data,
+                    method: 'POST',
+                    success: function (res) {
+                        if(res.success) {
+                            _self.loadMyTopics();
+                            addTopicModalEl.modal('hide');
+                            toastr.success('New topic added successfully', '', {
+                                    positionClass: 'toast-top-right cloud-display'
+                            });      
+                        } else {
+                            _self.showErrors(res.errors);
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                add_topic_form.find('.required-field').removeClass('hide');
+            }
         });    
     };
 
@@ -212,6 +229,12 @@ class TeacherDashboard extends SchloopBase {
                 if(res.success) {
                     var html = Mustache.to_html(_self.topicBookmarksTpl, {
                             bookmarks: res.bookmark_data,
+                            profile: function () {
+                                var fname = this.teacher.first_name.charAt(0),
+                                    lname = this.teacher.last_name.charAt(0),
+                                    name = fname + lname;
+                                return name.toUpperCase();
+                            },
                             is_text: function() {
                                 return this.type === "text";
                             }
