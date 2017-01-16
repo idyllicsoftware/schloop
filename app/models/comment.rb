@@ -18,6 +18,7 @@
 
 class Comment < ActiveRecord::Base
   belongs_to :commentable, polymorphic: true
+  validates :message, :presence => true, :length => { :maximum => 400 }
 
   def as_json
   {

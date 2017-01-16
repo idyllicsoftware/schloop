@@ -62,7 +62,7 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     page = params[:page].to_s.to_i || 1
     page_size = 20
     offset = (page * page_size)
-    bookmarks = Bookmark.where(grade_id: params[:grade_id], subject_id: params[:subject_id])
+    bookmarks = Bookmark.where(teacher_id: @current_user.id, grade_id: params[:grade_id], subject_id: params[:subject_id])
                   .includes(:topic, :teacher).order(id: :desc)
 
     total_bookmarks = bookmarks.count

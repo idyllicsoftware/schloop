@@ -12,9 +12,9 @@ class Admin::Teachers::CommentsController < ApplicationController
       commented_by: current_teacher.id,
       commenter: current_teacher.name
       }
-      comment = Comment.create(comment_data)
+      comment = Comment.create!(comment_data)
     rescue Exception => e
-      errors <<  "errors while creating new comment"
+      errors <<  "errors while creating new comment"+ e.message
     end
   render json: {success:errors.blank?, errors: errors}
   end
