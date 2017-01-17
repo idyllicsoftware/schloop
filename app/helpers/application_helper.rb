@@ -1,6 +1,8 @@
 module ApplicationHelper
 	def authorize_permission
-		user = current_user
+		user = current_user || current_teacher
+		redirect_to root_path if user.nil?
+
 		role_ids = UserRole.where(entity_type: user.class.name ,entity_id: user.id).pluck(:role_id)
 		permission_ids = RolePermission.where(role_id: role_ids).pluck(:permission_id)
 

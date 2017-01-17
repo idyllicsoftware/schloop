@@ -135,35 +135,9 @@ admin_teacher_parent: &admin_teacher_parent
   - :action: get_activity_params
     :role_maps: 
     - product-admin 
-  api/v1/teachers:    
-  - :action: login
-    :role_maps: 
+  admin/teachers/dashboards:
+  - :action: index
+    :role_maps:
+    - product-admin
     - teacher
-  - :action: reset_password
-    :role_maps: 
-    - teacher       
-  - :action: dashboard
-    :role_maps: 
-    - teacher   
-  - :action: profile
-    :role_maps: 
-    - teacher 
-  - :action: teacher_params
-    :role_maps: 
-    - teacher
-  api/v1/teachers:    
-  - :action: create
-    :role_maps: 
-    - teacher
-  - :action: circular_params
-    :role_maps: 
-    - teacher    
-  - :action: recipients_params
-    :role_maps: 
-    - teacher
-  - :action: attachments_params
-    :role_maps: 
-    - teacher  
-  - :action: filter_params
-    :role_maps: 
-    - teacher  
+    
