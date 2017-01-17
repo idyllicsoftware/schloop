@@ -16,8 +16,7 @@
 		<div class="schloopmark-item">
 			<div class="schloopmark-view-section">
 				<div class="schloopmark-view">
-	  				<div class="collaborated-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-	  				</div>
+	  				<div class="collaborated-by-teacher-img">{{profile_pic_name}}</div>
 	  				<div class="collaborated-by-teacher-detail">
 	  					<p>{{title}}</p>
 	  					<div class="about-schloopmark"><time class="timeago" datetime="{{created_at}}"></time> |<span> {{grade_name}} </span>|<span> {{subject_name}} </span>|<span> {{#topic}}{{topic_title}}{{/topic}}</span></div>
@@ -70,8 +69,9 @@
 			<div class="comment-section">
 				{{#comments}}
 				<div class="com-sub-section">
-	  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-	  				</div>
+					{{#commenter_profile}}
+	  				<div class="com-by-teacher-img">{{commenter_profile_name}}</div>
+	  				{{/commenter_profile}}
 	  				<div class="com-by-teacher-detail">
 	  					<div class="comment-as">
 	  					<span class="fw">{{#commenter}}{{first_name}} {{last_name}}{{/commenter}}</span> <span>{{{message}}}</span>
@@ -81,8 +81,7 @@
 				</div>
 				{{/comments}}
 				<div class="com-sub-section">
-	  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-	  				</div>
+	  				<div class="com-by-teacher-img">{{login_user_profile}}</div>
 	  				<div class="com-by-teacher-detail">
 	  					<div class="comment-editor col-md-12 p0">
 					        <div class="write-comment" contenteditable="true" placeholder="Add a comment" data-bookmark_id='{{id}}'></div>

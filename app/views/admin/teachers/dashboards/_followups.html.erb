@@ -58,8 +58,7 @@
 	<div class="schloopmark-item">
 		<div class="schloopmark-view-section">
 			<div class="schloopmark-view">
-  				<div class="collaborated-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-  				</div>
+  				<div class="collaborated-by-teacher-img">{{profile_picture}}</div>
   				<div class="collaborated-by-teacher-detail">
   					<p>{{title}}</p>
   					<div class="about-schloopmark"><time class="timeago" datetime="{{created_at}}"></time> |<span> {{grade_name}} </span>|<span> {{subject_name}} </span>|<span> {{#topic}}{{topic_title}}{{/topic}}</span></div>
@@ -91,8 +90,9 @@
 			{{/comments}}
 			{{#comments}}
 			<div class="com-sub-section">
-  				<div class="com-by-teacher-img" style="background-image: url('https://dummyimage.com/45x45/2abdda/0011ff&text=1');">
-  				</div>
+				{{#comment_profile}}
+  				<div class="com-by-teacher-img">{{profile_name}}</div>
+  				{{/comment_profile}}
   				<div class="com-by-teacher-detail">
   					<div class="comment-as">
   					<span class="fw">{{#commenter}}{{first_name}} {{last_name}}{{/commenter}}</span> <span>{{{message}}}</span>

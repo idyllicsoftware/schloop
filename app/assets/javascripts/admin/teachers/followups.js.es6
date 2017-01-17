@@ -73,6 +73,18 @@ class Followups extends SchloopBase {
                                 return str;
                             }   
                         },
+                        profile_picture: function() {
+                            var fname = this.teacher.first_name.charAt(0),
+                                lname = this.teacher.last_name.charAt(0),
+                                name = fname + lname;
+                            return name.toUpperCase();
+                        },
+                        comment_profile: function() {
+                            var fname = this.commenter.first_name.charAt(0),
+                                lname = this.commenter.last_name.charAt(0), 
+                                name = (fname + lname).toUpperCase();
+                            return {profile_name: name};                            
+                        },
                     });
                     _self.followup_bookmarks = res.data.toHash('id');
                     followups_schloopmark.html(html);

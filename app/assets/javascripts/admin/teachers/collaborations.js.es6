@@ -86,6 +86,22 @@ class Collaborations extends SchloopBase {
                                 return str;
                             }   
                         },
+                        profile_pic_name: function() {
+                            var fname = this.teacher.first_name.charAt(0),
+                                lname = this.teacher.last_name.charAt(0),
+                                name = fname + lname;
+                            return name.toUpperCase();
+                        },
+                        login_user_profile: function() {
+                            var html = $('.profile-photo').html();
+                            return html;
+                        },
+                        commenter_profile: function() {
+                            var fname = this.commenter.first_name.charAt(0),
+                                lname = this.commenter.last_name.charAt(0), 
+                                name = (fname + lname).toUpperCase();
+                            return {commenter_profile_name: name};
+                        }
                     });
                         _self.bookmarks = res.data.toHash('id');
                         collaborationsContainer.html(html);
