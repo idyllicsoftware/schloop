@@ -39,7 +39,6 @@ gem 'mina-sidekiq'
 #ransack for filters
 gem 'ransack'
 
-gem 'newrelic_rpm'
 
 group :development do
   # Using mina for deployment
