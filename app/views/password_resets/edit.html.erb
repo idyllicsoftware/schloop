@@ -10,16 +10,6 @@
         <img class="schloop-img" src="<%= asset_path('home/schloop.png') %>">
       </div>
       <%= form_for @user, :url => password_resets_update_path(params[:format]) do |f| %>
-        <% if @user.errors.any? %>
-          <div class="error_messages">
-            <h2>Form is invalid</h2>
-            <ul>
-              <% for message in @user.errors.full_messages %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
         <div class="form-group">
           <input type="password" class="form-control input-field new" id="password" required name="user[password]" autocomplete="off" placeholder="New Password"  minlength="6" maxlength="15"/>
           <a class="pull-right pass-show">Show</a>
