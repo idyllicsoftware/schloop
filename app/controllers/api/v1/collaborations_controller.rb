@@ -116,7 +116,7 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
       errors <<  "Errors while creating new comment"
     end
     end
-    render json: {success:errors.blank?, errors: errors, data: {comment: (comment.id rescue 0)}}
+    render json: {success:errors.blank?, errors: {code: 0, message: errors}, data: {comment: (comment.id rescue 0)}}
   end
 
 end
