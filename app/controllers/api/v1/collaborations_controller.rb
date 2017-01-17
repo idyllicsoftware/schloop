@@ -66,7 +66,7 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
       like_state = "true"
       bookmark.track_bookmark(event, like_state, @current_user)
     end
-    render json: { success: errors.blank?, errors: errors, bookmark: (bookmark.id rescue 0)}
+    render json: { success: errors.blank?, errors: {code: 0, message: errors}, bookmark: (bookmark.id rescue 0)}
   end
 
   def unlike
@@ -78,7 +78,7 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
       like_state = "false"
       bookmark.track_bookmark(event, like_state, @current_user)
     end
-    render json: { success: errors.blank?, errors: errors, bookmark: (bookmark.id rescue 0)}
+    render json: { success: errors.blank?, errors: {code: 0, message: errors}, bookmark: (bookmark.id rescue 0)}
   end
 
   def view
@@ -90,7 +90,7 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
       like_state = "false"
       bookmark.track_bookmark(event, like_state, @current_user)
     end
-    render json: { success: errors.blank?, errors: errors, bookmark: (bookmark.id rescue 0)}
+    render json: { success: errors.blank?, errors: {code: 0, message: errors}, bookmark: (bookmark.id rescue 0)}
   end
 
   def comment
@@ -116,7 +116,11 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
       errors <<  "Errors while creating new comment"
     end
     end
-    render json: {success:errors.blank?, errors: {code: 0, message: errors}, data: {comment: (comment.id rescue 0)}}
+    render json: {
+      success: errors.blank?,
+      errors: {code: 0, message: errors},
+      data: {comment: (comment.id rescue 0)}
+    }
   end
 
 end
