@@ -110,18 +110,12 @@ admin_teacher_parent: &admin_teacher_parent
   - :action: destroy
     :role_maps: *admin
   admin/ecirculars:
-  - :action: index
+  - :action: all
     :role_maps: *admin  
   - :action: new
     :role_maps: *admin
-  - :action: create
-    :role_maps: *admin
-  - :action: show
-    :role_maps: *admin
-  - :action: send_cicular
-    :role_maps: *admin   
-  - :action: circular_params
-    :role_maps: *admin   
+  - :action: upload_file
+    :role_maps: *admin  
   admin/activities: 
   - :action: create
     :role_maps: 
@@ -140,4 +134,60 @@ admin_teacher_parent: &admin_teacher_parent
     :role_maps:
     - product-admin
     - teacher
-    
+  admin/teachers/bookmarks:
+  - :action: create
+      :role_maps:
+      - product-admin
+      - teacher
+  - :action: get_bookmarks
+      :role_maps:
+      - product-admin
+      - teacher
+  - :action: add_caption
+    :role_maps:
+    - product-admin
+    - teacher
+  - :action: destroy
+    :role_maps:
+    - product-admin
+    - teacher
+  - :action: bookmark_like_or_view
+    :role_maps:
+    - product-admin
+    - teacher
+  admin/teachers/collaborations:
+  - :action: index
+    :role_maps:
+    - product-admin
+    - teacher
+  - :action: create
+    :role_maps:
+    - product-admin
+    - teacher  
+  - :action: add_to_my_topics
+    :role_maps:
+    - product-admin
+    - teacher
+  admin/teachers/comments:
+  - :action: create
+    :role_maps:
+    - product-admin
+    - teacher
+  admin/teachers/followups:
+  - :action: create
+    :role_maps:
+    - product-admin
+    - teacher
+  - :action: index
+    :role_maps:
+    - product-admin
+    - teacher
+  admin/teachers/topics:
+  - :action: create
+    :role_maps:
+    - product-admin
+    - teacher
+  - :action: get_topics
+    :role_maps:
+    - product-admin
+    - teacher
