@@ -105,16 +105,16 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
     errors << "Invalid collaboration to Message" if message.blank?
 
     if errors.blank?
-    begin
-      create_comments_params = {
-        commentable: collaboration,
-        message: message,
-        commented_by: @current_user.id
-      }
-      comment = Comment.create(create_comments_params)
-    rescue Exception => e
-      errors <<  "Errors while creating new comment"
-    end
+      begin
+        create_comments_params = {
+          commentable: collaboration,
+          message: message,
+          commented_by: @current_user.id
+        }
+        comment = Comment.create(create_comments_params)
+      rescue Exception => e
+        errors <<  "Errors while creating new comment"
+      end
     end
     render json: {
       success: errors.blank?,
