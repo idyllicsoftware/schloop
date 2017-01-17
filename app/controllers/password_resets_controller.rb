@@ -1,10 +1,15 @@
 class PasswordResetsController < ApplicationController
   
   def create
-  	user = User.find_by_email(params[:user][:email])
-  	user.send_password_reset if user
-  	#redirect_to root_url,:notice => "Email sent with password reset instructions."
-    render json: {success: !user.nil?}
+    email = forget_password_params[:email]
+    is_user = forget_password_params[:is_user]
+    if is_user.eql?('true')
+      user = User.find_by(email: email)
+    else
+      user = Teacher.find_by(email: email)
+    end  
+    user.send_password_reset if user
+    render json: {success:!user.nil?}
   end
 
   def edit
@@ -39,13 +44,6 @@ class PasswordResetsController < ApplicationController
     end
   end
 
-  # for teacher
-  def create_for_teacher
-    teacher = Teacher.find_by_email(params[:teacher][:email])
-    teacher.send_password_reset if teacher
-    render json: {success: !teacher.nil?}
-  end
-
   def teacher_edit
     @teacher = Teacher.find_by_reset_password_token!(params[:format])
   end
@@ -73,7 +71,8 @@ class PasswordResetsController < ApplicationController
       end
     else
       flash[:password_mismatch] = "Password does not match. Try again"
-      render :edit    end
+      render :edit    
+    end
   end
 
   #for parent
@@ -114,5 +113,11 @@ class PasswordResetsController < ApplicationController
       flash[:password_mismatch] = "Password does not match. Try again"
       render :edit
     end
+  end
+
+  private
+
+  def forget_password_params
+    params.permit(:email, :is_user)
   end
 end

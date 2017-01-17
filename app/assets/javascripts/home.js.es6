@@ -40,9 +40,7 @@ class Main extends SchloopBase {
             if (teacher_login) {
                 login_form.attr('action','/teachers/sign_in');
                 login_form.find('input[type=email]').attr('name','teacher[email]');
-                login_form.find('input[type=password]').attr('name','teacher[password]'); 
-                forgot_password_form.find('input[type=email]').attr('name','teacher[email]');
-                forgot_password_form.attr('action','/password_resets/create_for_teacher');
+                login_form.find('input[type=password]').attr('name','teacher[password]');
                 forgot_password_form.find('input[name=is_user]').val('false');
                 e.preventDefault();  
                 self.initTeacherLoginForm(login_form, forgot_password_form);              
@@ -50,8 +48,6 @@ class Main extends SchloopBase {
                 login_form.find('input[type=email]').attr('name','user[email]');
                 login_form.find('input[type=password]').attr('name','user[password]');
                 login_form.attr('action','/users/sign_in');
-                forgot_password_form.find('input[type=email]').attr('name','user[email]');
-                forgot_password_form.attr('action','/password_resets/create');
                 forgot_password_form.find('input[name=is_user]').val('true');
                 self.initUserLoginForm(login_form, forgot_password_form);
             }
