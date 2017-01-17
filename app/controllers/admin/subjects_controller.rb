@@ -1,4 +1,4 @@
-class Admin::SubjectsController < ApplicationController
+class Admin::SubjectsController < Admin::BaseController
 
 	def create
 		errors = []
@@ -12,10 +12,7 @@ class Admin::SubjectsController < ApplicationController
 			errors << subject.errors.full_messages.join(',')
 		end
 
-
-
-
 		render json: {success: e.nil?, errors: errors, subject_name: params[:subject_name]}
-
 	end
+
 end

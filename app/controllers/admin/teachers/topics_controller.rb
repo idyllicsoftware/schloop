@@ -1,4 +1,4 @@
-class Admin::Teachers::TopicsController < ApplicationController
+class Admin::Teachers::TopicsController < Admin::Teachers::BaseController
 	layout "teacher"
 
   def create

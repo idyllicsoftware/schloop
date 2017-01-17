@@ -1,5 +1,4 @@
-class Admin::EcircularsController < ApplicationController
-	before_action :authenticate_user!
+class Admin::EcircularsController < Admin::BaseController
 	before_action :find_school, only: [:all, :create]
 
 	def create

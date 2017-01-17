@@ -1,5 +1,4 @@
-class Admin::ParentImportsController < ApplicationController
-  before_action :authenticate_user!
+class Admin::ParentImportsController < Admin::BaseController
   before_action :find_school, only: [:new, :create]
   layout "admin"
 

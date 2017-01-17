@@ -1,5 +1,4 @@
-class Admin::StudentsController < ApplicationController
-	before_action :authenticate_user!
+class Admin::StudentsController < Admin::BaseController
 
 	def update
 		errors = []

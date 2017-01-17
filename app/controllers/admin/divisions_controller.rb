@@ -1,4 +1,4 @@
-class Admin::DivisionsController < ApplicationController
+class Admin::DivisionsController < Admin::BaseController
 	 
 	def create
 		errors = []

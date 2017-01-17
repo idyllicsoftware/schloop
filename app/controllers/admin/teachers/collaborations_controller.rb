@@ -1,4 +1,4 @@
-class Admin::Teachers::CollaborationsController < ApplicationController
+class Admin::Teachers::CollaborationsController < Admin::Teachers::BaseController
 
   def index 
     teacher= current_teacher
