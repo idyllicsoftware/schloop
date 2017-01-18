@@ -9,7 +9,8 @@
       <div class="schloop-logo-sec">
         <img class="schloop-img" src="<%= asset_path('home/schloop.png') %>">
       </div>
-      <%= form_for @user, :url => password_resets_update_path(params[:format]) do |f| %>
+      <%= form_for @user, :url => password_resets_update_path do |f| %>
+        <input type="hidden" name="token" value="<%= params[:format] %>">
         <div class="form-group">
           <input type="password" class="form-control input-field new" id="password" required name="user[password]" autocomplete="off" placeholder="New Password"  minlength="6" maxlength="15"/>
           <a class="pull-right pass-show">Show</a>
@@ -20,7 +21,7 @@
         </div>
         <p class="show_err hidden">Password does not match. Try again</p>
         <div class="pt20">
-          <button type="submit" class="btn btn-primary btn-full-width text-uppercase"> reset & continue </button>          
+          <button type="button" class="btn btn-primary btn-full-width text-uppercase reset"> reset & continue </button>          
         </div>
       <% end %>
     </div>
