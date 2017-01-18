@@ -26,6 +26,11 @@ admin_teacher_parent: &admin_teacher_parent
   admin/users:                                            #On this line put controller name
   - :action: update_password
     :role_maps: *admin
+    - product-admin
+  admin/subjects:
+  - :action: create
+    :role_maps:
+    - *admin
   admin/school_admins:
   - :action: index
     :role_maps: *admin
@@ -34,7 +39,7 @@ admin_teacher_parent: &admin_teacher_parent
   - :action: update
     :role_maps: *admin
   - :action: destroy
-    :role_maps: *admin                                               #On this line put controller name    
+    :role_maps: *admin                                               #On this line put controller name     
   admin/teachers:
   - :action: index
     :role_maps: *admin  
@@ -43,18 +48,21 @@ admin_teacher_parent: &admin_teacher_parent
   - :action: update
     :role_maps: *admin 
   - :action: destroy
-    :role_maps: *admin
+    :role_maps: *admin 
   - :action: update_password
-    :role_maps: *admin  
+    :role_maps: *admin
+  admin/users:
+  - :action: update_password
+    :role_maps: *admin
   admin/grades:
   - :action: index
     :role_maps: *admin 
   - :action: create
     :role_maps: *admin  
-  - :action: grades_divisions
-    :role_maps: *admin
   - :action: destroy
-    :role_maps: *admin
+    :role_maps: *admin 
+  - :action: grades_divisions
+    :role_maps: *admin 
   admin/divisions:
   - :action: create
     :role_maps: *admin  
