@@ -154,6 +154,7 @@ class Teacher < ActiveRecord::Base
     self.reset_password_token = token
     self.reset_password_sent_at = Time.zone.now
     save!
-    UserMailer.teacher_password_reset(self).deliver
+    UserMailer.password_reset(self).deliver
+
   end
 end

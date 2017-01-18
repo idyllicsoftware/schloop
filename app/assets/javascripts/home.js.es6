@@ -18,13 +18,18 @@ class Main extends SchloopBase {
             login_form = $('#login-form'),
             signInModal = $('#signInModal'),
             forgot_password_form = $('#forgot-password-form');
-            
+        
+        $(document).on('click', '.close-login-form', function() {
+            signInModal.modal('hide');
+        });
+
         $("#labelForgotPassword").click(function (){
             $("#loginDiv").addClass('hidden');
             $("#forgotPasswordDiv").removeClass('hidden');
         });
-       
-        $(document).on('click','.sign-in-link', function (e) {
+        
+        $(document).off('click').on('click','.sign-in-link', function (e) {
+            e.preventDefault();
             var teacher_login = $(this).data('teacher_login');
             signInModal.modal('show');
             $("#loginDiv").removeClass('hidden');
@@ -33,27 +38,27 @@ class Main extends SchloopBase {
             $('#signInModal .form-group label.error').remove();
             $("#forgotPasswordDiv").addClass('hidden');
             signInModal.find('.show_err').text('');
+            forgot_password_form.find('.show_error').text('');
             if (teacher_login) {
-                login_form.removeAttr('action');
                 login_form.attr('action','/teachers/sign_in');
                 login_form.find('input[type=email]').attr('name','teacher[email]');
-                login_form.find('input[type=password]').attr('name','teacher[password]'); 
-                forgot_password_form.removeAttr('action');
-                forgot_password_form.find('input[type=email]').attr('name','teacher[email]');
-                forgot_password_form.attr('action','/password_resets/create_for_teacher');
+                login_form.find('input[type=password]').attr('name','teacher[password]');
+                forgot_password_form.find('input[name=is_user]').val('false');
                 e.preventDefault();  
                 self.initTeacherLoginForm(login_form, forgot_password_form);              
             }else {
-                self.initUserLoginForm();
+                login_form.find('input[type=email]').attr('name','user[email]');
+                login_form.find('input[type=password]').attr('name','user[password]');
+                login_form.attr('action','/users/sign_in');
+                forgot_password_form.find('input[name=is_user]').val('true');
+                self.initUserLoginForm(login_form, forgot_password_form);
             }
         }); 
     };
 
-    initUserLoginForm () {
+    initUserLoginForm (login_form, forgot_password_form) {
         let self = this,
-            login_form = $('#login-form'),
-            signInModal = $('#signInModal'),
-            forgot_password_form = $('#forgot-password-form');
+            signInModal = $('#signInModal');
 
             this.initFormSubmit(login_form, {
                'user[email]': 'email' ,
@@ -66,7 +71,7 @@ class Main extends SchloopBase {
                     signInModal.modal('hide');
                }
             });
-            
+
             this.initFormSubmit(forgot_password_form, {
                'user[email]': 'email'
             }, function (res) {
@@ -100,7 +105,7 @@ class Main extends SchloopBase {
                }
             });
 
-            this.initFormSubmit(forgot_password_form, {
+            self.initFormSubmit(forgot_password_form, {
                'teacher[email]': 'email'
             }, function (res) {
                if(res.success){
