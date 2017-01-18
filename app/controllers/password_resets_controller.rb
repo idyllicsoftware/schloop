@@ -40,7 +40,7 @@ def update
       end
     rescue Exception => e
       errors << e.message
-      render json: {success: false ,errors: errors}
+      render json: {success: false ,errors: errors} and return
     end
     render json: {success: errors.blank?, errors: errors,redirect_to: root_url}
 end
