@@ -41,7 +41,7 @@ class Schloop extends SchloopBase {
              if (match) {
                 $.ajax({
                     url: url,
-                    method: "POST",
+                    method: "PATCH",
                     data: reset_password_form.serializeObject(),
                     success: function (res) {
                        if (res.errors){

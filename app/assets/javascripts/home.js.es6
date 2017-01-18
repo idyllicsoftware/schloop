@@ -29,6 +29,7 @@ class Main extends SchloopBase {
         });
        
         $(document).off('click').on('click','.sign-in-link', function (e) {
+            e.preventDefault();
             var teacher_login = $(this).data('teacher_login');
             signInModal.modal('show');
             $("#loginDiv").removeClass('hidden');
