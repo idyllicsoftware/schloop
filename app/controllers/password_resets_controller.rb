@@ -40,16 +40,16 @@ class PasswordResetsController < ApplicationController
   end
 
   # for teacher
-  def create_for_teacher
-    teacher = Teacher.find_by_email(params[:teacher][:email])
-    teacher.send_password_reset if teacher
-    render json: {success: !teacher.nil?}
-  end
+ # def create_for_teacher
+ #   teacher = Teacher.find_by_email(params[:teacher][:email])
+ #   teacher.send_password_reset if teacher
+ #   render json: {success: !teacher.nil?}
+ # end
 
-  def teacher_edit
-    @teacher = Teacher.find_by_reset_password_token!(params[:format])
-  end
-
+ # def teacher_edit
+ #   @teacher = Teacher.find_by_reset_password_token!(params[:format])
+ # end
+=begin
   def teacher_update
     errors = []
     @teacher = Teacher.find_by_reset_password_token!(params[:format])
@@ -75,7 +75,7 @@ class PasswordResetsController < ApplicationController
       flash[:password_mismatch] = "Password does not match. Try again"
       render :edit    end
   end
-
+=end
   #for parent
   def parent_new
   end

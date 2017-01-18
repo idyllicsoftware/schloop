@@ -33,9 +33,9 @@ Rails.application.routes.draw do
   #                        invitations: 'admin/parents/invitations'
   # }
 
-    post 'password_resets/create_for_teacher' => 'password_resets#create_for_teacher'
-    get 'password_resets/teacher_edit' => 'password_resets#teacher_edit'
-    patch 'password_resets/teacher_update' => 'password_resets#teacher_update'
+    #post 'password_resets/create_for_teacher' => 'password_resets#create_for_teacher'
+    #get 'password_resets/teacher_edit' => 'password_resets#teacher_edit'
+    #patch 'password_resets/teacher_update' => 'password_resets#teacher_update'
     post '/password_resets/create' => 'password_resets#create'
     get 'password_resets/edit' => 'password_resets#edit'
     patch 'password_resets/update' => 'password_resets#update'
@@ -51,8 +51,6 @@ Rails.application.routes.draw do
         post :deactivate
       end
     end
-    resource :users
-
 
     namespace :teachers do #teachers folder in admin
       resources :teacher_imports, only: [:create], shallow: true
