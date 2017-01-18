@@ -22,24 +22,10 @@ admin_teacher_parent: &admin_teacher_parent
     :role_maps: *admin
   - :action: create
     :role_maps:
-    - product-admin
-  - :action: find_school
-    :role_maps: *admin  
-  - :action: create_school
-    :role_maps:
-    - product-admin
-  - :action: create_school!
-    :role_maps:
-    - product-admin
-  - :action: create_school_admin!
-    :role_maps: 
-    - product-admin
-  - :action: school_admin_params
-    :role_maps: 
-    - product-admin
-  - :action: school_params
-    :role_maps: 
-    - product-admin
+    - product-admin  
+  admin/users:                                            #On this line put controller name
+  - :action: update_password
+    :role_maps: *admin
   admin/school_admins:
   - :action: index
     :role_maps: *admin
@@ -48,21 +34,7 @@ admin_teacher_parent: &admin_teacher_parent
   - :action: update
     :role_maps: *admin
   - :action: destroy
-    :role_maps: *admin                                               #On this line put controller name
-  - :action: find_school
-    :role_maps: *admin
-  - :action: find_school_admin
-    :role_maps: *admin
-  - :action: create_school_admin
-    :role_maps: *admin  
-  - :action: create_school_admin!
-    :role_maps: *admin  
-  - :action: create_school_admin_params
-    :role_maps: *admin 
-  - :action: update_school_admin
-    :role_maps: *admin   
-  - :action: update_school_admin_params
-    :role_maps: *admin     
+    :role_maps: *admin                                               #On this line put controller name    
   admin/teachers:
   - :action: index
     :role_maps: *admin  
@@ -72,47 +44,29 @@ admin_teacher_parent: &admin_teacher_parent
     :role_maps: *admin 
   - :action: destroy
     :role_maps: *admin
-  - :action: find_school
+  - :action: update_password
     :role_maps: *admin  
-  - :action: find_teacher
-    :role_maps: *admin
-  - :action: create_teachers
-    :role_maps: *admin 
-  - :action: creaet_school_teachers_params
-    :role_maps: *admin   
-  - :action: update_school_teacher
-    :role_maps: *admin
-  - :action: update_school_teacher_paramss
-    :role_maps: *admin
-  - :action: get_grade_teacher_data
-    :role_maps: *admin 
-  - :action: create_grade_teacher_association
-    :role_maps: *admin
-  admin/teachers:
-  - :action: create
-    :role_maps: *admin
   admin/grades:
   - :action: index
     :role_maps: *admin 
   - :action: create
     :role_maps: *admin  
-  - :action: find_grades
+  - :action: grades_divisions
     :role_maps: *admin
-  - :action: find_school
+  - :action: destroy
     :role_maps: *admin
-  - :action: create_grades
-    :role_maps: *admin
-  - :action: create_school_admin_params
-    :role_maps: *admin 
   admin/divisions:
   - :action: create
     :role_maps: *admin  
   - :action: destroy
     :role_maps: *admin
+  admin/subjects:
+  - :action: create
+    :role_maps: *admin
   admin/ecirculars:
   - :action: all
     :role_maps: *admin  
-  - :action: new
+  - :action: create
     :role_maps: *admin
   - :action: upload_file
     :role_maps: *admin  
@@ -123,10 +77,10 @@ admin_teacher_parent: &admin_teacher_parent
   - :action: all
     :role_maps: 
     - product-admin  
-  - :action: load_activity
+  - :action: deactivate
     :role_maps: 
     - product-admin  
-  - :action: get_activity_params
+  - :action: upload_file
     :role_maps: 
     - product-admin 
   admin/teachers/dashboards:
@@ -136,11 +90,11 @@ admin_teacher_parent: &admin_teacher_parent
     - teacher
   admin/teachers/bookmarks:
   - :action: create
-      :role_maps:
+    :role_maps:
       - product-admin
       - teacher
   - :action: get_bookmarks
-      :role_maps:
+    :role_maps:
       - product-admin
       - teacher
   - :action: add_caption
