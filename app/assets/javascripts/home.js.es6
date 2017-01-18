@@ -27,7 +27,7 @@ class Main extends SchloopBase {
             $("#loginDiv").addClass('hidden');
             $("#forgotPasswordDiv").removeClass('hidden');
         });
-       
+    
         $(document).off('click').on('click','.sign-in-link', function (e) {
             e.preventDefault();
             var teacher_login = $(this).data('teacher_login');
