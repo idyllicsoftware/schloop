@@ -26,7 +26,7 @@ def update
       if @user.nil?
         @user = Teacher.find_by_reset_password_token!(update_params[:token]) rescue nil
       end
-      raise "Link is already used or expired.Generate new one" if @user.nil?
+      raise "Link is invalid or expired.Generate new one" if @user.nil?
       if params[:user][:password] == params[:user][:password_confirmation]
         if @user.reset_password_sent_at < 2.hours.ago
           errors << "Password reset link has expired."
