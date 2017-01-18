@@ -27,7 +27,7 @@ class Main extends SchloopBase {
             $("#loginDiv").addClass('hidden');
             $("#forgotPasswordDiv").removeClass('hidden');
         });
-    
+        
         $(document).off('click').on('click','.sign-in-link', function (e) {
             e.preventDefault();
             var teacher_login = $(this).data('teacher_login');
@@ -38,6 +38,7 @@ class Main extends SchloopBase {
             $('#signInModal .form-group label.error').remove();
             $("#forgotPasswordDiv").addClass('hidden');
             signInModal.find('.show_err').text('');
+            forgot_password_form.find('.show_error').text('');
             if (teacher_login) {
                 login_form.attr('action','/teachers/sign_in');
                 login_form.find('input[type=email]').attr('name','teacher[email]');
@@ -70,7 +71,7 @@ class Main extends SchloopBase {
                     signInModal.modal('hide');
                }
             });
-            
+
             this.initFormSubmit(forgot_password_form, {
                'user[email]': 'email'
             }, function (res) {
@@ -104,7 +105,7 @@ class Main extends SchloopBase {
                }
             });
 
-            this.initFormSubmit(forgot_password_form, {
+            self.initFormSubmit(forgot_password_form, {
                'teacher[email]': 'email'
             }, function (res) {
                if(res.success){

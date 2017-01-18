@@ -45,7 +45,8 @@ class Schloop extends SchloopBase {
                     data: reset_password_form.serializeObject(),
                     success: function (res) {
                        if (res.errors && res.errors.length){
-                            reset_password_form.find('.show_err').text(res.errors);
+                        var msg = res.errors.join('');
+                        swal({title: "Oops!",   text: msg,   html:true, type: "error",   confirmButtonText: "OK"});
                        }else {
                             window.location = res.redirect_to;
                        }
