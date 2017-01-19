@@ -19,7 +19,7 @@ class Main extends SchloopBase {
             signInModal = $('#signInModal'),
             forgot_password_form = $('#forgot-password-form');
         
-        $(document).on('click', '.close-login-form', function() {
+        signInModal.on('click', '.close-login-form', function() {
             signInModal.modal('hide');
         });
 

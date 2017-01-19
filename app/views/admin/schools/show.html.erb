@@ -32,7 +32,13 @@
               </div>
               <div class="col-md-4 ">
                 <span class="data-title">Principle/Director/Authority</span>
-                <span class="data-attr"><%= @school.principal_name %></span>
+                <span class="data-attr">
+                  <% if !@school.principal_name.blank? %>
+                    <%= @school.principal_name %>
+                  <% else %>
+                    &emsp; &emsp; &emsp; -
+                  <% end %>
+                </span>
               </div>
               <div class="col-md-4">
                 <span class="data-title">Website</span>
@@ -54,7 +60,13 @@
               </div>
               <div class="col-md-2 last-col">
                 <span class="data-title">Phone (Alternate)</span>
-                <span class="data-attr"> <%= @school.phone2 %></span>
+                <span class="data-attr">
+                <% if  @school.phone2.present? %>
+                  <%= @school.phone2 %>
+                <% else %>
+                 &emsp; &emsp; &emsp; -
+                <% end %>
+                </span>
               </div>
             </div>
             <div class="mt30 admin-detail-section">
@@ -131,7 +143,12 @@
                                 <div class="teachers-wrapper" id="teachers-popover">
                                   <ul>
                                   {{#teacher}}
-                                    <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content{{teacher_id}}" data-trigger="hover"><div><img src="https://dummyimage.com/45x45/2abdda/0011ff&text=dps"><span class="img-caption">
+                                    <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content{{teacher_id}}" data-trigger="hover"><div><div class="teacher-profile">
+                                      {{#teacher_profile}}
+                                        {{teacher_profile_name}}
+                                      {{/teacher_profile}}
+                                      </div>
+                                      <span class="img-caption">
                                     <p>{{first_name}} {{last_name}}</p>{{subject_name}}</span></div></a></li>
                                     <div id="teachers-info-popover-content{{teacher_id}}" class="hidden">
                                       <div>
