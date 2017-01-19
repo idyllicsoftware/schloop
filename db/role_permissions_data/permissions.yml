@@ -96,6 +96,11 @@ admin_teacher_parent: &admin_teacher_parent
   - :action: upload_file
     :role_maps: 
     - product-admin 
+  admin/parent_imports:
+  - :action: create
+    :role_maps: *admin  
+  - :action: new
+    :role_maps: *admin
   admin/teachers/dashboards:
   - :action: index
     :role_maps:
@@ -158,3 +163,6 @@ admin_teacher_parent: &admin_teacher_parent
     :role_maps:
     - product-admin
     - teacher
+  admin/teachers/teacher_imports:
+  - :action: create
+    :role_maps: *admin  

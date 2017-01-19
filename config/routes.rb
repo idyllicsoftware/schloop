@@ -61,7 +61,7 @@ Rails.application.routes.draw do
         end
 
       end
-      resources :bookmarks, only:[:create] do 
+      resources :bookmarks, only:[:create,:destroy] do 
         collection do
           get :get_bookmarks
           post :add_caption
