@@ -1,4 +1,5 @@
-class Admin::TeachersController < ApplicationController
+class Admin::TeachersController < Admin::BaseController
+
   before_action :authenticate_user!, except: [:update_password]
   before_action :find_school, only: [:index, :create]
   before_action :find_teacher, only: [:update, :destroy]

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'home#index'
+  
   get 'privacy_policy' => 'home#privacy_policy'
   get 'terms' => 'home#terms'
   devise_for :users, controllers:{
@@ -25,7 +26,6 @@ Rails.application.routes.draw do
                          invitations: 'admin/teachers/invitations',
                          imports: 'admin/teachers/teacher_imports'
   }
-
 
   # devise_for :parents, controllers:{
   #                        sessions: 'admin/parents/sessions',
