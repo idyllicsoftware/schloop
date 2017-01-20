@@ -25,6 +25,8 @@ class NotificationWorker
       fcm = FCM.new(FCM_KEY)
       response = fcm.send(android_registration_ids, android_options)
       Rails.logger.info("=================================================")
+      Rails.logger.info(fcm)
+      Rails.logger.info("--------")
       Rails.logger.info(response)
       Rails.logger.info("=================================================")
     end
@@ -49,6 +51,8 @@ class NotificationWorker
       fcm = FCM.new(FCM_KEY)
       response = fcm.send(ios_registration_ids, ios_options)
       Rails.logger.info("=================================================")
+      Rails.logger.info(fcm)
+      Rails.logger.info("--------")
       Rails.logger.info(response)
       Rails.logger.info("=================================================")
     end

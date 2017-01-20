@@ -7,7 +7,9 @@ class Admin::EcircularsController < ApplicationController
 		if(params[:circular_tag].present? && params[:grades].present? && params[:title].present?)
 			new_circular = Ecircular.create(circular_params)
 			if new_circular.save
-				add_recipients_data(params[:grades], params[:school_id], new_circular.id)
+				recipients_division_ids = add_recipients_data(params[:grades], params[:school_id], new_circular.id)
+				send_notification_to_recipients(recipients_division_ids,new_circular)
+				
 				render json: { success: true,  circular_id: new_circular.id} and return
 			else
 				errors = new_circular.errors.full_messages
@@ -53,17 +55,26 @@ class Admin::EcircularsController < ApplicationController
 	end
 
 	def add_recipients_data(grades, school_id, ecircular_id)
+		circular_recipient = []
 		grades.each do |grade_id, datum|
 			divisions = datum[:divisions]
 			grade_id = grade_id.to_i
 			if divisions.present?
 				divisions.each do |division|
 					division_id = division.to_i
-					circular_recipient = EcircularRecipient.create(school_id: school_id, grade_id: grade_id, division_id: division_id, ecircular_id: ecircular_id )
+					new_record = EcircularRecipient.create(school_id: school_id, grade_id: grade_id, division_id: division_id, ecircular_id: ecircular_id )
+					circular_recipient << new_record.division_id
 				end
 			end
 		end
+		return circular_recipient
 	end
+
+	def send_notification_to_recipients(division_ids,circular) 
+    student_ids = StudentProfile.active.where(division_id: division_ids).pluck(:student_id)
+    student_ids = Student.where(id: student_ids).active.ids
+    circular.send_notification(student_ids)
+  end
 
 	def circular_params
 		user_type = current_user.type rescue ''

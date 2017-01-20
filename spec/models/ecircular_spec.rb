@@ -5,9 +5,12 @@
 #  id              :integer          not null, primary key
 #  title           :string
 #  body            :text
-#  circular_type   :integer
+#  circular_tag    :integer
 #  created_by_type :integer
 #  created_by_id   :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  school_id       :integer
 #
 
 require 'rails_helper'

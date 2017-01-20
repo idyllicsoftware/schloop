@@ -192,6 +192,9 @@
       </div>
       <div class="attachments-list">
         <h4>Attachments</h4>
+        {{^attachment_file}}
+          <p>No attachments available.</p>
+        {{/attachment_file}}
         {{#attachment_file}}
         <ul>
           <li><a href="{{s3_url}}" target="_blank">{{original_filename}}</a></li>

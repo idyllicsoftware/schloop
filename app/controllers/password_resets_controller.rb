@@ -1,80 +1,48 @@
 class PasswordResetsController < ApplicationController
   
   def create
-  	user = User.find_by_email(params[:user][:email])
-  	user.send_password_reset if user
-  	#redirect_to root_url,:notice => "Email sent with password reset instructions."
-    render json: {success: !user.nil?}
+    email = forget_password_params[:email]
+    is_user = forget_password_params[:is_user]
+    if is_user.eql?('true')
+      user = User.find_by(email: email)
+    else
+      user = Teacher.find_by(email: email)
+    end  
+    user.send_password_reset if user
+    render json: {success:!user.nil?}
   end
 
   def edit
-  	@user = User.find_by_reset_password_token!(params[:format])
-  end
-
-  def update
-  	errors = []
-	  @user = User.find_by_reset_password_token!(params[:format])
-    if params[:school_admin][:password] == params[:school_admin][:password_confirmation]
-  	  if @user.reset_password_sent_at < 2.hours.ago
-  	    redirect_to new_password_reset_path, :alert => "Password reset has expired."
-  	  else
-        begin
-    	    @user.password = params[:school_admin][:password]
-    	    @user.save!
-        rescue Exception => ex 
-          errors << ex.message
-  	    end 
-        errors << "Invalid old password" unless @user.valid_password?(params[:school_admin][:password])
-
-        if errors.blank?
-  	    	redirect_to root_url, :notice => "Password has been reset!"
-  	  	else
-          flash[:invalid_password] = "passowrd is not valid"
-  	    	render :edit
-  	  	end
-  	  end
-    else
-      flash[:password_mismatch] = "Password does not match. Try again"
-      render :edit
+  	@user = User.find_by_reset_password_token!(edit_params[:format]) rescue nil
+    if @user.nil?
+      @user = Teacher.find_by_reset_password_token!(edit_params[:format]) rescue nil
     end
   end
 
-  # for teacher
-  def create_for_teacher
-    teacher = Teacher.find_by_email(params[:email])
-    teacher.send_password_reset if teacher
-    redirect_to root_url,:notice => "Email sent with password reset instructions."
-  end
-
-  def teacher_edit
-    @teacher = Teacher.find_by_reset_password_token!(params[:format])
-  end
-
-  def teacher_update
+def update
     errors = []
-    @teacher = Teacher.find_by_reset_password_token!(params[:format])
-    if params[:teacher][:password] == params[:teacher][:password_confirmation]
-      if @teacher.reset_password_sent_at < 2.hours.ago
-        redirect_to new_password_reset_path, :alert => "Password reset has expired."
-      else
-        begin
-          @teacher.password = params[:teacher][:password]
-          @teacher.save!  
-        rescue Exception => ex
-          errors << ex.message
-        end
-        errors << "Invalid old password" unless @teacher.valid_password?(params[:teacher][:password])
-        
-        if errors.blank?
-          redirect_to root_url, :notice => "Password has been reset!"
-        else
-          render :edit, :alert => "Password  is not valid"
-        end
+    begin
+      @user = User.find_by_reset_password_token!(update_params[:token]) rescue nil
+      if @user.nil?
+        @user = Teacher.find_by_reset_password_token!(update_params[:token]) rescue nil
       end
-    else
-      flash[:password_mismatch] = "Password does not match. Try again"
-      render :edit    end
-  end
+      raise "Link is already used or expired.Generate new one" if @user.nil?
+      if params[:user][:password] == params[:user][:password_confirmation]
+        if @user.reset_password_sent_at < 2.hours.ago
+          errors << "Password reset link has expired."
+        else
+          @user.password = update_params[:user][:password]
+          @user.save!
+          raise "Invalid password" unless @user.valid_password?(update_params[:user][:password])
+        end
+      else
+        raise "Password does not match. Try again"
+      end
+    rescue Exception => e
+      errors << e.message
+    end
+    render json: {success: errors.blank?, errors: errors,redirect_to: root_url}
+end
 
   #for parent
   def parent_new
@@ -114,5 +82,19 @@ class PasswordResetsController < ApplicationController
       flash[:password_mismatch] = "Password does not match. Try again"
       render :edit
     end
+  end
+
+  private
+
+  def forget_password_params
+    params.permit(:email, :is_user)
+  end
+
+  def edit_params
+    params.permit(:form)
+  end
+
+  def update_params
+    params.permit({:user=> [:password,:password_confirmation]},:token)
   end
 end

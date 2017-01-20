@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170109060639) do
+ActiveRecord::Schema.define(version: 20170113103557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20170109060639) do
     t.text     "message"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "commenter"
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
@@ -178,8 +179,9 @@ ActiveRecord::Schema.define(version: 20170109060639) do
 
   create_table "followups", force: :cascade do |t|
     t.integer  "bookmark_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.string   "followup_message"
   end
 
   add_index "followups", ["bookmark_id"], name: "index_followups_on_bookmark_id", using: :btree

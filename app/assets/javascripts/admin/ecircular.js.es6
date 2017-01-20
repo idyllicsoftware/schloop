@@ -150,7 +150,6 @@ class SchoolECircular extends SchloopBase {
 
         this.initFormSubmit(eCircularFormEl, {
             'title': 'name',
-            'body': 'name',
         }, function (res) {
             if(res.errors && res.errors.length) {
                 _self.showErrors(res.errors);

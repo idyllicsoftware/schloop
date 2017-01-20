@@ -1,0 +1,94 @@
+<div class="tab-pane fade in" id="collaboration">
+	<div class="content-wrapper">
+		<div class="collaborated-schloopmark">
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="collaborations_bookmarks_tpl">
+	{{^data}}
+		<div class="bookmark-not-found">
+			<h4>No schloopmark found...</h4>
+		</div>
+	{{/data}}
+	{{#data}}
+		<div class="schloopmark-item">
+			<div class="schloopmark-view-section">
+				<div class="schloopmark-view">
+	  				<div class="collaborated-by-teacher-img">{{profile_pic_name}}</div>
+	  				<div class="collaborated-by-teacher-detail">
+	  					<p>{{title}}</p>
+	  					<div class="about-schloopmark"><time class="timeago" datetime="{{created_at}}"></time> |<span> {{grade_name}} </span>|<span> {{subject_name}} </span>|<span> {{#topic}}{{topic_title}}{{/topic}}</span></div>
+	  				</div>
+				</div>
+				<div class="schloopmark-content">
+					<p class="caption">{{caption}}</p>
+					<div class="content-block">
+						{{#is_text}}
+							<div class="sm-area">
+		  						<div class="data">{{{data}}}</div>
+		  					</div>
+		  					<a href="#" class="read_more" data-bookmark_id='{{id}}'>More...</a>
+						{{/is_text}}
+						{{^is_text}}
+							<a href="{{url}}" target="_blank"><img src="{{preview_image_url}}" data-bm_id='{{id}}' style="width: 300px; height: 200px;"></a>
+						{{/is_text}}
+					</div>
+				</div>	
+			</div>
+			<div class="schloopmark-like">
+				<img src="<%= asset_path('admin/like_fill.svg') %>">
+				<div><span class="like_count">{{like_count}}</span></div>
+				<div class="pl20"><span class="view_count">{{views}}</span> views</div>
+			</div>
+			<div class="share-section">
+				<div class="like-schloopmark share" data-bookmark_id='{{id}}'>
+					{{#is_liked}}
+						<img src="<%= asset_path('admin/like.svg') %>" class='like' data-img1='<%= asset_path('admin/like.svg') %>' data-img2='<%= asset_path('admin/unlike.svg') %>'>
+						<p>Liked</p>
+					{{/is_liked}}
+					{{^is_liked}}
+						<img src="<%= asset_path('admin/unlike.svg') %>" data-img1='<%= asset_path('admin/like.svg') %>' data-img2='<%= asset_path('admin/unlike.svg') %>'>
+						<p>Like</p>
+					{{/is_liked}}	
+				</div>
+				<div class="write-comment-tag share">
+					<img src="<%= asset_path('admin/comment.svg') %>">
+					<p>Comment</p>
+				</div>
+				<div class="add-Tomytopic share" data-bookmark_id='{{id}}'>
+					<img src="<%= asset_path('admin/add_item.svg')%>" data-img1='<%= asset_path('admin/add_item.svg') %>' data-img2='<%= asset_path('admin/add_item_fill.svg') %>'>
+					<p>Add to my topics</p>
+				</div>
+				<div class="follow-up-parent share" data-bookmark_id='{{id}}'>
+					<img src="<%= asset_path('admin/follow_up.svg') %>"  data-img1='<%= asset_path('admin/follow_up.svg') %>' data-img2='<%= asset_path('admin/follow_up_fill.svg') %>'>
+					<p>Followup for parents</p>
+				</div>
+			</div>
+			<div class="comment-section">
+				{{#comments}}
+				<div class="com-sub-section">
+					{{#commenter_profile}}
+	  				<div class="com-by-teacher-img">{{commenter_profile_name}}</div>
+	  				{{/commenter_profile}}
+	  				<div class="com-by-teacher-detail">
+	  					<div class="comment-as">
+	  					<span class="fw">{{#commenter}}{{first_name}} {{last_name}}{{/commenter}}</span> <span>{{{message}}}</span>
+	  					</div>
+	  					<time class="timeago" datetime="{{created_at}}"></time>
+	  				</div>
+				</div>
+				{{/comments}}
+				<div class="com-sub-section">
+	  				<div class="com-by-teacher-img">{{login_user_profile}}</div>
+	  				<div class="com-by-teacher-detail">
+	  					<div class="comment-editor col-md-12 p0">
+					        <div class="write-comment" contenteditable="true" placeholder="Add a comment" data-bookmark_id='{{id}}'></div>
+					    </div>
+	  				</div>
+				</div>			
+			</div>
+		</div>	
+	{{/data}}
+</script>	
