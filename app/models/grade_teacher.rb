@@ -26,10 +26,8 @@
 #
 
 class GradeTeacher < ActiveRecord::Base
-  
   belongs_to :teacher
   belongs_to :division
   belongs_to :subject 
   belongs_to :grade
-  
 end
