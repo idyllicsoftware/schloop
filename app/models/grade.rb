@@ -26,6 +26,7 @@ class Grade < ActiveRecord::Base
   has_many :student_profiles, dependent: :destroy
 	has_many :ecircular_recipients, dependent: :destroy
   has_many :activity_shares, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
 
 	validates :name, :presence => true
 

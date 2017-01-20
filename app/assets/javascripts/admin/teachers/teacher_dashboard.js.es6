@@ -50,11 +50,12 @@ class TeacherDashboard extends SchloopBase {
                     _self.loadMyTopics();
                      popoverEl.popover('hide');
                 });
-
                 selected_subject.each( function () {
                     var val = $(this).val();
                     if( _self.filters.subject_id === val) {
                         $(this).attr('checked','checked');
+                    } else {
+                        $(this).removeAttr('checked');
                     }
                 });    
         });
