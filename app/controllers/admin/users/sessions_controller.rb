@@ -6,7 +6,7 @@ class Admin::Users::SessionsController < Devise::SessionsController
       '/admin/schools'
     elsif user.type == "SchoolAdmin"
       school_id = user.school.id rescue ''
-      "/admin/schools/#{school_id}"
+      "/admin/schools/school"
     else
       root_path
     end

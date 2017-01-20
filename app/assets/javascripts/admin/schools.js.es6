@@ -9,7 +9,7 @@ class Schools extends SchloopBase {
         if(action == 'index'){
             this.initDashboard();
             this._activities = new Activities(this._config);
-        }else if(action == 'show'){
+        }else if(action == 'show' || action == 'school'){
             this._schoolProfile = new SchoolProfiles(this._config);
         }
         return this;

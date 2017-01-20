@@ -91,6 +91,7 @@ Rails.application.routes.draw do
     resources :schools do
       collection do
         get :all
+        get :school
       end
 
       resources :ecirculars, only: [:create], shallow: true do

@@ -18,7 +18,19 @@ class Admin::SchoolsController < Admin::BaseController
     @js_data = {
       school_id: params[:id]
     }
-    @grades = Grade.where(school_id: params[:id])
+    @grades = Grade.where(school_id: params[:id]).includes(:divisions)
+    @master_grades = MasterGrade.all.select(:id, :name)
+    @master_subjects = MasterSubject.all.select(:id, :name)
+    @circular_tags = Ecircular.circular_tags
+  end
+
+  def school
+    school_admin = current_user
+    @school =  school_admin.school
+     @js_data = {
+      school_id: @school.id
+    }
+    @grades = Grade.where(school_id: @school.id).includes(:divisions)
     @master_grades = MasterGrade.all.select(:id, :name)
     @master_subjects = MasterSubject.all.select(:id, :name)
     @circular_tags = Ecircular.circular_tags
