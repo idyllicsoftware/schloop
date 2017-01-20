@@ -3,14 +3,12 @@ class Admin::SchoolsController < Admin::BaseController
   layout "admin"
 
   def index
-    ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
     @grades = MasterGrade.all.select(:id, :name)
     @subjects = MasterSubject.all.select(:id, :name)
     @categories = Category.all.select(:id, :name).where(category_type: Category.category_types[:activity])
   end
 
   def all
-    ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
     schools = School.select(:id, :name, :code, :board, :principal_name, :website, :address, :zip_code, :phone1, :phone2).order('created_at').all
     render :json => {success: true, schools: schools}
   end
