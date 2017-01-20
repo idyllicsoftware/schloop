@@ -18,7 +18,7 @@ class Admin::SchoolsController < Admin::BaseController
   def show
     redirect_to admin_schools_path and return if @school.blank?
     @js_data = {
-        school_id: params[:id]
+      school_id: params[:id]
     }
     @grades = Grade.where(school_id: params[:id])
     @master_grades = MasterGrade.all.select(:id, :name)
@@ -26,15 +26,15 @@ class Admin::SchoolsController < Admin::BaseController
     @circular_tags = Ecircular.circular_tags
   end
 
-	def create
+  def create
     response = create_school(school_params, school_admin_params)
     render :json => response
-	end
+  end
 
   private
 
   def find_school
-      @school = School.find_by(id: params[:id])
+    @school = School.find_by(id: params[:id])
   end
 
   def create_school(school_datum, school_admin_datum)
@@ -68,26 +68,26 @@ class Admin::SchoolsController < Admin::BaseController
 
   def create_school!(datum)
     create_params = {
-        name: datum[:name],
-        board: datum[:board],
-        principal_name: datum[:authority_name],
-        website: datum[:website],
-        address: datum[:address],
-        zip_code: datum[:zip_code],
-        phone1: datum[:phone1],
-        phone2: datum[:phone2],
-        logo: datum[:logo]
+      name: datum[:name],
+      board: datum[:board],
+      principal_name: datum[:authority_name],
+      website: datum[:website],
+      address: datum[:address],
+      zip_code: datum[:zip_code],
+      phone1: datum[:phone1],
+      phone2: datum[:phone2],
+      logo: datum[:logo]
     }
     return School.create(create_params)
   end
 
   def create_school_admin!(school, datum)
     create_params = {
-        first_name: datum[:first_name],
-        last_name: datum[:last_name],
-        email: datum[:email],
-        cell_number: datum[:cell_number],
-        password: Devise.friendly_token.gsub('-','').first(6)
+      first_name: datum[:first_name],
+      last_name: datum[:last_name],
+      email: datum[:email],
+      cell_number: datum[:cell_number],
+      password: Devise.friendly_token.gsub('-','').first(6)
     }
     return school.school_admins.create(create_params)
   end
