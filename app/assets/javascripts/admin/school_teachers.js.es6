@@ -151,7 +151,15 @@ class SchoolTeachers extends SchloopBase {
             url: `/admin/schools/${school_id}/teachers`,
             success: function (res) {
                 if(res.success) {
-                    html = Mustache.to_html(_self.schoolTeachersTpl, res);
+                    html = Mustache.to_html(_self.schoolTeachersTpl, {
+                        school_teachers: res.school_teachers,
+                        profile_name: function () {
+                                var fname = this.first_name.charAt(0),
+                                    lname = this.last_name.charAt(0),
+                                    name = fname + lname;
+                                return name.toUpperCase();
+                            },
+                    });
                     _self.schoolTeachers = res.school_teachers.toHash('id');
                     schoolTeacherContainerEl.find('li.saved_teacher').remove();
                     schoolTeacherContainerEl.append(html);

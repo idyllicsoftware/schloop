@@ -14,12 +14,7 @@
 #
 
 class Ecircular < ActiveRecord::Base
-	#enum circular_tag: {lesson_plan: 0, exam_time_table: 1, my_result: 2, my_attendance: 3, #class_timetable: 4, sample_papers: 5,
-	#										 transport_details: 6, holiday_circular: 7, medical_visit_report: 8, #news_and_events: 9, important_announcement: 10,
-	#										 event_circular: 11, awards_and_achievements: 12, fee_notice: 13, #follow_up_activity_for_parents: 14,
-	#										 exhibitions: 15, worksheets: 16, extra_curricular_activities_circular: 17, #school_time_change: 18,
-	#										 inter_school_competitions: 19, intra_school_competitions: 20, olympiads: #21 }
-  enum circular_tag: { circular: 0, assignment: 1, lesson_plan: 2, from_notice_board: 3,
+	enum circular_tag: { circular: 0, assignment: 1, lesson_plan: 2, from_notice_board: 3,
 											 teachers_message: 4, year_plan: 5, time_table: 6, attendance: 7, holiday: 8,
 											 health_report: 9 }
  	enum created_by_type: { teacher: 0, school_admin: 1, product_admin: 2 }

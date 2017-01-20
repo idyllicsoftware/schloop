@@ -235,25 +235,25 @@ class Api::V1::ParentsController < Api::V1::BaseController
   def activities
     errors, search_params = [], {}
 
-    @student = Student.where(id: params[:student_id]).active.first
+    @student = Student.where(id: params[:student_id]).active.first 
     errors << "Student not found" if @student.blank?
 
-    school = @student.school
+    school = @student.school rescue nil
     errors << "Student School not found" if school.blank?
 
-    @student_profile = @student.student_profiles.last
+    @student_profile = @student.student_profiles.last rescue nil
     errors << "Student Grade Division information not found" if @student_profile.blank?
 
     page = params[:page]
     page_size = 20
     category_ids = params[:category_ids]
 
-    student_grade = @student_profile.grade
+    student_grade = @student_profile.grade rescue nil
 
     associated_activity_ids = ActivityShare.where(
       school_id: school.id,
       grade_id: student_grade.id,
-      division_id: @student_profile.division_id).pluck(:activity_id).uniq
+      division_id: @student_profile.division_id).pluck(:activity_id).uniq rescue nil
 
     if errors.blank?
       subjects_by_master_id = student_grade.subjects.index_by(&:master_subject_id)

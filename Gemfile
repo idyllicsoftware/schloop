@@ -39,6 +39,7 @@ gem 'mina-sidekiq'
 #ransack for filters
 gem 'ransack'
 
+gem 'rollbar'
 
 group :development do
   # Using mina for deployment

@@ -108,7 +108,7 @@
             <div class="school-profile-logo">
               <div class="school-logo" style="background-image: url('<%= asset_path('school_admin.png') %>');"></div>
             </div>
-            <div class="school-name-code">
+            <div class="school-name-code" data-toggle="tooltip" title="{{name}}">
               <h4>{{ name }}</h4>
               <p>{{ code }}</p>
             </div>
@@ -119,7 +119,7 @@
                 </span>
                 <span>
                   <img src="<%= asset_path('admin/user.svg') %>">
-                  {{ principal_name }}
+                  <p>{{ principal_name }}</p>
                 </span>
             </div>
           </a>

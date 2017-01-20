@@ -4,16 +4,38 @@
   <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
 </head>
 <body>
-<h1>Welcome to Schloop, <%= @user_name %></h1>
-<p>
-  You have successfully signed up to Schloop.<br>
-  your username is: <%= @user_email %><br>
-  your password is: <%= @password %><br>
-</p>
-<p>
-  <% if ["schloopteacher", "schloopparent"].include?(@user_type) %>
-  Download app from google store from  <a href="https://play.google.com/store/apps/details?id=com.idyllic.<%= @user_type%>"> here</a><br>
-  <%end%>
-  Thanks for joining and have a great day!</p>
+<div>
+	<center>
+		<table style="height: 600px; width: 600px; color: #666666; padding: 30px; background-color: #fffef4; border-radius: 4px; box-shadow: 0 0 15px rgba(185,185,185,.4);"   align='center'>
+			<tbody style="text-align: center;">
+				<tr>
+					<td>
+						<table width="100%" cellspacing="0" cellpadding="0">
+							<tr>
+								<td><img src="<%= asset_path('home/schloop.png') %>"></td>
+							</tr>
+							<tr>
+								<td style="font-size: 24px; font-weight: bold; color: #dbca17; padding-top: 20px;">Hello <%= @user_name %>,</td>
+							</tr>
+							<tr><td style="padding-bottom: 20px; font-size: 30px; font-weight: bold; color: #dbca17;">Welcome to Schloop</td></tr>
+							<tr><td>You have successfully signed up to Schloop.</td></tr>
+							<tr><td>Your username will be your email <span><%= @user_email %></span></td></tr>
+							<tr><td>your password is <%= @password %></td></tr>
+							<tr><td style="padding-top: 20px;">Just click on the following link to get started.</td></tr>
+							<tr><td><%= @url %></td></tr>
+							<tr><td style="padding: 20px 0px;">For any queries, feel free to write to us at <a href="mailto:contact@schloop.co">contact@schloop.co</a></td></tr>
+							<tr><td style="padding: 20px 0px;">
+							<% if ["schloopteacher", "schloopparent"].include?(@user_type) %>
+    						Download app from google store from  <a href="https://play.google.com/store/apps/details?id=com.idyllic.<%= @user_type%>"> here</a><br>
+  							<%end%></td></tr>
+							<tr><td style="padding: 20px 0px; font-weight: bold;">Happy Schlooping!</td></tr>
+							<tr><td style="font-weight: bold;">The Schloop Team :)</td></tr>
+						</table>
+					</td>	
+				</tr>	
+			</tbody>	
+		</table>
+	</center>	  
+</div>
 </body>
 </html>

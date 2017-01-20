@@ -59,6 +59,7 @@ class Teacher < ActiveRecord::Base
             :length => {:minimum => 10, :maximum => 15}
 
   belongs_to :school
+  has_many :comments
   has_many :grade_teachers, dependent: :destroy
   has_many :activity_shares
   has_many :topics, dependent: :destroy
@@ -153,6 +154,7 @@ class Teacher < ActiveRecord::Base
     self.reset_password_token = token
     self.reset_password_sent_at = Time.zone.now
     save!
-    UserMailer.teacher_password_reset(self).deliver
+    UserMailer.password_reset(self).deliver
+
   end
 end

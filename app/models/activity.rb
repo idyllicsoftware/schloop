@@ -29,7 +29,7 @@ class Activity < ActiveRecord::Base
 
   scope :active, -> { where(status: Activity.statuses['active']) }
 
-  def self.grade_activities(search_params, mapping_data, page, category_ids)
+  def self.grade_activities(search_params, mapping_data, page, category_ids, user=nil)
     if page.present?
       page = page.to_s.to_i
       page_size = 20
@@ -37,7 +37,7 @@ class Activity < ActiveRecord::Base
     end
     activities_data = []
     activities = Activity.active.where(search_params)
-    activities = activities.includes(:attachments, :categories)
+    activities = activities.includes(:attachments, :categories) if activities.present?
     if category_ids.present?
       activities= activities.joins("LEFT JOIN activity_categories ON activity_categories.activity_id = activities.id
                            LEFT JOIN categories ON activity_categories.category_id = categories.id")
@@ -49,17 +49,16 @@ class Activity < ActiveRecord::Base
     activities = activities.offset(offset).limit(page_size) if page.present?
     # activities_data << activity.data_for_activity(mapping_data)
     activities.each do |activity|
-      activities_data << activity.data_for_activity(mapping_data)
+      activities_data << activity.data_for_activity(mapping_data, user)
     end
     return activities_data, total_records
   end
 
-  def data_for_activity(mapping_data)
+  def data_for_activity(mapping_data, user=nil)
     activity_categories = self.categories
     master_subject = self.master_subject
-
     subject = mapping_data[:subjects_by_master_id][master_subject.id] rescue nil
-    grade = mapping_data[:master_grade_id_grade_id][self.master_grade.id]
+    grade = mapping_data[:master_grade_id_grade_id][self.master_grade.id] rescue nil
 
     thumbnail_data = {}
     self.get_thumbnail_file.select(:original_filename, :name).each do |file|
@@ -89,7 +88,8 @@ class Activity < ActiveRecord::Base
           pre_requisite: pre_requisite,
           thumbnail: thumbnail_data,
           references: reference_files,
-          categories: activity_categories.select(:id, :name)
+          categories: activity_categories.select(:id, :name),
+          is_followedup: (self.activity_shares.where(teacher: user).present? rescue false)
       }
     }
   end

@@ -1,7 +1,7 @@
 <script type="text/html" id="school_teachers_tpl">
   {{#school_teachers}}
   <li data-school_teacher_id="{{ id }}" class="curP saved_teacher" data-toggle="popover" data-value="add-teachers-popover-content">
-      <img src="{{ image_url }}">
+      <div class="teacher-profile-img">{{profile_name}}</div>
       <span class="img-caption">
           <p>{{ first_name }} {{ last_name }}</p>
           {{ cell_number }} <br>

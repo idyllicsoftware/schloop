@@ -155,7 +155,15 @@ class SchoolGrades extends SchloopBase {
             url: `/admin/schools/${school_id}/grades`,
             success: function (res) {
                 if(res.success) {
-                    html = Mustache.to_html(_self.schoolGradesTpl, res);
+                    html = Mustache.to_html(_self.schoolGradesTpl, {
+                        grades: res.grades,
+                        teacher_profile: function() {
+                            var fname = this.first_name.charAt(0),
+                                lname = this.last_name.charAt(0),
+                                name = (fname + lname).toUpperCase();
+                            return {teacher_profile_name: name};
+                        },
+                    });
                     _self.schoolGrades = _self.processGrades(res.grades); 
                     _self.schoolGradesHash = _self.schoolGrades.toHash('grade_id'); 
 

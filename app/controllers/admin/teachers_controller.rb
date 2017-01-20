@@ -59,9 +59,6 @@ class Admin::TeachersController < ApplicationController
     render json: {success: true}
   end
 
-  def forget_password
-  end
-
   def update_password
     @teacher = current_teacher
     errors = []
@@ -117,18 +114,7 @@ class Admin::TeachersController < ApplicationController
   def update_school_teacher_params
     params.require(:teacher).permit(:first_name, :last_name, :cell_number)
   end
-
-=begin
-  def grade_teacher_params
-    response = {
-              school_id: params[:school_id],
-              grade_id: params[:grade_id],
-              subjects: params[:subjects],
-              divisions: params[:divisions]
-    }
-    return response
-  end
-=end
+  
   def get_grade_teacher_data(teacher_id)
     grade_teacher_data = []
     teacher = Teacher.find(teacher_id)
