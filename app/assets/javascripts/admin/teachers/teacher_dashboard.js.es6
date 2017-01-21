@@ -25,6 +25,8 @@ class TeacherDashboard extends SchloopBase {
         $('.profile-photo').html(profile_name.toUpperCase());
 
         $('#schloopmarking-Tab a[data-tab-name="my_topics"]').on('shown.bs.tab', function (e) {
+            var loader_El = $(this).closest('div').find('#my-topics');
+            _self.addAjaxLoader(loader_El);
             _self.loadTopicBookmarks();   
         });
             _self.InitDocument();
@@ -221,12 +223,14 @@ class TeacherDashboard extends SchloopBase {
         let _self = this,
             filters_data = _self.topic_hash,
             bookmarksEl = $('.bookmarks-section'),
-            bookmarkEditModal = $('#bookmark-edit-modal');
+            bookmarkEditModal = $('#bookmark-edit-modal'),
+            loader_El = $('#my-topics');
         $.ajax({
             url: `/admin/teachers/bookmarks/get_bookmarks`,
             data: filters_data,
             method: 'GET',
             success: function (res) {
+                _self.removeAjaxLoader(loader_El);
                 if(res.success) {
                     var html = Mustache.to_html(_self.topicBookmarksTpl, {
                             bookmarks: res.bookmark_data,
@@ -466,14 +470,16 @@ class TeacherDashboard extends SchloopBase {
         let _self = this,
             add_topic_content_form = $('.add-topic-content-form'),
             content_editor = $('.content-editor');
-        
+
             add_topic_content_form.off('click').on('click', '.add-topic-content-btn', function (e) {
-                var content_val = content_editor.html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), ' '),
+                var content_val = _self.contentFormating(content_editor.html()),
                     bookmarks_hash = {},
+                    thisEl = $(this),
                     key_value = {
                         'data' : content_val
                     };
                     e.preventDefault();
+                    _self.addAjaxLoader(thisEl);
                 bookmarks_hash = $.extend({}, _self.topic_hash, key_value);
                 
                 $.ajax({
@@ -481,6 +487,7 @@ class TeacherDashboard extends SchloopBase {
                     data: bookmarks_hash,
                     method: "POST",
                     success: function (res) {
+                       _self.removeAjaxLoader(thisEl);
                        if(res.success) {
                         content_editor.html('');
                          _self.loadTopicBookmarks();

@@ -17,7 +17,9 @@ class Collaborations extends SchloopBase {
     	let _self = this;
 
     	$('#schloopmarking-Tab a[data-tab-name="collaboration"]').on('shown.bs.tab', function (e) {
-    		_self.loadCollaboratedSchloopmark();	
+    		var loader_El = $(this).closest('div').find('#collaboration');
+            _self.addAjaxLoader(loader_El);
+            _self.loadCollaboratedSchloopmark();	
     	});
 
         $(document).on('click', '.read_more', function (e) {
@@ -51,12 +53,14 @@ class Collaborations extends SchloopBase {
 
     loadCollaboratedSchloopmark () {
     	let _self = this,
-    		collaborationsContainer = $('.collaborated-schloopmark');
+    		collaborationsContainer = $('.collaborated-schloopmark'),
+            loader_El = $('#collaboration');
 
     	$.ajax({
             url: `/admin/teachers/collaborations`,
             method: 'GET',
             success: function (res) {
+                _self.removeAjaxLoader(loader_El);
                 if(res.success) {
                 	var html = Mustache.to_html(_self.collaborationsBookmarksTpl, {
                         data: res.data,
@@ -291,7 +295,7 @@ class Collaborations extends SchloopBase {
 		    }
 		    var keyCode = e.which || e.keyCode;
 		    if (keyCode === 13 && !e.shiftKey && !_self.locked) {
-                var comment_data = $(this).html().replace(new RegExp('<div><br></div>', 'g'), '').replace(new RegExp(' &nbsp;', 'g'), '').replace(new RegExp('&nbsp;', 'g'), '');
+                var comment_data = _self.contentFormating($(this).html());
                 $(this).html("");
                 if(comment_data){
                      _self.locked = true;

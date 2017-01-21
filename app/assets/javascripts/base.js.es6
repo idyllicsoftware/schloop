@@ -271,4 +271,13 @@ class SchloopBase {
            }
         });
     };
+
+    contentFormating(text) {
+        let self = this,
+            formated_text = text.replace(new RegExp('<div><br></div>', 'g'), '')
+                                .replace(new RegExp(' &nbsp;', 'g'), '')
+                                .replace(new RegExp('&nbsp;', 'g'), ' ')
+                                .replace(new RegExp('<br>', 'g'), '');
+        return formated_text;
+    };
 }
