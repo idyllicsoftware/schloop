@@ -66,9 +66,9 @@ class Followup < ActiveRecord::Base
     return followedup_bookmarks
   end
 
-  def self.index(parent, offset = nil, page_size = 20)
+  def self.index(user, offset = nil, page_size = 20)
     followed_bookmarks = []
-    bookmark_ids = Bookmark.associated_bookmark_ids(parent)
+    bookmark_ids = Bookmark.associated_bookmark_ids(user)
     followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     valid_bookmarks = Bookmark.where(id: followed_bookmark_ids).includes(:followup).order(id: :desc)
     no_of_records = valid_bookmarks.count
@@ -78,9 +78,14 @@ class Followup < ActiveRecord::Base
                                           sc_trackable_id: followed_bookmark_ids,
                                           event: SocialTracker.events[:like])
 
-    liked_bookmark_ids = liked_bookmarks.where(user_type: parent.class.name, user_id: parent.id).pluck(:sc_trackable_id)
+    liked_bookmark_ids = liked_bookmarks.where(user_type: user.class.name, user_id: user.id).pluck(:sc_trackable_id)
 
-    parents_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
+    if user.is_a?(Teacher)
+      users_index_by_id = Teacher.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
+    else
+      users_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
+    end
+
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
     valid_bookmarks.each do |bookmark|
       likes = []
@@ -91,11 +96,11 @@ class Followup < ActiveRecord::Base
       liked_users = liked_bookmarks_group_by_id[bookmark.id] || []
 
       liked_users.each do |liked_user|
-        parent = parents_index_by_id[liked_user.user_id]
+        like_user = users_index_by_id[liked_user.user_id]
         likes << {
-          id: parent.id,
-          first_name: parent.first_name,
-          last_name: parent.last_name
+          id: like_user.id,
+          first_name: like_user.first_name,
+          last_name: like_user.last_name
         }
       end
       bookmark_formatted_data.merge!(likes: likes)
