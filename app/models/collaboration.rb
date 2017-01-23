@@ -22,6 +22,8 @@ class Collaboration < ActiveRecord::Base
   has_many :comments, as: :commentable, :dependent => :delete_all
   validates_uniqueness_of :bookmark_id
 
+  after_create :send_notification
+
   def self.index(teacher, offset = nil, page_size = 20)
     collaborated_bookmarks = []
     bookmark_ids = Bookmark.associated_bookmark_ids(teacher)
@@ -101,4 +103,15 @@ class Collaboration < ActiveRecord::Base
     }
     return data
   end
+
+  def send_notification
+    bookmark = self.bookmark
+    grade_id = bookmark.grade_id
+    subject_id = bookmark.subject_id
+    associated_teachers = GradeTeacher.where(grade_id:grade_id, subject_id: subject_id).pluck(:teacher_id)
+    associated_teachers.each do |teacher|
+      TeacherNotificationWorker.perform_async(bookmark_id, self.id, teacher)
+    end
+  end
+
 end
