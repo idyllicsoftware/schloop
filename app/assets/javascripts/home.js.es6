@@ -45,18 +45,20 @@ class Main extends SchloopBase {
                 login_form.find('input[type=password]').attr('name','teacher[password]');
                 forgot_password_form.find('input[name=user_type]').val('Teacher');
                 e.preventDefault();  
-                self.initTeacherLoginForm(login_form, forgot_password_form);              
+                self.initTeacherLoginForm(login_form);
+                self.initTeacherForgotForm(forgot_password_form);              
             }else {
                 login_form.find('input[type=email]').attr('name','user[email]');
                 login_form.find('input[type=password]').attr('name','user[password]');
                 login_form.attr('action','/users/sign_in');
                 forgot_password_form.find('input[name=user_type]').val('SchoolAdmin');
-                self.initUserLoginForm(login_form, forgot_password_form);
+                self.initUserLoginForm(login_form);
+                self.initUserForgotForm(forgot_password_form);
             }
         }); 
     };
 
-    initUserLoginForm (login_form, forgot_password_form) {
+    initUserLoginForm (login_form) {
         let self = this,
             signInModal = $('#signInModal');
 
@@ -71,22 +73,28 @@ class Main extends SchloopBase {
                     signInModal.modal('hide');
                }
             });
-
-            this.initFormSubmit(forgot_password_form, {
-               'user[email]': 'email'
-            }, function (res) {
-               if(res.success){
-                signInModal.modal('hide');
-                toastr.success('please check your email inbox!', '', {
-                    positionClass: 'toast-top-right cloud-display'
-                });
-            }else{
-                forgot_password_form.find('.show_error').text('User is not available. Enter correct email address.');
-                }
-            });
     };
 
-    initTeacherLoginForm (login_form, forgot_password_form) {
+    initUserForgotForm (forgot_password_form) {
+        let self = this,
+            signInModal = $('#signInModal');
+
+        this.initFormSubmit(forgot_password_form, {
+           'user[email]': 'email'
+        }, function (res) {
+           if(res.success){
+            signInModal.modal('hide');
+            toastr.success('please check your email inbox!', '', {
+                positionClass: 'toast-top-right cloud-display'
+            });
+        }else{
+            forgot_password_form.find('.show_error').text('User is not available. Enter correct email address.');
+            }
+        });
+
+    };
+
+    initTeacherLoginForm (login_form) {
         let self = this,
             signInModal = $('#signInModal');
 
@@ -104,18 +112,23 @@ class Main extends SchloopBase {
                     });
                }
             });
+    }
 
-            self.initFormSubmit(forgot_password_form, {
-               'teacher[email]': 'email'
-            }, function (res) {
-               if(res.success){
-                signInModal.modal('hide');
-                toastr.success('please check your email inbox!', '', {
-                    positionClass: 'toast-top-right cloud-display'
-                });
-            }else{
-                forgot_password_form.find('.show_error').text('User is not available. Enter correct email address.');
-                }
+    initTeacherForgotForm (forgot_password_form) {
+        let self = this,
+            signInModal = $('#signInModal');
+
+        self.initFormSubmit(forgot_password_form, {
+           'teacher[email]': 'email'
+        }, function (res) {
+           if(res.success){
+            signInModal.modal('hide');
+            toastr.success('please check your email inbox!', '', {
+                positionClass: 'toast-top-right cloud-display'
             });
+        }else{
+            forgot_password_form.find('.show_error').text('User is not available. Enter correct email address.');
+            }
+        });
     }
 }

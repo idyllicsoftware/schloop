@@ -50,8 +50,12 @@ class SchloopBase {
         let self = this,
             params,
             btnEl = otherBtnEl || jFrom.find('button[type="submit"]');
-
-        self.addAjaxLoader(btnEl);
+        
+        if(btnEl.prop('disabled')){
+            return false;
+        } else {
+            self.addAjaxLoader(btnEl);
+        }
 
         params = {
             url: url,
@@ -211,7 +215,7 @@ class SchloopBase {
             e.preventDefault();
             e.stopPropagation();
             let jForm = $(this), formData;
-    
+
             if(jForm.valid()) {
                 if(extraParams) {
                     formData = new FormData(jForm[0]);
