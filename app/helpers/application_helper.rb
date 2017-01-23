@@ -18,7 +18,7 @@ module ApplicationHelper
 		  school_id = user.school.id rescue ''
 		  "/admin/schools/#{school_id}"
 		else
-		  root_path
+    	"/admin/teachers/dashboards"
 		end
 	end
 end
