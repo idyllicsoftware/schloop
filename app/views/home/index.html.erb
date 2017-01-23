@@ -165,7 +165,7 @@
 
           <div id="forgotPasswordDiv" class="hidden mt30" >
             <%= form_tag 'password_resets/create' , id:"forgot-password-form", novalidate:true do %>
-                <input type="hidden" name="is_user" value="true">
+                <input type="hidden" name="user_type" value="SchoolAdmin">
                 <div class="form-group">
                   <input type="email" class="form-control input-field" required name="email" autocomplete="off" placeholder="Email Address"  maxlength="40" />
                 </div>

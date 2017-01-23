@@ -43,14 +43,14 @@ class Main extends SchloopBase {
                 login_form.attr('action','/teachers/sign_in');
                 login_form.find('input[type=email]').attr('name','teacher[email]');
                 login_form.find('input[type=password]').attr('name','teacher[password]');
-                forgot_password_form.find('input[name=is_user]').val('false');
+                forgot_password_form.find('input[name=user_type]').val('Teacher');
                 e.preventDefault();  
                 self.initTeacherLoginForm(login_form, forgot_password_form);              
             }else {
                 login_form.find('input[type=email]').attr('name','user[email]');
                 login_form.find('input[type=password]').attr('name','user[password]');
                 login_form.attr('action','/users/sign_in');
-                forgot_password_form.find('input[name=is_user]').val('true');
+                forgot_password_form.find('input[name=user_type]').val('SchoolAdmin');
                 self.initUserLoginForm(login_form, forgot_password_form);
             }
         }); 
