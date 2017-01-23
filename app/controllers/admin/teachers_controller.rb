@@ -56,8 +56,17 @@ class Admin::TeachersController < Admin::BaseController
 
   def destroy
     render json: {success: false, errors: ['Teacher not found']} and return if @teacher.blank?
-    @teacher.destroy!
-    render json: {success: true}
+    errors = []
+    ActiveRecord::Base.transaction do
+      begin
+        social_trackers  = SocialTracker.where(user_type: 'Teacher', user_id: @teacher.id).destroy_all  
+        @teacher.destroy!
+      rescue Exception => ex
+        errors << 'Error occured while deleting teacher.'
+        raise ActiveRecord::Rollback
+      end
+    end
+    render json: { success: errors.blank?, errors: errors }
   end
 
   def update_password
