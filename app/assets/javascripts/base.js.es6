@@ -50,8 +50,12 @@ class SchloopBase {
         let self = this,
             params,
             btnEl = otherBtnEl || jFrom.find('button[type="submit"]');
-
-        self.addAjaxLoader(btnEl);
+        
+        if(btnEl.prop('disabled')){
+            return false;
+        } else {
+            self.addAjaxLoader(btnEl);
+        }
 
         params = {
             url: url,
@@ -211,7 +215,7 @@ class SchloopBase {
             e.preventDefault();
             e.stopPropagation();
             let jForm = $(this), formData;
-    
+
             if(jForm.valid()) {
                 if(extraParams) {
                     formData = new FormData(jForm[0]);
@@ -270,5 +274,14 @@ class SchloopBase {
                 change_pwd_form.find('.show_err').text(res.errors);
            }
         });
+    };
+
+    contentFormating(text) {
+        let self = this,
+            formated_text = text.replace(new RegExp('<div><br></div>', 'g'), '')
+                                .replace(new RegExp(' &nbsp;', 'g'), '')
+                                .replace(new RegExp('&nbsp;', 'g'), ' ')
+                                .replace(new RegExp('<br>', 'g'), '');
+        return formated_text;
     };
 }

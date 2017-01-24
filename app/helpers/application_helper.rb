@@ -12,13 +12,13 @@ module ApplicationHelper
 	end
 
 	def after_sign_in_path_for(user)
-		if user.type == "ProductAdmin"
+		if user.class.name == "ProductAdmin"
 		  '/admin/schools'
-		elsif user.type == "SchoolAdmin"
+		elsif user.class.name == "SchoolAdmin"
 		  school_id = user.school.id rescue ''
 		  "/admin/schools/#{school_id}"
 		else
-		  root_path
+    	"/admin/teachers/dashboards"
 		end
 	end
 end

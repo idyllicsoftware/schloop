@@ -16,7 +16,9 @@ class Followups extends SchloopBase {
     	let _self = this;
 
     	$('#schloopmarking-Tab a[data-tab-name="followups"]').on('shown.bs.tab', function (e) {
-    		_self.loadFollowupsSchloopmark();	
+    		var loader_El = $(this).closest('div').find('#followups');
+            _self.addAjaxLoader(loader_El);
+            _self.loadFollowupsSchloopmark();	
     	});
 
         $(document).on('click', '.read-more', function (e) {
@@ -38,12 +40,14 @@ class Followups extends SchloopBase {
 
     loadFollowupsSchloopmark () {
     	let _self = this,
-            followups_schloopmark = $('.followups-schloopmark');
+            followups_schloopmark = $('.followups-schloopmark'),
+            loader_El = $('#followups');
         //TO DO...
         $.ajax({
             url: `/admin/teachers/followups`,
             method: 'GET',
             success: function (res) {
+                _self.removeAjaxLoader(loader_El);
                 if(res.success) {
                     var html = Mustache.to_html(_self.followupsBookmarksTpl, {
                         data: res.data,

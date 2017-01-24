@@ -15,7 +15,7 @@ class StudentProfile < ActiveRecord::Base
 	belongs_to :student
 	belongs_to :division
 	belongs_to :grade
-	validates :division_id, :presence => { :message => " is invalid" }
+	validates :division_id, presence: :true
 
 	enum status: { active: 0, inactive: 1 }
 

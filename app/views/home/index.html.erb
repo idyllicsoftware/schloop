@@ -30,11 +30,10 @@
         %>
 
         <div class="sign-in-lnk-section">
-        <% if current_user.blank? %>
-          	<button class="btn btn-primary sign-in-link" data-toggle="modal" data-target="#signInModal" >
-        		Sign In</button>
+        	<% if current_user.blank? %>
+          		<button class="btn btn-primary sign-in-link" data-toggle="modal" data-target="#signInModal" >SIGN IN</button>
         	<% else %>
-       			<a href="<%= after_sign_in_path_for(current_user) %>" class="btn btn-primary">View Profile</a>
+       			<a href="<%= after_sign_in_path_for(current_user) %>" class="btn btn-primary">VIEW PROFILE</a>
        		<% end %>
         </div>
 
@@ -56,7 +55,11 @@
 					<p><span></span> Lorem Ipsum is dummy text</p> -->
 				</div>
 				<div class="teacher-sign-in">
-					<button class="btn btn-primary sign-in-link" data-toggle="modal" data-target="#signInModal" data-teacher_login="true">Sign In</button>
+					<% if current_teacher.blank? %>
+		          		<button class="btn btn-primary sign-in-link" data-toggle="modal" data-target="#signInModal" data-teacher_login="true">SIGN IN</button>
+		        	<% else %>
+		       			<a href="<%= after_sign_in_path_for(current_teacher) %>" class="btn btn-primary">VIEW PROFILE</a>
+		       		<% end %>
 				</div>
 				<div class="store-btn-section">
 					<a href="#"><img src="<%= asset_path('home/app_store.png') %>"></a>
@@ -165,7 +168,7 @@
 
           <div id="forgotPasswordDiv" class="hidden mt30" >
             <%= form_tag 'password_resets/create' , id:"forgot-password-form", novalidate:true do %>
-                <input type="hidden" name="is_user" value="true">
+                <input type="hidden" name="user_type" value="SchoolAdmin">
                 <div class="form-group">
                   <input type="email" class="form-control input-field" required name="email" autocomplete="off" placeholder="Email Address"  maxlength="40" />
                 </div>

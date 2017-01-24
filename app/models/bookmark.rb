@@ -46,7 +46,7 @@ class Bookmark < ActiveRecord::Base
   validates :topic_id, presence: true
   validates :teacher_id, presence: true
   validates :topic_id, presence: true
-  #validates :title, presence: true
+  validates :data, :length => {:maximum => 10000}
   ##validates :school_id: presence: true
 
   validates :likes, :numericality => { only_integer: true ,greater_than_or_equal_to: 0 },:presence => true
