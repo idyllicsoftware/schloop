@@ -1,4 +1,4 @@
-class Admin::Teachers::CommentsController < ApplicationController
+class Admin::Teachers::CommentsController < Admin::Teachers::BaseController
   
   def create
     errors = []

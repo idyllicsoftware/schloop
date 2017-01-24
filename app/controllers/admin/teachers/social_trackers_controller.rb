@@ -1,2 +1,2 @@
-class Admin::Teachers::SocialTrackersController < ApplicationController
+class Admin::Teachers::SocialTrackersController < Admin::Teachers::BaseController
 end

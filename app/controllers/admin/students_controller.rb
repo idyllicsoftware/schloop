@@ -1,5 +1,4 @@
-class Admin::StudentsController < ApplicationController
-	before_action :authenticate_user!
+class Admin::StudentsController < Admin::BaseController
 
 	def update
 		errors = []
@@ -78,4 +77,5 @@ class Admin::StudentsController < ApplicationController
 		end
 		render json: {success: errors.blank?, errors: errors}
 	end
+	
 end

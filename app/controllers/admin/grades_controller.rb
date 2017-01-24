@@ -1,5 +1,4 @@
-class Admin::GradesController < ApplicationController
-  before_action :authenticate_user!
+class Admin::GradesController < Admin::BaseController
   before_action :find_school, only: [:index, :create, :grades_divisions]
   before_action :find_grades, only: [:index, :create]
   before_action :load_grade, only: [:destroy]

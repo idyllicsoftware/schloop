@@ -22,4 +22,12 @@
 class Subject < ActiveRecord::Base
   belongs_to :grade
   belongs_to :master_subject
+
+  has_many :bookmarks, dependent: :destroy
+
+  def destroy_data
+    # 1. destroy grade_teacher data
+    # 2. destroy bookmarks
+
+  end
 end
