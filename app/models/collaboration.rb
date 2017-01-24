@@ -118,9 +118,9 @@ class Collaboration < ActiveRecord::Base
       id: bookmark.id,
       collaboration_id: self.id
     }
-    associated_teachers = GradeTeacher.where(grade_id:grade_id, subject_id: subject_id).pluck(:teacher_id)
-
-    associated_teachers.each do |teacher|
+    associated_teacher_ids = GradeTeacher.where(grade_id:grade_id, subject_id: subject_id).pluck(:teacher_id)
+    teachers = Teacher.where(id: associated_teacher_ids)
+    teachers.each do |teacher|
       android_registration_ids = teacher.devices.active.android.pluck(:token)
       if android_registration_ids.present?
         android_options = {
@@ -131,7 +131,7 @@ class Collaboration < ActiveRecord::Base
         NotificationWorker.perform_async(android_registration_ids, android_options)
       end
 
-      ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
+      ios_registration_ids = teacher.devices.active.ios.pluck(:token)
       if ios_registration_ids.present?
         ios_options = {
           notification: header_hash,
