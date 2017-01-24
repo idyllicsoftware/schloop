@@ -108,10 +108,39 @@ class Collaboration < ActiveRecord::Base
     bookmark = self.bookmark
     grade_id = bookmark.grade_id
     subject_id = bookmark.subject_id
+    header_hash = {
+      title: "New Collaboration Added",
+      body:  bookmark.title,
+      sound: 'default',
+    }
+    body_hash = {
+      type: 'collaboration',
+      id: bookmark.id,
+      collaboration_id: self.id
+    }
     associated_teachers = GradeTeacher.where(grade_id:grade_id, subject_id: subject_id).pluck(:teacher_id)
+
     associated_teachers.each do |teacher|
-      TeacherNotificationWorker.perform_async(bookmark_id, self.id, teacher)
+      android_registration_ids = teacher.devices.active.android.pluck(:token)
+      if android_registration_ids.present?
+        android_options = {
+          priority: "high",
+          content_available: true,
+          data: header_hash.merge!(body_hash)
+        }
+        NotificationWorker.perform_async(android_registration_ids, android_options)
+      end
+
+      ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
+      if ios_registration_ids.present?
+        ios_options = {
+          notification: header_hash,
+          priority: "high",
+          content_available: true,
+          data: body_hash
+        }
+        NotificationWorker.perform_async(ios_registration_ids, ios_options)
+      end
     end
   end
-
 end
