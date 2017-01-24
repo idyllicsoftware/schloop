@@ -34,6 +34,8 @@ class Grade < ActiveRecord::Base
     errors = []
     begin
       ActiveRecord::Base.transaction do
+        is_valid_grade_data = Grade.where(school_id: school.id).where("name = ? OR master_grade_id = ?",grades_data[:grade_name], grades_data[:master_grade_id])
+        raise "Grade already exist or name already used for other grade" if is_valid_grade_data.present?
         grade = school.grades.create(name: grades_data[:grade_name], master_grade_id: grades_data[:master_grade_id])
         master_subjects_by_id = MasterSubject.where(id: grades_data[:master_subject_ids]).index_by(&:id)
         grades_data[:master_subject_ids].each do |master_subject_id|
@@ -42,7 +44,7 @@ class Grade < ActiveRecord::Base
         end
       end
     rescue => ex
-      errors << 'Something went wrong. Please contact to support team.'
+      errors << ex.message
       Rails.logger.debug("Exception in creating grade: Message: #{ex.message}/n/n/n/n Backtrace: #{ex.backtrace}")
     end
     { success: errors.blank?, errors: errors, grade_name: grades_data[:grade_name] }
