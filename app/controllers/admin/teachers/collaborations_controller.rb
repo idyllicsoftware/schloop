@@ -50,7 +50,6 @@ class Admin::Teachers::CollaborationsController < ApplicationController
   end
 
   private
-
   def add_to_my_topics_params
     params.permit(:bookmark_id)
   end

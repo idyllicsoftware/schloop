@@ -16,7 +16,7 @@ class Admin::Teachers::CommentsController < ApplicationController
     rescue Exception => e
       errors <<  "errors while creating new comment"+ e.message
     end
-  render json: {success:errors.blank?, errors: errors}
+    render json: {success:errors.blank?, errors: errors}
   end
 
   private

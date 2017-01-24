@@ -8,7 +8,7 @@ class Admin::ParentImportsController < ApplicationController
     @grade = @school.grades.find(params[:grade_id])
     redirect_to admin_school_path(@school.id) and return if @grade.blank?
     @js_data = {
-        school_id: params[:school_id]
+      school_id: params[:school_id]
     }
   end
 
@@ -21,7 +21,7 @@ class Admin::ParentImportsController < ApplicationController
       render json: {success: true}
     else
       if !@parent_import.errors.full_messages.blank?
-         errors =  @parent_import.errors.full_messages
+        errors =  @parent_import.errors.full_messages
       else
         errors = [@parent_import.imported_parents[1]]
       end

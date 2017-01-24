@@ -5,7 +5,6 @@ class Admin::Teachers::SessionsController < Devise::SessionsController
   end
   
   def create
-
   	if teacher_signed_in?
   		render json: { redirect_url: after_sign_in_path_for(current_teacher) }
     else
