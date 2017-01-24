@@ -21,7 +21,9 @@ class Followup < ActiveRecord::Base
   belongs_to :bookmark
   has_many :comments, as: :commentable, :dependent => :delete_all
   validates_uniqueness_of :bookmark_id
-  
+
+  after_create :send_notification
+
   def self.index_for_web(parent)
     followedup_bookmarks = []
     bookmark_ids = Bookmark.associated_bookmark_ids(parent)
@@ -127,6 +129,47 @@ class Followup < ActiveRecord::Base
       comments_data << comment_data
     end
     return comments_data
+  end
+
+  def send_notification
+    bookmark = self.bookmark
+    grade_id = bookmark.grade_id
+
+    header_hash = {
+      title: "New Followup Added",
+      body:  bookmark.title,
+      sound: 'default',
+    }
+    body_hash = {
+      type: 'followup',
+      id: bookmark.id,
+      followup_id: self.id
+    }
+    associated_student_ids = StudentProfile.where(grade_id: grade_id).pluck(:student_id)
+    students = Student.active.where(id: associated_student_ids)
+
+    students.each do |student|
+      android_registration_ids = student.parent.devices.active.android.pluck(:token)
+      if android_registration_ids.present?
+        android_options = {
+          priority: "high",
+          content_available: true,
+          data: header_hash.merge!(body_hash)
+        }
+        NotificationWorker.perform_async(android_registration_ids, android_options)
+      end
+
+      ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
+      if ios_registration_ids.present?
+        ios_options = {
+          notification: header_hash,
+          priority: "high",
+          content_available: true,
+          data: body_hash
+        }
+        NotificationWorker.perform_async(ios_registration_ids, ios_options)
+      end
+    end
   end
 
 end
