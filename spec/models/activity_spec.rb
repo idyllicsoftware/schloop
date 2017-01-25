@@ -18,5 +18,10 @@
 require 'rails_helper'
 
 RSpec.describe Activity, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  it "is not valid without a topic" do
+    activity = Activity.new(topic: nil)
+    expect(activity).to_not be_valid
+  end
+
 end

@@ -99,7 +99,8 @@ class Collaboration < ActiveRecord::Base
       subject_id: bookmark.subject_id,
       topic_id: topic.id,
       school_id: teacher.school_id,
-      teacher_id: teacher.id
+      teacher_id: teacher.id,
+      reference_bookmark: bookmark.id
     }
     return data
   end

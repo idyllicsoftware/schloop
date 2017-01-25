@@ -124,12 +124,12 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
   end
 
   def add_to_my_bookmarks
-    errors = []
+    errors, new_bookmark = [], nil
     bookmark = Bookmark.find_by(id: params[:bookmark_id])
-    errors << "Invalid bookmark to process."
+    errors << "Invalid bookmark to process." if bookmark.blank?
 
-    teacher = @current_teacher
-    if Bookmark.find_by(id: bookmark.id, teacher_id: teacher.id).present?
+    teacher = @current_user
+    if Bookmark.find_by(reference_bookmark: bookmark.reference_bookmark, teacher_id: teacher.id).present?
       errors << "bookmark already added to your list"
     end
     if errors.blank?

@@ -2,22 +2,23 @@
 #
 # Table name: bookmarks
 #
-#  id                :integer          not null, primary key
-#  title             :string
-#  data              :text
-#  caption           :text
-#  url               :string
-#  preview_image_url :string
-#  likes             :integer          default(0), not null
-#  views             :integer          default(0), not null
-#  topic_id          :integer
-#  data_type         :integer          default(0), not null
-#  school_id         :integer
-#  grade_id          :integer
-#  subject_id        :integer
-#  teacher_id        :integer
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id                 :integer          not null, primary key
+#  title              :string
+#  data               :text
+#  caption            :text
+#  url                :string
+#  preview_image_url  :string
+#  likes              :integer          default(0), not null
+#  views              :integer          default(0), not null
+#  topic_id           :integer
+#  data_type          :integer          default(0), not null
+#  school_id          :integer
+#  grade_id           :integer
+#  subject_id         :integer
+#  teacher_id         :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  reference_bookmark :integer          default(0)
 #
 # Indexes
 #
