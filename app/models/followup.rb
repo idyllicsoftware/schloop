@@ -82,11 +82,7 @@ class Followup < ActiveRecord::Base
 
     liked_bookmark_ids = liked_bookmarks.where(user_type: user.class.name, user_id: user.id).pluck(:sc_trackable_id)
 
-    if user.is_a?(Teacher)
-      users_index_by_id = Teacher.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
-    else
-      users_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
-    end
+    users_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
 
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
     valid_bookmarks.each do |bookmark|
