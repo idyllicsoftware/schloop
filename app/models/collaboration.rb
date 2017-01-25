@@ -22,12 +22,15 @@ class Collaboration < ActiveRecord::Base
   has_many :comments, as: :commentable, :dependent => :delete_all
   validates_uniqueness_of :bookmark_id
 
+  after_create :send_notification
+
   def self.index(teacher, offset = nil, page_size = 20)
     collaborated_bookmarks = []
     bookmark_ids = Bookmark.associated_bookmark_ids(teacher)
     collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     valid_bookmarks = Bookmark.where(id: collaborated_bookmark_ids).includes(:collaboration).order(id: :desc)
+    schloop_marked_bookmark_ids = Bookmark.where(id: collaborated_bookmark_ids, teacher_id: teacher.id).pluck(:reference_bookmark)
 
     no_of_records = valid_bookmarks.count
     valid_bookmarks = valid_bookmarks.offset(offset).limit(page_size) if offset.present?
@@ -62,6 +65,7 @@ class Collaboration < ActiveRecord::Base
       bookmark_formatted_data.merge!(is_liked: is_liked)
       bookmark_formatted_data.merge!(is_collaborated: collaborated_bookmark_ids.include?(bookmark.id))
       bookmark_formatted_data.merge!(is_followedup: followed_bookmark_ids.include?(bookmark.id))
+      bookmark_formatted_data.merge!(is_schloopmarked: schloop_marked_bookmark_ids.include?(bookmark.id))
 
       collaborated_bookmarks << bookmark_formatted_data
     end
@@ -97,8 +101,50 @@ class Collaboration < ActiveRecord::Base
       subject_id: bookmark.subject_id,
       topic_id: topic.id,
       school_id: teacher.school_id,
-      teacher_id: teacher.id
+      teacher_id: teacher.id,
+      reference_bookmark: bookmark.id
     }
     return data
   end
+
+  def send_notification
+    bookmark = self.bookmark
+    grade_id = bookmark.grade_id
+    subject_id = bookmark.subject_id
+    header_hash = {
+      title: "New Collaboration Added",
+      body:  bookmark.title,
+      sound: 'default',
+    }
+    body_hash = {
+      type: 'collaboration',
+      id: bookmark.id,
+      collaboration_id: self.id
+    }
+    associated_teacher_ids = GradeTeacher.where(grade_id:grade_id, subject_id: subject_id).pluck(:teacher_id)
+    teachers = Teacher.where(id: associated_teacher_ids)
+    teachers.each do |teacher|
+      android_registration_ids = teacher.devices.active.android.pluck(:token)
+      if android_registration_ids.present?
+        android_options = {
+          priority: "high",
+          content_available: true,
+          data: header_hash.merge!(body_hash)
+        }
+        NotificationWorker.perform_async(android_registration_ids, android_options)
+      end
+
+      ios_registration_ids = teacher.devices.active.ios.pluck(:token)
+      if ios_registration_ids.present?
+        ios_options = {
+          notification: header_hash,
+          priority: "high",
+          content_available: true,
+          data: body_hash
+        }
+        NotificationWorker.perform_async(ios_registration_ids, ios_options)
+      end
+    end
+  end
+
 end

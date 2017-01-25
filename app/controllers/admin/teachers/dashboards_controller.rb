@@ -1,4 +1,4 @@
-class Admin::Teachers::DashboardsController < ApplicationController
+class Admin::Teachers::DashboardsController < Admin::Teachers::BaseController
 	layout "teacher"
   def index
     @grade_teacher_data = []

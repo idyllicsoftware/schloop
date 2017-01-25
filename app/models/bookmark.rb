@@ -2,22 +2,23 @@
 #
 # Table name: bookmarks
 #
-#  id                :integer          not null, primary key
-#  title             :string
-#  data              :text
-#  caption           :text
-#  url               :string
-#  preview_image_url :string
-#  likes             :integer          default(0), not null
-#  views             :integer          default(0), not null
-#  topic_id          :integer
-#  data_type         :integer          default(0), not null
-#  school_id         :integer
-#  grade_id          :integer
-#  subject_id        :integer
-#  teacher_id        :integer
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id                 :integer          not null, primary key
+#  title              :string
+#  data               :text
+#  caption            :text
+#  url                :string
+#  preview_image_url  :string
+#  likes              :integer          default(0), not null
+#  views              :integer          default(0), not null
+#  topic_id           :integer
+#  data_type          :integer          default(0), not null
+#  school_id          :integer
+#  grade_id           :integer
+#  subject_id         :integer
+#  teacher_id         :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  reference_bookmark :integer          default(0)
 #
 # Indexes
 #
@@ -184,15 +185,12 @@ class Bookmark < ActiveRecord::Base
   def self.associated_bookmark_ids(user)
     grade_subjects = []
     query_string = ""
-    if user.is_a?(Parent)
-      parent = user
-      students = parent.students || []
-      students.each do |student|
-        student_grade = student.student_profiles.active.last.grade
-        subjects = student_grade.subjects rescue []
-        subjects.each do |subject|
-          grade_subjects << [student_grade.id, subject.id]
-        end
+    if user.is_a?(Student)
+      student = user
+      student_grade = student.student_profiles.active.last.grade
+      subjects = student_grade.subjects rescue []
+      subjects.each do |subject|
+        grade_subjects << [student_grade.id, subject.id]
       end
 
       grade_subjects = grade_subjects.uniq

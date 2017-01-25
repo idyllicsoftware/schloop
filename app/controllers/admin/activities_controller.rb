@@ -1,5 +1,4 @@
-class Admin::ActivitiesController < ApplicationController
-  before_action :authenticate_user!
+class Admin::ActivitiesController < Admin::BaseController
   before_action :load_activity, only: [:deactivate, :upload_file]
 
   def create
@@ -38,7 +37,6 @@ class Admin::ActivitiesController < ApplicationController
   end
 
   private
-
   def load_activity
     @activity = Activity.find_by(id: params[:id])
     render json: { success: false, errors: ['Activity not found'] } and return if @activity.blank?

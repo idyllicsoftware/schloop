@@ -1,4 +1,4 @@
-class Admin::Teachers::BookmarksController < ApplicationController
+class Admin::Teachers::BookmarksController < Admin::Teachers::BaseController
 
   def create
     errors = []
@@ -54,7 +54,6 @@ class Admin::Teachers::BookmarksController < ApplicationController
   end
 
   private
-
   def bookmark_params
     bookmark_datum = {}
     bookmark_datum.merge!(permited_bookmark_params)
@@ -88,6 +87,5 @@ class Admin::Teachers::BookmarksController < ApplicationController
   def caption_params
     params.permit(:bookmark_id,:caption)
   end
-
 
 end

@@ -25,6 +25,7 @@ namespace :seed do
           begin
             action = action_data[:action]
             permissions_name = controller + '-' + action
+            puts permissions_name
             flags = JSON.unparse(action_data[:flags] || {})
             role_maps = action_data[:role_maps]
             permission = Permission.where(name: permissions_name, controller: controller,action: action, flags: flags).first_or_create

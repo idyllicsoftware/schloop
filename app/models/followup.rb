@@ -21,7 +21,9 @@ class Followup < ActiveRecord::Base
   belongs_to :bookmark
   has_many :comments, as: :commentable, :dependent => :delete_all
   validates_uniqueness_of :bookmark_id
-  
+
+  after_create :send_notification
+
   def self.index_for_web(parent)
     followedup_bookmarks = []
     bookmark_ids = Bookmark.associated_bookmark_ids(parent)
@@ -66,9 +68,9 @@ class Followup < ActiveRecord::Base
     return followedup_bookmarks
   end
 
-  def self.index(parent, offset = nil, page_size = 20)
+  def self.index(user, offset = nil, page_size = 20)
     followed_bookmarks = []
-    bookmark_ids = Bookmark.associated_bookmark_ids(parent)
+    bookmark_ids = Bookmark.associated_bookmark_ids(user)
     followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     valid_bookmarks = Bookmark.where(id: followed_bookmark_ids).includes(:followup).order(id: :desc)
     no_of_records = valid_bookmarks.count
@@ -78,9 +80,10 @@ class Followup < ActiveRecord::Base
                                           sc_trackable_id: followed_bookmark_ids,
                                           event: SocialTracker.events[:like])
 
-    liked_bookmark_ids = liked_bookmarks.where(user_type: parent.class.name, user_id: parent.id).pluck(:sc_trackable_id)
+    liked_bookmark_ids = liked_bookmarks.where(user_type: user.class.name, user_id: user.id).pluck(:sc_trackable_id)
 
-    parents_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
+    users_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
+
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
     valid_bookmarks.each do |bookmark|
       likes = []
@@ -91,11 +94,11 @@ class Followup < ActiveRecord::Base
       liked_users = liked_bookmarks_group_by_id[bookmark.id] || []
 
       liked_users.each do |liked_user|
-        parent = parents_index_by_id[liked_user.user_id]
+        like_user = users_index_by_id[liked_user.user_id]
         likes << {
-          id: parent.id,
-          first_name: parent.first_name,
-          last_name: parent.last_name
+          id: like_user.id,
+          first_name: like_user.first_name,
+          last_name: like_user.last_name
         }
       end
       bookmark_formatted_data.merge!(likes: likes)
@@ -122,6 +125,47 @@ class Followup < ActiveRecord::Base
       comments_data << comment_data
     end
     return comments_data
+  end
+
+  def send_notification
+    bookmark = self.bookmark
+    grade_id = bookmark.grade_id
+
+    header_hash = {
+      title: "New Followup Added",
+      body:  bookmark.title,
+      sound: 'default',
+    }
+    body_hash = {
+      type: 'followup',
+      id: bookmark.id,
+      followup_id: self.id
+    }
+    associated_student_ids = StudentProfile.where(grade_id: grade_id).pluck(:student_id)
+    students = Student.active.where(id: associated_student_ids)
+
+    students.each do |student|
+      android_registration_ids = student.parent.devices.active.android.pluck(:token)
+      if android_registration_ids.present?
+        android_options = {
+          priority: "high",
+          content_available: true,
+          data: header_hash.merge!(body_hash)
+        }
+        NotificationWorker.perform_async(android_registration_ids, android_options)
+      end
+
+      ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
+      if ios_registration_ids.present?
+        ios_options = {
+          notification: header_hash,
+          priority: "high",
+          content_available: true,
+          data: body_hash
+        }
+        NotificationWorker.perform_async(ios_registration_ids, ios_options)
+      end
+    end
   end
 
 end

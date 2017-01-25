@@ -136,8 +136,40 @@ class Ecircular < ActiveRecord::Base
 	end
 
 	def send_notification(student_ids)
-		student_ids.uniq.each do |student_id|
-			NotificationWorker.perform_async(self.id, student_id)
+		header_hash = {
+			title: "New Ecircular Added",
+			body:  title,
+			sound: 'default'
+		}
+
+		student_ids.each do |student_id|
+			body_hash = {
+				type: 'ecircular',
+				id: id,
+				student_id: student_id
+			}
+			student = Student.find_by(id: student_id)
+			android_registration_ids = student.parent.devices.active.android.pluck(:token)
+			if android_registration_ids.present?
+				android_options = {
+					priority: "high",
+					content_available: true,
+					data: header_hash.merge!(body_hash)
+				}
+				NotificationWorker.perform_async(android_registration_ids, android_options)
+			end
+
+			ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
+			if android_registration_ids.present?
+				ios_options = {
+					notification: header_hash,
+					priority: "high",
+					content_available: true,
+					data: body_hash
+				}
+				NotificationWorker.perform_async(ios_registration_ids, ios_options)
+			end
 		end
 	end
+
 end

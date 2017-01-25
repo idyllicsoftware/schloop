@@ -1,9 +1,6 @@
-class Admin::SchoolAdminsController < ApplicationController
-	include ApplicationHelper
-	before_action :authenticate_user!
+class Admin::SchoolAdminsController < Admin::BaseController
 	before_action :find_school, only: [:index, :create]
 	before_action :find_school_admin, only: [:update, :destroy]
-	before_filter :authorize_permission
 
 	layout "admin"
 

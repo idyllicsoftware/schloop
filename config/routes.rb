@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'home#index'
+  
   get 'privacy_policy' => 'home#privacy_policy'
   get 'terms' => 'home#terms'
   devise_for :users, controllers:{
@@ -26,7 +27,6 @@ Rails.application.routes.draw do
                          imports: 'admin/teachers/teacher_imports'
   }
 
-
   # devise_for :parents, controllers:{
   #                        sessions: 'admin/parents/sessions',
   #                        registrations: 'admin/parents/registrations',
@@ -34,9 +34,9 @@ Rails.application.routes.draw do
   #                        invitations: 'admin/parents/invitations'
   # }
 
-    post 'password_resets/create_for_teacher' => 'password_resets#create_for_teacher'
-    get 'password_resets/teacher_edit' => 'password_resets#teacher_edit'
-    patch 'password_resets/teacher_update' => 'password_resets#teacher_update'
+    #post 'password_resets/create_for_teacher' => 'password_resets#create_for_teacher'
+    #get 'password_resets/teacher_edit' => 'password_resets#teacher_edit'
+    #patch 'password_resets/teacher_update' => 'password_resets#teacher_update'
     post '/password_resets/create' => 'password_resets#create'
     get 'password_resets/edit' => 'password_resets#edit'
     patch 'password_resets/update' => 'password_resets#update'
@@ -47,13 +47,11 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :parent_imports, only: [:new, :create]
-    resources :students do
+    resources :students, only: [:index, :update] do 
       collection do
         post :deactivate
       end
     end
-    resource :users
-
 
     namespace :teachers do #teachers folder in admin
       resources :teacher_imports, only: [:create], shallow: true
@@ -63,7 +61,7 @@ Rails.application.routes.draw do
         end
 
       end
-      resources :bookmarks do
+      resources :bookmarks, only:[:create,:destroy] do 
         collection do
           get :get_bookmarks
           post :add_caption
@@ -93,6 +91,7 @@ Rails.application.routes.draw do
     resources :schools do
       collection do
         get :all
+        get :school
       end
 
       resources :ecirculars, only: [:create], shallow: true do
@@ -112,7 +111,7 @@ Rails.application.routes.draw do
         collection do
           get :grades_divisions
         end
-        resources :subjects, only: [:index, :create, :update, :destroy], shallow: true do
+        resources :subjects, only: [:create, :update, :destroy], shallow: true do
 
         end
         resources :divisions, only: [:index, :create, :update, :destroy], shallow: true do
@@ -200,11 +199,14 @@ Rails.application.routes.draw do
       get "/collaboration/:bookmark_id/unlike" => "collaborations#unlike"
       get  "/collaboration/:bookmark_id/view" => "collaborations#view"
       post "/collaboration/:bookmark_id/comment" => 'collaborations#comment'
+      get  "/collaboration/:bookmark_id/add_to_my_bookmarks" => 'collaborations#add_to_my_bookmarks'
 
 
       post "/followup" => 'followups#followup'
       get  "parent/followups" => 'followups#index'
       get  "teacher/followups" => 'followups#index'
+      #TODO::remove get  "parent/followups" route after updates
+      get  "parent/followups/:student_id" => 'followups#index'
 
       get "/followups/:bookmark_id/like" => "followups#like"
       get "/followups/:bookmark_id/unlike" => "followups#unlike"

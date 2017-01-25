@@ -1,5 +1,4 @@
-class Admin::EcircularsController < ApplicationController
-	before_action :authenticate_user!
+class Admin::EcircularsController < Admin::BaseController
 	before_action :find_school, only: [:all, :create]
 
 	def create
@@ -30,10 +29,10 @@ class Admin::EcircularsController < ApplicationController
  	end
 
  	def all
-		  circular_ids = @school.ecirculars.ids
-			filter_hash = {id: circular_ids}
-			circular_data, total_records = Ecircular.school_circulars(@school, current_user, filter_hash)
-			render json: {success: true, circulars: circular_data, total_records: total_records}
+	  circular_ids = @school.ecirculars.ids
+		filter_hash = {id: circular_ids}
+		circular_data, total_records = Ecircular.school_circulars(@school, current_user, filter_hash)
+		render json: {success: true, circulars: circular_data, total_records: total_records}
  	end
 
  	def upload_file
@@ -47,8 +46,8 @@ class Admin::EcircularsController < ApplicationController
       data: response[:data]
     }
  	end
+ 	
 	private
-
 	def find_school
 		@school = School.find_by(id: params[:school_id])
 		render json: { success: false, errors: ['School not found'] } and return if @school.blank?

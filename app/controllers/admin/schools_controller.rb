@@ -1,20 +1,14 @@
-class Admin::SchoolsController < ApplicationController
-  include ApplicationHelper
-  before_action :authenticate_user!
+class Admin::SchoolsController < Admin::BaseController
   before_action :find_school, only: [:show]
   layout "admin"
-  before_filter :authorize_permission
-
 
   def index
-    ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
     @grades = MasterGrade.all.select(:id, :name)
     @subjects = MasterSubject.all.select(:id, :name)
     @categories = Category.all.select(:id, :name).where(category_type: Category.category_types[:activity])
   end
 
   def all
-    ### TODO KAPIL CHECK PRODUCT ADMIN ROLE FOR THIS ACTION
     schools = School.select(:id, :name, :code, :board, :principal_name, :website, :address, :zip_code, :phone1, :phone2).order('created_at').all
     render :json => {success: true, schools: schools}
   end
@@ -22,23 +16,35 @@ class Admin::SchoolsController < ApplicationController
   def show
     redirect_to admin_schools_path and return if @school.blank?
     @js_data = {
-        school_id: params[:id]
+      school_id: params[:id]
     }
-    @grades = Grade.where(school_id: params[:id])
+    @grades = Grade.where(school_id: params[:id]).includes(:divisions)
     @master_grades = MasterGrade.all.select(:id, :name)
     @master_subjects = MasterSubject.all.select(:id, :name)
     @circular_tags = Ecircular.circular_tags
   end
 
-	def create
+  def school
+    school_admin = current_user
+    @school =  school_admin.school
+     @js_data = {
+      school_id: @school.id
+    }
+    @grades = Grade.where(school_id: @school.id).includes(:divisions)
+    @master_grades = MasterGrade.all.select(:id, :name)
+    @master_subjects = MasterSubject.all.select(:id, :name)
+    @circular_tags = Ecircular.circular_tags
+  end
+
+  def create
     response = create_school(school_params, school_admin_params)
     render :json => response
-	end
+  end
 
   private
 
   def find_school
-      @school = School.find_by(id: params[:id])
+    @school = School.find_by(id: params[:id])
   end
 
   def create_school(school_datum, school_admin_datum)
@@ -72,26 +78,26 @@ class Admin::SchoolsController < ApplicationController
 
   def create_school!(datum)
     create_params = {
-        name: datum[:name],
-        board: datum[:board],
-        principal_name: datum[:authority_name],
-        website: datum[:website],
-        address: datum[:address],
-        zip_code: datum[:zip_code],
-        phone1: datum[:phone1],
-        phone2: datum[:phone2],
-        logo: datum[:logo]
+      name: datum[:name],
+      board: datum[:board],
+      principal_name: datum[:authority_name],
+      website: datum[:website],
+      address: datum[:address],
+      zip_code: datum[:zip_code],
+      phone1: datum[:phone1],
+      phone2: datum[:phone2],
+      logo: datum[:logo]
     }
     return School.create(create_params)
   end
 
   def create_school_admin!(school, datum)
     create_params = {
-        first_name: datum[:first_name],
-        last_name: datum[:last_name],
-        email: datum[:email],
-        cell_number: datum[:cell_number],
-        password: Devise.friendly_token.gsub('-','').first(6)
+      first_name: datum[:first_name],
+      last_name: datum[:last_name],
+      email: datum[:email],
+      cell_number: datum[:cell_number],
+      password: Devise.friendly_token.gsub('-','').first(6)
     }
     return school.school_admins.create(create_params)
   end
