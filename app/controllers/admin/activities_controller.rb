@@ -1,5 +1,4 @@
-class Admin::ActivitiesController < ApplicationController
-  before_action :authenticate_user!
+class Admin::ActivitiesController < Admin::BaseController
   before_action :load_activity, only: [:deactivate, :upload_file]
 
   def create

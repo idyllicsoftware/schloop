@@ -1,4 +1,4 @@
-class Admin::SubjectsController < ApplicationController
+class Admin::SubjectsController < Admin::BaseController
 
 	def create
 		errors = []
@@ -12,4 +12,5 @@ class Admin::SubjectsController < ApplicationController
 		end
 		render json: {success: e.nil?, errors: errors, subject_name: params[:subject_name]}
 	end
+
 end
