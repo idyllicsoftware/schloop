@@ -4,9 +4,9 @@
        <div class="modal-body">
         <div class="close-activity-form">X</div>
         <%= form_tag '', id:'activity_creation_form', class:"web-content-form" do %>
-          <div class="row">
+          <div class="row pb10 pt10">
             <div class="form-group col-md-6">
-              <select id="grade" name="activity[master_grade_id]" required class="form-control field">
+              <select id="grade" name="activity[master_grade_id]" required class="select2-option curP">
                 <option disabled="disabled" selected="selected">Grade</option>
                 <% @grades.each do |grade|%>
                     <option value="<%= grade.id %>"><%= grade.name %></option>
@@ -14,7 +14,7 @@
               </select>
             </div>
             <div class="form-group col-md-6">
-              <select id="subjects" name="activity[master_subject_id]" required class="form-control field">
+              <select id="subjects" name="activity[master_subject_id]" required class="select2-option curP">
                 <option disabled="disabled" selected="selected">Subject</option>
                 <% @subjects.each do |subject|%>
                     <option value="<%= subject.id %>"><%= subject.name %></option>

@@ -6,8 +6,6 @@
 //= require jquery.validate
 //= require toastr.min
 //= require mustache
-//= require tinymce/tinymce.min.js
-//= require tinymceEditor.js
 //= require jquery.timeago.js
 //= require multiselect.min
 //= require moment

@@ -70,7 +70,7 @@
               </div>
             </div>
             <div class="mt30 admin-detail-section">
-              <span class="data-title">School Admin (will get credentials to log into system)</span><br>
+              <span class="data-title">School Administrators (will get credentials to log into system)</span><br>
               <div class="overflow">
                 <table id="schoolAdminContainer" class="admin-data">
                 </table>
@@ -125,7 +125,7 @@
                         <div class="tab-pane fade in division-wrapper inner-tabs" id="{{subject_id}}">
                           <div class="plr20"><span class="data-title"><a class="fa fa-chevron-down no-of-div"></a>Divisions</span></div>
                           <div class="slide-division-wrapper">
-                            <div class="plr20">
+                            <div class="plr20 bb">
                               <ul id="myTab" class="nav nav-tabs division-list">
                                 {{#divisions}}
                                   <li data-division_id="{{division_id}}" data-division_name="{{division_name}}"><a href="#{{subject_id}}division{{division_id}}" data-toggle="tab">{{division_name}}</a></li>
@@ -141,7 +141,7 @@
                               {{#divisions}}
                               <div class="tab-pane fade in" id="{{subject_id}}division{{division_id}}">
                                 <div class="teachers-wrapper" id="teachers-popover">
-                                  <ul>
+                                  <ul id="teacher-info-id">
                                   {{#teacher}}
                                     <li><a id="teachers-info-popover" data-toggle="popover" data-value="teachers-info-popover-content{{teacher_id}}" data-trigger="hover"><div><div class="teacher-profile">
                                       {{#teacher_profile}}

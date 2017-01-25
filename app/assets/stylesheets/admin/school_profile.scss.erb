@@ -14,9 +14,11 @@
 					margin-top: 8px;
 				}
 			.content-wrapper {
-				&:first-child { padding-bottom: 50px;
+				margin: 0px 40px;
+				&:first-child { 
+					padding-bottom: 20px;
     				border-bottom: 2px solid #ccc;
-    				margin-bottom: 50px;
+    				margin-bottom: 20px;
     			}
 		        .admin-detail-section {
 		          .popover {
@@ -38,9 +40,6 @@
 		            }
 		          }
 		        }
-				.data-attr address{
-					color: $link-color;
-				}
 				.data-wrapper{
 					.last-col {
 						padding-right: 0;
@@ -95,11 +94,21 @@
 					}
 				}
 				.add_grade {
-					padding: 30px 30px 40px;
+					padding: 15px 30px 15px;
 		    		background: #fff;
 		    		font-weight: 600;
 		    		display: flex;
 		    		justify-content: flex-start;
+		    		select {
+		    			border: none;
+   						background: transparent;
+		    		}
+		    		.select2 {
+				        width: 100% ! important;
+				        border-bottom: 1px solid #ccc;
+				        border-bottom-left-radius: 0px;
+				        border-bottom-right-radius: 0px;
+				    }			
 				}
 				.tab-content {
 					#grade-sub-tab {
@@ -149,13 +158,16 @@
 					}
 					#teachers-popover {
 						.popover {
-							width: 300px;
+							width: 240px;
+							padding: 20px;
 						}
 					}
 				}
 				.subject-wrapper{
-					padding: 30px 0 40px;
-			   		background: #fff;
+					padding: 20px 0 0px;
+				    margin-bottom: 20px;
+				    background: #fff;
+				    border-top: 1px solid #c6c6c6;
 			    	.data-title{
 						font-weight: 700;
 					}
@@ -168,7 +180,7 @@
 						.subject-tab-wrapper {
 							position: relative;
 							ul {
-							    width: 700px;
+							    width: 100%;
    								overflow-x: scroll;
    								white-space: nowrap;
    								li {
@@ -178,7 +190,7 @@
 							}
 						}
 						.nav-tabs{
-							padding: 10px;
+							padding: 0px 10px;
 							li{
 								margin-bottom: 0 !important;
 								&:hover{
@@ -201,9 +213,10 @@
 								font-weight: 700;
 								cursor: default;
 							}
+						.popover{width: 280px;}	
 						.popover-content {
 							.form-group {
-								width: 260px;
+								width: 100%;
 								margin: 0px;
 								.input-field {
 									margin-bottom: 30px;
@@ -220,7 +233,7 @@
 				}
 				.inner-tabs{
 					background: #f9f8ec;
-					padding: 20px 0 30px;
+					padding: 20px 0 20px;
 					.data-title{
 						text-transform: uppercase;
 						cursor: pointer;
@@ -228,8 +241,9 @@
 							padding-right: 20px;
 						}
 					}
+					.bb{border-bottom: 2px dotted #f0efe8;}
 					.nav-tabs{
-						border-bottom: 2px dotted $tab-border;
+						border-bottom: none;
 					    width: 550px;
 					    overflow-x: scroll;
 					    white-space: nowrap;
@@ -253,7 +267,7 @@
 					.div-operation{
 						float: right;
 						position: relative;
-		    			top: -30px;
+		    			top: -46px;
 						span{
 							padding-right: 12px;
 							&:last-child{
@@ -294,17 +308,16 @@
 		                  text-align: center;
 		                  display: inline-block;
 		                  padding: 30px 0px 30px 30px;
-
 		                  .teacher-profile{
-		                      	width: 60px;
-							    height: 60px;
+		                      	width: 50px;
+							    height: 50px;
 							    border-radius: 100%;
 							    background-color: #25aae1;
 							    display: flex;
 							    justify-content: center;
 							    align-items: center;
 							    color: #fff;
-							    font-size: 30px;
+							    font-size: 20px;
 							    font-weight: 300;
 							    margin: 0 auto 10px;
 		                  }
@@ -331,8 +344,8 @@
 						    margin: 0 auto 10px;
 		                  }
 		                  .add-teacher {
-		                      width: 70px;
-		                      height: 70px;
+		                      width: 60px;
+		                      height: 60px;
 		                      border-radius: 50%;
 		                      border: 1px solid #25aae1;
 		                      display: flex;
@@ -342,7 +355,7 @@
 		                          border: none;
 		                          margin: 0px;
 		                          height: 30px; 
-		                          margin-top: 20px;
+		                          margin-top: 15px;
 		                      }
 		                  }
 		              }
@@ -353,6 +366,7 @@
 		              .popover-content {
 		                padding: 0px;
 		                .add-teachers-form {
+		                  .fw{font-weight: normal;}
 		                  >label {
 		                    margin-top: 20px;
 		                  }
@@ -408,6 +422,13 @@
 		              }
 					}							
 				}
+				#teacher-info-id {
+					width: 100%;
+					padding: 0px 20px;
+					li {
+						padding: 10px 0px 10px 20px;
+					}
+				}
 				.upload-sheet {
 					padding: 20px;
 		    		color: #25aae1;
@@ -418,7 +439,7 @@
 		}
 		.header-wrapper{
 			border-bottom: 1px solid #979797;
-			padding: 5px 5px 15px;
+			padding: 5px 5px;
 			display: flex;
 			.home-logo{
                 @include widthHeight(120px, 120px);
@@ -450,6 +471,9 @@
 		}
 		.circulars-container {
 			position: relative;
+			.content-wrapper {
+				margin: 0px 40px;
+			}
             &.new_circular_active{
                 .new_circular_btn, .ecirculars-history-section {
                     display: none;
@@ -462,7 +486,7 @@
             }
 			.history-circular-btn-wrap {
 				position: absolute;
-			    right: 20px;
+			    right: 50px;
 			    padding: 10px;
 			    top: 35px;
 			    font-weight: 700;
@@ -586,7 +610,7 @@
 		      }
 		      .send-btn {
 		      	float: right;
-			    margin-right: 20px;
+			    margin-right: 35px;
 			    margin-top: 20px;
 		      }
 			} 
@@ -700,7 +724,6 @@
     		border-bottom: 1px solid #ccc;
     		img {
     			width: 200px;
-    			height: 200px;
     		}
 		}
 	}	
@@ -792,4 +815,4 @@
 	    cursor: pointer;
 	    z-index: 1;
 	}
-} 	
+}

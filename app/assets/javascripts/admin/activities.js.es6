@@ -1,4 +1,4 @@
-
+//= require select2/select2
 
 class Activities extends SchloopBase {
     init (){
@@ -21,6 +21,11 @@ class Activities extends SchloopBase {
 
         $('#select_multiple').multipleSelect({});
 
+        $('.select2-option').select2({
+                    minimumResultsForSearch: -1
+                });
+        $('b[role="presentation"]').hide();
+        $('.select2-selection__arrow').append('<i style="color:#25aae1;" class="fa fa-chevron-down"></i>');
 
         $("#content_filter_wrapper select").change(function(){
             _self.filters = $(this).closest('form').serializeObject();

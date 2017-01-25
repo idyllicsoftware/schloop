@@ -5,6 +5,7 @@
 @import "toastr.min";
 @import "sweetalert";
 @import "includes/mixins";
+@import "select2/select2-bootstrap";
 
 $i: 100;
 @while $i >= 0 {
@@ -331,4 +332,31 @@ a.disabled {
   >.toast-success {
     background-image: url(<%= asset_path('admin/green_cloud.svg') %>)  !important;
   }
+}
+
+.select2-container--default {
+	-webkit-border-radius: 4px;
+	z-index: 1111;
+	.select2-selection--single {
+		background-color: transparent;
+    	border: 0px;
+    	border-radius: 4px;
+    	outline: none;
+    	.select2-selection__rendered {
+		    color: #666666;
+		    font-weight: 600;
+		}
+	}
+	.select2-results__option[aria-selected=true] {
+		background-color: #def1f0;
+		color: #666666;
+	}
+	.select2-results > .select2-results__options {
+		background: #fffef4;
+	}
+}
+.select2-container--open .select2-dropdown--below {
+	border: none;
+    border-radius: 10px;
+    box-shadow: -0.5px 2px 8px 0 rgba(170, 170, 170, 0.5);
 }

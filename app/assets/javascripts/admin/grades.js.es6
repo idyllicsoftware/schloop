@@ -2,6 +2,7 @@
 // All this logic will automatically be available in application.js.
 
 //= require_self
+//= require select2/select2
 
 class SchoolGrades extends SchloopBase {
     init (){
@@ -17,6 +18,7 @@ class SchoolGrades extends SchloopBase {
     initEventListeners (){
         let _self = this,addTeachersContainer = $('.scroll-grade'),
         { school_id } = _self._config;
+
         _self.loadSchoolsGrades();
         $(".grade-teacher-tab > #teach-tab > a[data-toggle='tab']").on('shown.bs.tab', function () {
 
@@ -32,7 +34,18 @@ class SchoolGrades extends SchloopBase {
 
         $("#add-grade-popover").on('shown.bs.popover', function () {
             var popupEl = $('#' + $(this).attr('aria-describedby')),
-                jForm = popupEl.find('form');
+                jForm = popupEl.find('form'),selection = true;
+                $('.select2-option').each(function(){
+                    var el = $(this);
+                    if(selection){
+                        el.select2({
+                            minimumResultsForSearch: -1
+                        });
+                        $('b[role="presentation"]').hide();
+                        $('.select2-selection__arrow').append('<i style="color:#25aae1;" class="fa fa-chevron-down"></i>');
+                        selection = false;
+                    }
+                });
                 jForm[0].reset();
                 jForm.attr('action', `/admin/schools/${school_id}/grades`);
                 jForm.attr('method', 'POST');

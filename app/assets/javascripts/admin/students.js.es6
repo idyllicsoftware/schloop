@@ -1,3 +1,4 @@
+//= require select2/select2
 
 class Students extends SchloopBase {
     init (){
@@ -31,7 +32,6 @@ class Students extends SchloopBase {
             html,
             divisionsWrapperEl = $("#divisions_wrapper_id"),
             divisions = _self.getDivisionsByGradeId(grade_id);
-
 
         html = Mustache.to_html(_self.divisionsListTpl, {
             divisions: divisions,
@@ -73,7 +73,7 @@ class Students extends SchloopBase {
     initEventListeners(){
         let _self = this,
             { school_id } = _self._config;
-
+        
         $(document).on('click', '.division-list-item', function () {
             let { division_id } = $(this).data();
             $(".division-list-item.active").removeClass('active');
@@ -92,7 +92,8 @@ class Students extends SchloopBase {
 
     loadStudents(division_id){
         let _self = this, html = '',
-            studentListWrapperEl = $('#studentListWrapper');
+            studentListWrapperEl = $('#studentListWrapper'),
+            selection = true;
             
         $.ajax({
             url: `/admin/students?division_id=${division_id}`,
@@ -105,6 +106,17 @@ class Students extends SchloopBase {
                 }
                 _self.studentsData = res.student_data.toHash('student_id');
                 studentListWrapperEl.html(html);
+                $('.select2-option').each(function(){
+                    var el = $(this);
+                    if(selection){
+                        el.select2({
+                            minimumResultsForSearch: -1
+                        });
+                        $('b[role="presentation"]').hide();
+                        $('.select2-selection__arrow').append('<i style="color:#25aae1;" class="fa fa-chevron-down"></i>');
+                        selection = false;
+                    }
+                });
                 _self.popoverInit(false, studentListWrapperEl);
                 studentListWrapperEl.find('td #student-edit-popover').on('shown.bs.popover', function (){
                     let popupEl = $('#' + $(this).attr('aria-describedby')),

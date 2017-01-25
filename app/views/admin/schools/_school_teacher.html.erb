@@ -75,7 +75,7 @@
     {{#grades}}
       {{#valid}}
       <div class="col-md-12 form-group assign-grade">
-        <label>{{grade_name}}</label>
+        <label class="fw">{{grade_name}}</label>
         <input type="hidden" name="grade_id[]" value="{{grade_id}}">
         <div>
           <label>SUBJECTS</label>
@@ -84,7 +84,7 @@
               {{#valid}}
                 <div class="col-md-12">
                 <li class="col-md-12"><input type="checkbox" class="subject_cls" id="subject{{subject_id}}">
-                  <label for="subject{{subject_id}}">{{subject_name}}</label>
+                  <label for="subject{{subject_id}}" class="fw">{{subject_name}}</label>
                 </li>
                 <div class="col-md-12 pl20">
                   <label>DIVISIONS</label>
@@ -92,7 +92,7 @@
                     {{#divisions}}
                     <li class="col-md-6"><input type="checkbox" name="grade[{{grade_id}}]subjects[{{subject_id}}]divisions[]" value="{{division_id}}" id="subject{{subject_id}}division{{division_id}}" data-grade_id="{{grade_id}}"
                       data-subject_id="{{subject_id}}">
-                      <label for="subject{{subject_id}}division{{division_id}}">{{division_name}}</label>
+                      <label for="subject{{subject_id}}division{{division_id}}" class="fw">{{division_name}}</label>
                     </li>
                     {{/divisions}}
                   </ul>

@@ -6,6 +6,13 @@ class ParentImports extends SchloopBase {
                 jScope: $("#studentUploadWrapperId")
             });
 
+        var user_name = $('.user_name').text(),
+            fname_char = user_name.split(' ')[0].charAt(0),
+            lname_char = user_name.split(' ')[1].charAt(0),
+            profile_name = fname_char + lname_char;
+
+        $('.profile-photo').html(profile_name.toUpperCase());
+
         $(document).on("uploadedFileResponse", function (e, res) {
             let {result} = res;
             if(result.success){
