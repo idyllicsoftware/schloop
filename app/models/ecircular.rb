@@ -148,7 +148,7 @@ class Ecircular < ActiveRecord::Base
 				id: id,
 				student_id: student_id
 			}
-
+			student = Student.find_by(id: student_id)
 			android_registration_ids = student.parent.devices.active.android.pluck(:token)
 			if android_registration_ids.present?
 				android_options = {
