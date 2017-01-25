@@ -4,7 +4,7 @@ class PasswordResetsController < ApplicationController
     email = forget_password_params[:email]
     user_type = forget_password_params[:user_type]
     if user_type.eql?('SchoolAdmin')
-      user_type = User.find_by(email: email)
+      user = User.find_by(email: email)
     elsif user_type.eql?('Teacher')
       user = Teacher.find_by(email: email)
     else
@@ -15,17 +15,17 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-  	@user = Parent.find_by_reset_password_token!(edit_params[:format]) rescue nil
-    @user = Teacher.find_by_reset_password_token!(edit_params[:format]) if @user.nil?
-    @user = User.find_by_reset_password_token!(edit_params[:format]) if @user.nil?
+  	@user = Parent.find_by(reset_password_token: edit_params[:format]) rescue nil
+    @user = Teacher.find_by(reset_password_token: edit_params[:format]) if @user.nil?
+    @user = User.find_by(reset_password_token: edit_params[:format]) if @user.nil?
   end
 
   def update
     errors = []
     begin
-      @user = Teacher.find_by_reset_password_token!(update_params[:token])  rescue nil
-      @user = Parent.find_by_reset_password_token!(update_params[:token]) if @user.nil?
-      @user = User.find_by_reset_password_token!(update_params[:token]) if @user.nil?
+      @user = Teacher.find_by(reset_password_token: update_params[:token])  rescue nil
+      @user = Parent.find_by(reset_password_token: update_params[:token]) if @user.nil?
+      @user = User.find_by(reset_password_token: update_params[:token]) if @user.nil?
       raise "Link is already used or expired.Generate new one" if @user.nil?
       if params[:user][:password] == params[:user][:password_confirmation]
         if @user.reset_password_sent_at < 2.hours.ago

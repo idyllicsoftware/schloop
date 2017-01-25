@@ -25,7 +25,7 @@ admin_teacher_parent: &admin_teacher_parent
     - product-admin  
   - :action: school
     :role_maps:
-    - school_admin 
+    - school-admin 
   admin/users:                                            #On this line put controller name
   - :action: update_password
     :role_maps: *admin
