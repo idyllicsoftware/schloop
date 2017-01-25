@@ -39,7 +39,9 @@ class Api::V1::FollowupsController < Api::V1::BaseController
     page_size = 20
     offset = (page * page_size)
 
-    followups, no_of_records = Followup.index(@current_user, offset, page_size)
+    student = Student.find_by(id: params[:student_id]) rescue nil
+    user = student || @current_user
+    followups, no_of_records = Followup.index(user, offset, page_size)
 
     pagination_data = {
       page_size: page_size,

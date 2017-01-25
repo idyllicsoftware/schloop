@@ -22,6 +22,8 @@ class Collaboration < ActiveRecord::Base
   has_many :comments, as: :commentable, :dependent => :delete_all
   validates_uniqueness_of :bookmark_id
 
+  after_create :send_notification
+
   def self.index(teacher, offset = nil, page_size = 20)
     collaborated_bookmarks = []
     bookmark_ids = Bookmark.associated_bookmark_ids(teacher)
@@ -101,4 +103,45 @@ class Collaboration < ActiveRecord::Base
     }
     return data
   end
+
+  def send_notification
+    bookmark = self.bookmark
+    grade_id = bookmark.grade_id
+    subject_id = bookmark.subject_id
+    header_hash = {
+      title: "New Collaboration Added",
+      body:  bookmark.title,
+      sound: 'default',
+    }
+    body_hash = {
+      type: 'collaboration',
+      id: bookmark.id,
+      collaboration_id: self.id
+    }
+    associated_teacher_ids = GradeTeacher.where(grade_id:grade_id, subject_id: subject_id).pluck(:teacher_id)
+    teachers = Teacher.where(id: associated_teacher_ids)
+    teachers.each do |teacher|
+      android_registration_ids = teacher.devices.active.android.pluck(:token)
+      if android_registration_ids.present?
+        android_options = {
+          priority: "high",
+          content_available: true,
+          data: header_hash.merge!(body_hash)
+        }
+        NotificationWorker.perform_async(android_registration_ids, android_options)
+      end
+
+      ios_registration_ids = teacher.devices.active.ios.pluck(:token)
+      if ios_registration_ids.present?
+        ios_options = {
+          notification: header_hash,
+          priority: "high",
+          content_available: true,
+          data: body_hash
+        }
+        NotificationWorker.perform_async(ios_registration_ids, ios_options)
+      end
+    end
+  end
+
 end

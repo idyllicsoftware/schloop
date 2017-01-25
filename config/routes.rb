@@ -200,11 +200,14 @@ Rails.application.routes.draw do
       get "/collaboration/:bookmark_id/unlike" => "collaborations#unlike"
       get  "/collaboration/:bookmark_id/view" => "collaborations#view"
       post "/collaboration/:bookmark_id/comment" => 'collaborations#comment'
+      get  "/collaboration/:bookmark_id/add_to_my_bookmarks" => 'collaborations#add_to_my_bookmarks'
 
 
       post "/followup" => 'followups#followup'
       get  "parent/followups" => 'followups#index'
       get  "teacher/followups" => 'followups#index'
+      #TODO::remove get  "parent/followups" route after updates
+      get  "parent/followups/:student_id" => 'followups#index'
 
       get "/followups/:bookmark_id/like" => "followups#like"
       get "/followups/:bookmark_id/unlike" => "followups#unlike"

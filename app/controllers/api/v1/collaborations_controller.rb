@@ -123,4 +123,33 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
     }
   end
 
+  def add_to_my_bookmarks
+    errors = []
+    bookmark = Bookmark.find_by(id: params[:bookmark_id])
+    errors << "Invalid bookmark to process."
+
+    teacher = @current_teacher
+    if Bookmark.find_by(id: bookmark.id, teacher_id: teacher.id).present?
+      errors << "bookmark already added to your list"
+    end
+    if errors.blank?
+      ActiveRecord::Base.transaction do
+        begin
+          master_subject = Subject.find_by(id: bookmark.subject_id).master_subject
+          master_grade = Grade.find_by(id: bookmark.grade_id).master_grade
+          topic = Topic.find_by(teacher_id: teacher.id, master_grade_id: master_grade.id, master_subject_id: master_subject.id, title: bookmark.topic.title)
+          if topic.blank?
+            topic = Topic.create(title: bookmark.topic.title, teacher_id: teacher.id, master_subject_id: master_subject.id, master_grade_id: master_grade.id)
+          end
+          bookmark_create_params = Collaboration.add_to_my_topics_data(bookmark, teacher, topic)
+          new_bookmark = Bookmark.create!(bookmark_create_params)
+        rescue Exception => ex
+          errors << 'Errors occured while adding bookmark to my topics'
+          raise ActiveRecord::Rollback
+        end
+      end
+    end
+    render json: {success: errors.blank?, error: errors, data: {bookmark_id: (new_bookmark.id rescue 0)}}
+  end
+
 end
