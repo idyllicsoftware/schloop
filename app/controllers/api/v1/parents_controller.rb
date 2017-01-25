@@ -99,8 +99,8 @@ class Api::V1::ParentsController < Api::V1::BaseController
           first_name: student.first_name,
           last_name: student.last_name,
           middle_name: student.middle_name,
-          grade: {id: student_profile.grade.id, name: student_profile.grade.name},
-          division: {id: student_profile.division.id, name: student_profile.division.name}
+          grade: {id: (student_profile.grade.id rescue 0), name: (student_profile.grade.name rescue "-")},
+          division: {id: (student_profile.division.id rescue 0), name: (student_profile.division.name rescue "-")}
         }
       end
       parent_profile = {
