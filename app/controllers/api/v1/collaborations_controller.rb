@@ -149,7 +149,7 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
         end
       end
     end
-    render json: {success: errors.blank?, error: errors, data: {bookmark_id: (new_bookmark.id rescue 0)}}
+    render json: {success: errors.blank?, error: {message: errors}, data: {bookmark_id: (new_bookmark.id rescue 0)}}
   end
 
 end
