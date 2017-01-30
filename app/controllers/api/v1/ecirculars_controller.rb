@@ -170,104 +170,109 @@ class Api::V1::EcircularsController < Api::V1::BaseController
   end
 
   def circular_teachers
+    errors, teachers_data = [], {}
     teacher = @current_user
     grade_ids = teacher.grade_teachers.pluck(:grade_id)
-    teachers_data = Teacher.joins(:grade_teachers)
-                           .where("grade_teachers.grade_id IN (#{grade_ids.join(',')}) AND grade_teachers.teacher_id != #{teacher.id}").distinct
-                           .select(:id, :first_name, :last_name)
-    render json: { success: teachers_data.present?, error: [], data: { teachers_data: teachers_data }}
+    errors << "no grade is assigned to teacher" if grade_ids.blank?
+    if errors.blank?
+      teachers_data = Teacher.joins(:grade_teachers)
+                        .where("grade_teachers.grade_id IN (#{grade_ids.join(',')}) AND grade_teachers.teacher_id != #{teacher.id}")
+                        .distinct
+                        .select(:id, :first_name, :last_name)
+    end
+    render json: { success: errors.blank?, error: errors, data: { teachers_data: teachers_data }}
   end
 
   private
-    def circular_params
-      params.permit(:title, :body, :circular_tag)
-    end
+  def circular_params
+    params.permit(:title, :body, :circular_tag)
+  end
 
-    def recipients_params
-      create_params = []
-      params[:recipients].each do |grade_id, division_ids|
-        division_ids.each do |div_id|
-          create_params << {
-            school_id: @current_user.school_id,
-            grade_id: grade_id,
-            division_id: div_id
-          }
-        end
-      end
-      return create_params
-    end
-
-    def parents_params
-      create_parent_params = []
-      students = Student.where(id: params[:students]).active
-      students.each do |student|
-        create_parent_params << {
-            student_id: student.id,
-            parent_id: student.parent_id
-          }
-      end
-      return create_parent_params
-    end
-
-    def teachers_params
-      create_teachers_params = []
-      teachers = Teacher.where(id: params[:teachers])
-      teachers.each do |teacher|
-        create_teachers_params << {
-            teacher_id: teacher.id,
-            school_id: teacher.school_id
-        }
-      end
-      return create_teachers_params
-    end
-
-    def attachments_params(circular)
-      create_params = []
-      return create_params if params[:attachments].blank?
-      params[:attachments].each do |attachment|
+  def recipients_params
+    create_params = []
+    params[:recipients].each do |grade_id, division_ids|
+      division_ids.each do |div_id|
         create_params << {
-          attachable_id: circular.id,
-          attachable_type: circular.class,
-          name: attachment[:s3_url],
-          original_filename: attachment[:original_file_name],
+          school_id: @current_user.school_id,
+          grade_id: grade_id,
+          division_id: div_id
         }
       end
-      return create_params
     end
+    return create_params
+  end
 
-    def filter_params
-      default_division_ids = @current_user.grade_teachers.pluck(:division_id)
-      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{default_division_ids.join(',')})").ids
-      circular_ids += Ecircular.where(created_by_type: @current_user.class.name, created_by_id: @current_user.id).ids
-      circular_ids += EcircularTeacher.where(teacher_id: @current_user.id).pluck(:ecircular_id)
-
-      filters = params[:filter]
-      return {id: circular_ids} if filters.blank?
-
-
-      division_ids = []
-      if filters[:grades].present?
-        filters[:grades].each do |_, division_data|
-          division_ids << division_data
-        end
-      end
-
-      division_ids.flatten!
-
-      if division_ids.present?
-        division_ids &= default_division_ids
-      else
-        division_ids = default_division_ids
-      end
-
-      circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{division_ids.join(',')})").ids if division_ids.present?
-
-      {
-        id: circular_ids,
-        from_date: filters[:from_date],
-        to_date: filters[:to_date],
-        tags: filters[:tags]
+  def parents_params
+    create_parent_params = []
+    students = Student.where(id: params[:students]).active
+    students.each do |student|
+      create_parent_params << {
+        student_id: student.id,
+        parent_id: student.parent_id
       }
     end
+    return create_parent_params
+  end
+
+  def teachers_params
+    create_teachers_params = []
+    teachers = Teacher.where(id: params[:teachers])
+    teachers.each do |teacher|
+      create_teachers_params << {
+        teacher_id: teacher.id,
+        school_id: teacher.school_id
+      }
+    end
+    return create_teachers_params
+  end
+
+  def attachments_params(circular)
+    create_params = []
+    return create_params if params[:attachments].blank?
+    params[:attachments].each do |attachment|
+      create_params << {
+        attachable_id: circular.id,
+        attachable_type: circular.class,
+        name: attachment[:s3_url],
+        original_filename: attachment[:original_file_name],
+      }
+    end
+    return create_params
+  end
+
+  def filter_params
+    default_division_ids = @current_user.grade_teachers.pluck(:division_id)
+    circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{default_division_ids.join(',')})").ids
+    circular_ids += Ecircular.where(created_by_type: @current_user.class.name, created_by_id: @current_user.id).ids
+    circular_ids += EcircularTeacher.where(teacher_id: @current_user.id).pluck(:ecircular_id)
+
+    filters = params[:filter]
+    return {id: circular_ids} if filters.blank?
+
+
+    division_ids = []
+    if filters[:grades].present?
+      filters[:grades].each do |_, division_data|
+        division_ids << division_data
+      end
+    end
+
+    division_ids.flatten!
+
+    if division_ids.present?
+      division_ids &= default_division_ids
+    else
+      division_ids = default_division_ids
+    end
+
+    circular_ids = Ecircular.joins(:ecircular_recipients).where("ecircular_recipients.division_id IN (#{division_ids.join(',')})").ids if division_ids.present?
+
+    {
+      id: circular_ids,
+      from_date: filters[:from_date],
+      to_date: filters[:to_date],
+      tags: filters[:tags]
+    }
+  end
 
 end
