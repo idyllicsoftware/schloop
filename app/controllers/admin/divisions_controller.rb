@@ -21,7 +21,7 @@ class Admin::DivisionsController < Admin::BaseController
    
 	def destroy
 		division = Division.find_by(id: params[:id])
-		render json: {success: false, errors: ['grade not found']} and return if division.blank?
+		render json: {success: false, errors: ['Division not found']} and return if division.blank?
 		division.destroy!
 		render json: {success: true}
 	end
