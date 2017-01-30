@@ -27,7 +27,7 @@ class Admin::Teachers::CollaborationsController < Admin::Teachers::BaseControlle
     errors = []
     bookmark = Bookmark.find_by(id: add_to_my_topics_params[:bookmark_id])
     teacher = current_teacher
-    if Bookmark.find_by(id: bookmark.id, teacher_id: teacher.id).present?
+    if Bookmark.find_by(teacher_id: teacher.id, reference_bookmark: bookmark.reference_bookmark).present?
       errors << "bookmark already present in my topics"
       render json: { success: errors.blank?, errors: errors } and return
     end

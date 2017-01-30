@@ -3,7 +3,9 @@ class Admin::Teachers::BookmarksController < Admin::Teachers::BaseController
   def create
     errors = []
     begin
-      Bookmark.create!(bookmark_params)
+      new_bookmark = Bookmark.create!(bookmark_params)
+      new_bookmark.reference_bookmark = new_bookmark.id
+      new_bookmark.save!
     rescue Exception => e
       errors << "error occured while inserting new bookmark" + "," + e.message
     end

@@ -6,6 +6,8 @@ class Api::V1::BookmarksController < Api::V1::BaseController
     data.merge!(bookmarks_params)
     begin
       bookmark = Bookmark.create!(data)
+      bookmark.reference_bookmark = bookmark.id
+      bookmark.save!
     rescue
       errors << "Error occured while inserting new bookmark"
     end

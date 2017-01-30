@@ -20,7 +20,7 @@ class PasswordResetsController < ApplicationController
   	  @user = Parent.find_by(reset_password_token: edit_params[:format]) rescue nil
       @user = Teacher.find_by(reset_password_token: edit_params[:format]) if @user.nil?
       @user = User.find_by(reset_password_token: edit_params[:format]) if @user.nil?
-      raise 'invalid link'
+      raise 'invalid link' if @user.nil?
     rescue Exception => ex
       errors << ex.message
     end
