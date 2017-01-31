@@ -54,6 +54,11 @@
 	</div>
 </div>
 <script type="text/html" id="followups_bookmarks_tpl">
+	{{^data}}
+		<div class="bookmark-not-found">
+			<h4>No schloopmark found...</h4>
+		</div>
+	{{/data}}
 	{{#data}}
 	<div class="schloopmark-item">
 		<div class="schloopmark-view-section">
