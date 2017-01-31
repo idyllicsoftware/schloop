@@ -1,4 +1,4 @@
-class Admin::Teachers::TeacherImportsController < Admin::Teachers::BaseController
+class Admin::Teachers::TeacherImportsController < Admin::BaseController
   before_action :find_school, only: [:create]
   layout "admin"
 
