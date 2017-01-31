@@ -61,7 +61,7 @@ admin_teacher_parent: &admin_teacher_parent
   - :action: destroy
     :role_maps: *admin 
   - :action: update_password
-    :role_maps: *admin
+    :role_maps: teacher
   admin/users:
   - :action: update_password
     :role_maps: *admin
