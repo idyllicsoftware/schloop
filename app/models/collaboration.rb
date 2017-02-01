@@ -29,7 +29,7 @@ class Collaboration < ActiveRecord::Base
     bookmark_ids = Bookmark.associated_bookmark_ids(teacher)
     collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
-    valid_bookmarks = Bookmark.where(id: collaborated_bookmark_ids).includes(:collaboration).order(id: :desc)
+    valid_bookmarks = Bookmark.where(id: collaborated_bookmark_ids).includes(:collaboration, :grade, :subject, :topic, :teacher).order(id: :desc)
     schloop_marked_bookmark_ids = Bookmark.where(id: collaborated_bookmark_ids, teacher_id: teacher.id).pluck(:reference_bookmark)
 
     no_of_records = valid_bookmarks.count

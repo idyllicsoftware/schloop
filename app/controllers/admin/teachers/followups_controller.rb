@@ -3,7 +3,7 @@ class Admin::Teachers::FollowupsController < Admin::Teachers::BaseController
   def create
     errors = []
     begin
-      bookmark = Bookmark.find_by(id: followup_params[:bookmark_id])
+      bookmark = Bookmark.includes(:followup).find_by(id: followup_params[:bookmark_id])
       errors << "Please provide valid bookmark." if bookmark.nil?
       errors << "Bookmark already sent to followup." if bookmark.followup.present?
       if errors.blank?

@@ -29,7 +29,7 @@ class Followup < ActiveRecord::Base
     bookmark_ids = Bookmark.associated_bookmark_ids(parent)
     collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
-    valid_bookmarks = Bookmark.where(id: followed_bookmark_ids).includes(:followup).order(id: :desc)
+    valid_bookmarks = Bookmark.where(id: followed_bookmark_ids).includes(:followup, :grade, :subject, :topic, :teacher).order(id: :desc)
 
     liked_bookmarks = SocialTracker.where(sc_trackable_type: "Bookmark",
                                           sc_trackable_id: followed_bookmark_ids,
@@ -142,7 +142,7 @@ class Followup < ActiveRecord::Base
       followup_id: self.id
     }
     associated_student_ids = StudentProfile.where(grade_id: grade_id).pluck(:student_id)
-    students = Student.active.where(id: associated_student_ids)
+    students = Student.active.includes(:parent).where(id: associated_student_ids)
 
     students.each do |student|
       android_registration_ids = student.parent.devices.active.android.pluck(:token)

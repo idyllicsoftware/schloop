@@ -57,7 +57,7 @@ class Admin::GradesController < Admin::BaseController
   private
 
   def load_grade
-    @grade = Grade.find_by(id: params[:id])
+    @grade = Grade.includes(:divisions, :subjects, :bookmarks).find_by(id: params[:id])
     render json: { success: false, errors: ['Grade not found'] } and return if @grade.blank?
   end
 
