@@ -105,7 +105,7 @@ class Followup < ActiveRecord::Base
           id: like_user.id,
           first_name: like_user.first_name,
           last_name: like_user.last_name
-        }
+        } if like_user.present?
       end
       bookmark_formatted_data.merge!(likes: likes)
       bookmark_formatted_data.merge!(is_liked: is_liked)
