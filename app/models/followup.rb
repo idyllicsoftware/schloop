@@ -85,6 +85,7 @@ class Followup < ActiveRecord::Base
     users_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
 
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
+    valid_bookmarks = valid_bookmarks.sort_by(&:created_at).reverse
     valid_bookmarks.each do |bookmark|
       likes = []
       bookmark_formatted_data = bookmark.formatted_data
