@@ -1,6 +1,6 @@
 namespace :seed do
   desc "create roles"
-  task :populate_roles => :environment do
+  task populate_roles: :environment do
     puts "creating roles..."
     require Rails.root.join("db", "role_permissions_data","roles_data.rb").to_s
     roles_data_hash = ROLES
