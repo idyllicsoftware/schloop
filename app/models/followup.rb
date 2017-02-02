@@ -80,7 +80,12 @@ class Followup < ActiveRecord::Base
                                           sc_trackable_id: followed_bookmark_ids,
                                           event: SocialTracker.events[:like])
 
-    liked_bookmark_ids = liked_bookmarks.where(user_type: user.class.name, user_id: user.id).pluck(:sc_trackable_id)
+    if user.is_a?(Student)
+      parent = user.parent
+      liked_bookmark_ids = liked_bookmarks.where(user_type: parent.class.name, user_id: parent.id).pluck(:sc_trackable_id)
+    else
+      liked_bookmark_ids = liked_bookmarks.where(user_type: user.class.name, user_id: user.id).pluck(:sc_trackable_id)
+    end
 
     users_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
 

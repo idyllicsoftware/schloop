@@ -35,5 +35,5 @@ class Student < ActiveRecord::Base
 	def name
 		"#{self.first_name} #{self.middle_name} #{self.last_name}"
 	end
-# 
+
 end
