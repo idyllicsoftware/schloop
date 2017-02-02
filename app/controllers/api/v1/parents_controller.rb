@@ -298,9 +298,18 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
   def activity
     errors = []
-
     @student = Student.where(id: params[:student_id]).active.first
-    errors << "Student not found" if @student.blank?
+    if @student.blank?
+      errors << "Student not found"
+      render json: {
+        success: false,
+        error:  {
+          code: 0,
+          message: errors.flatten
+        },
+        data: nil
+      } and return
+    end
 
     school = @student.school
     errors << "Student School not found" if school.blank?
