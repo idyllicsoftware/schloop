@@ -82,11 +82,13 @@ class Bookmark < ActiveRecord::Base
 
       liked_users.each do |liked_user|
         teacher = teachers_index_by_id[liked_user.user_id]
-        likes << {
-          id: teacher.id,
-          first_name: teacher.first_name,
-          last_name: teacher.last_name
-        } 
+        if teacher.present?
+          likes << {
+            id: teacher.id,
+            first_name: teacher.first_name,
+            last_name: teacher.last_name
+          } 
+        end
       end
       bookmark_formatted_data.merge!(likes: likes)
       bookmark_formatted_data.merge!(is_liked: is_liked)

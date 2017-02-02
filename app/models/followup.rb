@@ -51,11 +51,13 @@ class Followup < ActiveRecord::Base
 
       liked_users.each do |liked_user|
         parent = parents_index_by_id[liked_user.user_id]
-        likes << {
-          id: parent.id,
-          first_name: parent.first_name,
-          last_name: parent.last_name
-        } 
+        if parent.present?
+          likes << {
+            id: parent.id,
+            first_name: parent.first_name,
+            last_name: parent.last_name
+          } 
+        end
       end
       bookmark_formatted_data.merge!(likes: likes)
       bookmark_formatted_data.merge!(is_liked: is_liked)
@@ -125,10 +127,12 @@ class Followup < ActiveRecord::Base
     parents_index_by_id = Parent.where(id: comments.pluck(:commented_by)).index_by(&:id)
     followup_comments.each do |comment|
       parent = parents_index_by_id[comment.commented_by]
-      comment_data = comment.as_json
-      comment_data[:commenter][:first_name] = parent.first_name
-      comment_data[:commenter][:last_name] = parent.last_name
-      comments_data << comment_data
+      if parent.present?
+        comment_data = comment.as_json
+        comment_data[:commenter][:first_name] = parent.first_name 
+        comment_data[:commenter][:last_name] = parent.last_name
+        comments_data << comment_data
+      end
     end
     return comments_data
   end

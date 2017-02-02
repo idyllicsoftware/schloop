@@ -81,10 +81,12 @@ class Collaboration < ActiveRecord::Base
     teacher_index_by_id = Teacher.where(id: comments.pluck(:commented_by)).index_by(&:id)
     collaboration_comments.each do |comment|
       teacher = teacher_index_by_id[comment.commented_by]
-      comment_data = comment.as_json
-      comment_data[:commenter][:first_name] = teacher.first_name
-      comment_data[:commenter][:last_name] = teacher.last_name
-      comments_data << comment_data
+      if teacher.present?
+        comment_data = comment.as_json
+        comment_data[:commenter][:first_name] = teacher.first_name
+        comment_data[:commenter][:last_name] = teacher.last_name
+        comments_data << comment_data
+      end
     end
     return comments_data
   end
