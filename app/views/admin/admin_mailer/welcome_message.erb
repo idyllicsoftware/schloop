@@ -27,7 +27,12 @@
 							<tr><td style="padding: 20px 0px;">
 							<% if ["schloopteacher", "schloopparent"].include?(@user_type) %>
     						Download app from google store from  <a href="https://play.google.com/store/apps/details?id=com.idyllic.<%= @user_type%>"> here</a><br>
-  							<%end%></td></tr>
+    						<% if @user_type.eql? "schloopteacher" %>
+    							Download  app from apple itunes store from <a href=" https://itunes.apple.com/us/app/schloop-for-teacher/id1191446397?ls=1&mt=8 ">here</a><br>
+    						<% else %>
+    							Download  app from apple itunes store from <a href="  https://itunes.apple.com/us/app/schloop-for-parent/id1191455750?ls=1&mt=8 ">here</a><br>
+    						<% end %>
+  						<%end%></td></tr>
 							<tr><td style="padding: 20px 0px; font-weight: bold;">Happy Schlooping!</td></tr>
 							<tr><td style="font-weight: bold;">The Schloop Team :)</td></tr>
 						</table>
