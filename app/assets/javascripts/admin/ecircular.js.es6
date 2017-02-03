@@ -236,8 +236,9 @@ class SchoolECircular extends SchloopBase {
                             return moment(this.created_on).format('MMM D YYYY, h:mm a');
                         },
                         formatted_recipients: function () {
-                            var arr = [], divisions,
-                                html = '';
+                            var arr = [], divisions, teacher_arr = [],
+                                html = '',rec_teacher = '',
+                                recipient_arr;
                             this.recipients.forEach(function (recipient) {
                                 html = recipient.grade_name;
                                 divisions = recipient.divisions.map(x => x.div_name);
@@ -248,7 +249,12 @@ class SchoolECircular extends SchloopBase {
                                 }
                                 arr.push(html);
                             });
-                            return arr.join(", ");
+                            this.teachers.forEach(function (recipient_teacher) {
+                                rec_teacher = recipient_teacher.first_name + ' ' + recipient_teacher.last_name;
+                                teacher_arr.push(rec_teacher);
+                            });
+                            recipient_arr = arr.join(", ") + ' ' + teacher_arr.join(", ");
+                            return recipient_arr;
                         }
                     });
                 }
