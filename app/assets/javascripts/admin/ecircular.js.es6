@@ -238,6 +238,7 @@ class SchoolECircular extends SchloopBase {
                         formatted_recipients: function () {
                             var arr = [], divisions, teacher_arr = [],
                                 html = '',rec_teacher = '',
+                                student_name = '', student_arr = [],
                                 recipient_arr;
                             this.recipients.forEach(function (recipient) {
                                 html = recipient.grade_name;
@@ -253,7 +254,13 @@ class SchoolECircular extends SchloopBase {
                                 rec_teacher = recipient_teacher.first_name + ' ' + recipient_teacher.last_name;
                                 teacher_arr.push(rec_teacher);
                             });
-                            recipient_arr = arr.join(", ") + ' ' + teacher_arr.join(", ");
+                            this.students.forEach(function (student) {
+                                var grade_name = student.grade.name;
+                                var division_name = student.division.name;
+                                student_name = student.name + " (" + grade_name + " | " + division_name + " )";
+                                student_arr.push(student_name);
+                            });
+                            recipient_arr = arr.join(" | ") + ' ' + teacher_arr.join(" | ") + ' ' + student_arr.join(" | ");
                             return recipient_arr;
                         }
                     });
