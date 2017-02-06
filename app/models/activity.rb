@@ -46,6 +46,7 @@ class Activity < ActiveRecord::Base
     activities = activities.order(id: :desc)
 
     total_records = activities.count
+    activities = activities.sort_by(& :created_at).reverse
     activities = activities.offset(offset).limit(page_size) if page.present?
     # activities_data << activity.data_for_activity(mapping_data)
     activities.each do |activity|
