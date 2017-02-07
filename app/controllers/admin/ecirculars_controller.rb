@@ -16,6 +16,7 @@ class Admin::EcircularsController < Admin::BaseController
 			end
 			if attachments.present?
 				attachments.each  do |file|
+					##TODO:: MUTESH Refactor this.
 					extension = File.extname(file.original_filename)
 					file_name = File.basename(file.original_filename, ".*")
 					file_name = "#{file_name}_#{Time.now.to_i}#{extension}"
