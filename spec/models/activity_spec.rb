@@ -16,7 +16,6 @@
 #
 
 require 'rails_helper'
-
 RSpec.describe Activity, type: :model do
 
   it "check that activities to be returned are sorted in reverse order or created_at" do |variable|
@@ -54,10 +53,26 @@ RSpec.describe Activity, type: :model do
       created_at:"Wed, 11 Jan 2017 14:26:11 IST +05:30", 
       updated_at:"Wed, 11 Jan 2017 14:26:11 IST +05:30", 
       status: 0})
+    ActivityShare.create!({
+      id:35, activity_id:1,
+      school_id:1, 
+      teacher_id:20, 
+      grade_id:3, 
+      division_id:6, 
+      created_at:"Wed, 01 Feb 2017 21:20:19 IST +05:30",
+      updated_at:"Wed, 01 Feb 2017 21:20:19 IST +05:30"})
+    ActivityShare.create!({
+      id:26, activity_id:5, 
+      school_id:1, 
+      teacher_id:21, 
+      grade_id:13, 
+      division_id:20, 
+      created_at:"Wed, 01 Feb 2017 20:25:50 IST +05:30", 
+      updated_at:"Wed, 01 Feb 2017 20:25:50 IST +05:30"})
     records,count = Activity.grade_activities({:id=>[]},nil,nil,nil)
     for i in 0..(count-2)
-      current_activity = Activity.find_by(id: records[i][:activity][:id])
-      next_activity = Activity.find_by(id: records[i+1][:activity][:id])
+      current_activity = Activity.find_by(id: records[i][:activity][:id]).activity_shares.first
+      next_activity = Activity.find_by(id: records[i+1][:activity][:id]).activity_shares.first
       expect(current_activity.created_at).to be >= next_activity.created_at
     end
   end

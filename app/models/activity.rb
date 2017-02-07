@@ -44,10 +44,9 @@ class Activity < ActiveRecord::Base
                     .where("categories.id in (?)", category_ids).distinct
     end
     activities = activities.order(id: :desc)
-
     total_records = activities.count
     activities = activities.offset(offset).limit(page_size) if page.present?
-    activities = activities.sort_by(& :created_at).reverse
+    activities = activities.includes(:activity_shares).sort_by { |activity| activity.activity_shares.first.created_at }.reverse
     # activities_data << activity.data_for_activity(mapping_data)
     activities.each do |activity|
       activities_data << activity.data_for_activity(mapping_data, user)
