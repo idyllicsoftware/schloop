@@ -41,7 +41,7 @@ class Comment < ActiveRecord::Base
     subject_id = bookmark.subject_id
     header_hash = {
       title: "New Comment Added",
-      body:  bookmark.title,
+      body:  self.message,
       sound: 'default',
     }
 
