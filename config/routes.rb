@@ -198,6 +198,7 @@ Rails.application.routes.draw do
       get "/collaboration/:bookmark_id/like" => "collaborations#like"
       get "/collaboration/:bookmark_id/unlike" => "collaborations#unlike"
       get  "/collaboration/:bookmark_id/view" => "collaborations#view"
+      get "/collaboration/:bookmark_id/comment" => 'collaborations#get_comment'
       post "/collaboration/:bookmark_id/comment" => 'collaborations#comment'
       get  "/collaboration/:bookmark_id/add_to_my_bookmarks" => 'collaborations#add_to_my_bookmarks'
 
