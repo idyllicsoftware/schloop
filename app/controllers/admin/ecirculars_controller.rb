@@ -14,15 +14,6 @@ class Admin::EcircularsController < Admin::BaseController
 				errors = new_circular.errors.full_messages
 				render json: { success: false,  errors: errors} and return
 			end
-			if attachments.present?
-				attachments.each  do |file|
-					extension = File.extname(file.original_filename)
-					file_name = File.basename(file.original_filename, ".*")
-					file_name = "#{file_name}_#{Time.now.to_i}#{extension}"
-					ecircular_file_upload_service = Admin::EcircularFileUploadService.new
-					ecircular_file_upload_service.upload_ecircular_file_to_s3(file, file_name, new_circular)
-				end
-			end
 		else
 			render json: {errors: "title, recipients and tag should be added properly"}
 		end
