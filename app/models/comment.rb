@@ -60,7 +60,7 @@ class Comment < ActiveRecord::Base
             content_available: true,
             data: header_hash.merge!(body_hash)
           }
-          NotificationWorker.perform_async(android_registration_ids, android_options)
+          NotificationWorker.perform_async(android_registration_ids, android_options, TEACHER_FCM_KEY)
         end
 
         ios_registration_ids = teacher.devices.active.ios.pluck(:token)
@@ -71,7 +71,7 @@ class Comment < ActiveRecord::Base
             content_available: true,
             data: body_hash
           }
-          NotificationWorker.perform_async(ios_registration_ids, ios_options)
+          NotificationWorker.perform_async(ios_registration_ids, ios_options, TEACHER_FCM_KEY)
         end
       end
     else
@@ -89,7 +89,7 @@ class Comment < ActiveRecord::Base
             content_available: true,
             data: header_hash.merge!(body_hash)
           }
-          NotificationWorker.perform_async(android_registration_ids, android_options)
+          NotificationWorker.perform_async(android_registration_ids, android_options, PARENT_FCM_KEY)
         end
 
         ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
@@ -100,7 +100,7 @@ class Comment < ActiveRecord::Base
             content_available: true,
             data: body_hash
           }
-          NotificationWorker.perform_async(ios_registration_ids, ios_options)
+          NotificationWorker.perform_async(ios_registration_ids, ios_options, PARENT_FCM_KEY)
         end
       end
 

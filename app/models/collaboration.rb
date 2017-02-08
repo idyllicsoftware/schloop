@@ -133,7 +133,7 @@ class Collaboration < ActiveRecord::Base
           content_available: true,
           data: header_hash.merge!(body_hash)
         }
-        NotificationWorker.perform_async(android_registration_ids, android_options)
+        NotificationWorker.perform_async(android_registration_ids, android_options, TEACHER_FCM_KEY)
       end
 
       ios_registration_ids = teacher.devices.active.ios.pluck(:token)
@@ -144,7 +144,7 @@ class Collaboration < ActiveRecord::Base
           content_available: true,
           data: body_hash
         }
-        NotificationWorker.perform_async(ios_registration_ids, ios_options)
+        NotificationWorker.perform_async(ios_registration_ids, ios_options, TEACHER_FCM_KEY)
       end
     end
   end
