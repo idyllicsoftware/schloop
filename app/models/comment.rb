@@ -48,7 +48,8 @@ class Comment < ActiveRecord::Base
     if self.commentable.is_a?(Collaboration)
       body_hash = {
         type: 'collaboration_comment',
-        id: self.id
+        id: self.id,
+        collaboration_id: self.commentable_id
       }
       associated_teacher_ids = GradeTeacher.where(grade_id:grade_id, subject_id: subject_id).pluck(:teacher_id)
       teachers = Teacher.where(id: associated_teacher_ids)
@@ -77,7 +78,8 @@ class Comment < ActiveRecord::Base
     else
       body_hash = {
         type: 'followup_comment',
-        id: self.id
+        id: self.id,
+        followup_id: self.commentable_id
       }
       associated_student_ids = StudentProfile.where(grade_id: grade_id).pluck(:student_id)
       students = Student.active.where(id: associated_student_ids)
