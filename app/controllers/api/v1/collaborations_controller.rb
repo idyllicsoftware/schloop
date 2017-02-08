@@ -95,10 +95,8 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
 
   def get_comment
     errors, comments = [], []
-    bookmark = Bookmark.find_by(id: params[:bookmark_id])
-    errors << "Invalid bookmark to comment" if bookmark.blank?
 
-    collaboration = bookmark.collaboration
+    collaboration =  Collaboration.find_by(id: params[:collaboration_id])
     errors << "Invalid collaboration to comment" if collaboration.blank?
 
     if errors.blank?
