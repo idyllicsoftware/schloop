@@ -234,7 +234,6 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
   def activities
     errors, search_params = [], {}
-
     @student = Student.where(id: params[:student_id]).active.first 
     errors << "Student not found" if @student.blank?
 
@@ -266,7 +265,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
       search_params[:id] = associated_activity_ids
 
       category_ids = category_ids.split(',').map(&:to_i) if category_ids.present?
-      activities_data, total_records = Activity.grade_activities(search_params, mapping_data, page, category_ids)
+      activities_data, total_records = Activity.grade_activities(search_params, mapping_data, page, category_ids, @current_user)
     end
 
     if errors.blank?
