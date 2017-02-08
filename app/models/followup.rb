@@ -155,6 +155,7 @@ class Followup < ActiveRecord::Base
     students = Student.active.where(id: associated_student_ids)
 
     students.each do |student|
+      body_hash.merge!(student_id: student.id)
       android_registration_ids = student.parent.devices.active.android.pluck(:token)
       if android_registration_ids.present?
         android_options = {
