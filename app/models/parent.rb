@@ -54,6 +54,7 @@ class Parent < User
             :numericality => true,
             :length => {:minimum => 10, :maximum => 15}
   after_create :send_invitation
+  after_create :add_roles
 
   validate do |parent|
     parent.students.each do |student|
@@ -78,6 +79,12 @@ class Parent < User
       token = SecureRandom.uuid.gsub(/\-/, '')
       return token unless Teacher.where(token: token).first
     end
+  end
+
+  def add_roles
+    role = Role.
+    find_by(name: 'Parent')
+    UserRole.create(entity_type: self.class.name, entity_id: self.id, role_id: role.id)
   end
 
   def send_password_reset
