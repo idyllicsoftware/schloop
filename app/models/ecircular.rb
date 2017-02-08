@@ -33,7 +33,6 @@ class Ecircular < ActiveRecord::Base
 		circular_data = []
 		circulars = school.ecirculars
 		filter_circular_ids = filter_params[:id]
-		
 		return circular_data, 0 if filter_circular_ids.blank?
 
 		circulars = circulars.where(id: filter_circular_ids)
@@ -51,8 +50,13 @@ class Ecircular < ActiveRecord::Base
 			circulars = circulars.where(circular_tag: filter_params[:tags])
 		end
 
+		if user.is_a?(Parent) || user.is_a?(Teacher)
+			circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
+			
+		else
+			circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc)
+		end
 		total_records = circulars.count
-		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
 
 		circular_parents_by_ecircular_id = EcircularParent.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
 		circular_teachers_by_ecircular_id = EcircularTeacher.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
