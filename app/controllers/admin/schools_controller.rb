@@ -9,7 +9,7 @@ class Admin::SchoolsController < Admin::BaseController
   end
 
   def all
-    schools = School.select(:id, :name, :code, :board, :principal_name, :website, :address, :zip_code, :phone1, :phone2).order('created_at').all
+    schools = School.select(:id, :name, :code, :board, :principal_name, :website, :address, :zip_code, :phone1, :phone2).order('created_at DESC').all
     render :json => {success: true, schools: schools}
   end
 

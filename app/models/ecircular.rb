@@ -28,6 +28,7 @@ class Ecircular < ActiveRecord::Base
   # after_create :send_notification
 
   validates :title, :created_by_type, :created_by_id , :presence => true
+  validates :body, :length => {:maximum => 10000}
 
 	def self.school_circulars(school, user, filter_params={}, offset=0, page_size=50)
 		circular_data = []
