@@ -161,6 +161,7 @@ Rails.application.routes.draw do
       get  "/teacher/parents" => "teachers#index"
       get  "/teacher/ecirculars/:id/read" => 'teachers#circular_read'
 
+      get  "/ecirculars/circular_teachers" => "ecirculars#circular_teachers"
       post "/ecircular/tags" => "ecirculars#tags"
       post "/ecircular/create" => "ecirculars#create"
       get  "/ecirculars" => "ecirculars#index"
