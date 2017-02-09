@@ -5,8 +5,7 @@ require 'rails_helper'
 
 describe "API authentication" , type: :request do
 
-
-  it "Making a request without cookie token" do
+  it "Making a request without authentication" do
     get "/api/v1/teacher/profile", formate: :json
     # @response.status == 401
     # json = JSON.parse(response.body)
