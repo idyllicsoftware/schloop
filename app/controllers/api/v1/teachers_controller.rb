@@ -41,7 +41,7 @@ class Api::V1::TeachersController < Api::V1::BaseController
       errors << "Invalid credentials"
     end
 
-    errors << "No Grade assigned to a teacher" if errors.blank? and teacher.grade_teachers.blank?
+    errors << "No Grade assigned to a teacher" if errors.blank? and teacher.no_grade_assigned?
 
     if errors.blank?
       teacher.sign_in_count += 1

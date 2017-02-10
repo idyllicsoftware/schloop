@@ -50,6 +50,8 @@ class Parent < User
   has_many :parent_details,  dependent: :destroy
   has_many :devices, as: :deviceable, dependent: :destroy
 
+  scope :active, -> { where(activation_status: true)}
+
   validates :cell_number, :presence => true,
             :numericality => true,
             :length => {:minimum => 10, :maximum => 15}
