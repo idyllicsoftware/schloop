@@ -83,6 +83,10 @@ class Teacher < ActiveRecord::Base
     new_record? ? false : super
   end
 
+  def no_grade_assigned?
+    self.grade_teachers.blank?
+  end
+
   def associated_students(search_params = {})
     filtered_student_ids = []
     division_ids = self.grade_teachers.pluck(:division_id).uniq

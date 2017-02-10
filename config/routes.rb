@@ -207,8 +207,6 @@ Rails.application.routes.draw do
 
       post "/followup" => 'followups#followup'
       get  "parent/followups" => 'followups#index'
-      get  "teacher/followups" => 'followups#index'
-      #TODO::remove get  "parent/followups" route after updates
       get  "parent/followups/:student_id" => 'followups#index'
 
       get "/followups/:bookmark_id/like" => "followups#like"

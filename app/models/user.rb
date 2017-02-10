@@ -51,13 +51,14 @@ class User < ActiveRecord::Base
   has_many :user_roles
   has_many :roles, :through => :user_roles
   has_many :devices, as: :deviceable
-
   belongs_to :school
+
+  scope :active, -> { where(activation_status: true)}
+  scope :de_active, -> { where(activation_status: false)}
+
   validates :first_name, :presence => true, :length => { :maximum => 30 }
   validates :middle_name,  :length => { :maximum => 30 }
   validates :last_name, :presence => true, :length => { :maximum => 30 }
-#  validates :work_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
-#  validates :cell_number, :presence => true, numericality: { only_integer: true }, :length => { :maximum => 15 }
 
   before_save :set_user_token
   def set_user_token
