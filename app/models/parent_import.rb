@@ -16,7 +16,6 @@ class ParentImport
   def save
     if imported_parents[0] != false 
       if imported_parents.map(&:valid?).all?
-        
         imported_parents.each_with_index do |parent, index|
           existing_parent = Parent.find_by_email(parent.email)
           if !existing_parent.present?
@@ -56,14 +55,14 @@ class ParentImport
     spreadsheet = Roo::Spreadsheet.open(file.path)
     student_headers = ["first_name", "last_name", "email", "cell_number", "student_first_name", "student_last_name", "division"]
     header = spreadsheet.row(1)
-    header_diff =student_headers - header
-    if header_diff == []
+    if student_headers - header == [] && header - student_headers == []
       (2..spreadsheet.last_row).map do |i|
         row = Hash[[header, spreadsheet.row(i)].transpose]
         row["school_id"] = @@school_id
         password =  Devise.friendly_token.first(8)
         row["password"] = password
         division = Division.where(:grade_id => @@grade_id, :name => row["division"])
+        return false, "Invalid division in CSV file" if division.blank?
         division_id = division.first.id rescue ""
         parent_data = {"first_name" => row["first_name"], "last_name" => row["last_name"], "email" => row["email"], "cell_number" => row["cell_number"], "school_id" =>  row["school_id"]}
         student_data = {"first_name" => row["student_first_name"], "last_name" => row["student_last_name"], "school_id" =>  row["school_id"]}
