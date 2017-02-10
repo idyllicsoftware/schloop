@@ -41,14 +41,16 @@ class Comment < ActiveRecord::Base
     subject_id = bookmark.subject_id
     header_hash = {
       title: "New Comment Added",
-      body:  bookmark.title,
+      body:  self.message,
       sound: 'default',
     }
 
     if self.commentable.is_a?(Collaboration)
       body_hash = {
         type: 'collaboration_comment',
-        id: self.id
+        id: self.id,
+        collaboration_id: self.commentable_id,
+        bookmark_id: self.commentable.bookmark_id
       }
       associated_teacher_ids = GradeTeacher.where(grade_id:grade_id, subject_id: subject_id).pluck(:teacher_id)
       teachers = Teacher.where(id: associated_teacher_ids)
@@ -60,7 +62,7 @@ class Comment < ActiveRecord::Base
             content_available: true,
             data: header_hash.merge!(body_hash)
           }
-          NotificationWorker.perform_async(android_registration_ids, android_options)
+          NotificationWorker.perform_async(android_registration_ids, android_options, TEACHER_FCM_KEY)
         end
 
         ios_registration_ids = teacher.devices.active.ios.pluck(:token)
@@ -71,13 +73,15 @@ class Comment < ActiveRecord::Base
             content_available: true,
             data: body_hash
           }
-          NotificationWorker.perform_async(ios_registration_ids, ios_options)
+          NotificationWorker.perform_async(ios_registration_ids, ios_options, TEACHER_FCM_KEY)
         end
       end
     else
       body_hash = {
         type: 'followup_comment',
-        id: self.id
+        id: self.id,
+        followup_id: self.commentable_id,
+        bookmark_id: self.commentable.bookmark_id
       }
       associated_student_ids = StudentProfile.where(grade_id: grade_id).pluck(:student_id)
       students = Student.active.where(id: associated_student_ids)
@@ -89,7 +93,7 @@ class Comment < ActiveRecord::Base
             content_available: true,
             data: header_hash.merge!(body_hash)
           }
-          NotificationWorker.perform_async(android_registration_ids, android_options)
+          NotificationWorker.perform_async(android_registration_ids, android_options, PARENT_FCM_KEY)
         end
 
         ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
@@ -100,7 +104,7 @@ class Comment < ActiveRecord::Base
             content_available: true,
             data: body_hash
           }
-          NotificationWorker.perform_async(ios_registration_ids, ios_options)
+          NotificationWorker.perform_async(ios_registration_ids, ios_options, PARENT_FCM_KEY)
         end
       end
 

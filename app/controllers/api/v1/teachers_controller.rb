@@ -35,8 +35,15 @@ class Api::V1::TeachersController < Api::V1::BaseController
   end
 
   def login
+    errors = []
     teacher = Teacher.find_by_email(params[:teacher][:email])
-    if teacher.present? && teacher.valid_password?(params[:teacher][:password])
+    unless teacher.present? && teacher.valid_password?(params[:teacher][:password])
+      errors << "Invalid credentials"
+    end
+
+    errors << "No Grade assigned to a teacher" if errors.blank? and teacher.grade_teachers.blank?
+
+    if errors.blank?
       teacher.sign_in_count += 1
       teacher.save
       login_response = {
@@ -55,7 +62,7 @@ class Api::V1::TeachersController < Api::V1::BaseController
         success: false,
         error:  {
           code: 0,
-          message: "Invalid credentials"
+          message: errors.join(",")
         },
         data: nil
       }

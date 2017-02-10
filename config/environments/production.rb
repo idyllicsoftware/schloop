@@ -78,7 +78,8 @@ Rails.application.configure do
   }
   MAILER_HOST = "http://schloop.co"
   # FCM_KEY = 'AIzaSyDe3HNn_owddmmaGABY-hXRLaMbFOqYiOo'
-  FCM_KEY = 'AIzaSyAEWrNuYF0CfCtMsywjbmS1YIGF1_qoIlk'
+  PARENT_FCM_KEY = 'AIzaSyAEWrNuYF0CfCtMsywjbmS1YIGF1_qoIlk'
+  TEACHER_FCM_KEY = 'AIzaSyC9eh67JZ06XAYMvAqayLJ16eHbibeEs0Q'
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
