@@ -1,4 +1,4 @@
-# == Schema Information
+a# == Schema Information
 #
 # Table name: activities
 #
@@ -28,6 +28,9 @@ class Activity < ActiveRecord::Base
   enum status: { active: 0, inactive: 1 }
 
   scope :active, -> { where(status: Activity.statuses['active']) }
+
+  validates :details, :length => {:maximum => 1500}
+  validates :pre_requisite, :length => {:maximum => 1500}
 
   def self.grade_activities(search_params, mapping_data, page, category_ids, user=nil)
     if page.present?

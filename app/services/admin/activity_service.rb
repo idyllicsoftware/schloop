@@ -1,7 +1,7 @@
 class Admin::ActivityService < BaseService
   def validate_params(params)
     char_limit_50_fields = %w(topic title)
-    char_limit_1000_fields = %w(details pre_requisite)
+    char_limit_1500_fields = %w(details pre_requisite)
     mandatory_fields = %w(master_grade_id master_subject_id topic title categories)
     errors = []
     %w(master_grade_id master_subject_id topic title categories).each do |field|
@@ -16,8 +16,8 @@ class Admin::ActivityService < BaseService
           end
         end
 
-        if char_limit_1000_fields.include?(field)
-          if value.length > 1000
+        if char_limit_1500_fields.include?(field)
+          if value.length > 1500
             errors << 'Please enter characters less than 1000 for field ' + field.humanize
             next
           end
