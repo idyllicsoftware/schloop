@@ -23,9 +23,9 @@ class Api::ApiController < ApplicationController
 
   def check_validity_of_user
     re_login_required = false
-    if @current_user.is_a?(Teacher) and teacher.no_grade_assigned?
+    if @current_user.is_a?(Teacher) and @current_user.no_grade_assigned?
       re_login_required = true
-    elsif @current_user.is_a?(Parent) and !parent.active
+    elsif @current_user.is_a?(Parent) and !@current_user.active
       re_login_required = true
     end
     render json: 'Important data changed, Need to Re-login', status: :unauthorized if re_login_required
