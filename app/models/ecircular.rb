@@ -165,7 +165,7 @@ class Ecircular < ActiveRecord::Base
 			end
 
 			ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
-			if android_registration_ids.present?
+			if ios_registration_ids.present?
 				ios_options = {
 					notification: header_hash,
 					priority: "high",
