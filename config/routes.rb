@@ -207,6 +207,7 @@ Rails.application.routes.draw do
 
       post "/followup" => 'followups#followup'
       get  "parent/followups" => 'followups#index'
+      get  "teacher/followups" => 'followups#index'
       get  "parent/followups/:student_id" => 'followups#index'
 
       get "/followups/:bookmark_id/like" => "followups#like"
@@ -214,7 +215,6 @@ Rails.application.routes.draw do
       get  "/followups/:bookmark_id/view" => "followups#view"
       post "/followups/:bookmark_id/comment" => 'followups#comment'
 
-      get  "/followups/activities" => "activities#shared_activities"
 
     end
   end
