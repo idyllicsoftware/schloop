@@ -50,9 +50,9 @@ class Activity < ActiveRecord::Base
     total_records = activities.count
     activities = activities.offset(offset).limit(page_size) if page.present?
 
-    if user.is_a?(Parent)
+    # if user.is_a?(Parent)
       activities = activities.includes(:activity_shares).sort_by { |activity| activity.activity_shares.last.created_at }.reverse
-    end
+    # end
     # activities_data << activity.data_for_activity(mapping_data)
     activities.each do |activity|
       activities_data << activity.data_for_activity(mapping_data, user)
