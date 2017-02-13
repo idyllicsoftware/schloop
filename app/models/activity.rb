@@ -29,6 +29,9 @@ class Activity < ActiveRecord::Base
 
   scope :active, -> { where(status: Activity.statuses['active']) }
 
+  validates :details, :length => {:maximum => 1500}
+  validates :pre_requisite, :length => {:maximum => 1500}
+
   def self.grade_activities(search_params, mapping_data, page, category_ids, user=nil)
     if page.present?
       page = page.to_s.to_i
