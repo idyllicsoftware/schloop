@@ -68,7 +68,7 @@ class ParentImport
         student_data = {"first_name" => row["student_first_name"], "last_name" => row["student_last_name"], "school_id" =>  row["school_id"]}
         student_profile_data = {"grade_id" => @@grade_id, "division_id"=> division_id, :status => 0}
         parent_detail_data = {"school_id" => @@school_id, "first_name" => row["first_name"], "last_name" => row["last_name"]}
-        parent = Parent.find_by(email: row["email"])
+        parent = Parent.find_by(email: row["email"].downcase)
         if parent.blank?
            parent_data.merge!("password" => row["password"])
            parent = Parent.new(parent_data)
