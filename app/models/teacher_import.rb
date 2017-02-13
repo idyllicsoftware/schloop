@@ -51,7 +51,7 @@ class TeacherImport
         row["school_id"] = @@school_id
 
         
-        teacher = Teacher.find_by(email: row["email"]) || Teacher.new(row)
+        teacher = Teacher.find_by(email: row["email"].downcase) || Teacher.new(row)
         teacher.attributes = row.to_hash
         teacher
       end
