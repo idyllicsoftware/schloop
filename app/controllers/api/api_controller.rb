@@ -4,8 +4,7 @@ class Api::ApiController < ApplicationController
   after_filter :log_response
 
   def authenticate
-    authenticate_token || render_unauthorized
-    check_validity_of_user
+    authenticate_token || render_unauthorized || check_validity_of_user
   end
 
   def authenticate_token
