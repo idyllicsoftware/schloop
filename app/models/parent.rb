@@ -84,8 +84,7 @@ class Parent < User
   end
 
   def add_roles
-    role = Role.
-    find_by(name: 'Parent')
+    role = Role.find_by(name: 'Parent')
     UserRole.create(entity_type: self.class.name, entity_id: self.id, role_id: role.id)
   end
 
