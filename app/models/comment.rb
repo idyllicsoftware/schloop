@@ -22,14 +22,13 @@ class Comment < ActiveRecord::Base
 
   after_create :send_notification
   def as_json
-    teacher = Teacher.find_by(id: self.commented_by)
     {
       id: id,
       message: message,
       commenter: {
         id: commented_by,
-        first_name: teacher.first_name,
-        last_name: teacher.last_name,
+        first_name: "",
+        last_name: "",
       },
       created_at: created_at,
       updated_at: updated_at
