@@ -100,8 +100,16 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
     errors << "Invalid collaboration to comment" if collaboration.blank?
 
     if errors.blank?
-      collaboration.comments.each do |comment|
-        comments << comment.as_json
+      collaboration_comments = collaboration.comments.order('created_at asc')
+      teacher_index_by_id = Teacher.where(id: collaboration.comments.pluck(:commented_by)).index_by(&:id)
+      collaboration_comments.each do |comment|
+        teacher = teacher_index_by_id[comment.commented_by]
+        if teacher.present?
+          comment_data = comment.as_json
+          comment_data[:commenter][:first_name] = teacher.first_name
+          comment_data[:commenter][:last_name] = teacher.last_name
+          comments << comment_data
+        end
       end
     end
     render json: {
