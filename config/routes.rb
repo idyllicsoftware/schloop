@@ -161,10 +161,12 @@ Rails.application.routes.draw do
       get  "/teacher/parents" => "teachers#index"
       get  "/teacher/ecirculars/:id/read" => 'teachers#circular_read'
 
+      get  "/ecirculars/circular_teachers" => "ecirculars#circular_teachers"
       post "/ecircular/tags" => "ecirculars#tags"
       post "/ecircular/create" => "ecirculars#create"
       get  "/ecirculars" => "ecirculars#index"
       post "/ecirculars" => "ecirculars#index"
+      get  "/ecirculars/:id" => "ecirculars#circular"
       get  "/ecirculars/circular_teachers" => "ecirculars#circular_teachers"
 
       get  "/activities" => "activities#index"
@@ -198,6 +200,7 @@ Rails.application.routes.draw do
       get "/collaboration/:bookmark_id/like" => "collaborations#like"
       get "/collaboration/:bookmark_id/unlike" => "collaborations#unlike"
       get  "/collaboration/:bookmark_id/view" => "collaborations#view"
+      get "/collaboration/:collaboration_id/comments" => 'collaborations#get_comment'
       post "/collaboration/:bookmark_id/comment" => 'collaborations#comment'
       get  "/collaboration/:bookmark_id/add_to_my_bookmarks" => 'collaborations#add_to_my_bookmarks'
 
@@ -205,7 +208,6 @@ Rails.application.routes.draw do
       post "/followup" => 'followups#followup'
       get  "parent/followups" => 'followups#index'
       get  "teacher/followups" => 'followups#index'
-      #TODO::remove get  "parent/followups" route after updates
       get  "parent/followups/:student_id" => 'followups#index'
 
       get "/followups/:bookmark_id/like" => "followups#like"

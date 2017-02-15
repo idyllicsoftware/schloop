@@ -44,7 +44,7 @@ class Collaboration < ActiveRecord::Base
 
     teachers_index_by_id = Teacher.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
-    valid_bookmarks =valid_bookmarks.sort_by(&:created_at).reverse
+    valid_bookmarks = valid_bookmarks.sort_by{|bookmark| bookmark.collaboration.created_at}.reverse
     valid_bookmarks.each do |bookmark|
       likes = []
       bookmark_formatted_data = bookmark.formatted_data
@@ -133,7 +133,7 @@ class Collaboration < ActiveRecord::Base
           content_available: true,
           data: header_hash.merge!(body_hash)
         }
-        NotificationWorker.perform_async(android_registration_ids, android_options)
+        NotificationWorker.perform_async(android_registration_ids, android_options, TEACHER_FCM_KEY)
       end
 
       ios_registration_ids = teacher.devices.active.ios.pluck(:token)
@@ -144,7 +144,7 @@ class Collaboration < ActiveRecord::Base
           content_available: true,
           data: body_hash
         }
-        NotificationWorker.perform_async(ios_registration_ids, ios_options)
+        NotificationWorker.perform_async(ios_registration_ids, ios_options, TEACHER_FCM_KEY)
       end
     end
   end

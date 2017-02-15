@@ -208,7 +208,7 @@ class Bookmark < ActiveRecord::Base
     else
       teacher = user
       teacher_grade_subjects = teacher.grade_teachers.pluck(:grade_id, :subject_id).uniq
-      return collaborated_bookmarks if teacher_grade_subjects.blank?
+      return [] if teacher_grade_subjects.blank?
 
       teacher_grade_subjects.each do |grade_subject|
         grade_id = grade_subject.first

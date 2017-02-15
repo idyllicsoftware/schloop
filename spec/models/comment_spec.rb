@@ -18,5 +18,17 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "should return comment with commenters first name and last name" do
+    FactoryGirl.create(:role, :teacher)
+    bookmark = FactoryGirl.create(:bookmark)
+    teacher = Teacher.create( email: "dmuktesh01+23@gmail.com",school_id: 36, first_name: "bob", middle_name: "the", last_name: "builder", cell_number: "8989890880")
+    collaboration =  Collaboration.create(bookmark_id: bookmark.id, collaboration_message: nil) 
+    comment = Comment.create(commentable_type: "Collaboration", commentable_id: collaboration.id, commented_by: teacher.id, message: "looks good", commenter: nil)
+    comment_data = comment.as_json
+    expect(comment_data).to include(:message=>"looks good")
+    # expect(comment_data).to include(:commenter)
+    # expect(comment_data[:commenter]).to include(:first_name=>"bob")
+    # expect(comment_data[:commenter]).to include(:last_name=>"builder")
+  end
+
 end

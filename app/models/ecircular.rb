@@ -28,12 +28,12 @@ class Ecircular < ActiveRecord::Base
   # after_create :send_notification
 
   validates :title, :created_by_type, :created_by_id , :presence => true
+  validates :body, :length => {:maximum => 10000}
 
 	def self.school_circulars(school, user, filter_params={}, offset=0, page_size=50)
 		circular_data = []
 		circulars = school.ecirculars
 		filter_circular_ids = filter_params[:id]
-		
 		return circular_data, 0 if filter_circular_ids.blank?
 
 		circulars = circulars.where(id: filter_circular_ids)
@@ -51,8 +51,13 @@ class Ecircular < ActiveRecord::Base
 			circulars = circulars.where(circular_tag: filter_params[:tags])
 		end
 
+		if user.is_a?(Parent) || user.is_a?(Teacher)
+			circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
+			
+		else
+			circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc)
+		end
 		total_records = circulars.count
-		circulars = circulars.includes(:attachments, ecircular_recipients: [:grade, :division]).order(id: :desc).offset(offset).limit(page_size)
 
 		circular_parents_by_ecircular_id = EcircularParent.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
 		circular_teachers_by_ecircular_id = EcircularTeacher.where(ecircular_id: circulars.ids).group_by{|x| x.ecircular_id}
@@ -156,18 +161,18 @@ class Ecircular < ActiveRecord::Base
 					content_available: true,
 					data: header_hash.merge!(body_hash)
 				}
-				NotificationWorker.perform_async(android_registration_ids, android_options)
+				NotificationWorker.perform_async(android_registration_ids, android_options, PARENT_FCM_KEY)
 			end
 
 			ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
-			if android_registration_ids.present?
+			if ios_registration_ids.present?
 				ios_options = {
 					notification: header_hash,
 					priority: "high",
 					content_available: true,
 					data: body_hash
 				}
-				NotificationWorker.perform_async(ios_registration_ids, ios_options)
+				NotificationWorker.perform_async(ios_registration_ids, ios_options, PARENT_FCM_KEY)
 			end
 		end
 	end

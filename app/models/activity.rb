@@ -29,6 +29,9 @@ class Activity < ActiveRecord::Base
 
   scope :active, -> { where(status: Activity.statuses['active']) }
 
+  validates :details, :length => {:maximum => 1500}
+  validates :pre_requisite, :length => {:maximum => 1500}
+
   def self.grade_activities(search_params, mapping_data, page, category_ids, user=nil)
     if page.present?
       page = page.to_s.to_i
@@ -44,10 +47,12 @@ class Activity < ActiveRecord::Base
                     .where("categories.id in (?)", category_ids).distinct
     end
     activities = activities.order(id: :desc)
-
     total_records = activities.count
     activities = activities.offset(offset).limit(page_size) if page.present?
-    activities = activities.sort_by(& :created_at).reverse
+
+    if user.is_a?(Parent)
+      activities = activities.includes(:activity_shares).sort_by { |activity| activity.activity_shares.last.created_at }.reverse
+    end
     # activities_data << activity.data_for_activity(mapping_data)
     activities.each do |activity|
       activities_data << activity.data_for_activity(mapping_data, user)

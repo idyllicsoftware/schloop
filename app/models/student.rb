@@ -32,8 +32,18 @@ class Student < ActiveRecord::Base
 		end
 	end
 
+	after_save :deactivate_student
+
 	def name
 		"#{self.first_name} #{self.middle_name} #{self.last_name}"
+	end
+
+	def deactivate_student
+		childs= Student.where(parent_id: parent_id).where(activation_status: true)
+		if childs.empty?
+			parent.activation_status = false
+			parent.save!
+		end
 	end
 
 end

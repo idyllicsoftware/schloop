@@ -93,6 +93,32 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
     render json: { success: errors.blank?, errors: {code: 0, message: errors}, bookmark: (bookmark.id rescue 0)}
   end
 
+  def get_comment
+    errors, comments = [], []
+
+    collaboration =  Collaboration.find_by(id: params[:collaboration_id])
+    errors << "Invalid collaboration to comment" if collaboration.blank?
+
+    if errors.blank?
+      collaboration_comments = collaboration.comments.order('created_at asc') rescue []
+      teacher_index_by_id = Teacher.where(id: collaboration.comments.pluck(:commented_by)).index_by(&:id) rescue {}
+      collaboration_comments.each do |comment|
+        teacher = teacher_index_by_id[comment.commented_by]
+        if teacher.present?
+          comment_data = comment.as_json
+          comment_data[:commenter][:first_name] = teacher.first_name
+          comment_data[:commenter][:last_name] = teacher.last_name
+          comments << comment_data
+        end
+      end
+    end
+    render json: {
+      success: errors.blank?,
+      errors: {code: 0, message: errors},
+      data: {comments: comments}
+    }
+  end
+
   def comment
     errors = []
     bookmark = Bookmark.find_by(id: params[:bookmark_id])

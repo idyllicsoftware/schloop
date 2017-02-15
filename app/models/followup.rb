@@ -40,7 +40,7 @@ class Followup < ActiveRecord::Base
 
     parents_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
-    valid_bookmarks = valid_bookmarks.sort_by(&:created_at).reverse
+    valid_bookmarks = valid_bookmarks.sort_by{|bookmark| bookmark.followup.created_at}.reverse
     valid_bookmarks.each do |bookmark|
       likes = []
       bookmark_formatted_data = bookmark.formatted_data
@@ -92,7 +92,7 @@ class Followup < ActiveRecord::Base
     users_index_by_id = Parent.where(id: liked_bookmarks.pluck(:user_id)).index_by(&:id)
 
     liked_bookmarks_group_by_id = liked_bookmarks.group_by do |x| x.sc_trackable_id end
-    valid_bookmarks = valid_bookmarks.sort_by(&:created_at).reverse
+    valid_bookmarks = valid_bookmarks.sort_by{|bookmark| bookmark.followup.created_at}.reverse
     valid_bookmarks.each do |bookmark|
       likes = []
       bookmark_formatted_data = bookmark.formatted_data
@@ -155,6 +155,7 @@ class Followup < ActiveRecord::Base
     students = Student.active.where(id: associated_student_ids)
 
     students.each do |student|
+      body_hash.merge!(student_id: student.id)
       android_registration_ids = student.parent.devices.active.android.pluck(:token)
       if android_registration_ids.present?
         android_options = {
@@ -162,7 +163,7 @@ class Followup < ActiveRecord::Base
           content_available: true,
           data: header_hash.merge!(body_hash)
         }
-        NotificationWorker.perform_async(android_registration_ids, android_options)
+        NotificationWorker.perform_async(android_registration_ids, android_options, PARENT_FCM_KEY)
       end
 
       ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
@@ -173,7 +174,7 @@ class Followup < ActiveRecord::Base
           content_available: true,
           data: body_hash
         }
-        NotificationWorker.perform_async(ios_registration_ids, ios_options)
+        NotificationWorker.perform_async(ios_registration_ids, ios_options, PARENT_FCM_KEY)
       end
     end
   end

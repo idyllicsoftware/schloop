@@ -81,6 +81,42 @@ class Api::V1::EcircularsController < Api::V1::BaseController
     render json: index_response
   end
 
+  def circular
+    errors = []
+
+    ecircular = Ecircular.find_by(id: params[:id])
+    errors << "Ecircular not found" if ecircular.blank?
+
+    is_circular_for_teacher = EcircularTeacher.where(teacher_id: @current_user.id).where(ecircular_id: params[:id]).present?
+
+    unless is_circular_for_teacher
+      errors << "Specified Circular is not available for you"
+    end
+
+    circular_teachers_by_ecircular_id = EcircularTeacher.where(ecircular_id: params[:id]).group_by{|x| x.ecircular_id}
+    circular_data = ecircular.data_for_circular({}, circular_teachers_by_ecircular_id)
+
+    if errors.blank?
+      show_response = {
+        success: true,
+        error: nil,
+        data: {
+          circulars: circular_data
+        }
+      }
+    else
+      show_response = {
+        success: false,
+        error:  {
+          code: 0,
+          message: errors.flatten
+        },
+        data: nil
+      }
+    end
+    render json: show_response
+  end
+
   # params to create ecircular
   # {
   #   title: string,

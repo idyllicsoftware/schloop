@@ -31,7 +31,7 @@
 #  invited_by_id          :integer
 #  invited_by_type        :string
 #  invitations_count      :integer          default(0)
-#  activation_status      :boolean
+#  activation_status      :boolean          default(TRUE)
 #
 # Indexes
 #
