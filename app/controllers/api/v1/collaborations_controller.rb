@@ -100,8 +100,8 @@ class Api::V1::CollaborationsController < Api::V1::BaseController
     errors << "Invalid collaboration to comment" if collaboration.blank?
 
     if errors.blank?
-      collaboration_comments = collaboration.comments.order('created_at asc')
-      teacher_index_by_id = Teacher.where(id: collaboration.comments.pluck(:commented_by)).index_by(&:id)
+      collaboration_comments = collaboration.comments.order('created_at asc') rescue []
+      teacher_index_by_id = Teacher.where(id: collaboration.comments.pluck(:commented_by)).index_by(&:id) rescue {}
       collaboration_comments.each do |comment|
         teacher = teacher_index_by_id[comment.commented_by]
         if teacher.present?
