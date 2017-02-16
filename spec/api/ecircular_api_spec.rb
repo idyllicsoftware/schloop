@@ -28,7 +28,7 @@ describe "Ecircular API" , type: :request do
       post '/api/v1/ecircular/create', create_params, @headers
       expect(response.status).to eq(200)
     end
-    
+
   end
 
 
