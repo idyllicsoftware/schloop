@@ -20,56 +20,36 @@ RSpec.describe Activity, type: :model do
   before(:each) do
     FactoryGirl.create(:role,:teacher)
     FactoryGirl.create(:role,:parent)
-    MasterSubject.create!(
-      {id:7, name:"English", 
-      name_map: "english", 
-      created_at:"Fri, 25 Nov 2016 15:12:38 IST +05:30",
-      updated_at:"Fri, 25 Nov 2016 15:12:38 IST +05:30"})
-    MasterSubject.create!({
-      id: 8, name: "General Knowledge", 
-      name_map: "general_knowledge", 
-      created_at: "Fri, 25 Nov 2016 15:12:38 IST +05:30", 
-      updated_at: "Fri, 25 Nov 2016 15:12:38 IST +05:30"} )
-    MasterGrade.create!(
-      {id: 1, name: "Playgroup", 
-      name_map: "playgroup", 
-      created_at: "Fri, 25 Nov 2016 15:12:38 IST +05:30", 
-      updated_at: "Fri, 25 Nov 2016 15:12:38 IST +05:30"} )
-    Activity.create!({id:1, teaches:"Thinking & Listening", 
+    @master_subject1 = FactoryGirl.create(:master_subject, :Arts)
+    @master_subject2 = FactoryGirl.create(:master_subject, :Algebra)
+    @master_grade = FactoryGirl.create(:master_grade, :Playgroup)
+    @activity1 = Activity.create!({teaches:"Thinking & also Listening", 
       topic:"Early Vocabulary", 
       title:"Before the Alphabet: Speak, Speak, Speak & listen", 
-      master_grade_id: 1, 
-      master_subject_id: 7, 
+      master_grade_id: @master_grade.id, 
+      master_subject_id: @master_subject1.id, 
       details:"1. Speak with kids as an individual and not as a child.", 
       pre_requisite: "None", 
-      created_at: "Tue, 27 Dec 2016 23:07:06 IST +05:30", 
-      updated_at: "Tue, 27 Dec 2016 23:07:06 IST +05:30", 
       status: "active"})
-    Activity.create!({id:5, teaches:"Object & Color Recognition", 
+    @activity2 = Activity.create!({teaches:"Object & Color Recognition", 
       topic:"Colors", 
       title:"What's My Color?", 
-      master_grade_id:1, 
-      master_subject_id: 8, 
+      master_grade_id: @master_grade.id, 
+      master_subject_id: @master_subject2.id, 
       details:"• Parents need to play a puzzle game by asking simple questions to kids.", 
-      created_at:"Wed, 11 Jan 2017 14:26:11 IST +05:30", 
-      updated_at:"Wed, 11 Jan 2017 14:26:11 IST +05:30", 
       status: 0})
-    ActivityShare.create!({
-      id:35, activity_id:1,
+    ActivityShare.create!({ activity_id: @activity1.id,
       school_id:1, 
       teacher_id:20, 
       grade_id:3, 
       division_id:6, 
-      created_at:"Wed, 01 Feb 2017 21:20:19 IST +05:30",
-      updated_at:"Wed, 01 Feb 2017 21:20:19 IST +05:30"})
-    ActivityShare.create!({
-      id:26, activity_id:5, 
+    })
+    ActivityShare.create!({activity_id: @activity2.id, 
       school_id:1, 
       teacher_id:21, 
       grade_id:13, 
       division_id:20, 
-      created_at:"Wed, 01 Feb 2017 20:25:50 IST +05:30", 
-      updated_at:"Wed, 01 Feb 2017 20:25:50 IST +05:30"})
+    })
    # @teacher = instance_double("Teacher", id:151, 
    #   email:"supriya+1@idyllic.co", 
    #   school_id:32, 
@@ -88,7 +68,6 @@ RSpec.describe Activity, type: :model do
     #  school_id:32)
     @parent = FactoryGirl.create(:parent)
     @activity_ids = Activity.ids
-
   end
   it "check that activities to be returned are sorted in reverse order of created_at of activity_shares" do 
     records,count = Activity.grade_activities({id: @activity_ids},nil,nil,nil,@parent)
