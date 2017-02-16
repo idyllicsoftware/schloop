@@ -29,7 +29,7 @@ describe "Teacher API authentication" , type: :request do
       @school = create(:school)
     end
 
-    it "returns a teacher profile" do
+    it "Register a teacher" do
       teacher_attrs = attributes_for(:teacher)
       teacher_attrs.merge!(school_code: @school.code)
       post '/api/v1/teacher/register', {teacher: teacher_attrs}
@@ -46,7 +46,6 @@ describe "Teacher API authentication" , type: :request do
       expect(json["error"]["code"]).to eq(0)
       expect(json["error"]["message"]).to eq(["Invalid School code"])
     end
-
   end
 
 end
