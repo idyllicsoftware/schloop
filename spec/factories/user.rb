@@ -8,6 +8,7 @@ FactoryGirl.define do
 	    last_name "M"
 	    work_number nil
 	    cell_number "4555545127"
+	    type "SchoolAdmin"
 	    association :school, factory: :school
 	end
 	trait :product_admin do
@@ -18,6 +19,7 @@ FactoryGirl.define do
 	    last_name "Admin"
 	    work_number nil
 	    cell_number "4555545127"
+   	    type "ProductAdmin"
 	    school_id nil
 	end
   end
