@@ -27,6 +27,8 @@ class Activity < ActiveRecord::Base
   enum file_sub_type: { reference: 0, thumbnail: 1 }
   enum status: { active: 0, inactive: 1 }
 
+  after_create :send_notification
+
   scope :active, -> { where(status: Activity.statuses['active']) }
 
   validates :details, :length => {:maximum => 1500}
@@ -169,6 +171,47 @@ class Activity < ActiveRecord::Base
     return {success: errors.blank?, errors: errors, data: {}}
   end
 
+  def send_notification
+    header_hash = { 
+      title: "New Activity Added",
+      body: title,
+      sound: 'default'
+    }
+    body_hash = {
+      type: 'activity',
+      id: id
+    }
+    associated_teacher_ids = []
+    GradeTeacher.includes(grade: [:master_grade],subject: [:master_subject]).all.each do |record|
+      if record.grade.master_grade.id == master_grade_id && record.subject.master_subject.id == master_subject_id
+        associated_teacher_ids << record.teacher_id 
+      end
+    end
+    associated_teacher_ids = associated_teacher_ids.uniq
+    teachers = Teacher.where(id: associated_teacher_ids)
+    teachers.each do |teacher|
+      android_registration_ids = teacher.devices.active.android.pluck(:token)
+      if android_registration_ids.present?
+        android_options = {
+          priority: "high",
+          content_available: true,
+          data: header_hash.merge!(body_hash)
+        }
+        NotificationWorker.perform_async(android_registration_ids, android_options, TEACHER_FCM_KEY)
+      end
+
+      ios_registration_ids = teacher.devices.active.ios.pluck(:token)
+      if ios_registration_ids.present?
+        ios_options = {
+          notification: header_hash,
+          priority: "high",
+          content_available: true,
+          data: body_hash
+        }
+        NotificationWorker.perform_async(ios_registration_ids, ios_options, TEACHER_FCM_KEY)
+      end
+    end
+  end
   private
 
   def upload_files(activity, reference_files, thumbnail_file)
