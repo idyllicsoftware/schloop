@@ -183,7 +183,7 @@ class Activity < ActiveRecord::Base
     }
     associated_teacher_ids = []
     GradeTeacher.includes(grade: [:master_grade],subject: [:master_subject]).all.each do |record|
-      if record.grade.master_grade.id == master_grade_id && record.subject.master_subject.id == master_subject_id
+      if record.grade.master_grade_id == master_grade_id && record.subject.master_subject_id == master_subject_id
         associated_teacher_ids << record.teacher_id 
       end
     end
@@ -208,6 +208,7 @@ class Activity < ActiveRecord::Base
           content_available: true,
           data: body_hash
         }
+
         NotificationWorker.perform_async(ios_registration_ids, ios_options, TEACHER_FCM_KEY)
       end
     end

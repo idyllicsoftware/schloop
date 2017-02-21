@@ -103,11 +103,22 @@ RSpec.describe Activity, type: :model do
     end
   end
   describe "#send_notification" do
-    it "check notification are enequed", send: true do
-      Activity.create(teaches: "Shapes Identification & reasoning ", topic: "Shapes", title: "2D shape Flashcards", master_grade_id: 4, master_subject_id: 14, details: "- Introduce the shape with a flashcard. (Introduce...", pre_requisite: "Shape flashcards, paper, pencil, crayons/sand, glu..." )
-      ActiveSupport::Notifications.subscribe("sql.active_record") do |name, start, finish, id, query|
-        puts query.to_yaml
-      end
+    it "check notification are enequed", send: true do  
+      stats = Sidekiq::Stats.new    
+      past_job_count = stats.processed + stats.enqueued + stats.failed
+
+      school = School.create(name: "Loyla", address: "pune", zip_code: "400103", phone1: "07588584810", phone2: "07588584810", website: "www.loyla.com", code: "LO0001", board: nil, principal_name: nil)
+      grade = Grade.create(name: "Grade I", school_id: school.id, master_grade_id: 1)
+      subject = Subject.create(name: "Physics", subject_code: nil, grade_id: grade.id, teacher_id: nil, division_id: nil, master_subject_id: 4)
+      division = Division.create(name: "B", grade_id: grade.id)
+      teacher = Teacher.create( email: "muktesh@idyllic.co", school_id: 32, token: "a032a0af6bf94aaeb8f71fbf210648b3", first_name: "Sups", middle_name: nil, last_name: "..", cell_number: "5656545412")
+      GradeTeacher.create(division_id: division.id, subject_id: subject.id, teacher_id: teacher.id, grade_id: grade.id) 
+      Device.create(deviceable_id: teacher.id, deviceable_type: "Teacher", device_type: 0, token: "cweaRmtfHJ4:APA91bFZFwtwVX1Jns1XBDBSS24QxGydoHr7fS...", os_version: "", status: 0)
+      Activity.create(teaches: "Shapes Identification & reasoning ", topic: "Shapes", title: "2D shape Flashcards", master_grade_id: 1, master_subject_id: 4, details: "- Introduce the shape with a flashcard. (Introduce...", pre_requisite: "Shape flashcards, paper, pencil, crayons/sand, glu..." )
+      sleep 5.0
+      stats = Sidekiq::Stats.new 
+      present_job_count = stats.processed + stats.enqueued + stats.failed
+      expect(past_job_count).to be  < present_job_count
     end
   end
 end
