@@ -1,7 +1,11 @@
 FactoryGirl.define do
-  master_grade_name = Faker::Lorem.word
   factory :master_grade do
-    name master_grade_name.titleize
-    name_map master_grade_name.downcase
+    master_grades = ["Playgroup", "Nursery", "Jr. KG", "Sr. KG", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"]  
+    master_grades.each do |grade|
+	    trait grade.to_sym do
+	      name grade
+	      name_map grade.downcase  
+	    end
+    end
   end
 end
