@@ -170,6 +170,7 @@ Rails.application.routes.draw do
       get  "/ecirculars/circular_teachers" => "ecirculars#circular_teachers"
 
       get  "/activities" => "activities#index"
+      get  "/activities/activity/:id" => "activities#activity"
       get  "/activity/categories" => "activities#get_categories"
       post "/activity/:activity_id/share" => "activities#share"
 
