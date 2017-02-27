@@ -9,7 +9,8 @@ module ControllerMacros
 	def login_product_admin
 		before(:each) do
 			@request.env["devise.mapping"] = Devise.mappings[:user]
-			@product_admin = FactoryGirl.create(:user,:product_admin)
+			#@product_admin = FactoryGirl.create(:user,:product_admin)
+			@product_admin = ProductAdmin.first
 			sign_in @product_admin
 		end
 	end

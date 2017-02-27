@@ -6,7 +6,7 @@ class Admin::ActivitiesController < Admin::BaseController
     activity_params = get_activity_params(params)
     validate_response = activity_service.validate_params(activity_params)
     if validate_response[:errors].present?
-      render json: { errors: validate_response[:errors] } and return
+      render(json: { errors: validate_response[:errors] }) && return
     end
     response = Activity.create_activity(activity_params)
     render json: { errors: response[:errors], activity_id: response[:data] }
@@ -37,9 +37,10 @@ class Admin::ActivitiesController < Admin::BaseController
   end
 
   private
+
   def load_activity
     @activity = Activity.find_by(id: params[:id])
-    render json: { success: false, errors: ['Activity not found'] } and return if @activity.blank?
+    render(json: { success: false, errors: ['Activity not found'] }) && return if @activity.blank?
   end
 
   def get_activity_params(params)
