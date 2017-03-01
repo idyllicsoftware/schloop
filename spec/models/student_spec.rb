@@ -17,11 +17,10 @@ require 'rails_helper'
 
 RSpec.describe Student, type: :model do
   before(:each) do
-    FactoryGirl.create(:role,:parent)
     @parent = FactoryGirl.create(:parent)
     @student = FactoryGirl.create(:student, parent_id: @parent.id)
   end
-  it 'should deactivate associated parent' do 
+  it 'should deactivate associated parent' do
     @student.activation_status = false
     @student.save
     expect(@student.parent.activation_status).to be false

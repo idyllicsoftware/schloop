@@ -29,17 +29,27 @@
 require 'rails_helper'
 
 RSpec.describe Bookmark, type: :model do
+  let(:teacher) { FactoryGirl.create(:teacher, email: 'dmuktesh01@gmail.com') }
+  let(:grade) { FactoryGirl.create(:grade) }
+  let(:subject) { FactoryGirl.create(:subject, grade_id: grade.id) }
+  let(:topic) { FactoryGirl.create(:topic, master_grade_id: grade.master_grade_id, master_subject_id: subject.master_subject_id) }
+  before(:each) do
+        10.times do
+      FactoryGirl.create(:bookmark, grade_id: grade.id, subject_id: subject.id, topic_id: topic.id, teacher_id: teacher.id)
+    end
+  end
   describe '#self.index' do
-    let(:role) { FactoryGirl.create(:role, :teacher) }
-    let(:teacher) { FactoryGirl.create(:teacher, email: 'dmuktesh01@gmail.com') }
-    let(:grade) { FactoryGirl.create(:grade) }
-    let(:subject) { FactoryGirl.create(:subject, grade_id: grade.id) }
-    let(:topic) { FactoryGirl.create(:topic, master_grade_id: grade.master_grade_id, master_subject_id: subject.master_subject_id) }
     it 'expect that teacher is passed as argument' do
-      10.times do
-        FactoryGirl.create(:bookmark, grade_id: grade.id, subject_id: subject.id, topic_id: topic.id, teacher_id: teacher.id)
-      end
       expect(Bookmark.index(teacher, grade.id, subject.id, topic.id).count).to eq 10
+    end
+  end
+  describe '#formatted_data' do
+    it 'validates that data element returned by formatted_data contian alll keys' do
+      bookmark = Bookmark.first
+      builded_data = bookmark.formatted_data
+      expect(builded_data).to include(:id, :title, :caption, :data, :type, :subject_id, :subject_name, :grade_id, :grade_name, :url, :preview_image_url, :likes, :views, :created_at, :topic, :teacher)
+      expect(builded_data[:topic]).to include(:topic_id, :topic_title)
+      expect(builded_data[:teacher]).to include(:id, :first_name, :last_name)
     end
   end
 end

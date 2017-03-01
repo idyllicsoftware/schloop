@@ -45,7 +45,6 @@ class Bookmark < ActiveRecord::Base
   validates :topic_id, presence: true
   validates :data, length: { maximum: 10000 }
   validates :reference_bookmark, presence: true
-  # #validates :school_id: presence: true
 
   validates :likes, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, presence: true
 
@@ -93,8 +92,6 @@ class Bookmark < ActiveRecord::Base
   end
 
   def formatted_data
-    is_collaborated = Collaboration.find_by(bookmark_id: id).present?
-    is_followed = Followup.find_by(bookmark_id: id).present?
     { id: id,
       title: title,
       caption: caption,
@@ -123,7 +120,6 @@ class Bookmark < ActiveRecord::Base
   def add_crawl_data
     if url?
       crawl_data = generate_crawl_data
-
       self.url = data
       self.title = crawl_data[:title]
       self.caption = crawl_data[:caption]

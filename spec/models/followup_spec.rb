@@ -20,12 +20,9 @@ require 'rails_helper'
 require 'pry'
 RSpec.describe Followup, type: :model do
   before(:each) do
-    @role = FactoryGirl.create(:role,:teacher)
     @school = FactoryGirl.create(:school)
-    @role = FactoryGirl.create(:role,:parent)
     @parent = FactoryGirl.create(:parent)
     @master_grade = FactoryGirl.create(:master_grade, :"1st Grade")
-    #@student = FactoryGirl.create(:student)
     @student = Student.create(school_id: @school.id, first_name: "student_1", last_name: "M", parent_id: @parent.id, activation_status: true)
     @teacher = FactoryGirl.create(:teacher)
     @grade = FactoryGirl.create(:grade)
@@ -38,6 +35,6 @@ RSpec.describe Followup, type: :model do
       current_activity = Bookmark.find_by(id: records[i][:activity][:id]).activity_shares.first
       next_activity = Bookmark.find_by(id: records[i+1][:activity][:id]).activity_shares.first
       expect(current_activity.created_at).to be >= next_activity.created_at
-    end  
+    end
   end
 end
