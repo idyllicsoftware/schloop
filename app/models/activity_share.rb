@@ -29,6 +29,41 @@ class ActivityShare < ActiveRecord::Base
   belongs_to :division
 
   def send_parent_notification
-    ## send notification to parents
+    activity = Activity.find_by(id: activity_id)
+    division_id = self.division_id
+    header_hash = {
+      title: 'New Activity Added',
+      body: activity.title,
+      sound: 'default'
+    }
+    body_hash = {
+      type: 'activity',
+      id: activity.id
+    }
+    associated_parent_ids = []
+    student_ids = StudentProfile.where(division_id: division_id).where(status: 'active').pluck(:student_id).uniq
+    associated_parent_ids = Student.where(id: student_ids).pluck(:parent_id).uniq
+    parents = Parent.where(id: associated_parent_ids)
+    parents.each do |parent|
+      android_registration_ids = parent.devices.active.android.pluck(:token)
+      if android_registration_ids.present?
+        android_options = {
+          priority: 'high',
+          content_available: true,
+          data: header_hash.merge!(body_hash)
+        }
+        NotificationWorker.perform_async(android_registration_ids, android_options, PARENT_FCM_KEY)
+      end
+
+      ios_registration_ids = parent.devices.active.ios.pluck(:token)
+      next unless ios_registration_ids.present?
+      ios_options = {
+        notification: header_hash,
+        priority: 'high',
+        content_available: true,
+        data: body_hash
+      }
+      NotificationWorker.perform_async(ios_registration_ids, ios_options, PARENT_FCM_KEY)
+    end
   end
 end
