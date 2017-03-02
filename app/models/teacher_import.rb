@@ -43,8 +43,7 @@ class TeacherImport
     spreadsheet = Roo::Spreadsheet.open(file.path)
     teacher_headers = ["first_name", "middle_name", "last_name", "email", "cell_number"]
     header = spreadsheet.row(1)
-    header_diff = teacher_headers - header
-    if header_diff == []
+    if teacher_headers - header == [] && header - teacher_headers == []
       (2..spreadsheet.last_row).map do |i|
         row = Hash[[header, spreadsheet.row(i)].transpose]
         password = generated_password = Devise.friendly_token.first(8)
@@ -52,7 +51,7 @@ class TeacherImport
         row["school_id"] = @@school_id
 
         
-        teacher = Teacher.find_by(email: row["email"]) || Teacher.new(row)
+        teacher = Teacher.find_by(email: row["email"].downcase) || Teacher.new(row)
         teacher.attributes = row.to_hash
         teacher
       end

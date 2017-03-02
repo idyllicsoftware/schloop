@@ -36,9 +36,9 @@ class School < ActiveRecord::Base
   validates :phone1, :presence => true, numericality: { only_integer: true },  :length => { :maximum => 15 } 
   validates :phone2, :length => { :maximum => 15 }
   validates :website, :presence => true, :length => { :maximum => 100 }
-
+  validates :board, presence: :true
   #validates :code, :presence => true, :uniqueness => true, :length => { :is => 6}
-
+ 
   private
 
     def update_school_unique_code

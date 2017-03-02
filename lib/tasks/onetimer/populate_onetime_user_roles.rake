@@ -6,7 +6,7 @@ task :populate_onetime_user_roles => :environment do
   ActiveRecord::Base.transaction do
     begin  
       school_admins = SchoolAdmin.all.to_a || []
-      product_admin = [] << ProductAdmin.first
+      product_admin = ProductAdmin.first.to_a || []
       teachers = Teacher.all.to_a || []
       parents = Parent.all.to_a || []
       users = school_admins + product_admin + teachers + parents

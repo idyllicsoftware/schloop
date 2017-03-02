@@ -26,8 +26,9 @@ class Division < ActiveRecord::Base
 	has_many :grade_teacher, dependent: :destroy
 	has_many :ecircular_recipients, dependent: :destroy
 
-	def destroy
-		student_ids = StudentProfile.where(division_id: self.id).pluck(:student_id)
+	before_destroy :destroy_student_profiles
+	def destroy_student_profiles
+		student_ids = StudentProfile.active.where(division_id: self.id).pluck(:student_id)
 		Student.where(id: student_ids).update_all(activation_status: false)
 	end
 end

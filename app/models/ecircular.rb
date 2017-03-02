@@ -28,6 +28,7 @@ class Ecircular < ActiveRecord::Base
   # after_create :send_notification
 
   validates :title, :created_by_type, :created_by_id , :presence => true
+  validates :body, :length => {:maximum => 10000}
 
 	def self.school_circulars(school, user, filter_params={}, offset=0, page_size=50)
 		circular_data = []
@@ -164,7 +165,7 @@ class Ecircular < ActiveRecord::Base
 			end
 
 			ios_registration_ids = student.parent.devices.active.ios.pluck(:token)
-			if android_registration_ids.present?
+			if ios_registration_ids.present?
 				ios_options = {
 					notification: header_hash,
 					priority: "high",

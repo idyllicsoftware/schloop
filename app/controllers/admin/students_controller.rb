@@ -64,14 +64,6 @@ class Admin::StudentsController < Admin::BaseController
 			student = Student.find_by(id: student_id)
 			student.activation_status = false
 			student.save
-			school_id = student.school_id
-			parent = student.parent
-			childs= Student.where(parent_id: parent.id).where(activation_status: true)
-			if childs.empty?
-				parent.activation_status = false
-				parent.save
-			end
-
 		rescue Exception => e
 			errors << "error while deactivating student"
 		end

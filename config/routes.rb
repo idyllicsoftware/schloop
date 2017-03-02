@@ -170,6 +170,7 @@ Rails.application.routes.draw do
       get  "/ecirculars/circular_teachers" => "ecirculars#circular_teachers"
 
       get  "/activities" => "activities#index"
+      get  "/activities/activity/:id" => "activities#activity"
       get  "/activity/categories" => "activities#get_categories"
       post "/activity/:activity_id/share" => "activities#share"
 
@@ -208,7 +209,6 @@ Rails.application.routes.draw do
       post "/followup" => 'followups#followup'
       get  "parent/followups" => 'followups#index'
       get  "teacher/followups" => 'followups#index'
-      #TODO::remove get  "parent/followups" route after updates
       get  "parent/followups/:student_id" => 'followups#index'
 
       get "/followups/:bookmark_id/like" => "followups#like"

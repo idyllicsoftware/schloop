@@ -140,4 +140,31 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     end
   end
 
+  def activity
+    errors = []
+    activity_id = params[:id]
+    errors << "activity id is not given" if activity_id.nil?
+    if errors.blank?
+      search_params = { id: activity_id }
+      activities_data, total_records = Activity.grade_activities(search_params, nil, 0, nil, @current_user)
+      index_response = {
+        success: true,
+        error: nil,
+        data: {
+          activities: activities_data.first
+        }
+      }
+    else
+      index_response = {
+        success: false,
+        error:  {
+          code: 0,
+          message: errors.flatten
+        },
+        data: nil
+      }
+    end
+    render json: index_response
+  end
+
 end

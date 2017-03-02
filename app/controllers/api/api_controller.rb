@@ -4,7 +4,7 @@ class Api::ApiController < ApplicationController
   after_filter :log_response
 
   def authenticate
-    authenticate_token || render_unauthorized
+    authenticate_token || render_unauthorized || check_validity_of_user
   end
 
   def authenticate_token
@@ -20,6 +20,15 @@ class Api::ApiController < ApplicationController
     render json: 'Bad credentials', status: :unauthorized
   end
 
+  def check_validity_of_user
+    re_login_required = false
+    if @current_user.is_a?(Teacher) and @current_user.no_grade_assigned?
+      re_login_required = true
+    elsif @current_user.is_a?(Parent) and !@current_user.active
+      re_login_required = true
+    end
+    render json: 'Important data changed, Need to Re-login', status: :unauthorized if re_login_required
+  end
 
   def set_default_response_format
     request.format = :json
