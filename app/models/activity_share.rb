@@ -45,7 +45,7 @@ class ActivityShare < ActiveRecord::Base
     associated_parent_ids = Student.where(id: student_ids).pluck(:parent_id).uniq
     parents = Parent.where(id: associated_parent_ids)
     parents.each do |parent|
-      child_ids = parent.students.where(id: student_ids)
+      child_ids = parent.students.where(id: student_ids).pluck(:id)
       android_registration_ids = parent.devices.active.android.pluck(:token)
       child_ids.each do |child_id|
         body_hash[:student_id] = child_id
@@ -60,7 +60,7 @@ class ActivityShare < ActiveRecord::Base
       end
       ios_registration_ids = parent.devices.active.ios.pluck(:token)
       child_ids.each do |child_id|
-        body_hash[:student_id] =child_id
+        body_hash[:student_id] = child_id
         if ios_registration_ids.present?
         ios_options = {
           notification: header_hash,
