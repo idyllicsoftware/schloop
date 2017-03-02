@@ -206,7 +206,7 @@ class Activity < ActiveRecord::Base
           notification: header_hash,
           priority: "high",
           content_available: true,
-          data: header_hash.merge!(body_hash)
+          data: body_hash
         }
 
         NotificationWorker.perform_async(ios_registration_ids, ios_options, TEACHER_FCM_KEY)
