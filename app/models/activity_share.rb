@@ -45,25 +45,32 @@ class ActivityShare < ActiveRecord::Base
     associated_parent_ids = Student.where(id: student_ids).pluck(:parent_id).uniq
     parents = Parent.where(id: associated_parent_ids)
     parents.each do |parent|
+      child_ids = parent.students.where(id: student_ids)
       android_registration_ids = parent.devices.active.android.pluck(:token)
-      if android_registration_ids.present?
-        android_options = {
+      child_ids.each do |child_id|
+        body_hash[:student_id] = child_id
+        if android_registration_ids.present?
+          android_options = {
+            priority: 'high',
+            content_available: true,
+            data: header_hash.merge!(body_hash)
+          }
+          NotificationWorker.perform_async(android_registration_ids, android_options, PARENT_FCM_KEY)
+        end
+      end
+      ios_registration_ids = parent.devices.active.ios.pluck(:token)
+      child_ids.each do |child_id|
+        body_hash[:student_id] =child_id
+        if ios_registration_ids.present?
+        ios_options = {
+          notification: header_hash,
           priority: 'high',
           content_available: true,
           data: header_hash.merge!(body_hash)
         }
-        NotificationWorker.perform_async(android_registration_ids, android_options, PARENT_FCM_KEY)
+        NotificationWorker.perform_async(ios_registration_ids, ios_options, PARENT_FCM_KEY)
       end
-
-      ios_registration_ids = parent.devices.active.ios.pluck(:token)
-      next unless ios_registration_ids.present?
-      ios_options = {
-        notification: header_hash,
-        priority: 'high',
-        content_available: true,
-        data: body_hash
-      }
-      NotificationWorker.perform_async(ios_registration_ids, ios_options, PARENT_FCM_KEY)
+      end
     end
   end
 end

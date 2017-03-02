@@ -172,7 +172,7 @@ class Activity < ActiveRecord::Base
   end
 
   def send_notification
-    header_hash = { 
+    header_hash = {
       title: "New Activity Added",
       body: title,
       sound: 'default'
@@ -184,7 +184,7 @@ class Activity < ActiveRecord::Base
     associated_teacher_ids = []
     GradeTeacher.includes(grade: [:master_grade],subject: [:master_subject]).all.each do |record|
       if record.grade.master_grade_id == master_grade_id && record.subject.master_subject_id == master_subject_id
-        associated_teacher_ids << record.teacher_id 
+        associated_teacher_ids << record.teacher_id
       end
     end
     associated_teacher_ids = associated_teacher_ids.uniq
@@ -206,7 +206,7 @@ class Activity < ActiveRecord::Base
           notification: header_hash,
           priority: "high",
           content_available: true,
-          data: body_hash
+          data: header_hash.merge!(body_hash)
         }
 
         NotificationWorker.perform_async(ios_registration_ids, ios_options, TEACHER_FCM_KEY)
