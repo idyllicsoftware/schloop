@@ -18,7 +18,7 @@
 
 class Comment < ActiveRecord::Base
   belongs_to :commentable, polymorphic: true
-  validates :message, :presence => true, :length => { :maximum => 400 }
+  validates :message, presence: true, length: { maximum: 400 }
 
   after_create :send_notification
   def as_json
@@ -44,7 +44,6 @@ class Comment < ActiveRecord::Base
       body:  self.message,
       sound: 'default',
     }
-
     if self.commentable.is_a?(Collaboration)
       body_hash = {
         type: 'collaboration_comment',
@@ -53,6 +52,7 @@ class Comment < ActiveRecord::Base
         bookmark_id: self.commentable.bookmark_id
       }
       associated_teacher_ids = GradeTeacher.where(grade_id:grade_id, subject_id: subject_id).pluck(:teacher_id)
+      associated_teacher_ids.delete(self.commented_by)
       teachers = Teacher.where(id: associated_teacher_ids)
       teachers.each do |teacher|
         android_registration_ids = teacher.devices.active.android.pluck(:token)
