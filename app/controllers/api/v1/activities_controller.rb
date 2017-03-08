@@ -143,6 +143,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     errors = []
     activity_id = params[:id]
     errors << 'activity id is not given' if activity_id.nil?
+    errors << 'activity is inactive' if Activity.find_by(id: activity_id).inactive?
     if errors.blank?
       search_params = { id: activity_id }
       activities_data, total_records = Activity.grade_activities(search_params, nil, 0, nil, @current_user)
@@ -158,7 +159,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
         success: false,
         error:  {
           code: 0,
-          message: errors.flatten
+          message: errors.flatten.join(", ")
         },
         data: nil
       }

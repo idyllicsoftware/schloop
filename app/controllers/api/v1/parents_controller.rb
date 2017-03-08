@@ -320,7 +320,6 @@ class Api::V1::ParentsController < Api::V1::BaseController
 
     activity = Activity.find_by(id: params[:id])
     errors << "Specified Activity not found" if activity.blank?
-
     errors << "Specified Activity not active" if activity.inactive?
 
     is_activity_shared = ActivityShare.where(activity_id: params[:id]).present?
@@ -348,7 +347,7 @@ class Api::V1::ParentsController < Api::V1::BaseController
           success: false,
           error:  {
               code: 0,
-              message: errors.flatten
+              message: errors.flatten.join(", ")
           },
           data: nil
       }
