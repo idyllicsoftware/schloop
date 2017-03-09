@@ -11,6 +11,7 @@ gem 'sass-rails', '~> 5.0.6'
 gem 'uglifier', '>= 3.0.2'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
+gem 'whenever', :require => false
 
 gem 'font-awesome-sass'
 
@@ -82,4 +83,3 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
