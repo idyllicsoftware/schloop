@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :bookmark do
-    title 'Schloopmark Note'
+    title 'Random Title'
     data 'Dravid was born in a Marathi family in Indore, Mad...'
     caption 'Schloopmark Note'
     url nil

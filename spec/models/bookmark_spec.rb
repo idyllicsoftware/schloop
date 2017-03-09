@@ -33,9 +33,9 @@ RSpec.describe Bookmark, type: :model do
   let(:grade) { FactoryGirl.create(:grade) }
   let(:subject) { FactoryGirl.create(:subject, grade_id: grade.id) }
   let(:topic) { FactoryGirl.create(:topic, master_grade_id: grade.master_grade_id, master_subject_id: subject.master_subject_id) }
-  before(:each) do
-        10.times do
-      FactoryGirl.create(:bookmark, grade_id: grade.id, subject_id: subject.id, topic_id: topic.id, teacher_id: teacher.id)
+    before(:each) do
+      10.times do
+        FactoryGirl.create(:bookmark, grade_id: grade.id, subject_id: subject.id, topic_id: topic.id, teacher_id: teacher.id)
     end
   end
   describe '#self.index' do
@@ -50,6 +50,13 @@ RSpec.describe Bookmark, type: :model do
       expect(builded_data).to include(:id, :title, :caption, :data, :type, :subject_id, :subject_name, :grade_id, :grade_name, :url, :preview_image_url, :likes, :views, :created_at, :topic, :teacher)
       expect(builded_data[:topic]).to include(:topic_id, :topic_title)
       expect(builded_data[:teacher]).to include(:id, :first_name, :last_name)
+    end
+  end
+  describe '#add_crawl_data' do
+    it 'change the schloopmark title' do
+      bookmark_params = FactoryGirl.build(:bookmark, data:"http://schloop.co/", data_type: 1).attributes.except("id")
+      bookmark = Bookmark.create!(bookmark_params)
+      expect(bookmark.url).to eq "http://schloop.co/"
     end
   end
 end
