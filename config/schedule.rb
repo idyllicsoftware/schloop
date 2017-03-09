@@ -18,7 +18,7 @@
 #   runner "AnotherModel.prune_old_records"
 # end
 every 2.minutes do # Use any day of the week or :weekend, :weekday
-  rake "db:upload_db_dump", :environment => 'development'
+  rake "db:upload_db_dump", :environment => 'staging'
 end
 #use follwing config in crontab file
 #0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57 * * * * cd /home/muktesh/workspace/schloop && RAILS_ENV=development /home/muktesh/.rvm/wrappers/ruby-2.3.1/bundle exec rake db:upload_db_dump --silent
