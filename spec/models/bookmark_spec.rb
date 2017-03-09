@@ -60,10 +60,18 @@ RSpec.describe Bookmark, type: :model do
     end
   end
   describe '#track_bookmark' do
-    it '' do
+    it 'test like and unlike event' do
       bookmark = Bookmark.last
       teacher = Teacher.last
-      expect{bookmark.track_bookmark('like', true,teacher )}.to change{SocialTracker.count}
+      bookmark.track_bookmark('like', 'true', teacher)
+      expect(SocialTracker.count).to eq 1
+      bookmark.track_bookmark('like', 'false', teacher)
+      expect(SocialTracker.count).to eq 0
+    end
+    it 'test view event' do
+      bookmark = Bookmark.last
+      teacher = Teacher.last
+      expect { bookmark.track_bookmark('view', true, teacher) }.to change { SocialTracker.count }
     end
   end
 end
