@@ -20,5 +20,20 @@
 require 'rails_helper'
 
 RSpec.describe Collaboration, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before(:each) do
+    @teacher = FactoryGirl.create(:teacher)
+    subject = FactoryGirl.create(:subject)
+    grade = FactoryGirl.create(:grade)
+    10.times do
+      bookmark = FactoryGirl.create(:bookmark, grade_id: grade.id, subject_id: subject.id)
+      FactoryGirl.create(:collaboration, bookmark_id: bookmark.id)
+    end
+    FactoryGirl.create(:grade_teacher, teacher_id: @teacher.id, grade_id: grade.id, subject_id: subject.id)
+  end
+  describe '#index' do
+    it 'return empty array and 0' do
+      _records, count = Collaboration.index(@teacher)
+      expect(count).to eq 10
+    end
+  end
 end

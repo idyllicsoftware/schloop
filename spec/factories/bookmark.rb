@@ -7,11 +7,11 @@ FactoryGirl.define do
     preview_image_url nil
     likes 0
     views 0
-    topic_id 75
+    association :topic, factory: :topic
     data_type 0
     school_id 32
-    grade_id 80
-    subject_id 313
+    association :grade, factory: :grade
+    association :subject, factory: :subject
     association :teacher, factory: :teacher
     reference_bookmark 181
   end

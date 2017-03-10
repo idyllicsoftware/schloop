@@ -1,7 +1,7 @@
 require 'pry'
 FactoryGirl.define do
   factory :teacher do
-    email Faker::Internet.email
+    sequence(:email) { |n| "#{n}#{Faker::Internet.email}" }
     association :school, factory: :school
     first_name 'Sups'
     middle_name 'dsfsd'
