@@ -17,7 +17,7 @@
 # every 4.days do
 #   runner "AnotherModel.prune_old_records"
 # end
-every 2.days do # Use any day of the week or :weekend, :weekday
+every 4.days do # Use any day of the week or :weekend, :weekday
   rake "db:upload_db_dump", :environment => 'staging'
 end
 #use follwing config in crontab file
