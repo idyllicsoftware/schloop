@@ -6,7 +6,7 @@
 @import "admin/teachers/dashboards";
 
 .school-main-section {
-  padding-bottom: 100px;
+  padding-bottom: 150px;
   min-height: 442px;
   max-height: 100%;
   .container {
@@ -18,7 +18,26 @@
   padding-bottom: 100px;
   min-height: 442px;
   max-height: 100%;
+  .container {
+    margin: 30px auto;
+    width: 1100px;
+    padding: 40px 0px;
+    border-top: 2px solid #ffffff;
+    border-radius: 0px;
+    background: transparent;
+    .tab-content {
+      margin-top: 30px;
+    }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+      color: #555555;
+      border: none;
+      background-color: transparent;
+      border-bottom-color: transparent;
+      cursor: default;
+    }
+  }  
 }
+
 .schools-main-section, .school-main-section {
   .cloud_image {
     height: 55px;
@@ -32,23 +51,25 @@
     bottom: -250px;
     margin-left: 20px;
   }
-  .sms-cloud4-img {
+  .cloud4-img {
     width: 100px;
     position: absolute;
-    right: 0;
-    top: 300%;
-    margin-right: 20px;
+    left: 10px;
+    top: 40%;
   }
 }
-.school-main-section, .schools-main-section{
+.school-main-section {
   .container {
     margin: 30px auto;
     background: $container-background;
     padding: 40px 40px;
     border-radius: 10px;
-    -webkit-box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.35);
+    .tab-content-wrapper {
+      margin-top: 50px;
+    }
+/*    -webkit-box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.35);
     -moz-box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.35);
-    box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.35);
+    box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.35);*/
     .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
       color: #555555;
       border: none;
@@ -57,38 +78,42 @@
       cursor: default;
     }
   }
-  #contents-tab {
-    padding: 0px 40px;
-  }
-  #school-Tab {
-    margin-top: -110px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-bottom: transparent;
-    li {
-      height: 130px;
+}
+
+#contents-tab {
+  padding: 0px 40px;
+}
+#school-Tab {
+  /*margin-top: -110px;*/
+  margin-top: -120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-bottom: transparent;
+  li {
+    height: 85px;
+    width: 180px;
+    &.active {
+      background-image: url(<%= asset_path('admin/cloud_tab.svg') %>);
+      background-repeat: no-repeat;
+      /*height: 130px;*/
+      height: 75px;
       width: 180px;
-      &.active {
-        background-image: url(<%= asset_path('admin/cloud_tab.svg') %>);
-        background-repeat: no-repeat;
-        height: 130px;
-        width: 180px;
-        a {
-          margin: 25px 10px;
-          color: #25aae1;
-        }
+      a {
+        font-weight: 600;
+        margin: 25px 10px;
+        color: #25aae1;
       }
     }
-    a {
-      margin: 25px 10px;
-      font-size: 18px;
-      &:hover {
-        text-decoration: none;
-        background-color: transparent;
-        border-color: transparent;
-      }
+  }
+  a {
+    margin: 25px 10px;
+    font-size: 18px;
+    &:hover {
+      text-decoration: none;
+      background-color: transparent;
+      border-color: transparent;
     }
   }
 }

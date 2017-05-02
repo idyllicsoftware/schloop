@@ -2,7 +2,6 @@
   <div class="cloud_image">
     <img class="img-responsive cloud3-img" src="<%= asset_path('home/cloud_3.png') %>">
   </div>
-
   <div class="container">
     <ul id="school-Tab" class="nav nav-tabs">
       <li class="active">
@@ -27,10 +26,10 @@
       <div class="tab-pane fade" id="contents-tab">
         <div class="clearfix activities-header-bar p0">
           <form id="content_filter_wrapper">
-              <div class="col-md-2 p0">
+              <div class="col-md-2 p0 for-label">
                 <h4>Activities for</h4>
               </div>
-              <div class="form-group col-md-2">
+              <div class="form-group col-md-2 select2-grade">
                 <select id="grade" name="filter[master_grade_id]" required class="select2-option curP">
                   <option disabled="disabled" selected="selected">Grade</option>
                   <% @grades.each do |grade|%>
@@ -38,7 +37,7 @@
                   <% end %>
                 </select>
               </div>
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-3 select2-option-sc">
                 <select id="subjects" name="filter[master_subject_id]" required class="select2-option curP">
                   <option disabled="disabled" selected="selected">Subject</option>
                   <% @subjects.each do |subject|%>
@@ -46,7 +45,7 @@
                   <% end %>
                 </select>
               </div>
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-3 select2-option-sc">
                 <select id="categories" name="filter[categories][]" required class="select2-option curP">
                   <option disabled="disabled" value="" selected="selected">Category</option>
                   <% @categories.each do |category|%>
@@ -76,11 +75,11 @@
   {{#activities}}
     <li class="content-item">
       {{#status}}
-        <a class="deactivate_activity pull-right ml10 fw" data-activity-id="{{id}}">Deactivate</a>
+        <a class="deactivate_activity pull-right ml20" data-activity-id="{{id}}">Deactivate</a>
       {{/status}}
-      <a class="pull-right ml10 activity-preview fw" data-activity-id="{{id}}">Preview</a>
+      <a class="pull-right ml20 activity-preview" data-activity-id="{{id}}">Preview</a>
       {{^status}}
-        <a class="pull-right ml10 disabled">Deactivated</a>
+        <a class="pull-right ml20 disabled">Deactivated</a>
       {{/status}}
       <div class="clearfix">
         <h4 class="content-title pull-left">{{ title }}</h4>

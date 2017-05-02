@@ -3,27 +3,31 @@
 
 .activities_content_section {
     .content-list {
-        border-top: 1px solid #dadada;
-        border-bottom: 1px solid #dadada;
+        border-top: 2px solid rgba(255, 255, 255, 0.74);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.74);
+/*        border-top: 1px solid #dadada;
+        border-bottom: 1px solid #dadada;*/
         padding: 0px;
         list-style-type: none;
-        .fw{font-weight: 600;}
         .content-item {
             padding: 15px 0px;
             color: #666666;
-            border-bottom: 1px dotted #999999;
+            border-bottom: 2px dotted rgba(255, 255, 255, 0.74);
+            /*border-bottom: 2px dotted #999999;*/
             &:last-child {
                 border-bottom: none;
             }
             .content-title {
               margin-top: 0px;
               font-weight: 600;
+              font-size: 16px;
             }
             .edit-hint-text {
-              font-size: 13px;
+              font-size: 12px;
+              color: lightslategray;
             }
             .tags-right {
-                color: $heading-color;
+                color: #fffef4;
                 font-weight: 600;
             }
         }
@@ -34,6 +38,23 @@
     padding: 0px;
     .select2-container--default {
         z-index: 110;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        font-weight: 300;
+        font-size: 18px;
+    }
+    .for-label {width: 11%;}
+    .select2-grade {
+        margin-right: 20px;
+        margin-left: 10px;
+        .select2 { 
+            width: 130px ! important;
+        }
+    }
+    .select2-option-sc {
+        .select2 {
+            width: 200px ! important;
+        }   
     }
     .field {
         border-bottom: none;
@@ -46,9 +67,11 @@
         margin: 5px 0px;
     }
     .web-content-link{
+        margin-top: 7px;
+        text-align: right;
+        padding-right: 0px;
         a{
             margin-left: 40px;
-            font-weight: bold;
         }
     }
     .ms-parent{

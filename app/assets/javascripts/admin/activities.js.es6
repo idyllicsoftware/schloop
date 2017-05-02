@@ -25,7 +25,7 @@ class Activities extends SchloopBase {
                     minimumResultsForSearch: -1
                 });
         $('b[role="presentation"]').hide();
-        $('.select2-selection__arrow').append('<i style="color:#25aae1;" class="fa fa-chevron-down"></i>');
+        $('.select2-selection__arrow').append('<i style="color:#25aae1;margin-top: 6px;" class="fa fa-chevron-down"></i>');
 
         $("#content_filter_wrapper select").change(function(){
             _self.filters = $(this).closest('form').serializeObject();

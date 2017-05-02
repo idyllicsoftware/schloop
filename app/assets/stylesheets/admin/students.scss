@@ -11,7 +11,7 @@
           cursor: pointer;
         &.active, &:hover, &:active {
           //border-bottom-color: #666;
-            color: #666;
+            color: #25aae1;
             font-weight: bold;
         }
       }
@@ -20,7 +20,7 @@
 .upload-student-link {
   a {
     float: right;
-    font-weight: 600;
+    /*font-weight: 600;*/
     }  
 }
 
@@ -46,14 +46,23 @@
           }
       }
       .student-edit-btn{
-        font-weight: 600;
+        /*font-weight: 600;*/
         color: #25aae1;
+        &:hover {
+          color: rgba(43, 191, 231, 0.9) !important;
+        }
       }
       .popover {
         max-width: 320px;
         padding: 15px;
       }
       .popover-content {
+        label {
+          font-weight: 600;
+          width: 100%;
+          padding: 7px;
+          background-color: #f9f8eb;
+        }
         .student-edit-btn {
           margin-top: 30px;
           .update-student {

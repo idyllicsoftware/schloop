@@ -2,6 +2,7 @@
   <div class="cloud_image">
     <img class="img-responsive" src="<%= asset_path('home/cloud_3.png') %>">
   </div>
+  <img class="img-responsive cloud4-img" src="<%= asset_path('home/cloud_4.png') %>">
   <div class="container">
     <ul id="school-Tab" class="nav nav-tabs">
       <li class="active">
@@ -14,7 +15,7 @@
         <a href="#circulars-tab" aria-controls="circulars-tab" role="circulars-tab"  data-toggle="tab"  data-tab-name="circulars">e-Connect</a>
       </li>
     </ul>
-    <div class="tab-content">
+    <div class="tab-content tab-content-wrapper">
       <div class="tab-pane fade in active school-profile-main-section" id="school-profile-main-section-tab">
         <div class="content-wrapper">
           <div class="header-wrapper">
@@ -125,17 +126,17 @@
                         <div class="tab-pane fade in division-wrapper inner-tabs" id="{{subject_id}}">
                           <div class="plr20"><span class="data-title"><a class="fa fa-chevron-down no-of-div"></a>Divisions</span></div>
                           <div class="slide-division-wrapper">
+                            <div class="div-operation">
+                              <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content" data-grade_id="{{grade_id}}" data-placement="left">+Add Division</a></span>
+                                <span class="current_division"><a>Delete Division A</a></span>
+                              <%= render :partial => "admin/schools/add_divisions"%>
+                            </div>
                             <div class="plr20 bb">
                               <ul id="myTab" class="nav nav-tabs division-list">
                                 {{#divisions}}
                                   <li data-division_id="{{division_id}}" data-division_name="{{division_name}}"><a href="#{{subject_id}}division{{division_id}}" data-toggle="tab">{{division_name}}</a></li>
                                 {{/divisions}}
                               </ul>
-                            </div>
-                            <div class="div-operation">
-                              <span><a id="add-division-popover" data-toggle="popover" data-value="add-division-popover-content" data-grade_id="{{grade_id}}" data-placement="left">+Add Division</a></span>
-                                <span class="current_division"><a>Delete Division A</a></span>
-                              <%= render :partial => "admin/schools/add_divisions"%>
                             </div>
                             <div id="myTabContent" class="tab-content">
                               {{#divisions}}
@@ -158,6 +159,9 @@
                                       </div>
                                     </div>
                                   {{/teacher}}
+                                  {{^teacher}}
+                                    <li class="not-found">No teachers are assigned to this division yet. Start assigning teachers from the teachers tab.</li>
+                                  {{/teacher}}
                                   </ul>
                                 </div>
                               </div>
@@ -174,7 +178,8 @@
               </div>
               <div id="teachers-tab" class="tab-pane fade">
                 <div class="pull-right upload-sheet">Upload spreadsheet</div>
-                <div class="teachers-wrapper">
+                <!-- <div class="clearfix"></div> -->
+                <div class="teachers-wrapper" id="element-wrapper">
                   <ul id="schoolTeacherContainer">
                     <li id="add-teachers-popover" class="curP" data-toggle="popover" data-value="add-teachers-popover-content">
                         <div class="add-teacher"><img src="<%= asset_path('admin/plus_icon.svg') %>"></div>

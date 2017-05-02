@@ -57,7 +57,6 @@
 						}
 					}
 					#add-admin{
-						font-weight: 700;
 						a{
 							text-decoration: none;
 		                    padding-right: 5px;
@@ -73,7 +72,7 @@
 								background: transparent;
 							}
 							a{
-							  color: $heading-color !important;
+							  color: #dbca17 !important;
 							  font-weight: 600;
 							  font-size: 16px;
 							  padding: 10px 7px !important;
@@ -94,9 +93,10 @@
 					}
 				}
 				.add_grade {
+					margin: 20px 0px;
 					padding: 15px 30px 15px;
 		    		background: #fff;
-		    		font-weight: 600;
+		    		/*font-weight: 600;*/
 		    		display: flex;
 		    		justify-content: flex-start;
 		    		select {
@@ -170,10 +170,11 @@
 				    border-top: 1px solid #c6c6c6;
 			    	.data-title{
 						font-weight: 700;
+						text-transform: uppercase;
 					}
 					#add-sub{
 						float: right;
-						font-weight: 700;
+						/*font-weight: 700;*/
 			    		padding: 0px 20px;			
 					}
 					.data-attr{
@@ -212,6 +213,7 @@
 								border: none;
 								font-weight: 700;
 								cursor: default;
+								color: #25aae1 !important;
 							}
 						.popover{width: 280px;}	
 						.popover-content {
@@ -232,11 +234,12 @@
 					}
 				}
 				.inner-tabs{
-					background: #f9f8ec;
+					background: #f9f8eb;
 					padding: 20px 0 20px;
 					.data-title{
 						text-transform: uppercase;
 						cursor: pointer;
+						font-weight: normal;
 						a{
 							padding-right: 20px;
 						}
@@ -244,7 +247,8 @@
 					.bb{border-bottom: 2px dotted #f0efe8;}
 					.nav-tabs{
 						border-bottom: none;
-					    width: 550px;
+					    /*width: 550px;*/
+					    width: 100%;
 					    overflow-x: scroll;
 					    white-space: nowrap;
 						li{
@@ -267,14 +271,11 @@
 					.div-operation{
 						float: right;
 						position: relative;
-		    			top: -46px;
+		    			top: -19px;
 						span{
 							padding-right: 12px;
 							&:last-child{
 								padding-right: 0 !important;
-							}
-							a{
-								font-weight: 700;
 							}
 						}
 						.form-group {
@@ -298,6 +299,19 @@
 						cursor: default;
 					}	
 				}
+				#element-wrapper {
+					ul{
+						width: 80%;
+						li{
+							padding: 20px; 
+							width: 225px;
+							&:first-child {
+		                  		display: flex;
+    							justify-content: center;
+		                  	}
+		                }
+		            }      	 
+				}
 				.teachers-wrapper { 
 					ul{	
 		              list-style: none;
@@ -308,6 +322,8 @@
 		                  text-align: center;
 		                  display: inline-block;
 		                  padding: 30px 0px 30px 30px;
+		                  /*padding: 20px;*/
+		                  /*width: 225px;*/	
 		                  .teacher-profile{
 		                      	width: 50px;
 							    height: 50px;
@@ -374,13 +390,24 @@
 		                    padding: 20px 0px;
 		                    border-top-style: dotted;
 		                    border-top-color: #cacaca;
-		                    border-top-width: 2px;
+		                    border-top-width: 1px;
+		                    .grade-name {
+		                    	font-weight: 600;
+							    width: 100%;
+							    margin-bottom: 10px;
+							    padding: 7px;
+							    background-color: #f9f8eb;
+		                    }
 		                    ul {
 		                      margin-left: 15px;
 		                      li {
 		                        padding: 0px;
 		                        text-align: left;
 		                      }
+		                    }
+		                    .subject-border {
+		                    	border-bottom: 1px dotted #ccc;
+   								margin-bottom: 15px;
 		                    }
 		                  }
 		                  .scroll-grade {
@@ -425,6 +452,10 @@
 				#teacher-info-id {
 					width: 100%;
 					padding: 0px 20px;
+					margin: 0px;
+					.not-found {
+						font-style: italic;
+					}
 					li {
 						padding: 10px 0px 10px 20px;
 					}
@@ -432,8 +463,10 @@
 				.upload-sheet {
 					padding: 20px;
 		    		color: #25aae1;
-		    		font-weight: 600;
-		    		cursor: pointer;	
+		    		cursor: pointer;
+		    		&:hover {
+		    			color: rgba(43, 191, 231, 0.9) !important;
+		    		}	
 				}
 			}
 		}
@@ -453,7 +486,8 @@
 				padding: 10px 40px;
 				margin-bottom: 40px;
 				h2{
-					color: $heading-color!important;
+					color: #dbca17 !important;
+   					font-size: 26px;
 				}
 				p{
 			    line-height: 0.3;
@@ -521,9 +555,10 @@
 		      }
 		      .border_botm {
 		      	border-bottom: 1px solid #ccc;
-		      	margin-right: 20px;
+		      	margin-right: 40px;
+		      	padding-left: 0px;
 		      	.select-recipients_name, .selected_circular_tag {
-		      		color: #999999;
+		      		color: #666666;
 		      	}
 		      	.popover {
 		      		padding: 20px;

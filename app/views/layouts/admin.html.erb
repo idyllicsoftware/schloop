@@ -10,7 +10,6 @@
 <body>
 
 
-
 <div class="product-admin-dashborad">
 	<div class="cloud-banner">
 		<img src="<%= asset_path('admin/cloud_bannr1.svg') %>">
@@ -32,20 +31,7 @@
 		</div>
 	</div>
 	<%= yield %>
-  <div class="footer-img">
-      <img class="tree6-img" src="<%= asset_path('home/tree_green1.png') %>">
-      <img class="tree7-img" src="<%= asset_path('home/tree_green3.png') %>">
-      <img class="bag-img" src="<%= asset_path('home/bag.png') %>">
-      <img class="school-img" src="<%= asset_path('home/school1.png') %>">
-      <img class="tree10-img" src="<%= asset_path('home/tree_green2.png') %>">
-      <img class="scloopy-img" src="<%= asset_path('home/schloopy.png') %>">
-      <img class="bench-img" src="<%= asset_path('home/bench.png') %>">
-      <img class="tree8-img" src="<%= asset_path('home/tree_green2.png') %>">
-      <img class="tree9-img" src="<%= asset_path('home/tree_green.png') %>">
-  </div>
-  <div class="oval"></div>
-	<div class="footer-section">
-	</div>
+  <%= render partial: "layouts/footer_section"%>
 </div>
 
 <%= javascript_include_tag 'admin/admin' %>
@@ -56,9 +42,7 @@
   <tr class='selectedFile'>
     <td>{{name}}</td>
     <td class="text-right">
-      <button type='button' class='btn btn-danger delete'>
-        <i class='fa fa-trash f16'></i>
-      </button>
+      <button type='button' class='delete delete-cross'><!-- <i class='fa fa-trash f16'></i> -->x</button>
     </td>
   </tr>
 </script>

@@ -2,6 +2,7 @@
   <div class="cloud_image">
     <img class="img-responsive" src="<%= asset_path('home/cloud_3.png') %>">
   </div>
+  <img class="img-responsive cloud4-img" src="<%= asset_path('home/cloud_4.png') %>">
   <div class="container">
     <ul id="school-Tab" class="nav nav-tabs">
       <li class="active">
@@ -106,7 +107,7 @@
                 <script type="text/html" id="school_grade_tpl">
                 {{#grades}}
                   <div class="subject-wrapper">
-                    <span class="data-title plr20">{{grade_name}}</span>
+                    <span class="data-title plr20 toUpper-case">{{grade_name}}</span>
 
                     <span id="add-sub" class="delete_grade pull-right" data-grade-id="{{grade_id}}"><a>Delete Grade {{grade_name}}</a></span>
                     <!-- <span id="add-sub"><a id="add-subject-popover" data-toggle="popover" data-value="add-subject-popover-content" data-placement="left" data-grade_id="{{grade_id}}">+Add Subject</a></span> -->
@@ -174,7 +175,8 @@
               </div>
               <div id="teachers-tab" class="tab-pane fade">
                 <div class="pull-right upload-sheet">Upload spreadsheet</div>
-                <div class="teachers-wrapper">
+                <div class="clear"></div>
+                <div class="teachers-wrapper mt50">
                   <ul id="schoolTeacherContainer">
                     <li id="add-teachers-popover" class="curP" data-toggle="popover" data-value="add-teachers-popover-content">
                         <div class="add-teacher"><img src="<%= asset_path('admin/plus_icon.svg') %>"></div>

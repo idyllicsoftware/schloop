@@ -253,7 +253,7 @@ class SchloopBase {
 
         $('.change-pwd-link').on('click', function(){
             change_pwd_form[0].reset();
-            changePasswordModal.find('.show_err').text('');
+            changePasswordModal.find('label.error').hide();
         });
 
         this.initFormSubmit(change_pwd_form, {
