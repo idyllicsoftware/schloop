@@ -21,7 +21,7 @@ class Ecircular < ActiveRecord::Base
 	#										 inter_school_competitions: 19, intra_school_competitions: 20, olympiads: #21 }
   enum circular_tag: { circular: 0, assignment: 1, lesson_plan: 2, from_notice_board: 3,
 											 teachers_message: 4, year_plan: 5, time_table: 6, attendance: 7, holiday: 8,
-											 health_report: 9 }
+											 health_report: 9, must_go: 10, must_watch: 11, must_read: 12, must_know: 13 }
  	enum created_by_type: { teacher: 0, school_admin: 1, product_admin: 2 }
 
   belongs_to :school
