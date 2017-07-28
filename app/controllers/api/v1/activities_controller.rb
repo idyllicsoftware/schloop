@@ -1,8 +1,7 @@
 class Api::V1::ActivitiesController < Api::V1::BaseController
-
   # input case 1: grade_id,
   # input case 2: grade_id, subject_id, page
-	def index
+  def index
     errors = []
     grade_id = params[:grade_id]
     subject_ids = params[:subject_ids]
@@ -11,15 +10,15 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     page_size = 20
 
     grade = Grade.find_by(id: grade_id)
-    errors << "Grade not found" if grade.blank?
+    errors << 'Grade not found' if grade.blank?
 
     master_grade = grade.master_grade rescue nil
     errors << "Master Grade not found" if master_grade.blank?
 
     if errors.blank?
-      search_params = {master_grade_id: master_grade.id}
+      search_params = { master_grade_id: master_grade.id }
       mapping_data = {
-        master_grade_id_grade_id: {master_grade.id => grade}
+        master_grade_id_grade_id: { master_grade.id => grade }
       }
       if subject_ids.present?
         subject_ids = subject_ids.split(',')
@@ -41,7 +40,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
           pagination_data: {
             page_size: page_size,
             record_count: total_records,
-            total_pages: (total_records/page_size.to_f).ceil,
+            total_pages: (total_records / page_size.to_f).ceil,
             current_page: (page || 0).to_i
           },
           activities: activities_data
@@ -65,7 +64,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     page = params[:page]
     page_size = 20
 
-    search_params = {id: ActivityShare.where(teacher_id: @current_user.id).pluck(:activity_id)}
+    search_params = { id: ActivityShare.where(teacher_id: @current_user.id).pluck(:activity_id) }
     mapping_data = nil
     category_ids = nil
     activities_data, total_records = Activity.grade_activities(search_params, mapping_data, page, category_ids)
@@ -78,7 +77,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
           pagination_data: {
             page_size: page_size,
             record_count: total_records,
-            total_pages: (total_records/page_size.to_f).ceil,
+            total_pages: (total_records / page_size.to_f).ceil,
             current_page: (page || 0).to_i
           },
           activities: activities_data
@@ -119,7 +118,7 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
     activity_id = params[:activity_id]
     activity = Activity.find_by(id: activity_id)
 
-    errors << "Invalid activity, please try again." if activity.blank?
+    errors << 'Invalid activity, please try again.' if activity.blank?
     share_response = activity.share(@current_user, params[:recipients]) if errors.blank?
 
     if share_response[:success]
@@ -143,11 +142,12 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
   def activity
     errors = []
     activity_id = params[:id]
-    errors << "activity id is not given" if activity_id.nil?
+    errors << 'activity id is not given' if activity_id.nil?
+    errors << 'activity is inactive' if Activity.find_by(id: activity_id).inactive?
     if errors.blank?
       search_params = { id: activity_id }
       activities_data, total_records = Activity.grade_activities(search_params, nil, 0, nil, @current_user)
-      index_response = {
+      activity_response = {
         success: true,
         error: nil,
         data: {
@@ -155,16 +155,15 @@ class Api::V1::ActivitiesController < Api::V1::BaseController
         }
       }
     else
-      index_response = {
+      activity_response = {
         success: false,
         error:  {
           code: 0,
-          message: errors.flatten
+          message: errors.flatten.join(", ")
         },
         data: nil
       }
     end
-    render json: index_response
+    render json: activity_response
   end
-
 end
