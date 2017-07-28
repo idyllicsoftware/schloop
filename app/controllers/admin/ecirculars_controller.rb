@@ -8,7 +8,6 @@ class Admin::EcircularsController < Admin::BaseController
 			if new_circular.save
 				recipients_division_ids = add_recipients_data(params[:grades], params[:school_id], new_circular.id)
 				send_notification_to_recipients(recipients_division_ids,new_circular)
-				
 				render json: { success: true,  circular_id: new_circular.id} and return
 			else
 				errors = new_circular.errors.full_messages

@@ -35,7 +35,7 @@ class Admin::SchoolAdminsController < Admin::BaseController
 	end
 
 	def find_school_admin
-		@school_admin = SchoolAdmin.find_by(id: params[:id])
+		@school_admin = SchoolAdmin.includes(:devices).find_by(id: params[:id])
 	end
 
 	def create_school_admin(school, school_admin_datum)

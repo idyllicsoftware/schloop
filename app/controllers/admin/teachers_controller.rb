@@ -91,7 +91,7 @@ class Admin::TeachersController < Admin::BaseController
   end
 
   def find_teacher
-    @teacher = Teacher.find_by(id: params[:id])
+    @teacher = Teacher.includes(:devices,:topics).find_by(id: params[:id])
     if @teacher.blank?
       {success: false, errors: ["teacher not found"]}
     end
@@ -127,7 +127,7 @@ class Admin::TeachersController < Admin::BaseController
   
   def get_grade_teacher_data(teacher_id)
     grade_teacher_data = []
-    teacher = Teacher.find(teacher_id)
+    teacher = Teacher.includes(grade_teachers: [:subject, :division, :grade]).find(teacher_id)
     grades_data = teacher.grade_teachers.group_by do |x| x.grade_id end
 
     grades_data.each do |grade_id, datas|

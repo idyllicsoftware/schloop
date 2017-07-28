@@ -25,7 +25,7 @@ class Admin::Teachers::CollaborationsController < Admin::Teachers::BaseControlle
 
   def add_to_my_topics
     errors = []
-    bookmark = Bookmark.find_by(id: add_to_my_topics_params[:bookmark_id])
+    bookmark = Bookmark.includes(:topic).find_by(id: add_to_my_topics_params[:bookmark_id])
     teacher = current_teacher
     if Bookmark.find_by(teacher_id: teacher.id, reference_bookmark: bookmark.reference_bookmark).present?
       errors << "bookmark already present in my topics"
@@ -33,8 +33,8 @@ class Admin::Teachers::CollaborationsController < Admin::Teachers::BaseControlle
     end
     ActiveRecord::Base.transaction do
       begin
-        master_subject = Subject.find_by(id: bookmark.subject_id).master_subject
-        master_grade = Grade.find_by(id: bookmark.grade_id).master_grade
+        master_subject = Subject.includes(:master_subject).find_by(id: bookmark.subject_id).master_subject
+        master_grade = Grade.includes(:master_grade).find_by(id: bookmark.grade_id).master_grade
         topic = Topic.find_by(teacher_id: teacher.id, master_grade_id: master_grade.id, master_subject_id: master_subject.id, title: bookmark.topic.title)
         if topic.blank?       
           topic = Topic.create(title: bookmark.topic.title, teacher_id: teacher.id, master_subject_id: master_subject.id, master_grade_id: master_grade.id)

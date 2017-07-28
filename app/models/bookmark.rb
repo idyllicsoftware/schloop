@@ -49,8 +49,6 @@ class Bookmark < ActiveRecord::Base
   validates :topic_id, presence: true
   validates :data, :length => {:maximum => 10000}
   validates :reference_bookmark, presence: true
-  ##validates :school_id: presence: true
-
   validates :likes, :numericality => { only_integer: true ,greater_than_or_equal_to: 0 },:presence => true
 
   before_create :add_crawl_data
@@ -59,7 +57,7 @@ class Bookmark < ActiveRecord::Base
 
   def self.index(teacher,grade_id, subject_id, topic_id,options={})
     bookmarks_data = []
-    bookmarks = Bookmark.where(grade_id: grade_id, subject_id: subject_id, topic_id: topic_id, teacher_id: teacher.id).where(options)
+    bookmarks = Bookmark.where(grade_id: grade_id, subject_id: subject_id, topic_id: topic_id, teacher_id: teacher.id).includes(:grade, :subject, :topic, :teacher).where(options)
     bookmark_ids = bookmarks.ids
     collaborated_bookmark_ids = Collaboration.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)
     followed_bookmark_ids = Followup.where(bookmark_id: bookmark_ids).pluck(:bookmark_id)

@@ -32,7 +32,7 @@ class Admin::Teachers::BookmarksController < Admin::Teachers::BaseController
   def destroy
     errors = []
     begin
-      bookmark = Bookmark.find_by(id: delete_params[:id])  
+      bookmark = Bookmark.includes(:social_trackers).find_by(id: delete_params[:id])  
       bookmark.destroy
     rescue Exception => e
       errors << "unable to destroy bookmarks" + ','+ e.message
@@ -45,7 +45,7 @@ class Admin::Teachers::BookmarksController < Admin::Teachers::BaseController
     tracker_params = like_or_view_params
     event = tracker_params[:event]
     user = current_teacher || current_user
-    bookmark = Bookmark.find_by(id: tracker_params[:bookmark_id])
+    bookmark = Bookmark.includes(:teacher).find_by(id: tracker_params[:bookmark_id])
     errors << "Invalid bookmark to track" if bookmark.blank?
     if errors.blank?
       like_state = params[:like_state]

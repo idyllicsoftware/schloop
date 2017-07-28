@@ -3,7 +3,7 @@ class Admin::Teachers::CommentsController < Admin::Teachers::BaseController
   def create
     errors = []
     begin
-      bookmark = Bookmark.find_by(id: comment_params[:id])
+      bookmark = Bookmark.includes(:collaboration).find_by(id: comment_params[:id])
       collaboration = bookmark.collaboration
       comment_data = {
       commentable_id: collaboration.id,

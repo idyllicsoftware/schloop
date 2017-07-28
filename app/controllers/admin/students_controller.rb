@@ -36,7 +36,7 @@ class Admin::StudentsController < Admin::BaseController
 	def index
 	    #@grades = Grade.where(school_id: params[:school_id]).includes(:divisions)
 	    division =  Division.find(params[:division_id])
-	    students_profiles = StudentProfile.where(division_id: params[:division_id])
+	    students_profiles = StudentProfile.includes(student: [:parent]).where(division_id: params[:division_id])
 	    student_data = []
 	    students_profiles.each do |student_profile|
 	    	if student_profile.student[:activation_status] == true
@@ -61,7 +61,7 @@ class Admin::StudentsController < Admin::BaseController
 		errors = []
 		begin
 			student_id = params[:student_id]
-			student = Student.find_by(id: student_id)
+			student = Student.includes(:parent).find_by(id: student_id)
 			student.activation_status = false
 			student.save
 		rescue Exception => e
