@@ -123,10 +123,10 @@ task populate_msater_grades: :environment do
       name_map: 'mca-3'
   }, {
       name: 'Bachelors 1',
-      name_map: 'be-3'
+      name_map: 'bachelors-1'
   }, {
       name: 'Bachelors 2',
-      name_map: 'bachelors-3'
+      name_map: 'bachelors-2'
   }, {
       name: 'Bachelors 3',
       name_map: 'bachelors-3'
