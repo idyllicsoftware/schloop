@@ -49,6 +49,129 @@ task populate_msater_grades: :environment do
   }, {
     name: '12th Grade',
     name_map: '12th-grade'
+  }, {
+      name: 'BE 1',
+      name_map: 'be-1'
+  }, {
+      name: 'BE 2',
+      name_map: 'be-2'
+  }, {
+      name: 'BE 3',
+      name_map: 'be-3'
+  }, {
+      name: 'BE 4',
+      name_map: 'be-4'
+  }, {
+      name: 'BE 5',
+      name_map: 'be-5'
+  }, {
+      name: 'ME 1',
+      name_map: 'me-1'
+  }, {
+      name: 'ME 2',
+      name_map: 'me-2'
+  }, {
+      name: 'B.Pharma 1',
+      name_map: 'b-pharma-1'
+  }, {
+      name: 'B.Pharma-2',
+      name_map: 'b-pharma-2'
+  }, {
+      name: 'B.Pharma-3',
+      name_map: 'b-pharma-3'
+  }, {
+      name: 'M.Pharma 1',
+      name_map: 'm-pharma-1'
+  }, {
+      name: 'M.Pharma 2',
+      name_map: 'm-pharma-2'
+  }, {
+      name: 'BBA 1',
+      name_map: 'bba-1'
+  }, {
+      name: 'BBA 2',
+      name_map: 'bba-2'
+  }, {
+      name: 'BBA 3',
+      name_map: 'bba-3'
+  }, {
+      name: 'MBA 1',
+      name_map: 'mba-1'
+  }, {
+      name: 'MBA 2',
+      name_map: 'mba-2'
+  }, {
+      name: 'MBA 3',
+      name_map: 'mba-3'
+  }, {
+      name: 'BCA 1',
+      name_map: 'bca-1'
+  }, {
+      name: 'BCA 2',
+      name_map: 'bca-2'
+  }, {
+      name: 'BCA 3',
+      name_map: 'bca-3'
+  }, {
+      name: 'MCA 1',
+      name_map: 'mca-1'
+  }, {
+      name: 'MCA 2',
+      name_map: 'mca-2'
+  }, {
+      name: 'MCA 3',
+      name_map: 'mca-3'
+  }, {
+      name: 'Bachelors 1',
+      name_map: 'be-3'
+  }, {
+      name: 'Bachelors 2',
+      name_map: 'bachelors-3'
+  }, {
+      name: 'Bachelors 3',
+      name_map: 'bachelors-3'
+  }, {
+      name: 'Masters 1',
+      name_map: 'masters-1'
+  }, {
+      name: 'Masters 2',
+      name_map: 'masters-2'
+  }, {
+      name: 'Masters 3',
+      name_map: 'masters-3'
+  }, {
+      name: 'MBBS 1',
+      name_map: 'mbbs-1'
+  }, {
+      name: 'MBBS 2',
+      name_map: 'mbbs-2'
+  }, {
+      name: 'MBBS 3',
+      name_map: 'mbbs-3'
+  }, {
+      name: 'MBBS 4',
+      name_map: 'mbbs-4'
+  }, {
+      name: 'MBBS 5',
+      name_map: 'mbbs-5'
+  }, {
+      name: 'MD 1',
+      name_map: 'md-1'
+  }, {
+      name: 'MD 2',
+      name_map: 'md-2'
+  }, {
+      name: 'MD 3',
+      name_map: 'md-3'
+  }, {
+      name: 'Alumni',
+      name_map: 'alumni'
+  }, {
+      name: 'Followers',
+      name_map: 'followers'
+  }, {
+      name: 'Internal Communication',
+      name_map: 'internal-communication'
   }]
 
   ActiveRecord::Base.transaction do
