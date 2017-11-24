@@ -20,7 +20,7 @@
 class School < ActiveRecord::Base
 
   has_many :school_admins, dependent: :destroy
-  has_many :teachers, dependent: :destroy
+  has_and_belongs_to_many :teachers, dependent: :destroy
   has_many :grades, dependent: :destroy
   has_many :students, dependent: :destroy
   has_many :parent_details, dependent: :destroy

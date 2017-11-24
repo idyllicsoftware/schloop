@@ -15,7 +15,6 @@
 #  last_sign_in_ip        :inet
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  school_id              :integer
 #  token                  :string
 #  first_name             :string
 #  middle_name            :string
@@ -58,7 +57,7 @@ class Teacher < ActiveRecord::Base
             :numericality => true,
             :length => {:minimum => 10, :maximum => 15}
 
-  belongs_to :school
+  has_and_belongs_to_many :schools
   has_many :comments
   has_many :grade_teachers, dependent: :destroy
   has_many :activity_shares
