@@ -34,7 +34,7 @@ class DeviseCreateTeachers < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index :teachers, :email,                unique: true
+    # add_index :teachers, :email,                unique: true
     add_index :teachers, :reset_password_token, unique: true
     # add_index :teachers, :confirmation_token,   unique: true
     # add_index :teachers, :unlock_token,         unique: true

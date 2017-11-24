@@ -99,8 +99,14 @@ class Admin::TeachersController < Admin::BaseController
 
   def create_teachers(school, teacher_params)
     teacher_params.merge!(password: Devise.friendly_token.gsub('-','').first(6))
-    teacher = school.teachers.create(teacher_params)
-    errors =  teacher.errors.full_messages.join(', ')
+    errors = []
+    teacher = Teacher.find_by_email(teacher_params[:email])
+    if teacher.present?
+      school.teachers << teacher
+    else
+      teacher = school.teachers.create(teacher_params)
+      errors =  teacher.errors.full_messages.join(', ')
+    end
 
     return {success: true, teacher_id: teacher.id} if errors.blank?
     return {success: false, errors: errors}
