@@ -2,6 +2,7 @@ class TeacherImport
   include ActiveModel::Model
   attr_accessor :file
   attr_reader :school_id
+  IMPORT_PASSWORD = 'appsite'
 
   def initialize(attributes = {}, school_id)
     
@@ -46,7 +47,7 @@ class TeacherImport
     if teacher_headers - header == [] && header - teacher_headers == []
       (2..spreadsheet.last_row).map do |i|
         row = Hash[[header, spreadsheet.row(i)].transpose]
-        password = generated_password = Devise.friendly_token.first(8)
+        password = generated_password = IMPORT_PASSWORD
         row["password"] = password
         row["school_id"] = @@school_id
 
