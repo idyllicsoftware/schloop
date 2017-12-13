@@ -19,6 +19,7 @@ class ParentImport
         imported_parents.each_with_index do |parent, index|
           existing_parent = Parent.find_by_email(parent.email)
           if !existing_parent.present?
+            parent.password = 'appsite'
             parent.save
           else
             parent_data = {"first_name" => parent.first_name, "last_name" => parent.last_name, "email" => parent.email, "cell_number" => parent.cell_number, "school_id" =>  parent.school_id}
